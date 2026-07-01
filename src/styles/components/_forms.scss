@@ -9,6 +9,11 @@
   gap: var(--space-8);
 }
 
+.field__control {
+  display: flex;
+  align-items: center;
+}
+
 .field__label {
   font-family: var(--font-mono);
   font-size: var(--fs-n1);
@@ -56,4 +61,58 @@
 
 .field--error .field__hint {
   color: var(--red);
+}
+
+// --- Email signup variant --------------------------------------------------
+.field--email-signup {
+  gap: 0;
+}
+
+.field--email-signup .field__control {
+  padding-bottom: var(--space-8);
+  border-bottom: 0.25rem solid var(--ink);
+  background-color: var(--input-bg);
+}
+
+input.input--email-signup[type="email"] {
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  caret-color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-n1);
+  line-height: var(--lh-n1);
+  text-transform: uppercase;
+}
+
+.input--email-signup::placeholder {
+  color: var(--ink);
+}
+
+.field--email-signup .input--email-signup:focus-visible {
+  outline: 0;
+}
+
+.field__submit {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  min-height: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.field__submit:focus-visible {
+  outline: var(--bw-2) solid var(--red);
+  outline-offset: var(--focus-offset);
 }

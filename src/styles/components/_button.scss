@@ -85,7 +85,7 @@
 }
 
 .btn--split {
-  gap: 0;
+  gap: var(--space-6);
   transition:
     background-color var(--dur) var(--ease),
     border-color var(--dur) var(--ease),

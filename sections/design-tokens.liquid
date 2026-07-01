@@ -138,7 +138,6 @@
         </span>
         <span class="btn btn--dark btn--split-static">
           <span class="btn__text">Join</span>
-          <span class="btn__lines" aria-hidden="true"></span>
           <span class="btn__text">Now</span>
         </span>
         <span class="btn btn--cream btn--split">
@@ -164,33 +163,27 @@
       </div>
     </div>
 
-    {%- comment -%} ---------- Form input ---------- {%- endcomment -%}
+    {%- comment -%} ---------- Email signup ---------- {%- endcomment -%}
     <div class="dt-block">
-      <h2 class="dt-block__head">Form input</h2>
-      <span class="dt-demo-field">
-        <span class="dt-demo-label">Email address</span>
-        <span class="dt-demo-input">name@drinkheist.com</span>
-      </span>
-      <div class="dt-row" style="margin-top:var(--space-16)">
-        <dt-copy class="dt-chip" data-copy="field">.field</dt-copy>
-        <dt-copy class="dt-chip" data-copy="field__label">.field__label</dt-copy>
-        <dt-copy class="dt-chip" data-copy="input">.input</dt-copy>
-        <dt-copy class="dt-chip" data-copy="field__hint">.field__hint</dt-copy>
+      <h2 class="dt-block__head">Email signup</h2>
+      <div class="field field--email-signup">
+        <div class="field__control">
+          <input
+            id="dt-email-signup"
+            class="input input--email-signup"
+            type="email"
+            placeholder="Email address"
+          >
+          <button class="field__submit" type="button" aria-label="Submit email">
+            {{- 'icon-arrow.svg' | inline_asset_content -}}
+          </button>
+        </div>
       </div>
-    </div>
-
-    {%- comment -%} ---------- Cards ---------- {%- endcomment -%}
-    <div class="dt-block">
-      <h2 class="dt-block__head">Cards</h2>
-      <span class="dt-demo-card">
-        <span class="dt-demo-card__title">Heist Society™</span>
-        <span class="dt-demo-card__meta">Member kit · value $70</span>
-      </span>
       <div class="dt-row" style="margin-top:var(--space-16)">
-        <dt-copy class="dt-chip" data-copy="card">.card</dt-copy>
-        <dt-copy class="dt-chip" data-copy="card--dark">.card--dark</dt-copy>
-        <dt-copy class="dt-chip" data-copy="card__title">.card__title</dt-copy>
-        <dt-copy class="dt-chip" data-copy="card__meta">.card__meta</dt-copy>
+        <dt-copy class="dt-chip" data-copy="field field--email-signup">.field--email-signup</dt-copy>
+        <dt-copy class="dt-chip" data-copy="field__control">.field__control</dt-copy>
+        <dt-copy class="dt-chip" data-copy="input input--email-signup">.input--email-signup</dt-copy>
+        <dt-copy class="dt-chip" data-copy="field__submit">.field__submit</dt-copy>
       </div>
     </div>
 
