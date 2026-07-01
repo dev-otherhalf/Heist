@@ -1,0 +1,24 @@
+// =============================================================================
+// Heist design system — Vite entrypoint
+// Cascade order: settings -> base -> typography -> components -> utilities
+// (utilities last so they win specificity ties).
+// =============================================================================
+
+// Settings: tokens emit CSS custom properties; breakpoints is mixins-only.
+@use "../styles/settings/tokens";
+@use "../styles/settings/breakpoints";
+
+// Base: fonts, reset, root defaults, container, surfaces.
+@use "../styles/base/fonts";
+@use "../styles/base/reset";
+
+// Typography.
+@use "../styles/components/typography";
+
+// Components.
+@use "../styles/components/button";
+@use "../styles/components/forms";
+@use "../styles/components/card";
+
+// Utilities (last).
+@use "../styles/components/global";

@@ -1,0 +1,81 @@
+{%- comment -%}
+  USAGE EXAMPLE:
+    {% render 'responsive-image',
+        desktop_image: section.settings.desktop_image,
+        mobile_image: section.settings.mobile_image,
+        alt: 'Hero Banner',
+        class: 'hero-banner',
+        sizes: '(max-width: 749px) 100vw, 100vw' %}
+{%- endcomment -%}
+
+{%- assign desktop = desktop_image -%}
+{%- assign mobile = mobile_image | default: desktop -%}
+{% liquid
+  assign alt_text = alt
+  if alt_text == blank
+    assign alt_text = desktop.alt
+  endif
+  if alt_text == blank
+    assign alt_text = mobile.alt
+  endif
+  if alt_text == blank
+    assign alt_text = desktop | split: '/' | last | split: '.' | first | replace: '-', ' ' | replace: '_', ' '
+  endif
+%}
+{%- assign sizes_attr = sizes | default: '100vw' -%}
+{%- assign classes = class | default: '' -%}
+{%- assign fetchpriority = fetchpriority | default: 'low' -%}
+{%- assign loading = loading | default: 'lazy' -%}
+{%- assign rel = rel | default: '' -%}
+
+<picture class="{{ classes }}">
+  <!-- Mobile first: load smaller image on small screens -->
+  <source
+    media="(max-width: 749px)"
+    type="image/webp"
+    srcset="
+      {{ mobile | image_url: width: 480, format: 'webp' }} 480w,
+      {{ mobile | image_url: width: 749, format: 'webp' }} 749w
+    "
+    sizes="{{ sizes_attr }}"
+  >
+  <source
+    media="(max-width: 749px)"
+    srcset="
+      {{ mobile | image_url: width: 480 }} 480w,
+      {{ mobile | image_url: width: 749 }} 749w
+    "
+    sizes="{{ sizes_attr }}"
+  >
+
+  <!-- Desktop: higher resolution -->
+  <source
+    type="image/webp"
+    srcset="
+      {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
+      {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
+      {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
+    "
+    sizes="{{ sizes_attr }}"
+  >
+  <source
+    srcset="
+      {{ desktop | image_url: width: 1200 }} 1200w,
+      {{ desktop | image_url: width: 1600 }} 1600w,
+      {{ desktop | image_url: width: 2000 }} 2000w
+    "
+    sizes="{{ sizes_attr }}"
+  >
+
+  <img
+    src="{{ desktop | image_url: width: 1600 }}"
+    alt="{{ alt_text | escape }}"
+    loading="{{ loading }}"
+    rel="{{ rel }}"
+    decoding="async"
+    width="{{ desktop.width }}"
+    height="{{ desktop.height }}"
+    fetchpriority="{{ fetchpriority }}"
+    class=""
+  >
+</picture>

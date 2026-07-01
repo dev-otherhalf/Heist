@@ -1,0 +1,82 @@
+// =============================================================================
+// Utilities — layout & responsive helpers
+// Loaded last so utilities win specificity ties.
+// =============================================================================
+
+@use "../settings/breakpoints" as *;
+
+// --- Section spacing -------------------------------------------------------
+.section {
+  padding-block: var(--space-32);
+
+  @include respond-to(md) {
+    padding-block: var(--space-48);
+  }
+
+  @include respond-to(lg) {
+    padding-block: var(--space-64);
+  }
+}
+
+// --- Flex helpers ----------------------------------------------------------
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-8 {
+  gap: var(--space-8);
+}
+.gap-16 {
+  gap: var(--space-16);
+}
+.gap-24 {
+  gap: var(--space-24);
+}
+.gap-32 {
+  gap: var(--space-32);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+// --- Responsive visibility -------------------------------------------------
+.hide-from-md {
+  @include respond-to(md) {
+    display: none;
+  }
+}
+
+.hide-below-md {
+  display: none;
+  @include respond-to(md) {
+    display: revert;
+  }
+}
+
+.hide-from-lg {
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+.hide-below-lg {
+  display: none;
+  @include respond-to(lg) {
+    display: revert;
+  }
+}

@@ -1,0 +1,205 @@
+// =============================================================================
+// Design tokens — Heist
+// Single source of raw values. Components reference var(--token) only.
+// Extracted from Figma "Heist – Website Design" via get_variable_defs across
+// all 10 sections. Layered: primitives -> component aliases. Duplicated
+// semantic color aliases were removed so repeated colors resolve from one token.
+// =============================================================================
+
+:root {
+  // ===========================================================================
+  // PRIMITIVES (raw values)
+  // ===========================================================================
+
+  // --- Brand colors ---------------------------------------------------------
+  --ink: #161414;
+  --cream: #ddd6c7;
+  --cream-2: #e1dbcd;
+  --bone: #eeeade; // light card / surface-2
+  --red: #ff3b27; // signature accent
+  --taupe: #a89584; // stroke-4
+
+  // --- Color primitives (Figma color/* scale) -------------------------------
+  --color-grey-17: #2b2b2b;
+  --color-blue-67: #577cff;
+  --color-blue-83: #aabdff;
+
+  // --- Neutral scale (Figma Surface/surface-* + Text/text-primary) ----------
+  // A secondary greyscale used for UI chrome / media placeholders, distinct
+  // from the brand cream/ink scale below.
+  --neutral-white: #ffffff; // surface-primary, surface-1 (lowercase)
+  --neutral-50: #f6f6f6; // surface-secondary, surface-2 (lowercase)
+  --neutral-200: #d9d9d9; // surface-tertiary
+  --neutral-800: #282828; // surface-4 (lowercase)
+  --neutral-900: #0c0c0c; // surface-quaternary, text-primary
+
+  // --- Secondary ------------------------------------------------------------
+  --secondary-blue: #4489e8; // Secondary/Royal Blue
+
+  // ===========================================================================
+  // COMPONENT ALIASES
+  // ===========================================================================
+  --button-bg: var(--red);
+  --button-fg: var(--ink);
+  --button-dark-bg: var(--ink);
+  --button-dark-fg: var(--cream);
+  --button-font-family: var(--font-ui);
+  --button-font-weight: var(--fw-bold);
+  --button-font-size: var(--fs-s4);
+  --button-line-height: var(--lh-s4);
+  --button-letter-spacing: 0;
+  --button-text-transform: uppercase;
+
+  --input-bg: var(--cream);
+  --input-border: var(--ink);
+  --input-fg: var(--ink);
+
+  --card-bg: var(--bone);
+  --card-border: var(--ink);
+
+  // ===========================================================================
+  // TYPE FAMILIES (custom faces via foundry/CDN kit — see base/_fonts.scss)
+  // ===========================================================================
+  --font-display: "Feature Display Condensed", "Times New Roman", serif;
+  --font-body: "Forma DJR Micro", system-ui, -apple-system, sans-serif;
+  --font-mono: "Forma DJR Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-ui:
+    "Aro", "Arial Narrow", system-ui, sans-serif; // Aro Narrow, weight 800
+
+  // --- Font weights ---------------------------------------------------------
+  --fw-regular: 400; // default (display, body, mono, notes regular)
+  --fw-medium: 500; // Notes/N1-Medium, Notes/N2-Medium
+  --fw-semibold: 600; // Figma "font weight/600" primitive (unused by text styles)
+  --fw-bold: 800; // Aro Narrow — Subhead, Nav-1/2, Button
+
+  // ===========================================================================
+  // TYPE SCALE  (size / line-height / tracking; tracking px->em at size)
+  // ===========================================================================
+
+  // --- Headings (Feature Display Condensed) — H1 not defined in Figma --------
+  --fs-h1: 8rem;
+  --lh-h1: 1.04;
+  --ls-h1: -0.021em;
+  --fs-h2: 6rem;
+  --lh-h2: 1.04;
+  --ls-h2: -0.021em;
+  --fs-h3: 5rem;
+  --lh-h3: 0.96;
+  --ls-h3: -0.025em;
+  --fs-h4: 4.5rem;
+  --lh-h4: 1.04;
+  --ls-h4: -0.028em;
+  --fs-h5: 4rem;
+  --lh-h5: 1.04;
+  --ls-h5: -0.031em;
+  --fs-h6: 3rem;
+  --lh-h6: 1.04;
+  --ls-h6: -0.042em;
+  --fs-h7: 2.5rem;
+  --lh-h7: 1.12;
+  --ls-h7: -0.05em;
+
+  // --- Text (T1–T3 Feature Display Condensed; T4 Forma DJR Micro = body) -----
+  --fs-t1: 2rem;
+  --lh-t1: 1.12;
+  --ls-t1: -0.0625em;
+  --fs-t2: 1.75rem;
+  --lh-t2: 1.2;
+  --ls-t2: -0.071em;
+  --fs-t3: 1.25rem;
+  --lh-t3: 1.2;
+  --ls-t3: -0.1em;
+  --fs-t4: 1rem;
+  --lh-t4: 1.28;
+
+  // --- Notes / mono (Forma DJR Mono) ----------------------------------------
+  --fs-n1: 0.875rem;
+  --lh-n1: 1.12;
+  --fs-n1-med: 0.875rem;
+  --lh-n1-med: 1.12; // weight 500
+  --fs-n2: 0.75rem;
+  --lh-n2: 1.36;
+  --fs-n2-med: 0.75rem;
+  --lh-n2-med: 1.12;
+  --ls-n2-med: 0.167em; // weight 500
+  --fs-n3: 0.625rem;
+  --lh-n3: 1.12;
+
+  // --- Subhead (Aro Narrow w800) — clean descending scale 40/32/24/20 -------
+  // Note: a few text layers mis-bind S3 to Feature Display Condensed 40; the
+  // intended scale (confirmed on desktop PDP) is Aro Narrow 24.
+  --fs-s1: 2.5rem;
+  --lh-s1: 1;
+  --fs-s2: 2rem;
+  --lh-s2: 1;
+  --fs-s3: 1.5rem;
+  --lh-s3: 1;
+  --fs-s4: 1.25rem;
+  --lh-s4: 1;
+
+  // --- UI -------------------------------------------------------------------
+  --fs-nav1: 1.5rem;
+  --lh-nav1: 1; // Aro Narrow w800
+  --fs-nav2: 1.25rem;
+  --lh-nav2: 1; // Aro Narrow w800
+  --fs-nav3: 0.875rem;
+  --lh-nav3: 1.04; // Forma DJR Mono
+  --fs-btn: 1.25rem;
+  --lh-btn: 1; // Aro Narrow w800
+  --fs-link: 0.875rem;
+  --lh-link: 1.04; // UI-UX/Hyperlink, Forma DJR Mono
+
+  // ===========================================================================
+  // SPACING  (Figma item-spacing / observed gaps)
+  // ===========================================================================
+  --space-4: 0.25rem;
+  --space-6: 0.375rem; // Figma item spacing/6
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-48: 3rem; // section padding (md) — added per SOP §2.2
+  --space-64: 4rem; // section padding (lg) — added per SOP §2.2
+
+  // ===========================================================================
+  // SIZING / CONTROLS
+  // ===========================================================================
+  --control-h: 3rem; // button & input height (Figma) + min touch target
+  --control-h-lg: 3.5rem; // large control — added
+  --focus-offset: 0.125rem; // focus-visible outline offset — added per SOP §6
+
+  // ===========================================================================
+  // BORDERS & RADIUS  (Figma stroke weight/* primitives)
+  // ===========================================================================
+  --bw-069: 0.043125rem; // stroke weight/0_69
+  --bw-1: 0.0625rem; // stroke weight/1
+  --bw-2: 0.125rem; // dominant hard stroke
+  --r-pill: 0.25rem; // small pill radius; design is otherwise square
+  --r-0: 0;
+
+  // ===========================================================================
+  // BREAKPOINTS  (added per SOP §2.2 — not from Figma)
+  // ===========================================================================
+  --bp-sm: 30rem;
+  --bp-md: 46.875rem;
+  --bp-lg: 61.875rem;
+  --bp-xl: 75rem;
+
+  // ===========================================================================
+  // MOTION  (added per SOP §6, flagged)
+  // ===========================================================================
+  --dur: 180ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  // NOTE: Figma defines a NOISE effect (noise-bg / noise-hand, radius 4) used as
+  // a grain overlay. CSS can't reproduce it natively — apply as an SVG/PNG grain
+  // overlay layer if/when needed. Not tokenised here.
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0ms;
+  }
+}

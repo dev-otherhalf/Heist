@@ -1,0 +1,284 @@
+{%- comment -%}
+  Heist design-tokens preview — a living style guide.
+
+  Renders every design token and component class (colors, typography, buttons,
+  forms, cards, spacing, radius, borders, breakpoints) with click-to-copy chips
+  so developers can see and copy the real `--var` / class names.
+
+  Self-contained: loads its own Vite bundle (tokens + typography + dt-* preview
+  chrome) and is fully `dt-*` namespaced with a scoped reset, so it never
+  collides with theme-owned classes. Demos are rendered as <span> elements; the
+  real class/variable names live in the copy chips.
+
+  View it: assign a page to the `page.design-tokens` template.
+{%- endcomment -%}
+
+{% render 'vite-tag' with 'sections/styles/design-tokens.scss' %}
+{% render 'vite-tag' with 'sections/scripts/design-tokens.js' %}
+
+{%- liquid
+  assign colors_brand = '--ink|#161414,--cream|#ddd6c7,--cream-2|#e1dbcd,--bone|#eeeade,--red|#ff3b27,--taupe|#a89584' | split: ','
+  assign colors_scale = '--color-grey-17|#2b2b2b,--color-blue-67|#577cff,--color-blue-83|#aabdff,--secondary-blue|#4489e8' | split: ','
+  assign colors_neutral = '--neutral-white|#ffffff,--neutral-50|#f6f6f6,--neutral-200|#d9d9d9,--neutral-800|#282828,--neutral-900|#0c0c0c' | split: ','
+  assign fonts = '--font-display|Feature Display Condensed,--font-body|Forma DJR Micro,--font-mono|Forma DJR Mono,--font-ui|Aro Narrow' | split: ','
+  assign weights = '--fw-regular|400,--fw-medium|500,--fw-semibold|600,--fw-bold|800' | split: ','
+
+  assign type_display = 't-h1|128 / 1.04 / -2 · Feature Display Condensed,t-h2|96 / 1.04 / -2,t-h3|80 / 0.96 / -2,t-h4|72 / 1.04 / -2,t-h5|64 / 1.04 / -2,t-h6|48 / 1.04 / -2,t-h7|40 / 1.12 / -2,t-t1|32 / 1.12 / -2,t-t2|28 / 1.2 / -2,t-t3|20 / 1.2 / -2' | split: ','
+  assign type_body = 't-t4|16 / 1.28 · Forma DJR Micro' | split: ','
+  assign type_notes = 't-n1|14 / 1.12 · Forma DJR Mono,t-n1-med|14 / 1.12 · 500,t-n2|12 / 1.36,t-n2-med|12 / 1.12 · 500 · +2,t-n3|10 / 1.12' | split: ','
+  assign type_subhead = 't-s1|40 / 1 · Aro Narrow 800,t-s2|32 / 1,t-s3|24 / 1,t-s4|20 / 1' | split: ','
+  assign type_ui = 't-nav1|24 / 1 · Aro Narrow 800,t-nav2|20 / 1,t-nav3|14 / 1.04 · Forma DJR Mono,t-btn|20 / 1 · Aro Narrow 800,t-hyperlink|14 / 1.04 · Forma DJR Mono' | split: ','
+
+  assign spacing = '--space-4|4,--space-6|6,--space-8|8,--space-12|12,--space-16|16,--space-20|20,--space-24|24,--space-32|32' | split: ','
+  assign breakpoints = '--bp-sm|480px,--bp-md|750px,--bp-lg|990px,--bp-xl|1200px' | split: ','
+  assign borders = '--bw-069|0.69px,--bw-1|1px,--bw-2|2px' | split: ','
+  assign radii = '--r-0|0,--r-pill|4px' | split: ','
+-%}
+
+<section class="dt" id="shopify-section-{{ section.id }}">
+  <div class="dt__inner">
+    <h1 class="dt__title t-h1">{{ section.settings.heading | escape }}</h1>
+    <p class="dt__lede">{{ section.settings.lede | escape }}</p>
+
+    {%- comment -%} ---------- Colors ---------- {%- endcomment -%}
+    {%- assign color_groups = 'Brand colors|colors_brand,Color primitives|colors_scale,Neutral scale|colors_neutral' | split: ',' -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Colors</h2>
+      {%- for group in color_groups -%}
+        {%- assign gparts = group | split: '|' -%}
+        {%- assign gname = gparts[0] -%}
+        {%- case gparts[1] -%}
+          {%- when 'colors_brand' -%}{%- assign list = colors_brand -%}
+          {%- when 'colors_scale' -%}{%- assign list = colors_scale -%}
+          {%- when 'colors_neutral' -%}{%- assign list = colors_neutral -%}
+        {%- endcase -%}
+        <p class="dt-group">{{ gname }}</p>
+        <div class="dt-grid">
+          {%- for item in list -%}
+            {%- assign parts = item | split: '|' -%}
+            <div class="dt-swatch">
+              <span class="dt-swatch__chip" style="background-color: {{ parts[1] }}"></span>
+              <dt-copy class="dt-chip" data-copy="var({{ parts[0] }})">{{ parts[0] }}</dt-copy>
+              <span class="dt-swatch__hex">{{ parts[1] }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+
+    </div>
+
+    {%- comment -%} ---------- Font families ---------- {%- endcomment -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Font families</h2>
+      <div class="dt-type">
+        {%- for item in fonts -%}
+          {%- assign parts = item | split: '|' -%}
+          <div class="dt-type__row">
+            <span class="dt-type__sample" style="font-family: var({{ parts[0] }}); font-size: 32px; line-height: 1.1;">{{ parts[1] }} — Coffee Without a Curfew</span>
+            <span class="dt-type__meta">
+              <dt-copy class="dt-chip" data-copy="var({{ parts[0] }})">{{ parts[0] }}</dt-copy>
+              <span class="dt-type__spec">{{ parts[1] }}</span>
+            </span>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <p class="dt-group">Font weights</p>
+      <div class="dt-type">
+        {%- for item in weights -%}
+          {%- assign parts = item | split: '|' -%}
+          <div class="dt-type__row">
+            <span class="dt-type__sample" style="font-family: var(--font-ui); font-weight: {{ parts[1] }}; font-size: 28px; text-transform: uppercase;">Heist · {{ parts[1] }}</span>
+            <span class="dt-type__meta">
+              <dt-copy class="dt-chip" data-copy="var({{ parts[0] }})">{{ parts[0] }}</dt-copy>
+              <span class="dt-type__spec">{{ parts[1] }}</span>
+            </span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Typography ---------- {%- endcomment -%}
+    {%- assign type_groups = 'Display (Feature Display Condensed)|type_display,Body (Forma DJR Micro)|type_body,Notes (Forma DJR Mono)|type_notes,Subhead (Aro Narrow)|type_subhead,UI|type_ui' | split: ',' -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Typography</h2>
+      <div class="dt-type">
+        {%- for group in type_groups -%}
+          {%- assign gparts = group | split: '|' -%}
+          {%- case gparts[1] -%}
+            {%- when 'type_display' -%}{%- assign list = type_display -%}
+            {%- when 'type_body' -%}{%- assign list = type_body -%}
+            {%- when 'type_notes' -%}{%- assign list = type_notes -%}
+            {%- when 'type_subhead' -%}{%- assign list = type_subhead -%}
+            {%- when 'type_ui' -%}{%- assign list = type_ui -%}
+          {%- endcase -%}
+          <p class="dt-group">{{ gparts[0] }}</p>
+          {%- for item in list -%}
+            {%- assign parts = item | split: '|' -%}
+            <div class="dt-type__row">
+              <span class="dt-type__sample {{ parts[0] }}">Coffee Without a Curfew</span>
+              <span class="dt-type__meta">
+                <dt-copy class="dt-chip" data-copy=".{{ parts[0] }}">.{{ parts[0] }}</dt-copy>
+                <span class="dt-type__spec">{{ parts[1] }}</span>
+              </span>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Buttons ---------- {%- endcomment -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Buttons</h2>
+      <div class="dt-row">
+        <span class="btn btn--dark btn--split">
+          <span class="btn__text">Join</span>
+          <span class="btn__lines" aria-hidden="true"></span>
+          <span class="btn__text">Now</span>
+        </span>
+        <span class="btn btn--dark btn--split-static">
+          <span class="btn__text">Join</span>
+          <span class="btn__lines" aria-hidden="true"></span>
+          <span class="btn__text">Now</span>
+        </span>
+        <span class="btn btn--cream btn--split">
+          <span class="btn__text">Drink</span>
+          <span class="btn__lines" aria-hidden="true"></span>
+          <span class="btn__text">Decaf</span>
+        </span>
+        <span class="btn btn--cream">Follow @heist</span>
+        <span class="btn">Start the heist</span>
+        <span class="btn btn--membership">Remove membership</span>
+        <span class="btn btn--subscribe-save">Subscribe &amp; save 15%</span>
+      </div>
+      <div class="dt-row" style="margin-top:var(--space-16)">
+        <dt-copy class="dt-chip" data-copy="btn btn--dark">.btn .btn--dark</dt-copy>
+        <dt-copy class="dt-chip" data-copy="btn btn--cream">.btn .btn--cream</dt-copy>
+        <dt-copy class="dt-chip" data-copy="btn btn--split">.btn--split</dt-copy>
+        <dt-copy class="dt-chip" data-copy="btn btn--split-static">.btn--split-static</dt-copy>
+        <dt-copy class="dt-chip" data-copy="btn">.btn</dt-copy>
+        <dt-copy class="dt-chip" data-copy="btn btn--membership">.btn .btn--membership</dt-copy>
+        <dt-copy class="dt-chip" data-copy="btn btn--subscribe-save">.btn .btn--subscribe-save</dt-copy>
+        <dt-copy class="dt-chip" data-copy="btn btn--lg">.btn--lg</dt-copy>
+        <dt-copy class="dt-chip" data-copy="btn btn--block">.btn--block</dt-copy>
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Form input ---------- {%- endcomment -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Form input</h2>
+      <span class="dt-demo-field">
+        <span class="dt-demo-label">Email address</span>
+        <span class="dt-demo-input">name@drinkheist.com</span>
+      </span>
+      <div class="dt-row" style="margin-top:var(--space-16)">
+        <dt-copy class="dt-chip" data-copy="field">.field</dt-copy>
+        <dt-copy class="dt-chip" data-copy="field__label">.field__label</dt-copy>
+        <dt-copy class="dt-chip" data-copy="input">.input</dt-copy>
+        <dt-copy class="dt-chip" data-copy="field__hint">.field__hint</dt-copy>
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Cards ---------- {%- endcomment -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Cards</h2>
+      <span class="dt-demo-card">
+        <span class="dt-demo-card__title">Heist Society™</span>
+        <span class="dt-demo-card__meta">Member kit · value $70</span>
+      </span>
+      <div class="dt-row" style="margin-top:var(--space-16)">
+        <dt-copy class="dt-chip" data-copy="card">.card</dt-copy>
+        <dt-copy class="dt-chip" data-copy="card--dark">.card--dark</dt-copy>
+        <dt-copy class="dt-chip" data-copy="card__title">.card__title</dt-copy>
+        <dt-copy class="dt-chip" data-copy="card__meta">.card__meta</dt-copy>
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Spacing ---------- {%- endcomment -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Spacing</h2>
+      <div class="dt-scale">
+        {%- for item in spacing -%}
+          {%- assign parts = item | split: '|' -%}
+          <div class="dt-scale__row">
+            <span class="dt-scale__label">
+              <dt-copy class="dt-chip" data-copy="var({{ parts[0] }})">{{ parts[0] }}</dt-copy>
+            </span>
+            <span class="dt-scale__bar" style="width: {{ parts[1] }}px"></span>
+            <span class="dt-type__spec">{{ parts[1] }}px</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Radius & borders ---------- {%- endcomment -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Radius &amp; borders</h2>
+      <div class="dt-row">
+        {%- for item in radii -%}
+          {%- assign parts = item | split: '|' -%}
+          <div class="dt-swatch">
+            <span class="dt-radius" style="border-radius: {{ parts[1] }}"></span>
+            <dt-copy class="dt-chip" data-copy="var({{ parts[0] }})">{{ parts[0] }}</dt-copy>
+            <span class="dt-swatch__hex">{{ parts[1] }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="dt-row" style="margin-top:var(--space-16)">
+        {%- for item in borders -%}
+          {%- assign parts = item | split: '|' -%}
+          <span class="dt-scale__label">
+            <dt-copy class="dt-chip" data-copy="var({{ parts[0] }})">{{ parts[0] }}</dt-copy>
+          </span>
+          <span class="dt-type__spec">{{ parts[1] }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Breakpoints ---------- {%- endcomment -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Breakpoints</h2>
+      <div class="dt-row">
+        {%- for item in breakpoints -%}
+          {%- assign parts = item | split: '|' -%}
+          <span class="dt-scale__label" style="min-width:auto">
+            <dt-copy class="dt-chip" data-copy="var({{ parts[0] }})">{{ parts[0] }}</dt-copy>
+          </span>
+          <span class="dt-type__spec" style="margin-right:var(--space-16)">{{ parts[1] }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Motion ---------- {%- endcomment -%}
+    <div class="dt-block">
+      <h2 class="dt-block__head">Motion</h2>
+      <div class="dt-row">
+        <dt-copy class="dt-chip" data-copy="var(--dur)">--dur</dt-copy>
+        <span class="dt-type__spec" style="margin-right:var(--space-16)">180ms (0ms under reduced-motion)</span>
+        <dt-copy class="dt-chip" data-copy="var(--ease)">--ease</dt-copy>
+        <span class="dt-type__spec">cubic-bezier(0.2, 0, 0, 1)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Design tokens",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Heist Design System"
+    },
+    {
+      "type": "text",
+      "id": "lede",
+      "label": "Subheading",
+      "default": "Living style guide — click any chip to copy"
+    }
+  ],
+  "presets": [{ "name": "Design tokens" }]
+}
+{% endschema %}

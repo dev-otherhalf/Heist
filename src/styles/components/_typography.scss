@@ -1,0 +1,242 @@
+// =============================================================================
+// Typography — .t-* classes, one per Figma text style
+// Display headings use clamp() for fluid scaling (added; floors ~0.7x of Figma).
+// =============================================================================
+
+// --- Display (Feature Display Condensed) ----------------------------------
+.t-h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--ls-h1);
+  margin: 0;
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+  margin: 0;
+}
+
+.t-h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  letter-spacing: var(--ls-h3);
+  margin: 0;
+}
+
+.t-h4 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  line-height: var(--lh-h4);
+  letter-spacing: var(--ls-h4);
+  margin: 0;
+}
+
+.t-h5 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h5);
+  line-height: var(--lh-h5);
+  letter-spacing: var(--ls-h5);
+  margin: 0;
+}
+
+.t-h6 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h6);
+  line-height: var(--lh-h6);
+  letter-spacing: var(--ls-h6);
+  margin: 0;
+}
+
+.t-h7 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h7);
+  line-height: var(--lh-h7);
+  letter-spacing: var(--ls-h7);
+  margin: 0;
+}
+
+.t-t1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-t1);
+  line-height: var(--lh-t1);
+  letter-spacing: var(--ls-t1);
+  margin: 0;
+}
+
+.t-t2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-t2);
+  line-height: var(--lh-t2);
+  letter-spacing: var(--ls-t2);
+  margin: 0;
+}
+
+.t-t3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-t3);
+  line-height: var(--lh-t3);
+  letter-spacing: var(--ls-t3);
+  margin: 0;
+}
+
+// --- Body (Forma DJR Micro) -----------------------------------------------
+.t-t4 {
+  font-family: var(--font-body);
+  font-size: var(--fs-t4);
+  line-height: var(--lh-t4);
+  margin: 0;
+}
+
+// --- Notes / mono (Forma DJR Mono) ----------------------------------------
+.t-n1 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n1);
+  line-height: var(--lh-n1);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.t-n1-med {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-n1-med);
+  line-height: var(--lh-n1-med);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.t-n2 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n2);
+  line-height: var(--lh-n2);
+  margin: 0;
+}
+
+.t-n2-med {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-n2-med);
+  line-height: var(--lh-n2-med);
+  letter-spacing: var(--ls-n2-med);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.t-n3 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n3);
+  line-height: var(--lh-n3);
+  margin: 0;
+}
+
+// --- Subhead (Aro Narrow w800) --------------------------------------------
+.t-s1 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-s1);
+  line-height: var(--lh-s1);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.t-s2 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-s2);
+  line-height: var(--lh-s2);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.t-s3 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-s3);
+  line-height: var(--lh-s3);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.t-s4 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-s4);
+  line-height: var(--lh-s4);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+// --- UI --------------------------------------------------------------------
+.t-nav1 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-nav1);
+  line-height: var(--lh-nav1);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.t-nav2 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-nav2);
+  line-height: var(--lh-nav2);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.t-nav3 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-nav3);
+  line-height: var(--lh-nav3);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+@mixin t-btn-style {
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-line-height);
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: var(--button-text-transform);
+}
+
+.t-btn {
+  @include t-btn-style;
+  margin: 0;
+}
+
+.t-hyperlink {
+  font-family: var(--font-mono);
+  font-size: var(--fs-link);
+  line-height: var(--lh-link);
+  text-decoration: underline;
+  margin: 0;
+}
+
+// --- Color & alignment helpers --------------------------------------------
+.text-1 {
+  color: var(--ink);
+}
+.text-2 {
+  color: var(--cream);
+}
+.text-red {
+  color: var(--red);
+}
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}

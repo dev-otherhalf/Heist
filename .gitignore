@@ -1,0 +1,6 @@
+node_modules/
+.DS_Store
+
+# Vite-generated files. Existing Horizon assets remain source-controlled.
+assets/.vite/
+assets/vite-*

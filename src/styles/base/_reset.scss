@@ -1,0 +1,65 @@
+// =============================================================================
+// Base — reset, root defaults, container, surface helpers
+// =============================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-t4);
+  line-height: var(--lh-t4);
+  color: var(--ink);
+  background-color: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: from-font;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+// --- Layout ----------------------------------------------------------------
+.container {
+  width: 100%;
+  max-width: var(--bp-xl);
+  margin-inline: auto;
+  padding-inline: var(--space-20);
+}
+
+// --- Surface helpers -------------------------------------------------------
+.surface-dark {
+  background-color: var(--ink);
+  color: var(--cream);
+}
+
+.surface-cream {
+  background-color: var(--cream);
+  color: var(--ink);
+}

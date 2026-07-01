@@ -1,0 +1,59 @@
+// =============================================================================
+// Forms — .field / .input + states
+// Square inputs, 0.125rem stroke, mono uppercase labels.
+// =============================================================================
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.field__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n1);
+  line-height: var(--lh-n1);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.input {
+  width: 100%;
+  min-height: var(--control-h);
+  padding: var(--space-12) var(--space-16);
+  border: var(--bw-2) solid var(--input-border);
+  border-radius: var(--r-0);
+  background-color: var(--input-bg);
+  color: var(--input-fg);
+  font-family: var(--font-body);
+  font-size: var(--fs-t4);
+  line-height: var(--lh-t4);
+}
+
+.input::placeholder {
+  color: var(--color-grey-17);
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: var(--fs-n1);
+}
+
+.input:focus-visible {
+  outline: var(--bw-2) solid var(--red);
+  outline-offset: var(--focus-offset);
+}
+
+.field__hint {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n2);
+  line-height: var(--lh-n2);
+  color: var(--color-grey-17);
+}
+
+// --- Error state ----------------------------------------------------------
+.field--error .input {
+  border-color: var(--red);
+}
+
+.field--error .field__hint {
+  color: var(--red);
+}

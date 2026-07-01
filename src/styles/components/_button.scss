@@ -1,0 +1,149 @@
+@use "./typography";
+
+// =============================================================================
+// Button — .btn + variants / sizes / states
+// Square, 0.125rem stroke, uppercase UI face. Mirrors the Heist CTA pattern.
+// =============================================================================
+
+.btn {
+  @include typography.t-btn-style;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  padding: var(--space-16) var(--space-24);
+  border: var(--bw-2) solid var(--ink);
+  border-radius: var(--r-0);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+
+// --- Variants --------------------------------------------------------------
+// Primary color variants all share the tokenized button type style from `.btn`.
+.btn--dark {
+  background-color: var(--button-dark-bg); // ink CTA — "JOIN NOW"
+  color: var(--button-dark-fg);
+  border-color: var(--ink);
+}
+
+.btn--cream {
+  background-color: var(--cream);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn--membership {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-n1);
+  line-height: var(--lh-n1);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  background-color: var(--bone);
+  color: var(--ink);
+  border-color: var(--taupe);
+}
+
+.btn--subscribe-save {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-n1);
+  line-height: var(--lh-n1);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  background-color: var(--button-dark-bg);
+  color: var(--button-dark-fg);
+}
+
+.btn__text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn__lines {
+  flex: 0 0 0;
+  width: 0;
+  height: 1.125rem;
+  opacity: 0;
+  background:
+    linear-gradient(currentColor 0 0) top / 100% var(--bw-2) no-repeat,
+    linear-gradient(currentColor 0 0) center / 100% var(--bw-2) no-repeat,
+    linear-gradient(currentColor 0 0) bottom / 100% var(--bw-2) no-repeat;
+  transition:
+    flex-basis var(--dur) var(--ease),
+    width var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+
+.btn--split {
+  gap: 0;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    gap var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+
+.btn--split:hover {
+  gap: var(--space-16);
+}
+
+.btn--split:hover .btn__lines {
+  flex-basis: clamp(2rem, 10vw, 8rem);
+  width: clamp(2rem, 10vw, 8rem);
+  opacity: 1;
+}
+
+.btn--split-static {
+  gap: var(--space-16);
+}
+
+.btn--split-static .btn__lines {
+  flex-basis: clamp(2rem, 10vw, 8rem);
+  width: clamp(2rem, 10vw, 8rem);
+  opacity: 1;
+}
+
+// --- Sizes -----------------------------------------------------------------
+.btn--lg {
+  min-height: var(--control-h-lg);
+  padding-inline: var(--space-32);
+}
+
+.btn--block {
+  display: flex;
+  width: 100%;
+}
+
+// --- States ---------------------------------------------------------------
+// (added per SOP §3/§6 — not specified in Figma)
+.btn:hover {
+  transform: translateY(-0.0625rem);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:focus-visible {
+  outline: var(--bw-2) solid var(--red);
+  outline-offset: var(--focus-offset);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

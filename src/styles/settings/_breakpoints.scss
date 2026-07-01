@@ -1,0 +1,24 @@
+// =============================================================================
+// Breakpoints — SCSS map + respond-to() mixin
+// CSS @media can't read custom properties, so query widths live here too.
+// Keep in sync with the --bp-* tokens in _tokens.scss.
+// =============================================================================
+
+@use "sass:map";
+
+$breakpoints: (
+  sm: 30rem,
+  md: 46.875rem,
+  lg: 61.875rem,
+  xl: 75rem,
+);
+
+@mixin respond-to($name) {
+  @if map.has-key($breakpoints, $name) {
+    @media (min-width: map.get($breakpoints, $name)) {
+      @content;
+    }
+  } @else {
+    @error "Unknown breakpoint `#{$name}`. Use one of: #{map.keys($breakpoints)}.";
+  }
+}

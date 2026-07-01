@@ -1,0 +1,268 @@
+// =============================================================================
+// Design-tokens preview — styles (loaded only on the design-tokens section)
+// Pulls in the real tokens + typography so demos render accurately, then adds
+// the dt-* preview chrome. Every preview class is namespaced `dt-*` and the
+// wrapper has a scoped box-sizing reset, so the page is immune to theme CSS
+// and never collides with theme-owned classes (.button/.field/.section/.swatch).
+// =============================================================================
+
+@use "../../../styles/settings/tokens";
+@use "../../../styles/base/fonts";
+@use "../../../styles/components/typography";
+@use "../../../styles/components/button";
+
+// --- Scoped reset ----------------------------------------------------------
+.dt,
+.dt *,
+.dt *::before,
+.dt *::after {
+  box-sizing: border-box;
+}
+
+.dt {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background-color: var(--cream);
+  padding: var(--space-32) var(--space-20);
+  min-height: 100vh;
+}
+
+.dt__inner {
+  max-width: 68.75rem;
+  margin-inline: auto;
+}
+
+.dt__title {
+  margin: 0 0 var(--space-8);
+}
+
+.dt__lede {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n1);
+  text-transform: uppercase;
+  color: var(--color-grey-17);
+  margin: 0 0 var(--space-32);
+}
+
+// --- Section blocks --------------------------------------------------------
+.dt-block {
+  border-top: var(--bw-2) solid var(--ink);
+  padding-block: var(--space-24);
+}
+
+.dt-block__head {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n2-med);
+  letter-spacing: 0.167em;
+  text-transform: uppercase;
+  margin: 0 0 var(--space-20);
+}
+
+// Sub-group label inside a block (e.g. "Text", "Stroke", "Display")
+.dt-group {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n1);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: var(--space-24) 0 var(--space-12);
+}
+
+.dt-group:first-of-type {
+  margin-top: 0;
+}
+
+// --- Copy chip -------------------------------------------------------------
+.dt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: 0.125rem 0.375rem;
+  border: var(--bw-1) solid var(--ink);
+  border-radius: var(--r-pill);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--fs-n3);
+  text-transform: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.dt-chip:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.dt-chip:focus-visible {
+  outline: var(--bw-2) solid var(--red);
+  outline-offset: 0.125rem;
+}
+
+.dt-chip.is-copied {
+  background: var(--red);
+  color: var(--cream);
+  border-color: var(--red);
+}
+
+.dt-chip::after {
+  content: "⧉";
+  opacity: 0.6;
+}
+
+.dt-chip.is-copied::after {
+  content: "✓";
+  opacity: 1;
+}
+
+// --- Colors ----------------------------------------------------------------
+.dt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.375rem, 1fr));
+  gap: var(--space-16);
+}
+
+.dt-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.dt-swatch__chip {
+  height: 4.5rem;
+  border: var(--bw-2) solid var(--ink);
+  border-radius: var(--r-0);
+}
+
+.dt-swatch__name {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n2);
+  text-transform: uppercase;
+}
+
+.dt-swatch__hex {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n3);
+  color: var(--color-grey-17);
+}
+
+// --- Typography ------------------------------------------------------------
+.dt-type {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.dt-type__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-bottom: var(--space-16);
+  border-bottom: var(--bw-1) solid var(--taupe);
+}
+
+.dt-type__sample {
+  overflow-wrap: anywhere;
+}
+
+.dt-type__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.dt-type__spec {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n3);
+  color: var(--color-grey-17);
+}
+
+// --- Demos (rendered as spans; never the theme's real elements) ------------
+.dt-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+  align-items: center;
+}
+
+.dt-demo-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: 22.5rem;
+  width: 100%;
+}
+
+.dt-demo-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n1);
+  text-transform: uppercase;
+}
+
+.dt-demo-input {
+  min-height: 3rem;
+  padding: var(--space-12) var(--space-16);
+  border: var(--bw-2) solid var(--ink);
+  background: var(--cream);
+  font-family: var(--font-body);
+  font-size: var(--fs-t4);
+}
+
+.dt-demo-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: var(--space-24);
+  border: var(--bw-2) solid var(--ink);
+  background: var(--bone);
+  max-width: 20rem;
+}
+
+.dt-demo-card__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-t2);
+  line-height: 1.2;
+  letter-spacing: -0.071em;
+}
+
+.dt-demo-card__meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n2);
+  text-transform: uppercase;
+}
+
+// --- Spacing bars ----------------------------------------------------------
+.dt-scale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.dt-scale__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+.dt-scale__bar {
+  height: 1rem;
+  background: var(--red);
+}
+
+.dt-scale__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n3);
+  color: var(--color-grey-17);
+  min-width: 7.5rem;
+}
+
+// --- Radius ----------------------------------------------------------------
+.dt-radius {
+  width: 6rem;
+  height: 6rem;
+  border: var(--bw-2) solid var(--ink);
+  background: var(--bone);
+}
