@@ -20,14 +20,14 @@
   assign colors_brand = '--ink|#161414,--cream|#ddd6c7,--cream-2|#e1dbcd,--bone|#eeeade,--red|#ff3b27,--taupe|#a89584' | split: ','
   assign colors_scale = '--color-grey-17|#2b2b2b,--color-blue-67|#577cff,--color-blue-83|#aabdff,--secondary-blue|#4489e8' | split: ','
   assign colors_neutral = '--neutral-white|#ffffff,--neutral-50|#f6f6f6,--neutral-200|#d9d9d9,--neutral-800|#282828,--neutral-900|#0c0c0c' | split: ','
-  assign fonts = '--font-display|Feature Display Condensed,--font-body|Forma DJR Micro,--font-mono|Forma DJR Mono,--font-ui|Aro Narrow' | split: ','
+  assign fonts = '--font-display|Feature Display Condensed,--font-body|Forma DJR Micro,--font-mono|forma-djr-mono,--font-ui|Aro Narrow' | split: ','
   assign weights = '--fw-regular|400,--fw-medium|500,--fw-semibold|600,--fw-bold|800' | split: ','
 
   assign type_display = 't-h1|128 / 1.04 / -2 · Feature Display Condensed,t-h2|96 / 1.04 / -2,t-h3|80 / 0.96 / -2,t-h4|72 / 1.04 / -2,t-h5|64 / 1.04 / -2,t-h6|48 / 1.04 / -2,t-h7|40 / 1.12 / -2,t-t1|32 / 1.12 / -2,t-t2|28 / 1.2 / -2,t-t3|20 / 1.2 / -2' | split: ','
   assign type_body = 't-t4|16 / 1.28 · Forma DJR Micro' | split: ','
-  assign type_notes = 't-n1|14 / 1.12 · Forma DJR Mono,t-n1-med|14 / 1.12 · 500,t-n2|12 / 1.36,t-n2-med|12 / 1.12 · 500 · +2,t-n3|10 / 1.12' | split: ','
+  assign type_notes = 't-n1|14 / 1.12 · forma-djr-mono,t-n1-med|14 / 1.12 · 500,t-n2|12 / 1.36,t-n2-med|12 / 1.12 · 500 · +2,t-n3|10 / 1.12' | split: ','
   assign type_subhead = 't-s1|40 / 1 · Aro Narrow 800,t-s2|32 / 1,t-s3|24 / 1,t-s4|20 / 1' | split: ','
-  assign type_ui = 't-nav1|24 / 1 · Aro Narrow 800,t-nav2|20 / 1,t-nav3|14 / 1.04 · Forma DJR Mono,t-btn|20 / 1 · Aro Narrow 800,t-hyperlink|14 / 1.04 · Forma DJR Mono' | split: ','
+  assign type_ui = 't-nav1|24 / 1 · Aro Narrow 800,t-nav2|20 / 1,t-nav3|14 / 1.04 · forma-djr-mono,t-btn|20 / 1 · Aro Narrow 800,t-hyperlink|14 / 1.04 · forma-djr-mono' | split: ','
 
   assign spacing = '--space-4|4,--space-6|6,--space-8|8,--space-12|12,--space-16|16,--space-20|20,--space-24|24,--space-32|32' | split: ','
   assign breakpoints = '--bp-sm|480px,--bp-md|750px,--bp-lg|990px,--bp-xl|1200px' | split: ','
@@ -99,7 +99,7 @@
     </div>
 
     {%- comment -%} ---------- Typography ---------- {%- endcomment -%}
-    {%- assign type_groups = 'Display (Feature Display Condensed)|type_display,Body (Forma DJR Micro)|type_body,Notes (Forma DJR Mono)|type_notes,Subhead (Aro Narrow)|type_subhead,UI|type_ui' | split: ',' -%}
+    {%- assign type_groups = 'Display (Feature Display Condensed)|type_display,Body (Forma DJR Micro)|type_body,Notes (forma-djr-mono)|type_notes,Subhead (Aro Narrow)|type_subhead,UI|type_ui' | split: ',' -%}
     <div class="dt-block">
       <h2 class="dt-block__head">Typography</h2>
       <div class="dt-type">

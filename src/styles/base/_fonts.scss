@@ -3,9 +3,17 @@
 // Custom faces (Feature Display Condensed, Forma DJR Micro, Forma DJR Mono, Aro)
 // are delivered via a licensed foundry/CDN kit.
 //
-// TODO: replace the DUMMY url below with the real foundry/CDN kit URL.
-// Until then, the --font-* tokens fall back to system stacks (see _tokens.scss),
-// so nothing breaks — it just won't render the brand faces yet.
+// Adobe Fonts currently serves Forma DJR Micro + Mono. Feature Display
+// Condensed is hosted as a direct WOFF2 asset on Shopify CDN.
 // =============================================================================
 
-@import url("https://use.typekit.net/DUMMY-REPLACE-ME.css");
+@font-face {
+  font-family: "Feature Display Condensed";
+  src: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/FeatureDisplay-Regular_1.woff2?v=1782973795")
+    format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@import url("https://use.typekit.net/jmu4nzm.css");
