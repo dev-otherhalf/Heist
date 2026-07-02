@@ -5,16 +5,18 @@
 
 @use "../settings/breakpoints" as *;
 
-// --- Section spacing -------------------------------------------------------
-.section {
-  padding-block: var(--space-32);
-
-  @include respond-to(md) {
-    padding-block: var(--space-48);
-  }
+// --- Page width ------------------------------------------------------------
+.page-width {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--space-20);
 
   @include respond-to(lg) {
-    padding-block: var(--space-64);
+    padding-inline: var(--space-32);
+  }
+
+  @include respond-to(xl) {
+    padding-inline: var(--space-56);
   }
 }
 
