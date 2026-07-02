@@ -1,10 +1,11 @@
 // =============================================================================
-// Breakpoints — SCSS map + respond-to() mixin
+// Breakpoints — SCSS map + min/max/range mixins
 // CSS @media can't read custom properties, so query widths live here too.
 // Keep in sync with the --bp-* tokens in _tokens.scss.
 // =============================================================================
 
 @use "sass:map";
+@use "sass:math";
 
 $breakpoints: (
   sm: 30rem,
@@ -13,12 +14,32 @@ $breakpoints: (
   xl: 75rem,
 );
 
-@mixin respond-to($name) {
+@function breakpoint($name) {
   @if map.has-key($breakpoints, $name) {
-    @media (min-width: map.get($breakpoints, $name)) {
-      @content;
-    }
-  } @else {
-    @error "Unknown breakpoint `#{$name}`. Use one of: #{map.keys($breakpoints)}.";
+    @return map.get($breakpoints, $name);
+  }
+
+  @error "Unknown breakpoint `#{$name}`. Use one of: #{map.keys($breakpoints)}.";
+}
+
+@function breakpoint-max($name) {
+  @return breakpoint($name) - math.div(1, 100);
+}
+
+@mixin respond-to($name) {
+  @media (min-width: breakpoint($name)) {
+    @content;
+  }
+}
+
+@mixin respond-down($name) {
+  @media (max-width: breakpoint-max($name)) {
+    @content;
+  }
+}
+
+@mixin respond-between($min-name, $max-name) {
+  @media (min-width: breakpoint($min-name)) and (max-width: breakpoint-max($max-name)) {
+    @content;
   }
 }
