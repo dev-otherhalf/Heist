@@ -56,6 +56,47 @@
   gap: var(--space-16);
 }
 
+
+// --- Lenis smooth scrolling ------------------------------------------------
+
+html,
+body {
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior: none;
+
+  @include respond-to(lg) {
+    overflow: hidden;
+  }
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis {
+  &.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  &.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+.page-wrapper {
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+
+  @include respond-to(lg) {
+    height: 100vh;
+    min-height: 0;
+    overflow-x: clip;
+    overflow-y: auto;
+  }
+}
 // --- Responsive visibility -------------------------------------------------
 .hide-from-md {
   @include respond-to(md) {
