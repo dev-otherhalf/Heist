@@ -1,0 +1,44 @@
+{%- liquid
+  assign audio_file_name = block.settings.audio_file_name | strip
+  assign audio_src = ''
+
+  if audio_file_name != blank
+    assign audio_src = audio_file_name | file_url
+  endif
+-%}
+
+<script type="application/json" data-heist-fm-track {{ block.shopify_attributes }}>
+  {
+    "title": {{ block.settings.track_title | json }},
+    "artist": {{ block.settings.track_artist | json }},
+    "audio": {{ audio_src | json }},
+    "cover": {% if block.settings.cover_image != blank %}
+      {{ block.settings.cover_image | image_url: width: 320 | json }}
+    {% else %}
+      ""
+    {% endif %}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "FM track",
+  "settings": [
+    { "type": "text", "id": "track_title", "label": "Track title", "default": "Heist Track" },
+    {
+      "type": "text",
+      "id": "track_artist",
+      "label": "Artist / description",
+      "default": "Heist Coffee Co."
+    },
+    {
+      "type": "text",
+      "id": "audio_file_name",
+      "label": "MP3 file name",
+      "info": "Upload the MP3 in Content > Files, then enter its exact file name."
+    },
+    { "type": "image_picker", "id": "cover_image", "label": "Cover image" }
+  ],
+  "presets": [{ "name": "FM track" }]
+}
+{% endschema %}

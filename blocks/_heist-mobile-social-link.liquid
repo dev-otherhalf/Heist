@@ -1,0 +1,48 @@
+{% if block.settings.image != blank %}
+  {% capture social_icon %}
+    {{
+      block.settings.image
+      | image_url: width: 96
+      | image_tag: widths: '32, 48, 64, 96', loading: 'lazy'
+    }}
+  {% endcapture %}
+
+  {% if block.settings.link != blank %}
+    <a
+      class="heist-mobile-social-link"
+      href="{{ block.settings.link }}"
+      aria-label="{{ block.settings.image.alt | default: 'Social media link' | escape }}"
+      data-heist-mobile-social-link
+      {{ block.shopify_attributes }}
+    >
+      {{ social_icon }}
+    </a>
+  {% else %}
+    <span
+      class="heist-mobile-social-link"
+      data-heist-mobile-social-link
+      {{ block.shopify_attributes }}
+    >
+      {{ social_icon }}
+    </span>
+  {% endif %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Mobile social media link",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Icon image"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ],
+  "presets": [{ "name": "Mobile social media link" }]
+}
+{% endschema %}

@@ -1,0 +1,24 @@
+{% if block != blank %}
+  <div
+    class="heist-announcement t-n2"
+    style="
+      --announcement-home-bg: {{ block.settings.home_background }};
+      --announcement-home-text: {{ block.settings.home_text_color }};
+      --announcement-inner-bg: {{ block.settings.inner_background }};
+      --announcement-inner-text: {{ block.settings.inner_text_color }};
+      --announcement-mobile-bg: {{ block.settings.mobile_background }};
+      --announcement-mobile-text: {{ block.settings.mobile_text_color }};
+      --announcement-mobile-home-bg: {{ block.settings.mobile_home_background | default: block.settings.mobile_background }};
+      --announcement-mobile-home-text: {{ block.settings.mobile_home_text_color | default: block.settings.mobile_text_color }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <span>{{ block.settings.text }}</span>
+    {% if block.settings.link_label != blank %}
+      <span aria-hidden="true">•</span>
+      <a href="{{ block.settings.link | default: routes.all_products_collection_url }}">
+        {{- block.settings.link_label -}}
+      </a>
+    {% endif %}
+  </div>
+{% endif %}

@@ -1,0 +1,24 @@
+{% liquid
+  assign logo = section.settings.logo | default: settings.logo
+  assign width = section.settings.desktop_logo_width
+  if mobile
+    assign width = section.settings.mobile_logo_width
+  endif
+%}
+
+<a
+  class="heist-logo"
+  href="{{ routes.root_url }}"
+  aria-label="{{ shop.name | escape }}"
+  style="--heist-logo-width: {{ width }}px;"
+>
+  {% if logo != blank %}
+    {{
+      logo
+      | image_url: width: 520
+      | image_tag: widths: '160, 240, 360, 520', width: width, alt: shop.name, loading: 'eager'
+    }}
+  {% else %}
+    <span class="heist-logo__text">{{ shop.name }}</span>
+  {% endif %}
+</a>

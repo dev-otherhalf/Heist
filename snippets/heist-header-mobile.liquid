@@ -1,0 +1,105 @@
+<div class="heist-mobile-header">
+  <details class="heist-mobile-menu">
+    <summary class="heist-mobile-menu__toggle" aria-label="{{ 'accessibility.menu' | t }}">
+      <span class="heist-mobile-menu__open" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M2 16H30" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>
+          <path d="M2 7H30" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>
+          <path d="M2 25H30" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>
+        </svg>
+      </span>
+      <span class="heist-mobile-menu__close" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <g clip-path="url(#clip0_5568_8217)">
+            <path d="M25.8994 6.10034L6.10042 25.8993" stroke="#161414" stroke-width="4" stroke-miterlimit="10" stroke-linecap="square"/>
+            <path d="M25.8996 25.8993L6.10059 6.10034" stroke="#161414" stroke-width="4" stroke-miterlimit="10" stroke-linecap="square"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_5568_8217">
+              <rect width="32" height="32" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </span>
+    </summary>
+
+    <div class="heist-mobile-menu__drawer">
+      <div class="heist-mobile-menu__top">
+        <button
+          class="heist-mobile-menu__close-button"
+          type="button"
+          data-heist-menu-close
+          aria-label="Close menu"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <g clip-path="url(#clip0_5568_8217)">
+                <path d="M25.8994 6.10034L6.10042 25.8993" stroke="#161414" stroke-width="4" stroke-miterlimit="10" stroke-linecap="square"/>
+                <path d="M25.8996 25.8993L6.10059 6.10034" stroke="#161414" stroke-width="4" stroke-miterlimit="10" stroke-linecap="square"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_5568_8217">
+                  <rect width="32" height="32" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+        </button>
+        {% render 'heist-logo', section: section, mobile: true %}
+        {% render 'heist-header-actions', mobile: true %}
+      </div>
+
+      {% if section.settings.mobile_menu_image != blank %}
+        <a
+          class="heist-mobile-feature"
+          href="{{ section.settings.mobile_cta_link | default: routes.all_products_collection_url }}"
+        >
+          {{
+            section.settings.mobile_menu_image
+            | image_url: width: 1000
+            | image_tag: widths: '360, 540, 750, 1000', loading: 'lazy'
+          }}
+          {% if section.settings.mobile_cta_label != blank %}
+            <span class="btn">{{ section.settings.mobile_cta_label }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
+
+      <nav class="heist-mobile-nav" aria-label="Mobile navigation">
+        {% for link in menu.links %}
+
+          {% if forloop.index == 2 and shop.customer_accounts_enabled %}
+            <a href="{{ routes.account_url }}" class="t-s4">
+              ACCOUNT
+            </a>
+          {% endif %}
+
+          <a
+            class="t-s4"
+            href="{{ link.url }}"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{ link.title }}
+          </a>
+
+        {% endfor %}
+        <div
+          class="heist-mobile-socials"
+          aria-label="Social media links"
+          data-heist-mobile-socials
+          hidden
+        ></div>
+      </nav>
+
+      <div class="heist-mobile-fm-mount" data-heist-fm-mount hidden></div>
+    </div>
+  </details>
+
+  <div class="heist-mobile-header__center">
+    <span class="heist-mobile-header__home-title t-n1">{{ section.settings.mobile_home_title }}</span>
+    <span class="heist-mobile-header__inner-logo">
+      {% render 'heist-logo', section: section, mobile: true %}
+    </span>
+  </div>
+  {% render 'heist-header-actions', mobile: true %}
+</div>

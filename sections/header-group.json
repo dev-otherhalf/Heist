@@ -11,93 +11,131 @@
   "type": "header",
   "name": "Header",
   "sections": {
-    "header_announcements_9jGBFp": {
-      "type": "header-announcements",
-      "blocks": {
-        "announcement_BxgCk9": {
-          "type": "_announcement",
-          "settings": {
-            "text": "Welcome to our store",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem",
-            "letter_spacing": "normal",
-            "case": "none"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": ["announcement_BxgCk9"],
-      "name": "t:names.announcement_bar",
-      "settings": {
-        "speed": 5,
-        "section_width": "page-width",
-        "background_color": "{{ settings.color_palette.background }}",
-        "divider_width": 1,
-        "divider_color": "{{ settings.color_palette.color2 }}",
-        "padding-block-start": 15,
-        "padding-block-end": 15
-      }
-    },
     "header_section": {
       "type": "header",
       "blocks": {
-        "header-logo": {
-          "type": "_header-logo",
-          "static": true,
+        "heist_mobile_social_link_8f9LHU": {
+          "type": "_heist-mobile-social-link",
+          "name": "Mobile social media link",
           "settings": {
-            "hide_logo_on_home_page": false,
-            "padding-block-start": 0,
-            "padding-block-end": 0
+            "image": "shopify://shop_images/Group_17_2a4f83ec-f640-4396-9cdf-de63f8252dfb.svg",
+            "link": "#"
           },
           "blocks": {}
         },
-        "header-menu": {
-          "type": "_header-menu",
-          "static": true,
+        "heist_mobile_social_link_XiYbWq": {
+          "type": "_heist-mobile-social-link",
+          "name": "Mobile social media link",
           "settings": {
-            "menu": "main-menu",
-            "type_font_primary_size": "0.875rem",
-            "menu_font_style": "inverse",
-            "type_font_primary_link": "body",
-            "type_case_primary_link": "none",
-            "menu_style": "featured_products",
-            "featured_products_aspect_ratio": "4 / 5",
-            "featured_collections_aspect_ratio": "16 / 9",
-            "image_border_radius": 0,
-            "navigation_bar": false,
-            "drawer_accordion": false,
-            "drawer_accordion_expand_first": false,
-            "drawer_dividers": false
+            "image": "shopify://shop_images/Group_18_ff566b65-e588-49af-81f4-e564eba20c33.svg",
+            "link": "#"
           },
           "blocks": {}
+        },
+        "heist_mobile_social_link_XaJc39": {
+          "type": "_heist-mobile-social-link",
+          "name": "Mobile social media link",
+          "settings": {
+            "image": "shopify://shop_images/Group_19_8ed29732-a512-4f68-b899-b947cb5386a3.svg",
+            "link": "#"
+          },
+          "blocks": {}
+        },
+        "announcement_default": {
+          "type": "_heist-announcement",
+          "settings": {
+            "text": "FREE SHIPPING ON SUBSCRIPTIONS",
+            "link_label": "SHOP NOW",
+            "link": "shopify://collections/all",
+            "home_background": "#ff3b27",
+            "home_text_color": "#161414",
+            "inner_background": "#ff3b27",
+            "inner_text_color": "#161414",
+            "mobile_home_background": "#4489e8",
+            "mobile_home_text_color": "#161414",
+            "mobile_background": "#ff3b27",
+            "mobile_text_color": "#161414"
+          },
+          "blocks": {}
+        },
+        "heist_fm_player_DwgRex": {
+          "type": "_heist-fm-player",
+          "name": "Heist FM player",
+          "settings": {
+            "heading": "HEIST.FM",
+            "subheading": "Ready to steal the night again? Cue Heist music.",
+            "apple_music_url": "",
+            "spotify_url": "",
+            "corner_image": "shopify://shop_images/Group_10.png",
+            "corner_image_width": 80
+          },
+          "blocks": {
+            "heist_fm_track_4N8zJM": {
+              "type": "_heist-fm-track",
+              "settings": {
+                "track_title": "Heist Track",
+                "track_artist": "Heist Coffee Co.",
+                "audio_file_name": "sample-12s.mp3",
+                "cover_image": "shopify://shop_images/Rectangle_1444336488.jpg"
+              },
+              "blocks": {}
+            },
+            "heist_fm_track_FzcJq9": {
+              "type": "_heist-fm-track",
+              "settings": {
+                "track_title": "Heist Track",
+                "track_artist": "Heist Coffee Co.",
+                "audio_file_name": "sample-10s.mp3",
+                "cover_image": "shopify://shop_images/Rectangle_1444336488.jpg"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heist_fm_track_4N8zJM",
+            "heist_fm_track_FzcJq9"
+          ]
         }
       },
+      "block_order": [
+        "heist_mobile_social_link_8f9LHU",
+        "heist_mobile_social_link_XiYbWq",
+        "heist_mobile_social_link_XaJc39",
+        "announcement_default",
+        "heist_fm_player_DwgRex"
+      ],
       "settings": {
-        "logo_position": "left",
-        "menu_position": "left",
-        "menu_row": "top",
-        "show_search": true,
-        "search_position": "right",
-        "search_row": "top",
-        "show_country": true,
-        "country_selector_style": false,
-        "show_language": true,
-        "localization_font": "heading",
-        "localization_font_size": "0.875rem",
-        "localization_position": "right",
-        "localization_row": "top",
-        "section_width": "page-width",
-        "section_height": "standard",
-        "enable_sticky_header": "always",
-        "divider_width": 0,
-        "divider_size": "page-width",
-        "border_width": 0,
-        "background_color_top": "{{ settings.color_palette.background }}",
-        "enable_transparent_header_home": false,
-        "enable_transparent_header_product": false,
-        "enable_transparent_header_collection": false
+        "desktop_menu": "main-menu",
+        "mobile_menu": "main-menu-mobile",
+        "customer_account_menu": "customer-account-main-menu",
+        "logo": "shopify://shop_images/logo-black.svg",
+        "desktop_logo_width": 152,
+        "mobile_logo_width": 128,
+        "shop_label": "SHOP NOW",
+        "shop_link": "shopify://collections/all",
+        "mobile_home_title": "WORLD-CLASS DECAF",
+        "home_text_color": "#ddd6c7",
+        "inner_text_color": "#161414",
+        "mobile_background": "#eeeade",
+        "mobile_text_color": "#161414",
+        "drawer_background": "#eeeade",
+        "drawer_text_color": "#161414",
+        "accent_color": "#ff3b27",
+        "mobile_menu_image": "shopify://shop_images/Rectangle_144433639.jpg",
+        "mobile_cta_label": "SHOP THE HEIST",
+        "mobile_cta_link": "#",
+        "show_sticky_cta": true,
+        "sticky_text": "Coffee Without a Curfew.",
+        "sticky_button_label": "SHOP NOW",
+        "sticky_button_link": "shopify://collections/all",
+        "sticky_background": "#eeeade",
+        "sticky_text_color": "#161414",
+        "sticky_button_background": "#ff3b27",
+        "sticky_button_text": "#161414"
       }
     }
   },
-  "order": ["header_announcements_9jGBFp", "header_section"]
+  "order": [
+    "header_section"
+  ]
 }

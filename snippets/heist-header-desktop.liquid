@@ -1,0 +1,76 @@
+{% liquid
+  assign split_seed = menu.links.size | plus: 1
+  assign split_at = split_seed | divided_by: 2
+%}
+
+{% if is_home %}
+  <div class="heist-desktop-header heist-desktop-header--home-layout">
+    <a
+      class="heist-desktop-header__shop t-s4"
+      href="{{ section.settings.shop_link | default: routes.all_products_collection_url }}"
+    >
+      {{- section.settings.shop_label -}}
+    </a>
+    <nav class="heist-desktop-nav" aria-label="Primary navigation">
+      {% for link in menu.links %}
+        <a class="t-n1"
+          href="{{ link.url }}"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- link.title -}}
+        </a>
+      {% endfor %}
+      {% if shop.customer_accounts_enabled %}
+        <shopify-account class="heist-nav-account t-n1" menu="{{ section.settings.customer_account_menu }}">
+          {% if customer %}
+            <span>ACCOUNT</span>
+          {% else %}
+            <span slot="signed-out-avatar">ACCOUNT</span>
+          {% endif %}
+        </shopify-account>
+      {% endif %}
+    </nav>
+    {% render 'heist-header-actions', section: section, hide_account: true %}
+  </div>
+{% endif %}
+
+<div class="heist-desktop-header heist-desktop-header--inner-layout{% if is_home %} heist-desktop-header--scroll-only{% endif %}">
+  <nav class="heist-desktop-nav heist-desktop-nav--left" aria-label="Primary navigation, first half">
+    <a
+      class="heist-desktop-header__shop t-s4"
+      href="{{ section.settings.shop_link | default: routes.all_products_collection_url }}"
+    >
+      {{- section.settings.shop_label -}}
+    </a>
+    {% for link in menu.links limit: split_at %}
+      <a
+        href="{{ link.url }}"
+        class="t-n1"
+        {% if link.current %}
+          aria-current="page"
+        {% endif %}
+      >
+        {{- link.title -}}
+      </a>
+    {% endfor %}
+  </nav>
+  {% render 'heist-logo', section: section %}
+  <div class="heist-desktop-header__right">
+    <nav class="heist-desktop-nav heist-desktop-nav--right" aria-label="Primary navigation, second half">
+      {% for link in menu.links offset: split_at %}
+        <a
+          class="t-n1"
+          href="{{ link.url }}"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- link.title -}}
+        </a>
+      {% endfor %}
+    </nav>
+    {% render 'heist-header-actions', section: section %}
+  </div>
+</div>

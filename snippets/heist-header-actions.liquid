@@ -1,0 +1,40 @@
+<div class="heist-actions{% if mobile %} heist-actions--mobile{% endif %}">
+  {% unless mobile %}
+    {% unless hide_account %}
+      {% if shop.customer_accounts_enabled %}
+        <shopify-account class="heist-actions__account" menu="{{ section.settings.customer_account_menu }}">
+          {% if customer %}
+            <span class="heist-actions__account-fallback">ACCOUNT</span>
+          {% else %}
+            <span slot="signed-out-avatar">ACCOUNT</span>
+          {% endif %}
+        </shopify-account>
+      {% endif %}
+    {% endunless %}
+  {% endunless %}
+
+  {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
+    <button
+      class="heist-cart button-unstyled t-s4"
+      type="button"
+      on:click="#cart-drawer/toggle"
+      aria-haspopup="dialog"
+      aria-expanded="false"
+      aria-controls="cart-drawer"
+      aria-label="{{ 'accessibility.cart' | t }}"
+    >
+  {% else %}
+    <a class="heist-cart" href="{{ routes.cart_url }}" aria-label="{{ 'accessibility.cart' | t }}">
+  {% endif %}
+  <span class="heist-cart__desktop"
+    >CART(<span data-heist-cart-count>{{ cart.item_count }}</span>)</span
+  >
+  <span class="heist-cart__mobile t-nav3" aria-hidden="true"
+    ><span data-heist-cart-count>{{ cart.item_count }}</span></span
+  >
+  {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
+    </button>
+  {% else %}
+    </a>
+  {% endif %}
+</div>

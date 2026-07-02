@@ -5,3 +5,4 @@ if (document.readyState === "loading") {
 } else {
   initLenis();
 }
+import "../scripts/heist-header";

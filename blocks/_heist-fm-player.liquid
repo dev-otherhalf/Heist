@@ -1,0 +1,171 @@
+<section class="heist-fm-player-block" data-heist-fm-block {{ block.shopify_attributes }}>
+  <div class="heist-fm-player" data-heist-player>
+    <audio data-heist-audio preload="metadata"></audio>
+
+    <div class="heist-fm-player__tracks" hidden>
+      {% content_for 'blocks' %}
+    </div>
+
+    <div class="heist-fm-player__top">
+      <div class="heist-fm-player__cover-wrap">
+        <img
+          class="heist-fm-player__cover"
+          data-heist-cover
+          alt=""
+          width="72"
+          height="72"
+          loading="lazy"
+        >
+        <span class="heist-fm-player__cover-placeholder" data-heist-placeholder>FM</span>
+      </div>
+      <h2 class="heist-fm-player__title t-t1">{{ block.settings.heading | escape }}</h2>
+    </div>
+
+    <p class="heist-fm-player__subtitle" data-heist-track-title>{{ block.settings.subheading | escape }}</p>
+
+    <div class="heist-fm-player__progress">
+      <span class="visually-hidden" data-heist-current-time>0:00</span>
+      <div
+        class="heist-fm-player__range"
+        data-heist-progress
+        role="slider"
+        tabindex="0"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        aria-label="Audio progress"
+      >
+        <span class="heist-fm-player__range-track">
+          <span class="heist-fm-player__range-fill"></span>
+          <span class="heist-fm-player__range-thumb"></span>
+        </span>
+      </div>
+      <span class="visually-hidden" data-heist-duration>0:00</span>
+    </div>
+
+    <div class="heist-fm-player__controls">
+      <button type="button" class="heist-fm-player__control" data-heist-action="shuffle" aria-label="Shuffle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <g clip-path="url(#clip0_5646_5164)">
+            <path d="M18.8438 2.71875L22.5937 6.46875L18.8438 10.2187" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
+            <path d="M0.84375 17.7187H4.4355C5.1763 17.7187 5.90563 17.5358 6.55876 17.1862C7.21188 16.8366 7.7686 16.3311 8.1795 15.7147L13.008 8.47275C13.4189 7.85635 13.9756 7.35092 14.6287 7.00133C15.2819 6.65174 16.0112 6.4688 16.752 6.46875H22.5937" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M18.8438 21.4687L22.5937 17.7187L18.8438 13.9688" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
+            <path d="M11.8438 13.9688L13.0081 15.7147C13.419 16.3311 13.9757 16.8366 14.6289 17.1862C15.282 17.5358 16.0113 17.7187 16.7521 17.7187H22.5939" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+            <path d="M0.84375 6.46875H4.4355C5.1763 6.4688 5.90563 6.65174 6.55876 7.00133C7.21188 7.35092 7.7686 7.85635 8.1795 8.47275L9.34387 10.2187" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_5646_5164">
+              <rect width="24" height="24" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </button>
+      <button type="button" class="heist-fm-player__control" data-heist-action="previous" aria-label="Previous track">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <g clip-path="url(#clip0_5646_5171)">
+            <path d="M3.9375 22.6875V1.6875" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
+            <path d="M20.4375 2.4375V21.9375L6.9375 12.1875L20.4375 2.4375Z" fill="currentColor" stroke="#161414" stroke-width="1.125" stroke-miterlimit="10" stroke-linecap="square"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_5646_5171">
+              <rect width="24" height="24" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </button>
+      <button type="button" class="heist-fm-player__play" data-heist-action="toggle" aria-label="Play audio">
+        <span data-heist-play-icon>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <g clip-path="url(#clip0_5164_19488)">
+              <path d="M16 0C12.8355 0 9.74207 0.938384 7.11088 2.69649C4.4797 4.45459 2.42894 6.95345 1.21793 9.87706C0.0069325 12.8007 -0.309921 16.0177 0.307443 19.1214C0.924806 22.2251 2.44866 25.0761 4.6863 27.3137C6.92394 29.5513 9.77487 31.0752 12.8786 31.6926C15.9823 32.3099 19.1993 31.9931 22.1229 30.7821C25.0466 29.5711 27.5454 27.5203 29.3035 24.8891C31.0616 22.2579 32 19.1645 32 16C31.9876 11.7603 30.2979 7.69789 27.3 4.69999C24.3021 1.70209 20.2397 0.0123994 16 0ZM22.6 16.8L14.6 22.8C14.4176 22.9109 14.2125 22.9793 14 23C13.8 23 13.7 23 13.6 22.9C13.4212 22.8275 13.2684 22.7029 13.1614 22.5424C13.0544 22.3819 12.9981 22.1929 13 22V10C12.9981 9.80709 13.0544 9.61808 13.1614 9.45757C13.2684 9.29705 13.4212 9.17246 13.6 9.1C13.7584 9.0179 13.9373 8.98363 14.1149 9.00139C14.2924 9.01915 14.461 9.08815 14.6 9.2L22.6 15.2C22.7242 15.2931 22.825 15.4139 22.8944 15.5528C22.9639 15.6916 23 15.8448 23 16C23 16.1552 22.9639 16.3084 22.8944 16.4472C22.825 16.5861 22.7242 16.7069 22.6 16.8Z" fill="#161414"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_5164_19488">
+                <rect width="32" height="32" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </span>
+      </button>
+      <button type="button" class="heist-fm-player__control" data-heist-action="next" aria-label="Next track">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <g clip-path="url(#clip0_5646_5178)">
+            <path d="M20.0625 22.6875V1.6875" stroke="#161414" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
+            <path d="M3.5625 2.4375V21.9375L17.0625 12.1875L3.5625 2.4375Z" fill="#161414" stroke="#161414" stroke-width="1.125" stroke-miterlimit="10" stroke-linecap="square"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_5646_5178">
+              <rect width="24" height="24" fill="white" transform="matrix(-1 0 0 1 24 0)"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </button>
+      <button type="button" class="heist-fm-player__control" data-heist-action="loop" aria-label="Loop current track">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M2.0625 8.8125L2.0625 4.3125C2.0625 3.06983 3.06983 2.0625 4.3125 2.0625L19.3125 2.0625C20.5551 2.0625 21.5625 3.06983 21.5625 4.3125L21.5625 14.8125C21.5625 16.0552 20.5551 17.0625 19.3125 17.0625L2.0625 17.0625L2.4375 17.0625" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
+          <path d="M7.3125 11.8125L2.0625 17.0625L7.3125 22.3125" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="heist-fm-player__links">
+      {% if block.settings.apple_music_url != blank %}
+        <a href="{{ block.settings.apple_music_url }}" target="_blank" rel="noopener noreferrer">Apple Music</a>
+      {% endif %}
+      {% if block.settings.spotify_url != blank %}
+        <a href="{{ block.settings.spotify_url }}" target="_blank" rel="noopener noreferrer">Spotify</a>
+      {% endif %}
+    </div>
+
+    <p class="visually-hidden" data-heist-status>Ready to play Heist FM.</p>
+  </div>
+
+  {% if block.settings.corner_image != blank %}
+    <div
+      class="heist-fm-player__corner"
+      style="--heist-fm-corner-width: {{ block.settings.corner_image_width }}px"
+      aria-hidden="true"
+    >
+      {{
+        block.settings.corner_image
+        | image_url: width: 600
+        | image_tag: widths: '160, 240, 320, 480, 600', loading: 'lazy'
+      }}
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Heist FM player",
+  "blocks": [{ "type": "_heist-fm-track" }],
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "HEIST.FM" },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Default track text",
+      "default": "Ready to steal the night again? Cue Heist music."
+    },
+    { "type": "url", "id": "apple_music_url", "label": "Apple Music URL" },
+    { "type": "url", "id": "spotify_url", "label": "Spotify URL" },
+    { "type": "image_picker", "id": "corner_image", "label": "Fixed corner image" },
+    {
+      "type": "range",
+      "id": "corner_image_width",
+      "label": "Corner image width",
+      "min": 80,
+      "max": 240,
+      "step": 8,
+      "unit": "px",
+      "default": 144
+    }
+  ],
+  "presets": [
+    {
+      "name": "Heist FM player",
+      "blocks": [{ "type": "_heist-fm-track" }]
+    }
+  ]
+}
+{% endschema %}

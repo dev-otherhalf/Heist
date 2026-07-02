@@ -1,0 +1,769 @@
+@use "../settings/breakpoints" as *;
+
+.heist-header-section {
+  position: relative;
+  z-index: 3;
+
+  &:has(.heist-header--home) {
+    position: absolute;
+    inset: 0 0 auto;
+    width: 100%;
+  }
+}
+.heist-header,
+.heist-sticky-cta {
+  font-family: var(--font-mono, monospace);
+  color: var(--heist-inner-text);
+}
+
+.heist-header {
+  display: block;
+  width: 100%;
+  background: var(--heist-inner-bg);
+  transition:
+    opacity var(--animation-speed-slow) var(--animation-easing),
+    transform var(--animation-speed-slow) var(--animation-easing);
+
+  &--home {
+    color: var(--heist-home-text);
+    background: transparent;
+  }
+
+  &--inner {
+    border-bottom: var(--bw-2) solid currentColor;
+  }
+
+  &--home.is-pinned,
+  &--inner.is-pinned {
+    color: var(--heist-inner-text);
+    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13.jpg?v=1782913691);
+  }
+
+  &.is-pinned {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 40;
+    border-bottom: var(--bw-2) solid currentColor;
+    animation: heist-header-in var(--animation-speed-slow)
+      var(--animation-easing) backwards;
+  }
+
+  &.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transform: translateY(-100%);
+  }
+
+  @include respond-down(lg) {
+    color: var(--heist-mobile-text);
+    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13.jpg?v=1782913691);
+
+    &--home:not(.is-pinned) {
+      color: var(--heist-home-text);
+      background: transparent;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+@keyframes heist-header-in {
+  from {
+    transform: translateY(-100%);
+  }
+}
+
+.heist-announcement {
+    min-height: var(--space-32);
+    padding: var(--space-8) var(--space-20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    color: var(--announcement-inner-text);
+    background: var(--announcement-inner-bg);
+    font-weight: var(--fw-medium);
+    text-align: center;
+    text-transform: uppercase;
+
+
+  .heist-header--home & {
+    color: var(--announcement-home-text);
+    background: var(--announcement-home-bg);
+  }
+
+  .heist-header--home.is-pinned & {
+    color: var(--announcement-inner-text);
+    background: var(--announcement-inner-bg);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: var(--bw-2);
+  }
+
+  @include respond-down(lg) {
+    &,
+    .heist-header--home & {
+      color: var(--announcement-mobile-text);
+      background: var(--announcement-mobile-bg);
+      font-size: var(--fs-n2);
+    }
+
+    .heist-header--home:not(.is-pinned) & {
+      color: var(--announcement-mobile-home-text);
+      background: var(--announcement-mobile-home-bg);
+    }
+  }
+}
+
+.heist-desktop-header {
+  min-height: 4.5rem;
+  padding: 0 var(--space-56);
+  display: grid;
+  grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+  align-items: center;
+  gap: var(--space-32);
+  shopify-store {
+    display: none;
+  }
+  .heist-header--home & {
+    grid-template-columns: minmax(7.5rem, 1fr) auto minmax(7.5rem, 1fr);
+  }
+
+  &__shop,
+  a {
+    color: inherit;
+  }
+
+  &__shop {
+    width: max-content;
+    text-decoration: none;
+    &:hover {
+      color: var(--red);
+    }
+  }
+
+  &__right {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-32);
+
+    @include respond-down(xl) {
+      gap: var(--space-16);
+    }
+  }
+
+  @include respond-down(xl) {
+    padding-inline: var(--space-24);
+    gap: var(--space-16);
+  }
+
+  @include respond-down(lg) {
+    display: none;
+  }
+}
+
+.heist-header--home:not(.is-pinned) .heist-desktop-header--scroll-only,
+.heist-header--home.is-pinned .heist-desktop-header--home-layout {
+  display: none;
+}
+
+.heist-desktop-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-32);
+  white-space: nowrap;
+
+  &--left {
+    justify-content: flex-start;
+  }
+
+  &--right {
+    justify-content: flex-end;
+  }
+
+  a {
+    &:hover,
+    &[aria-current="page"] {
+      text-decoration: underline;
+      text-underline-offset: var(--space-6);
+    }
+    &.heist-desktop-header__shop {
+      text-decoration: none;
+      &:hover {
+        color: var(--red);
+      }
+    }
+  }
+
+  shopify-account {
+    color: inherit;
+    font-family: inherit;
+    font-size: var(--fs-nav3);
+    line-height: var(--lh-nav3);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: var(--space-6);
+    }
+  }
+
+  @include respond-down(xl) {
+    gap: var(--space-16);
+
+    a,
+    shopify-account {
+      font-size: var(--fs-n2);
+    }
+  }
+}
+
+.heist-logo {
+  width: var(--heist-logo-width);
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  text-decoration: none;
+
+  img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  &__text {
+    font-family: var(--font-ui, sans-serif);
+    font-size: var(--fs-nav1);
+    font-weight: var(--fw-bold);
+    line-height: 0.8;
+    text-transform: uppercase;
+  }
+}
+
+.heist-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-48);
+  white-space: nowrap;
+
+  a,
+  button {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__account:hover {
+    text-decoration: underline;
+    text-underline-offset: var(--space-6);
+  }
+
+  &__account {
+    color: inherit;
+    cursor: pointer;
+  }
+
+  @include respond-down(xl) {
+    gap: var(--space-16);
+
+    a,
+    button {
+      font-size: var(--fs-n2);
+    }
+  }
+
+  &--mobile {
+    @include respond-down(lg) {
+      justify-self: end;
+    }
+  }
+}
+
+.heist-header .heist-cart {
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  &:hover {
+    color: var(--red);
+  }
+}
+.heist-cart__mobile {
+  display: none;
+
+  @include respond-down(lg) {
+    width: var(--space-32);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 0.1875rem solid currentColor;
+    border-radius: var(--style-border-radius-50);
+    font-weight: var(--fw-bold);
+  }
+}
+.heist-cart__desktop {
+  @include respond-down(lg) {
+    display: none;
+  }
+}
+.heist-mobile-header {
+  display: none;
+
+  @include respond-down(lg) {
+    min-height: 5.125rem;
+    padding: var(--space-12) var(--space-20);
+    display: grid;
+    grid-template-columns: var(--space-48) 1fr var(--space-48);
+    align-items: center;
+
+    &__center {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      justify-self: stretch;
+      text-align: center;
+    }
+
+    &__home-title {
+      white-space: nowrap;
+    }
+
+    &__inner-logo {
+      display: inline-flex;
+      justify-self: center;
+    }
+
+    .heist-header--home:not(.is-pinned) &__inner-logo,
+    .heist-header:not(.heist-header--home) &__home-title,
+    .heist-header--home.is-pinned &__home-title {
+      display: none;
+    }
+  }
+}
+
+.heist-sticky-cta {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 45;
+  min-height: 3.876rem;
+  display: grid;
+  grid-template-columns: 1fr minmax(10.5rem, 14vw);
+  color: var(--sticky-text);
+  background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13.jpg?v=1782913691);
+  border-bottom: var(--bw-2) solid var(--sticky-text);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-100%);
+  transition:
+    opacity var(--animation-speed-medium) var(--animation-easing),
+    transform var(--animation-speed-medium) var(--animation-easing);
+
+  &.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  &__copy {
+    padding: var(--space-20) var(--space-56);
+    display: flex;
+    align-items: center;
+  }
+
+  a {
+    border:none;
+    border-left: var(--bw-2) solid var(--sticky-text);
+    &:hover{
+      transform: none;
+    }
+  }
+
+  @include respond-down(lg) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.heist-mobile-menu {
+  @include respond-down(lg) {
+    width: auto;
+
+    &[open] {
+      .heist-mobile-menu__open {
+        display: none;
+      }
+
+      .heist-mobile-menu__close {
+        display: block;
+      }
+    }
+
+    &__toggle {
+      width: var(--control-h);
+      height: var(--control-h);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      list-style: none;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+    }
+
+    &__open {
+      width: auto;
+      display: grid;
+      gap: var(--space-8);
+    }
+
+    &__close,
+    &__close-button {
+      position: relative;
+      width: var(--space-32);
+      height: var(--space-32);
+      background: transparent;
+      border: 0;
+      padding: 0;
+    }
+
+    &__close {
+      display: none;
+    }
+
+    &__drawer {
+      position: fixed;
+      inset: var(--space-32) 0 0;
+      z-index: 60;
+      padding: var(--space-6) var(--space-20);
+      color: var(--heist-drawer-text);
+      background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_144433642.png?v=1782969309);
+      background-size: 100% 100%;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    &__top {
+      min-height: 4.375rem;
+      display: grid;
+      grid-template-columns: var(--space-48) 1fr var(--space-48);
+      align-items: center;
+
+      .heist-logo {
+        justify-self: center;
+      }
+    }
+
+    &__close-button {
+      color: inherit;
+      cursor: pointer;
+    }
+  }
+}
+
+.heist-mobile-feature {
+  @include respond-down(lg) {
+    position: relative;
+    margin: var(--space-12) 0 var(--space-20);
+    padding-bottom: 68.06%;
+    display: block;
+    color: var(--heist-drawer-text);
+    border: var(--bw-2) solid currentColor;
+
+    img {
+      display: block;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    span {
+      position: absolute;
+      inset: auto var(--space-24) var(--space-24);
+      min-height: var(--space-56);
+      padding: var(--space-12);
+      font-size: var(--fs-s3);
+    }
+  }
+}
+
+.heist-mobile-nav {
+  @include respond-down(lg) {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: var(--space-16);
+    padding-top: var(--space-6);
+
+    a {
+      color: inherit;
+    }
+  }
+}
+
+.heist-mobile-socials {
+  @include respond-down(lg) {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+
+    .heist-mobile-social-link {
+      width: var(--space-32);
+      height: var(--space-32);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+  }
+}
+
+.heist-mobile-social-link {
+  display: none;
+}
+
+.heist-fm-player-block {
+  display: none;
+}
+
+.heist-mobile-fm-mount {
+  @include respond-down(lg) {
+    margin-top: var(--space-32);
+    padding-bottom: var(--space-32);
+
+    .heist-fm-player-block {
+      display: block;
+    }
+  }
+}
+
+.heist-fm-player {
+  @include respond-down(lg) {
+    padding: var(--space-16);
+    color: var(--heist-drawer-text);
+    background: var(--cream);
+    border: var(--bw-2) solid currentColor;
+
+    &__top {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+    }
+
+    &__cover-wrap {
+      position: relative;
+      width: 4.5rem;
+      height: 4.5rem;
+      flex: 0 0 4.5rem;
+      display: grid;
+      place-items: center;
+      color: var(--heist-mobile-bg);
+      background: var(--heist-drawer-text);
+      border: var(--bw-2) solid var(--ink);
+      overflow: hidden;
+    }
+
+    &__cover {
+      width: 100%;
+      height: 100%;
+      display: none;
+      object-fit: cover;
+
+      &.is-visible {
+        display: block;
+      }
+    }
+
+    &__cover-placeholder {
+      font-family: var(--font-ui, sans-serif);
+      font-size: var(--fs-s3);
+      font-weight: var(--fw-bold);
+
+      &.is-hidden {
+        display: none;
+      }
+    }
+
+    &__title {
+      margin: 0;
+      text-transform: uppercase;
+      font-weight: var(--fw-regular);
+    }
+
+    &__subtitle {
+      margin: var(--space-12) 0 0;
+      font-size: var(--fs-n2);
+      line-height: var(--lh-n2-med);
+      display: none;
+    }
+
+    &__progress {
+      margin-top: var(--space-8);
+    }
+
+    &__range {
+      --heist-fm-progress: 0%;
+
+      position: relative;
+      width: 100%;
+      height: var(--space-12);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+
+      &:focus-visible {
+        outline: var(--bw-2) solid currentColor;
+        outline-offset: var(--space-4);
+      }
+    }
+
+    &__range-track {
+      position: relative;
+      width: 100%;
+      height: var(--space-4);
+      display: block;
+      background: var(--ink);
+    }
+
+    &__range-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--heist-fm-progress);
+      display: block;
+      background: var(--heist-accent);
+    }
+
+    &__range-thumb {
+      position: absolute;
+      top: 50%;
+      left: var(--heist-fm-progress);
+      width: var(--space-12);
+      height: var(--space-12);
+      display: block;
+      background: var(--heist-accent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &__controls {
+      margin-top: var(--space-16);
+      margin-bottom: var(--space-8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-20);
+    }
+
+    &__control,
+    &__play {
+      padding: 0;
+      display: grid;
+      place-items: center;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      font-family: var(--font-ui, sans-serif);
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    &__control {
+      width: var(--space-20);
+      height: var(--space-20);
+      font-size: var(--fs-s3);
+
+      &.is-active {
+        color: var(--heist-accent);
+      }
+    }
+
+    &__play {
+      width: var(--space-32);
+      height: var(--space-32);
+      color: var(--heist-mobile-bg);
+      background: none;
+      border-radius: 50%;
+      font-size: var(--fs-s3);
+    }
+
+    &__links {
+      margin-top: var(--space-12);
+      display: none;
+      justify-content: center;
+      gap: var(--space-12);
+
+      &:empty {
+        display: none;
+      }
+
+      a {
+        color: inherit;
+        font-size: var(--fs-n2);
+        text-transform: uppercase;
+      }
+    }
+
+    .is-empty &__controls,
+    .is-empty &__progress {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    &__corner {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      z-index: 2;
+      width: var(--heist-fm-corner-width);
+      pointer-events: none;
+      transform: translateY(110%);
+      transition: all var(--animation-speed-slow) var(--animation-easing);
+      transition-delay: 1s;
+
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .heist-mobile-menu[open] & {
+        transform: translateY(0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+    }
+  }
+}
