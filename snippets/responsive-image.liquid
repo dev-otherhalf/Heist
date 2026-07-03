@@ -24,6 +24,7 @@
 %}
 {%- assign sizes_attr = sizes | default: '100vw' -%}
 {%- assign classes = class | default: '' -%}
+{%- assign image_classes = image_class | default: '' -%}
 {%- assign fetchpriority = fetchpriority | default: 'low' -%}
 {%- assign loading = loading | default: 'lazy' -%}
 {%- assign rel = rel | default: '' -%}
@@ -76,6 +77,6 @@
     width="{{ desktop.width }}"
     height="{{ desktop.height }}"
     fetchpriority="{{ fetchpriority }}"
-    class=""
+    class="{{ image_classes }}"
   >
 </picture>

@@ -4,9 +4,9 @@
       {% if shop.customer_accounts_enabled %}
         <shopify-account class="heist-actions__account" menu="{{ section.settings.customer_account_menu }}">
           {% if customer %}
-            <span class="heist-actions__account-fallback">ACCOUNT</span>
+            <span class="heist-actions__account-fallback t-n1">ACCOUNT</span>
           {% else %}
-            <span slot="signed-out-avatar">ACCOUNT</span>
+            <span class="t-n1" slot="signed-out-avatar">ACCOUNT</span>
           {% endif %}
         </shopify-account>
       {% endif %}

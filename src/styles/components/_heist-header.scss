@@ -371,17 +371,37 @@
   transition:
     opacity var(--animation-speed-medium) var(--animation-easing),
     transform var(--animation-speed-medium) var(--animation-easing);
-
+  @include respond-down(lg) {
+    bottom: 0;
+    top: auto;
+    opacity: 1;
+    transform: translateY(0);
+    grid-template-columns: 1fr;
+    border-bottom: none;
+  }
+  
   &.is-visible {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
+    @include respond-down(lg) {
+      transform: none;
+    }
+  }
+  &.is-footer-visible{
+    @include respond-down(lg) {
+      transform: translateY(100%);
+      opacity: 0;
+    }
   }
 
   &__copy {
     padding: var(--space-20) var(--space-56);
     display: flex;
     align-items: center;
+    @include respond-down(lg) {
+      display: none;
+    }
   }
 
   a {
@@ -390,11 +410,12 @@
     &:hover{
       transform: none;
     }
+    @include respond-down(lg) {
+      width: 100%;
+      border: var(--bw-2) solid var(--sticky-text);
+    }
   }
 
-  @include respond-down(lg) {
-    display: none;
-  }
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -426,6 +447,9 @@
 
       &::-webkit-details-marker {
         display: none;
+      }
+      &:hover{
+        color: currentColor;
       }
     }
 

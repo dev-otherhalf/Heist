@@ -339,6 +339,24 @@ if (header) {
     ticking = false;
   };
 
+  const footer = document.querySelector("footer");
+
+    if (stickyCta && footer) {
+      const footerObserver = new IntersectionObserver(
+        ([entry]) => {
+          stickyCta.classList.toggle(
+            "is-footer-visible",
+            entry.isIntersecting,
+          );
+        },
+        {
+          threshold: 0,
+        },
+      );
+
+      footerObserver.observe(footer);
+    }
+
   const onScroll = () => {
     if (ticking) return;
     ticking = true;
