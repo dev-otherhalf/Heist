@@ -293,6 +293,65 @@
         "padding-block-end": 48
       }
     },
+    "gallery_showcase_p3M8Eq": {
+      "type": "gallery-showcase",
+      "blocks": {
+        "card_djFWVE": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_23.jpg"
+          }
+        },
+        "card_KCP9iM": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_63.jpg"
+          }
+        },
+        "card_3WrCPH": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_64.jpg"
+          }
+        },
+        "card_Lafamf": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_65.jpg"
+          }
+        },
+        "card_wLgjXe": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_23.jpg"
+          }
+        },
+        "card_3pHGym": {
+          "type": "card",
+          "settings": {
+            "video": "shopify://files/videos/interioryesplz_1769153020_3816254488500013143_5401634217.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "card_djFWVE",
+        "card_KCP9iM",
+        "card_3WrCPH",
+        "card_Lafamf",
+        "card_wLgjXe",
+        "card_3pHGym"
+      ],
+      "name": "Gallery showcase",
+      "settings": {
+        "heading": "For those who are serious about coffee.",
+        "cta_label": "Follow @Heist",
+        "cta_link": "",
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 64,
+        "padding_bottom_desktop": 64
+      }
+    },
     "design_tokens_EttbfE": {
       "type": "design-tokens",
       "name": "Design tokens",
@@ -305,6 +364,7 @@
   "order": [
     "hero_jVaWmY",
     "product_list_fa6P9H",
+    "gallery_showcase_p3M8Eq",
     "design_tokens_EttbfE"
   ]
 }

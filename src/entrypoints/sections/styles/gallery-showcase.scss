@@ -1,0 +1,72 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.gallery-showcase {
+  padding-block: var(--gallery-showcase-padding-top-mobile) var(--gallery-showcase-padding-bottom-mobile);
+
+  @include respond-to(lg) {
+    padding-block: var(--gallery-showcase-padding-top-desktop) var(--gallery-showcase-padding-bottom-desktop);
+  }
+
+  &__header {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    margin-bottom: var(--space-24);
+    padding-inline: var(--space-20);
+    text-align: center;
+
+    @include respond-to(lg) {
+      align-items: flex-end;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: var(--space-32);
+      padding-inline: var(--space-32);
+      text-align: left;
+    }
+
+    @include respond-to(xl) {
+      padding-inline: var(--space-56);
+    }
+  }
+
+  &__heading {
+    max-width: 40rem;
+  }
+
+  &__cta {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  &__row {
+    padding-inline-start: var(--space-20);
+
+    @include respond-to(lg) {
+      padding-inline-start: var(--space-32);
+    }
+
+    @include respond-to(xl) {
+      padding-inline-start: var(--space-56);
+    }
+  }
+
+  &__card {
+    aspect-ratio: 3 / 4;
+    border: var(--bw-2) solid var(--ink);
+    height: auto;
+    overflow: hidden;
+  }
+
+  &__media-wrapper,
+  &__media {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  &__media {
+    object-fit: cover;
+  }
+}
