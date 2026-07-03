@@ -33,14 +33,6 @@ html {
   scroll-behavior: smooth;
 }
 
-@media (min-width: 990px) {
-  html:has(.page-wrapper),
-  html:has(.page-wrapper) body {
-    height: 100dvh;
-    overflow: hidden;
-  }
-}
-
 html[scroll-lock],
 html[scroll-lock] .page-wrapper {
   overflow: hidden;

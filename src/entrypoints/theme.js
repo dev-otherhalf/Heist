@@ -1,8 +1,7 @@
 import { initLenis } from "../scripts/lenis";
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initLenis, { once: true });
-} else {
+document.addEventListener("DOMContentLoaded", () => {
   initLenis();
-}
+});
+
 import "../scripts/heist-header";
