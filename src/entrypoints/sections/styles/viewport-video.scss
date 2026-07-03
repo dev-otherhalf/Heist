@@ -1,0 +1,84 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.viewport-video {
+  padding-block: var(--viewport-video-padding-top-mobile)
+    var(--viewport-video-padding-bottom-mobile);
+
+  @include respond-to(lg) {
+    padding-block: var(--viewport-video-padding-top-desktop)
+      var(--viewport-video-padding-bottom-desktop);
+  }
+
+  &__frame {
+    background-color: var(--bone);
+    border: var(--bw-2) solid var(--ink);
+    padding: var(--space-8);
+    position: relative;
+  }
+
+  &__media {
+    display: none;
+
+    &--mobile {
+      display: block;
+
+      @include respond-to(lg) {
+        display: none;
+      }
+    }
+
+    &--desktop {
+      @include respond-to(lg) {
+        display: block;
+      }
+    }
+  }
+
+  &__video {
+    border-radius: var(--r-pill);
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
+  &__sound-toggle {
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    height: 2.75rem;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: var(--space-24);
+    bottom: var(--space-24);
+    width: 2.75rem;
+  }
+
+  &__sound-icon {
+    display: block;
+    height: 100%;
+    inset: 0;
+    opacity: 0;
+    position: absolute;
+    transition: opacity var(--dur) var(--ease);
+    width: 100%;
+
+    svg {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
+    &[hidden] {
+      display: block;
+      opacity: 0;
+    }
+
+    &:not([hidden]) {
+      opacity: 1;
+    }
+  }
+}

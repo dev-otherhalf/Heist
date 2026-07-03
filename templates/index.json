@@ -159,6 +159,18 @@
         "padding_bottom_desktop": 32
       }
     },
+    "viewport_video_FRgn9M": {
+      "type": "viewport-video",
+      "name": "Viewport video",
+      "settings": {
+        "video_desktop": "shopify://files/videos/ezgif-32b066c49c70d90e.mp4",
+        "video_mobile": "shopify://files/videos/ezgif-32b066c49c70d90e.mp4",
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 48
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -370,6 +382,7 @@
   "order": [
     "hero_jVaWmY",
     "press_marquee_BLfLFB",
+    "viewport_video_FRgn9M",
     "product_list_fa6P9H",
     "design_tokens_EttbfE"
   ]
