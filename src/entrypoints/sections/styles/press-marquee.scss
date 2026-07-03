@@ -1,0 +1,102 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.press-marquee {
+  overflow: clip;
+  padding-block: var(--press-marquee-padding-top-mobile)
+    var(--press-marquee-padding-bottom-mobile);
+
+  @include respond-to(lg) {
+    padding-block: var(--press-marquee-padding-top-desktop)
+      var(--press-marquee-padding-bottom-desktop);
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+
+    @include respond-to(lg) {
+      align-items: center;
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  &__label {
+    flex: 0 0 auto;
+    padding-inline: var(--space-20);
+    @include respond-to(lg) {
+      padding-inline: 0;
+    }
+  }
+
+  &__marquee {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    background: none;
+  }
+
+  &__wrapper {
+    display: flex;
+    gap: var(--space-32);
+    width: fit-content;
+    white-space: nowrap;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: press-marquee-scroll var(--marquee-speed, 18s) linear infinite;
+    }
+  }
+
+  &__content {
+    display: flex;
+    gap: var(--space-32);
+    min-width: max-content;
+  }
+
+  &__track {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--space-32);
+    min-width: max-content;
+  }
+
+  &__logo {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  &__logo-image {
+    display: block;
+    height: auto;
+    max-height: 2rem;
+    object-fit: contain;
+    width: auto;
+  }
+
+  &__marquee--mobile-only {
+    @include respond-to(lg) {
+      display: none;
+    }
+  }
+
+  &__static {
+    display: none;
+
+    @include respond-to(lg) {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-32);
+    }
+  }
+}
+
+@keyframes press-marquee-scroll {
+  to {
+    transform: translate3d(calc(-50% - (var(--space-32) / 2)), 0, 0);
+  }
+}

@@ -94,6 +94,71 @@
         "padding-block-end": 72
       }
     },
+    "press_marquee_BLfLFB": {
+      "type": "press-marquee",
+      "blocks": {
+        "logo_tbYzVc": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-foodandwine.svg"
+          }
+        },
+        "logo_w9mtQL": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-bonappetit.svg"
+          }
+        },
+        "logo_zhM6bX": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-gq.svg"
+          }
+        },
+        "logo_Y74LFT": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-health.svg"
+          }
+        },
+        "logo_AUytwj": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-bonappetit.svg"
+          }
+        },
+        "logo_AHGBDk": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-todayshow-horizontal.svg"
+          }
+        },
+        "logo_hEbAew": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-vogue.svg"
+          }
+        }
+      },
+      "block_order": [
+        "logo_tbYzVc",
+        "logo_w9mtQL",
+        "logo_zhM6bX",
+        "logo_Y74LFT",
+        "logo_AUytwj",
+        "logo_AHGBDk",
+        "logo_hEbAew"
+      ],
+      "name": "Press marquee",
+      "settings": {
+        "label": "First to report:",
+        "enable_marquee_desktop": false,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 32,
+        "padding_bottom_desktop": 32
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -304,6 +369,7 @@
   },
   "order": [
     "hero_jVaWmY",
+    "press_marquee_BLfLFB",
     "product_list_fa6P9H",
     "design_tokens_EttbfE"
   ]
