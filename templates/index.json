@@ -94,6 +94,63 @@
         "padding-block-end": 72
       }
     },
+    "product_variant_showcase_9b3JzG": {
+      "type": "product-variant-showcase",
+      "blocks": {
+        "badge_33Lcxn": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/Isolation_Mode.svg"
+          }
+        },
+        "badge_cgBFGQ": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-global.svg"
+          }
+        },
+        "badge_7jaJJd": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-toxinfree.svg"
+          }
+        },
+        "badge_nLRALg": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-wholebeans.svg"
+          }
+        },
+        "product_card_KcEL4E": {
+          "type": "product_card",
+          "settings": {
+            "product": "smooth-talker"
+          }
+        },
+        "product_card_9TBEbk": {
+          "type": "product_card",
+          "settings": {
+            "product": "blueprint"
+          }
+        }
+      },
+      "block_order": [
+        "badge_33Lcxn",
+        "badge_cgBFGQ",
+        "badge_7jaJJd",
+        "badge_nLRALg",
+        "product_card_KcEL4E",
+        "product_card_9TBEbk"
+      ],
+      "name": "Product variant showcase",
+      "settings": {
+        "heading": "World-Class Decaf Coffee",
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 48
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -304,6 +361,7 @@
   },
   "order": [
     "hero_jVaWmY",
+    "product_variant_showcase_9b3JzG",
     "product_list_fa6P9H",
     "design_tokens_EttbfE"
   ]
