@@ -11,180 +11,140 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
-    "footer_m9NzUG": {
-      "type": "footer",
+    "heist_fm_player_69JMgc": {
+      "type": "heist-fm-player",
       "blocks": {
-        "group_H6VpwJ": {
-          "type": "group",
+        "track_pLkULG": {
+          "type": "track",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 6,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "open_in_new_tab": false,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_LWt8Pz": {
-              "type": "text",
-              "settings": {
-                "text": "<h2>Join our email list</h2>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_f9CFLH": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Get exclusive deals and early access to new products.</p>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": ["text_LWt8Pz", "text_f9CFLH"]
+            "track_title": "Heist Track",
+            "track_artist": "Heist Coffee Co.",
+            "audio_file_name": "sample-12s.mp3"
+          }
         },
-        "email_signup_crihX7": {
-          "type": "email-signup",
+        "track_PQTJMi": {
+          "type": "track",
           "settings": {
-            "width": "fill",
-            "custom_width": 100,
-            "heading_preset": "h3",
-            "border_style": "all",
-            "input_style": "custom",
-            "border_width": 1,
-            "border_radius": 100,
-            "input_background_color": "{{ settings.color_palette.background }}",
-            "input_text_color": "{{ settings.color_palette.color1 }}",
-            "input_border_color": "{{ settings.color_palette.color2 }}",
-            "input_type_preset": "paragraph",
-            "style_class": "button-unstyled",
-            "display_type": "arrow",
-            "label": "Sign up",
-            "integrated_button": true,
-            "button_type_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": ["group_H6VpwJ", "email_signup_crihX7"],
-      "name": "t:names.footer",
-      "settings": {
-        "section_width": "page-width",
-        "gap": 20,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 30,
-        "padding-block-end": 30
-      }
-    },
-    "footer_utilities_jLGE8U": {
-      "type": "footer-utilities",
-      "blocks": {
-        "footer_copyright_jweRK8": {
-          "type": "footer-copyright",
-          "settings": {
-            "show_powered_by": true,
-            "font_size": "0.75rem",
-            "case": "none"
-          },
-          "blocks": {}
+            "track_title": "Heist Track",
+            "track_artist": "Heist Coffee Co.",
+            "audio_file_name": "sample-10s.mp3"
+          }
         },
-        "footer_policy_list_VCdnpa": {
-          "type": "footer-policy-list",
+        "track_8LKyYx": {
+          "type": "track",
           "settings": {
-            "font_size": "0.75rem",
-            "case": "none"
-          },
-          "blocks": {}
-        },
-        "social_links_Ew63Kq": {
-          "type": "social-links",
-          "settings": {
-            "facebook_url": "https://www.facebook.com/",
-            "instagram_url": "https://www.instagram.com/",
-            "youtube_url": "https://www.youtube.com/",
-            "tiktok_url": "https://www.tiktok.com/",
-            "twitter_url": "https://x.com/"
-          },
-          "blocks": {}
+            "track_title": "Heist Track",
+            "track_artist": "Heist Coffee Co.",
+            "audio_file_name": "sample-6s.mp3"
+          }
         }
       },
       "block_order": [
-        "footer_copyright_jweRK8",
-        "footer_policy_list_VCdnpa",
-        "social_links_Ew63Kq"
+        "track_pLkULG",
+        "track_PQTJMi",
+        "track_8LKyYx"
       ],
-      "name": "t:names.utilities",
+      "disabled": true,
+      "name": "Heist FM Player",
       "settings": {
-        "section_width": "page-width",
-        "gap": 24,
-        "divider_thickness": 1,
-        "divider_color": "{{ settings.color_palette.color2 }}",
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 20,
-        "padding-block-end": 48
+        "heading": "HEIST.FM",
+        "subheading": "Ready to steal the night again? Cue Heist music.",
+        "apple_music_url": "",
+        "spotify_url": ""
+      }
+    },
+    "footer_gGTepW": {
+      "type": "footer",
+      "blocks": {
+        "social_link_KfENmw": {
+          "type": "social-link",
+          "settings": {
+            "social_icon": "shopify://shop_images/48px-social-instagram.svg",
+            "social_link": "/"
+          }
+        },
+        "social_link_gKVPYc": {
+          "type": "social-link",
+          "settings": {
+            "social_icon": "shopify://shop_images/48px-social-tiktok.svg",
+            "social_link": "/"
+          }
+        },
+        "social_link_EyLDnP": {
+          "type": "social-link",
+          "settings": {
+            "social_icon": "shopify://shop_images/24px-youtube.svg",
+            "social_link": "/"
+          }
+        },
+        "audio_MmdL3c": {
+          "type": "audio",
+          "settings": {
+            "audio_file_url": "sample-6s.mp3",
+            "audio_poster_image": "shopify://shop_images/Rectangle_144433706.jpg",
+            "audio_title": "HEIST.FM",
+            "audio_detail_text": "<p>Ready to steal the night again? Cue Heist music.</p>",
+            "apple_music_link": "/",
+            "spotify_music_link": "/"
+          }
+        },
+        "audio_FXBcyb": {
+          "type": "audio",
+          "settings": {
+            "audio_file_url": "sample-10s.mp3",
+            "audio_poster_image": "shopify://shop_images/DECAF.jpg",
+            "audio_title": "HEIST.FM 2",
+            "audio_detail_text": "<p>Cue Heist music. 2</p>",
+            "apple_music_link": "/",
+            "spotify_music_link": "/"
+          }
+        },
+        "audio_DVU3R4": {
+          "type": "audio",
+          "settings": {
+            "audio_file_url": "sample-12s.mp3",
+            "audio_poster_image": "shopify://shop_images/Rectangle_144433639.jpg",
+            "audio_title": "HEIST.FM 3",
+            "audio_detail_text": "<p>Cue Heist music. 3</p>",
+            "apple_music_link": "/",
+            "spotify_music_link": "/"
+          }
+        }
+      },
+      "block_order": [
+        "social_link_KfENmw",
+        "social_link_gKVPYc",
+        "social_link_EyLDnP",
+        "audio_MmdL3c",
+        "audio_FXBcyb",
+        "audio_DVU3R4"
+      ],
+      "name": "t:names.footer",
+      "settings": {
+        "background_color": "#ff3b27",
+        "information_color": "#161414",
+        "desktop_top_padding": 96,
+        "desktop_bottom_padding": 55,
+        "mobile_top_padding": 40,
+        "mobile_bottom_padding": 40,
+        "footer_logo": "shopify://shop_images/heist-logo-footer.svg",
+        "footer_menu": "footer",
+        "newsletter_bg_color": "#ddd6c7",
+        "newsletter_text_color": "#161414",
+        "heading_text": "Join the Heist.",
+        "barcode_image": "shopify://shop_images/barcode.png",
+        "audio_bg_color": "#ddd6c7",
+        "audio_text_color": "#161414",
+        "teddy_icon_image": "shopify://shop_images/058eb4fb2657c034a1d51530efb36eb562d7a8cb.png",
+        "strip_bg_color": "#161414",
+        "strip_text_color": "#ddd6c7",
+        "copyright_text": "<p>Copyright © MCMLMMXXVI by Heist Coffee Co.</p>",
+        "policy_menu": "policy-menu"
       }
     }
   },
-  "order": ["footer_m9NzUG", "footer_utilities_jLGE8U"]
+  "order": [
+    "heist_fm_player_69JMgc",
+    "footer_gGTepW"
+  ]
 }

@@ -1,263 +1,715 @@
+{%- render 'vite-tag', entry: 'sections/styles/footer.scss' -%}
 
+{%- liquid
+  assign background_color = section.settings.background_color
+  assign information_color = section.settings.information_color
+  assign desktop_top_padding = section.settings.desktop_top_padding
+  assign desktop_bottom_padding = section.settings.desktop_bottom_padding
+  assign mobile_top_padding = section.settings.mobile_top_padding
+  assign mobile_bottom_padding = section.settings.mobile_bottom_padding
 
-{% liquid
-  if section.settings.background_color != blank
-    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  if section.settings.footer_logo != blank
+    assign footer_logo = section.settings.footer_logo
+  else
+    assign footer_logo = settings.logo
   endif
-%}
+  assign footer_menu = section.settings.footer_menu
 
-<div
-  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
-></div>
-<div
-  class="section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
->
-  {% liquid
-    assign total_blocks = section.blocks.size
+  assign newsletter_bg_color = section.settings.newsletter_bg_color
+  assign newsletter_text_color = section.settings.newsletter_text_color
+  assign heading_text = section.settings.heading_text
+  assign barcode_image = section.settings.barcode_image
 
-    # Grid layout calculations
-    assign grid_columns = total_blocks | at_most: 4
+  assign audio_bg_color = section.settings.audio_bg_color
+  assign audio_text_color = section.settings.audio_text_color
+  assign teddy_icon_image = section.settings.teddy_icon_image
+  assign audio_blocks = section.blocks | where: 'type', 'audio'
+  assign social_blocks = section.blocks | where: 'type', 'social-link'
+  assign first_audio_block = audio_blocks.first
 
-    # Calculate last row counts using modulo arithmetic
-    # last_row_count = (total_blocks - 1) % N + 1
-    assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
-    assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
+  assign strip_bg_color = section.settings.strip_bg_color
+  assign strip_text_color = section.settings.strip_text_color
+  assign copyright_text = section.settings.copyright_text
+  assign policy_menu = section.settings.policy_menu
+-%}
 
-    # Check if there are orphaned elements (single item in last row)
-    assign has_isolated_grid_item_desktop = false
-    assign has_isolated_grid_item_tablet = false
+{%- if audio_blocks.size > 0 -%}
+  {%- render 'vite-tag', entry: 'sections/scripts/footer.js' -%}
+{%- endif -%}
 
-    if total_blocks > 4 and last_row_count == 1
-      assign has_isolated_grid_item_desktop = true
-    endif
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    {%- if background_color != blank -%}
+      --background-color: {{ background_color }};
+    {%- endif -%}
+    {%- if information_color != blank -%}
+      --information-color: {{ information_color }};
+    {%- endif -%}
 
-    if total_blocks == 5
-      assign has_isolated_grid_item_tablet = true
-    endif
-  %}
-  <div
-    class="
-      footer-content
-      spacing-style
-      {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
-      {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
-    "
-    style="
-      {%  render 'spacing-style', settings: section.settings %}
-      --footer-gap: {{ section.settings.gap }}px;
-      --grid-columns: {{ grid_columns }};
-      --last-row-count: {{ last_row_count }};
-      --tablet-last-row-count: {{ tablet_last_row_count }};
-    "
-  >
-    {% content_for 'blocks' %}
+    {%- if desktop_top_padding != blank -%}
+      --desktop-top-padding: {{ desktop_top_padding }}px;
+    {%- endif -%}
+    {%- if desktop_bottom_padding != blank -%}
+      --desktop-bottom-padding: {{ desktop_bottom_padding }}px;
+    {%- endif -%}
+    {%- if mobile_top_padding != blank -%}
+      --mobile-top-padding: {{ mobile_top_padding }}px;
+    {%- endif -%}
+    {%- if mobile_bottom_padding != blank -%}
+      --mobile-bottom-padding: {{ mobile_bottom_padding }}px;
+    {%- endif -%}
+
+    {%- if newsletter_bg_color != blank -%}
+      --newsletter-bg-color: {{ newsletter_bg_color }};
+    {%- endif -%}
+    {%- if newsletter_text_color != blank -%}
+      --newsletter-text-color: {{ newsletter_text_color }};
+    {%- endif -%}
+
+    {%- if audio_bg_color != blank -%}
+      --audio-bg-color: {{ audio_bg_color }};
+    {%- endif -%}
+    {%- if audio_text_color != blank -%}
+      --audio-text-color: {{ audio_text_color }};
+    {%- endif -%}
+    {%- if strip_bg_color != blank -%}
+      --strip-bg-color: {{ strip_bg_color }};
+    {%- endif -%}
+    {%- if strip_text_color != blank -%}
+      --strip-text-color: {{ strip_text_color }};
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<div class="footer" data-footer-root>
+  <div class="footer__main">
+    <div class="page-width">
+      <div class="footer__inner">
+        <div class="footer__logo">
+          <a class="footer__logo-link" href="{{- shop.url -}}">
+            {% render 'responsive-image',
+              desktop_image: footer_logo,
+              mobile_image: footer_logo,
+              alt: 'footer logo',
+              class: 'footer__logo-image',
+              sizes: '(max-width: 749px) 100vw, 100vw'
+            %}
+          </a>
+        </div>
+        {%- if footer_menu != blank -%}
+          <ul class="footer__menu">
+            {%- for link in footer_menu.links -%}
+              <li class="footer__menu-item">
+                <a class="footer__menu-link t-nav1" href="{{- link.url -}}">
+                  {{- link.title -}}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        <div class="footer__blocks">
+          <div class="footer__newsletter">
+            {%- if heading_text != blank or social_blocks.size > 0 -%}
+              <div class="footer__newsletter-header">
+                {%- if heading_text != blank -%}
+                  <div class="footer__newsletter-heading">
+                    <h2 class="t-h6">
+                      {{- heading_text -}}
+                    </h2>
+                  </div>
+                {%- endif -%}
+                {%- if social_blocks.size > 0 -%}
+                  <div class="footer__socials">
+                    {%- for block in social_blocks -%}
+                      {%- if block.settings.social_icon != blank and block.settings.social_link != blank -%}
+                        <a class="footer__social-link" href="{{- block.settings.social_link -}}" target="_blank">
+                          {% render 'responsive-image',
+                            desktop_image: block.settings.social_icon,
+                            mobile_image: block.settings.social_icon,
+                            alt: 'social icon',
+                            class: 'footer__social-icon',
+                            sizes: '(max-width: 749px) 100vw, 100vw'
+                          %}
+                        </a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {% comment %}
+              <div class="footer__newsletter-form">
+                {%- form 'customer', class: 'email-signup__form' %}
+                  <div class="email-signup__input-group email-signup__input-group--arrow">
+                    <label
+                      for="EmailInput-{{ section.id }}"
+                      class="visually-hidden"
+                    >
+                      {{ 'blocks.email_signup.label' | t }}
+                    </label>
+                    <input
+                      id="EmailInput-{{ section.id }}"
+                      class="email-signup__input"
+                      type="email"
+                      name="contact[email]"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autocomplete="email"
+                      placeholder="{{ 'blocks.email_signup.placeholder' | t }}"
+                      required
+                      {% if form.errors and form.id == blank %}
+                        autofocus
+                        aria-invalid="true"
+                        aria-describedby="Email-signup__message-error-{{ section.id }}"
+                      {% elsif form.posted_successfully? and form.id == blank %}
+                        aria-describedby="Email-signup__message-success-{{ section.id }}"
+                      {% endif %}
+                    >
+                    <button
+                      class="email-signup__button"
+                      aria-label="{{ 'actions.sign_up' | t }}"
+                    >
+                      <svg
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                        focusable="false"
+                        aria-hidden="true"
+                        class="email-signup__button-icon"
+                      ></svg>
+                    </button>
+                  </div>
+
+                  {%- if form.errors and form.id == blank -%}
+                    <div
+                      id="Email-signup__message-error-{{ section.id }}"
+                      class="email-signup__message"
+                      tabindex="-1"
+                    >
+                      <svg
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                        focusable="false"
+                        aria-hidden="true"
+                        class="icon-error"
+                      >
+                        {%- render 'icon', icon: 'error'  -%}
+                      </svg>
+                      {{- form.errors.translated_fields.email | capitalize }}
+                      {{ form.errors.messages.email -}}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if form.posted_successfully? and form.id == blank -%}
+                    <div
+                      id="Email-signup__message-success-{{ section.id }}"
+                      class="email-signup__message"
+                      tabindex="-1"
+                    >
+                      <span class="svg-wrapper icon-success">
+                        {{ 'icon-checkmark.svg' | inline_asset_content }}
+                      </span>
+                      <p class="email-signup__message-text">{{ 'blocks.email_signup.success' | t }}</p>
+                    </div>
+                  {%- endif -%}
+                {% endform %}
+              </div>
+            {% endcomment %}
+            {%- if barcode_image != blank -%}
+              <div class="footer__newsletter-barcode">
+                {% render 'responsive-image',
+                  desktop_image: barcode_image,
+                  mobile_image: barcode_image,
+                  alt: 'barcode',
+                  class: 'footer__barcode-image',
+                  sizes: '(max-width: 749px) 100vw, 100vw'
+                %}
+              </div>
+            {%- endif -%}
+          </div>
+          {%- if audio_blocks.size > 0 -%}
+            <div class="footer__audio">
+              <div class="footer__audio-player-card" data-audio-player>
+                <audio data-audio-element preload="metadata"></audio>
+
+                <script type="application/json" data-audio-tracks>
+                  [
+                    {%- for block in audio_blocks -%}
+                      {%- liquid
+                        assign audio_value = block.settings.audio_file_url | strip
+                        assign audio_src = ''
+
+                        if audio_value != blank
+                          assign audio_src = audio_value
+                          unless audio_value contains '://'
+                            assign audio_src = audio_value | file_url
+                          endunless
+                        endif
+                      -%}
+                      {
+                        "title": {{ block.settings.audio_title | json }},
+                        "detail": {{ block.settings.audio_detail_text | strip_html | json }},
+                        "audio": {{ audio_src | json }},
+                        "appleMusicUrl": {{ block.settings.apple_music_link | json }},
+                        "spotifyUrl": {{ block.settings.spotify_music_link | json }},
+                        "blockIndex": {{ forloop.index0 | json }}
+                      }{%- unless forloop.last -%},{%- endunless -%}
+                    {%- endfor -%}
+                  ]
+                </script>
+
+                <div class="footer__audio-player-media">
+                  <div class="footer__audio-player-cover-wrap">
+                    {%- for block in audio_blocks -%}
+                      {%- liquid
+                        assign desktop_cover_image = block.settings.audio_poster_image
+                        assign mobile_cover_image = block.settings.audio_mobile_poster_image
+                        assign desktop_cover_image = desktop_cover_image | default: mobile_cover_image
+                        assign mobile_cover_image = mobile_cover_image | default: desktop_cover_image
+                      -%}
+                      {%- if desktop_cover_image != blank -%}
+                        <div
+                          class="footer__audio-player-cover"
+                          data-audio-cover
+                          data-audio-cover-index="{{ forloop.index0 }}"
+                        >
+                          {% render 'responsive-image',
+                            desktop_image: desktop_cover_image,
+                            mobile_image: mobile_cover_image,
+                            alt: block.settings.audio_title,
+                            class: 'footer__audio-player-cover-picture',
+                            image_class: 'footer__audio-player-cover-image',
+                            sizes: '(max-width: 749px) 58px, 76px'
+                          %}
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                    <div class="footer__audio-player-cover-placeholder" data-audio-placeholder>FM</div>
+                  </div>
+
+                  <div class="footer__audio-player-content">
+                    <div class="footer__audio-player-top">
+                      <div class="footer__audio-player-header">
+                        <p class="footer__audio-player-title t-h6" data-audio-title>
+                          {{- first_audio_block.settings.audio_title | escape -}}
+                        </p>
+                        <p class="footer__audio-player-subtitle t-t4" data-audio-detail>
+                          {{- first_audio_block.settings.audio_detail_text | strip_html | escape -}}
+                        </p>
+                      </div>
+
+                      <div class="footer__audio-player-links">
+                        <a
+                          class="footer__audio-player-link"
+                          data-audio-apple-link
+                          {% if first_audio_block.settings.apple_music_link != blank %}
+                            href="{{ first_audio_block.settings.apple_music_link }}"
+                          {% else %}
+                            hidden
+                          {% endif %}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Open Apple Music in a new tab"
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 14 14"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M13.5 10.0787C13.5 11.1703 12.6184 12.5232 10.6073 12.5232C8.81127 12.5232 8.35696 11.3718 8.35696 10.5956C8.35696 9.63997 8.93377 8.66218 10.6092 8.66315C12.1265 8.66315 12.2142 8.27647 12.2142 7.51275V3.62861L5.14304 4.78093C5.14304 4.78093 5.14304 10.5329 5.14304 11.1761C5.14304 12.2676 4.26143 13.5 2.25032 13.5C0.454308 13.5 0 12.3486 0 11.5724C0 10.6168 0.576807 9.639 2.25225 9.639C3.76951 9.639 3.85728 9.25232 3.85728 8.48861C3.85728 6.35754 3.85728 1.92761 3.85728 1.92761C3.85728 1.60939 4.09263 1.35772 4.39551 1.30564L12.7756 0.00482304C12.7756 0.00482304 12.8316 2.41981e-06 12.8576 2.41981e-06C13.2126 -0.000961866 13.5 0.286395 13.5 0.641252C13.5 0.641252 13.5 9.4365 13.5 10.0787Z" fill="#DDD6C7"/>
+                          </svg>
+                        </a>
+                        <a
+                          class="footer__audio-player-link"
+                          data-audio-spotify-link
+                          {% if first_audio_block.settings.spotify_music_link != blank %}
+                            href="{{ first_audio_block.settings.spotify_music_link }}"
+                          {% else %}
+                            hidden
+                          {% endif %}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Open Spotify in a new tab"
+                        >
+                          <svg
+                            width="18"
+                            height="12"
+                            viewBox="0 0 18 12"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M13.8382 10.8752C13.6132 11.2502 13.1632 11.3252 12.7882 11.1002C9.93823 9.37521 6.41323 9.00021 2.21323 9.97521C1.76323 10.1252 1.46323 9.82521 1.31323 9.45021C1.16323 9.00021 1.46323 8.70021 1.83823 8.55021C6.41323 7.50021 10.3882 7.95021 13.4632 9.90021C13.9132 10.0502 13.9882 10.5002 13.8382 10.8752ZM15.2632 7.57521C14.9632 8.02521 14.4382 8.17521 13.9882 7.87521C10.7632 5.92521 5.81323 5.32521 2.06323 6.52521C1.61322 6.67521 1.01323 6.37521 0.938225 5.92521C0.788225 5.40021 1.01323 4.87521 1.53823 4.80021C5.88823 3.45021 11.2882 4.12521 15.0382 6.45021C15.3382 6.60021 15.5632 7.20021 15.2632 7.57521ZM15.3382 4.20021C11.5132 1.95021 5.06323 1.65021 1.38823 2.85021C0.788225 3.00021 0.188225 2.70021 0.0382251 2.10021C-0.111775 1.50021 0.188225 0.900213 0.788225 0.750213C5.06323 -0.524787 12.0382 -0.299787 16.5382 2.40021C17.0632 2.70021 17.2882 3.45021 16.9882 3.97521C16.6132 4.35021 15.9382 4.50021 15.3382 4.20021Z" fill="#DDD6C7"/>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer__audio-player-progress">
+                  {% comment %} <span class="footer__audio-player-time" data-audio-current-time>0:00</span> {% endcomment %}
+                  <input
+                    class="footer__audio-player-range"
+                    data-audio-progress
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                    step="0.1"
+                    aria-label="Audio progress"
+                  >
+                  {% comment %} <span class="footer__audio-player-time" data-audio-duration>0:00</span> {% endcomment %}
+                </div>
+
+                <div class="footer__audio-player-controls">
+                  <button
+                    class="footer__audio-player-control"
+                    type="button"
+                    data-audio-action="shuffle"
+                    aria-label="Shuffle"
+                    aria-pressed="false"
+                  >
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M25.125 3.625L30.125 8.625L25.125 13.625" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+                      <path d="M1.125 23.625H5.914C6.90174 23.6249 7.87418 23.381 8.74501 22.9149C9.61584 22.4488 10.3581 21.7749 10.906 20.953L17.344 11.297C17.8919 10.4751 18.6342 9.80123 19.505 9.33511C20.3758 8.86899 21.3483 8.62507 22.336 8.625H30.125" stroke="#161414" stroke-width="2" stroke-miterlimit="10"/>
+                      <path d="M25.125 28.625L30.125 23.625L25.125 18.625" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+                      <path d="M15.7915 18.625L17.344 20.953C17.8919 21.7749 18.6342 22.4488 19.505 22.9149C20.3758 23.381 21.3483 23.6249 22.336 23.625H30.125" stroke="#161414" stroke-width="2" stroke-miterlimit="10"/>
+                      <path d="M1.125 8.625H5.914C6.90174 8.62507 7.87418 8.86899 8.74501 9.33511C9.61584 9.80123 10.3581 10.4751 10.906 11.297L12.4585 13.625" stroke="#161414" stroke-width="2" stroke-miterlimit="10"/>
+                    </svg>
+                  </button>
+                  <button
+                    class="footer__audio-player-control"
+                    type="button"
+                    data-audio-action="previous"
+                    aria-label="Previous track"
+                  >
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5.25 30.25V2.25" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+                      <path d="M27.25 3.25V29.25L9.25 16.25L27.25 3.25Z" fill="#161414" stroke="#161414" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
+                    </svg>
+                  </button>
+                  <button
+                    class="footer__audio-player-play"
+                    type="button"
+                    data-audio-action="toggle"
+                    aria-label="Play audio"
+                  >
+                    <span data-audio-play-icon>
+                      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_4676_9925)">
+                        <path d="M24 0C19.2533 0 14.6131 1.40758 10.6663 4.04473C6.71955 6.68188 3.6434 10.4302 1.8269 14.8156C0.0103987 19.201 -0.464881 24.0266 0.461164 28.6822C1.38721 33.3377 3.67299 37.6141 7.02945 40.9706C10.3859 44.327 14.6623 46.6128 19.3178 47.5388C23.9734 48.4649 28.799 47.9896 33.1844 46.1731C37.5698 44.3566 41.3181 41.2805 43.9553 37.3337C46.5924 33.3869 48 28.7468 48 24C47.9814 17.6405 45.4469 11.5468 40.95 7.04998C36.4532 2.55314 30.3595 0.0185991 24 0ZM33.9 25.2L21.9 34.2C21.6264 34.3663 21.3187 34.4689 21 34.5C20.7 34.5 20.55 34.5 20.4 34.35C20.1318 34.2413 19.9026 34.0544 19.742 33.8136C19.5815 33.5729 19.4972 33.2894 19.5 33V15C19.4972 14.7106 19.5815 14.4271 19.742 14.1864C19.9026 13.9456 20.1318 13.7587 20.4 13.65C20.6377 13.5268 20.906 13.4755 21.1723 13.5021C21.4386 13.5287 21.6915 13.6322 21.9 13.8L33.9 22.8C34.0863 22.9397 34.2375 23.1209 34.3417 23.3292C34.4458 23.5375 34.5 23.7671 34.5 24C34.5 24.2329 34.4458 24.4625 34.3417 24.6708C34.2375 24.8791 34.0863 25.0603 33.9 25.2Z" fill="#161414"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_4676_9925">
+                        <rect width="48" height="48" fill="white"/>
+                        </clipPath>
+                        </defs>
+                      </svg>
+                    </span>
+                  </button>
+                  <button
+                    class="footer__audio-player-control"
+                    type="button"
+                    data-audio-action="next"
+                    aria-label="Next track"
+                  >
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M26.75 30.25V2.25" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+                      <path d="M4.75 3.25V29.25L22.75 16.25L4.75 3.25Z" fill="#161414" stroke="#161414" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
+                    </svg>
+                  </button>
+                  <button
+                    class="footer__audio-player-control"
+                    type="button"
+                    data-audio-action="loop"
+                    aria-label="Loop current track"
+                    aria-pressed="false"
+                  >
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2.75 11.75L2.75 5.75C2.75 4.0931 4.0931 2.75 5.75 2.75L25.75 2.75C27.4069 2.75 28.75 4.0931 28.75 5.75L28.75 19.75C28.75 21.4069 27.4069 22.75 25.75 22.75L2.75 22.75L3.25 22.75" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+                      <path d="M9.75 15.75L2.75 22.75L9.75 29.75" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <p class="footer__audio-player-status t-n3" data-audio-status>
+                  {{- first_audio_block.settings.audio_detail_text | strip_html | escape -}}
+                </p>
+              </div>
+
+              {%- if teddy_icon_image != blank -%}
+                <div class="footer__audio-teddy">
+                  {% render 'responsive-image',
+                    desktop_image: teddy_icon_image,
+                    mobile_image: teddy_icon_image,
+                    alt: 'Teddy',
+                    class: 'footer__teddy-image',
+                    sizes: '(max-width: 749px) 100vw, 100vw'
+                  %}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
   </div>
+  {%- if copyright_text != blank or policy_menu != blank -%}
+    <div class="footer__strip">
+      <div class="page-width">
+        <div class="footer__strip-inner">
+          {%- if copyright_text != blank -%}
+            <div class="footer__copyright t-n3">
+              {{- copyright_text -}}
+            </div>
+          {%- endif -%}
+          {%- if policy_menu != blank -%}
+            <div class="footer__policy-menu">
+              {%- for link in policy_menu.links -%}
+                <a class="footer__policy-link t-n3" href="{{- link.url -}}">
+                  {{- link.title -}}
+                </a>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
 </div>
-
-{% stylesheet %}
-  .footer-content {
-    contain: content;
-    content-visibility: auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--footer-gap);
-    align-items: start;
-  }
-
-  .footer-content .menu__heading__default {
-    font-weight: var(--font-heading--weight);
-  }
-
-  @media screen and (min-width: 750px) and (max-width: 989px) {
-    .footer-content {
-      grid-template-columns: repeat(min(var(--grid-columns), 3), 1fr);
-      grid-auto-flow: row;
-    }
-
-    .footer-content[style*='--grid-columns: 4'] {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .footer-content--isolated-grid-item-tablet > :last-child {
-      grid-column: 1 / -1;
-    }
-  }
-
-  @media screen and (min-width: 990px) {
-    .footer-content {
-      grid-template-columns: repeat(var(--grid-columns), 1fr);
-    }
-
-    /* Single item centered */
-    .footer-content[style*='--grid-columns: 1'] {
-      justify-items: center;
-    }
-
-    .footer-content--isolated-grid-item-desktop > :last-child {
-      grid-column: 1 / -1;
-    }
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:names.footer",
-  "class": "section-wrapper",
-  "blocks": [
-    {
-      "type": "_divider"
-    },
-    {
-      "type": "@app"
-    },
-    {
-      "type": "button"
-    },
-    {
-      "type": "follow-on-shop"
-    },
-    {
-      "type": "group"
-    },
-    {
-      "type": "icon"
-    },
-    {
-      "type": "image"
-    },
-    {
-      "type": "menu"
-    },
-    {
-      "type": "payment-icons"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "logo"
-    },
-    {
-      "type": "jumbo-text"
-    },
-    {
-      "type": "social-links"
-    },
-    {
-      "type": "email-signup"
-    }
-  ],
+  "class": "footer",
   "enabled_on": {
     "groups": ["footer"]
   },
   "settings": [
     {
-      "type": "select",
-      "id": "section_width",
-      "label": "t:settings.width",
-      "options": [
-        {
-          "value": "page-width",
-          "label": "t:options.page"
-        },
-        {
-          "value": "full-width",
-          "label": "t:options.full"
-        }
-      ],
-      "default": "page-width"
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
+      "type": "header",
+      "content": "Color settings"
     },
     {
       "type": "color",
       "id": "background_color",
-      "label": "t:settings.background_color",
-      "default": "{{ settings.color_palette.foreground }}"
+      "label": "Select background color",
+      "default": "#FF3B27"
+    },
+    {
+      "type": "color",
+      "id": "information_color",
+      "label": "Select information color",
+      "default": "#161414"
     },
     {
       "type": "header",
-      "content": "t:content.padding"
+      "content": "Layout settings"
     },
     {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 20
+      "type": "number",
+      "id": "desktop_top_padding",
+      "label": "Top padding - Desktop",
+      "default": 96
     },
     {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 20
+      "type": "number",
+      "id": "desktop_bottom_padding",
+      "label": "Bottom padding - Desktop",
+      "default": 55
+    },
+    {
+      "type": "number",
+      "id": "mobile_top_padding",
+      "label": "Top padding - Mobile",
+      "default": 40
+    },
+    {
+      "type": "number",
+      "id": "mobile_bottom_padding",
+      "label": "Bottom padding - Mobile",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Content settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Add footer logo"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Select footer menu"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter block settings"
+    },
+    {
+      "type": "color",
+      "id": "newsletter_bg_color",
+      "label": "Select background color",
+      "default": "#DDD6C7"
+    },
+    {
+      "type": "color",
+      "id": "newsletter_text_color",
+      "label": "Select text color",
+      "default": "#161414"
+    },
+    {
+      "type": "textarea",
+      "id": "heading_text",
+      "label": "Add heading text",
+      "default": "Join the Heist."
+    },
+    {
+      "type": "image_picker",
+      "id": "barcode_image",
+      "label": "Add barcode image"
+    },
+    {
+      "type": "header",
+      "content": "Audio block settings"
+    },
+    {
+      "type": "color",
+      "id": "audio_bg_color",
+      "label": "Select background color",
+      "default": "#DDD6C7"
+    },
+    {
+      "type": "color",
+      "id": "audio_text_color",
+      "label": "Select text color",
+      "default": "#161414"
+    },
+    {
+      "type": "image_picker",
+      "id": "teddy_icon_image",
+      "label": "Add Teddy image",
+      "info": "Placement - bottom right side of the audio block"
+    },
+    {
+      "type": "header",
+      "content": "Bottom strip settings",
+      "info": "includes copyright text and policy links"
+    },
+    {
+      "type": "color",
+      "id": "strip_bg_color",
+      "label": "Select background color",
+      "default": "#161414"
+    },
+    {
+      "type": "color",
+      "id": "strip_text_color",
+      "label": "Select text color",
+      "default": "#DDD6C7"
+    },
+    {
+      "type": "richtext",
+      "id": "copyright_text",
+      "label": "Add copyright text",
+      "default": "<p>Copyright © MCMLMMXXVI by Heist Coffee Co.</p>"
+    },
+    {
+      "type": "link_list",
+      "id": "policy_menu",
+      "label": "Select policy menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "social-link",
+      "name": "Social link",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "social_icon",
+          "label": "Add social icon"
+        },
+        {
+          "type": "url",
+          "id": "social_link",
+          "label": "Add social link",
+          "info": "Open in a new tab"
+        }
+      ]
+    },
+    {
+      "type": "audio",
+      "name": "Audio",
+      "settings": [
+        {
+          "type": "text",
+          "id": "audio_file_url",
+          "label": "MP3 file name or URL",
+          "info": "Upload the MP3 in Content > Files, then enter its exact file name or paste a complete URL."
+        },
+        {
+          "type": "image_picker",
+          "id": "audio_poster_image",
+          "label": "Desktop cover image"
+        },
+        {
+          "type": "image_picker",
+          "id": "audio_mobile_poster_image",
+          "label": "Mobile cover image",
+          "info": "Uses the desktop cover when left blank."
+        },
+        {
+          "type": "text",
+          "id": "audio_title",
+          "label": "Add audio title (name)",
+          "default": "HEIST.FM"
+        },
+        {
+          "type": "richtext",
+          "id": "audio_detail_text",
+          "label": "Add audio detail text",
+          "default": "<p>Ready to steal the night again? Cue Heist music.</p>"
+        },
+        {
+          "type": "url",
+          "id": "apple_music_link",
+          "label": "Add apple music - audio link"
+        },
+        {
+          "type": "url",
+          "id": "spotify_music_link",
+          "label": "Add spotify - audio link"
+        }
+      ]
     }
   ],
   "presets": [
     {
       "name": "t:names.footer",
       "category": "t:categories.footer",
-      "settings": {
-        "gap": 20,
-        "padding-block-start": 36,
-        "padding-block-end": 36
-      },
-      "blocks": {
-        "newsletter-group": {
-          "type": "group",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "gap": 6,
-            "width": "fill"
-          },
-          "blocks": {
-            "newsletter-heading": {
-              "type": "text",
-              "settings": {
-                "text": "t:html_defaults.join_our_email_list",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "h3"
-              }
-            },
-            "newsletter-text": {
-              "type": "text",
-              "settings": {
-                "text": "t:html_defaults.get_exclusive_deals_and_early_access_to_new_products",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "rte"
-              }
-            }
-          },
-          "block_order": ["newsletter-heading", "newsletter-text"]
+      "blocks": [
+        {
+          "type": "social-link"
         },
-        "newsletter-form": {
-          "type": "email-signup",
-          "settings": {
-            "width": "fill"
-          }
+        {
+          "type": "social-link"
+        },
+        {
+          "type": "social-link"
+        },
+        {
+          "type": "audio"
+        },
+        {
+          "type": "audio"
+        },
+        {
+          "type": "audio"
         }
-      },
-      "block_order": ["newsletter-group", "newsletter-form"]
+      ]
     }
   ]
 }
