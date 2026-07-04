@@ -13,12 +13,20 @@
   &__frame {
     background-color: var(--bone);
     border: var(--bw-2) solid var(--ink);
-    padding: var(--space-8);
+    padding: 0 0 177.911%;
     position: relative;
+    @include respond-to(md) {
+      padding: 0 0 51.732%;
+    }
   }
 
   &__media {
     display: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
 
     &--mobile {
       display: block;
@@ -36,10 +44,11 @@
   }
 
   &__video {
-    border-radius: var(--r-pill);
+    border-radius: 0;
     display: block;
-    height: auto;
+    height: 100%;
     width: 100%;
+    object-fit: cover;
   }
 
   &__sound-toggle {

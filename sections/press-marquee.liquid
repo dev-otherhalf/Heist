@@ -20,7 +20,7 @@
   "
   data-press-marquee
 >
-  <div class="press-marquee__inner">
+  <div class="press-marquee__inner page-width">
     {% if section.settings.label != blank %}
       <p class="press-marquee__label t-n1">{{ section.settings.label | escape }}</p>
     {% endif %}
@@ -38,6 +38,7 @@
                   <div
                     class="press-marquee__logo"
                     {{ block.shopify_attributes }}
+                    style="--image-max-height:{{ block.settings.image_height }}px"
                   >
                     {{
                       block.settings.image
@@ -64,7 +65,7 @@
               <div
                 class="press-marquee__logo"
                 {{ block.shopify_attributes }}
-              >
+              style="--image-max-height:{{ block.settings.image_height }}px">
                 {{
                   block.settings.image
                   | image_url: width: 300
@@ -173,6 +174,16 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_height",
+          "label": "Image Height",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 32
         }
       ]
     }

@@ -14,12 +14,16 @@
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
+    gap: var(--space-32);
+    @include respond-down(lg) {
+      padding:0;
+    }
 
     @include respond-to(lg) {
       align-items: center;
       flex-direction: row;
       justify-content: center;
+      gap: var(--space-65);
     }
   }
 
@@ -28,6 +32,7 @@
     padding-inline: var(--space-20);
     @include respond-to(lg) {
       padding-inline: 0;
+      max-width: var(--space-68);
     }
   }
 
@@ -66,7 +71,15 @@
   &__logo {
     align-items: center;
     display: inline-flex;
-    flex: 0 0 auto;
+    flex: auto;
+    img{
+      display: block;
+      height: auto;
+      max-height: var(--image-max-height);
+      min-height: var(--image-max-height);
+      object-fit: contain;
+      width: auto;  
+    }
   }
 
   &__logo-image {
@@ -89,8 +102,8 @@
     @include respond-to(lg) {
       align-items: center;
       display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-32);
+      gap: var(--space-72);
+      flex: 1;
     }
   }
 }
