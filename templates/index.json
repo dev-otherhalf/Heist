@@ -38,6 +38,76 @@
         "padding_bottom_desktop": 48
       }
     },
+    "quality_showcase_H7aKBp": {
+      "type": "quality-showcase",
+      "blocks": {
+        "feature_point_7wyw8h": {
+          "type": "feature_point",
+          "settings": {
+            "position": "left",
+            "text": "Top 1% of World's Arabica Beans"
+          }
+        },
+        "feature_point_XP3rb7": {
+          "type": "feature_point",
+          "settings": {
+            "position": "left",
+            "text": "Water Extracts the Caffeine"
+          }
+        },
+        "feature_point_3FXELi": {
+          "type": "feature_point",
+          "settings": {
+            "position": "left",
+            "text": "No Solvents, no Chemicals"
+          }
+        },
+        "feature_point_q7bdwL": {
+          "type": "feature_point",
+          "settings": {
+            "position": "right",
+            "text": "Whole Beans to Preserve Flavor"
+          }
+        },
+        "feature_point_Tjpnb6": {
+          "type": "feature_point",
+          "settings": {
+            "position": "right",
+            "text": "Michelin-Star Quality and Taste"
+          }
+        },
+        "feature_point_VECntd": {
+          "type": "feature_point",
+          "settings": {
+            "position": "right",
+            "text": "Tested Mold + Mycotoxin Free"
+          }
+        }
+      },
+      "block_order": [
+        "feature_point_7wyw8h",
+        "feature_point_XP3rb7",
+        "feature_point_3FXELi",
+        "feature_point_q7bdwL",
+        "feature_point_Tjpnb6",
+        "feature_point_VECntd"
+      ],
+      "name": "Quality showcase",
+      "settings": {
+        "heading": "<p>Roasted in Small Batches with Big Standards</p>",
+        "heading_alignment": "center",
+        "heading_color": "",
+        "video": "shopify://files/videos/coffee.mp4",
+        "annotation_value": "24724 1832 248",
+        "background_color": "",
+        "background_image": "shopify://shop_images/bg.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_12.jpg",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96
+      }
+    },
     "press_marquee_BLfLFB": {
       "type": "press-marquee",
       "blocks": {
@@ -332,6 +402,7 @@
   },
   "order": [
     "product_variant_showcase_KzntXa",
+    "quality_showcase_H7aKBp",
     "press_marquee_BLfLFB",
     "viewport_video_FRgn9M",
     "product_list_fa6P9H",
