@@ -1,0 +1,93 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.viewport-video {
+  padding-block: var(--viewport-video-padding-top-mobile)
+    var(--viewport-video-padding-bottom-mobile);
+
+  @include respond-to(lg) {
+    padding-block: var(--viewport-video-padding-top-desktop)
+      var(--viewport-video-padding-bottom-desktop);
+  }
+
+  &__frame {
+    background-color: var(--bone);
+    border: var(--bw-2) solid var(--ink);
+    padding: 0 0 177.911%;
+    position: relative;
+    @include respond-to(md) {
+      padding: 0 0 51.732%;
+    }
+  }
+
+  &__media {
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+
+    &--mobile {
+      display: block;
+
+      @include respond-to(lg) {
+        display: none;
+      }
+    }
+
+    &--desktop {
+      @include respond-to(lg) {
+        display: block;
+      }
+    }
+  }
+
+  &__video {
+    border-radius: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  &__sound-toggle {
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    height: 2.75rem;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: var(--space-24);
+    bottom: var(--space-24);
+    width: 2.75rem;
+  }
+
+  &__sound-icon {
+    display: block;
+    height: 100%;
+    inset: 0;
+    opacity: 0;
+    position: absolute;
+    transition: opacity var(--dur) var(--ease);
+    width: 100%;
+
+    svg {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
+    &[hidden] {
+      display: block;
+      opacity: 0;
+    }
+
+    &:not([hidden]) {
+      opacity: 1;
+    }
+  }
+}

@@ -131,6 +131,49 @@
           "type": "product_card",
           "settings": {
             "product": "blueprint"
+    "press_marquee_BLfLFB": {
+      "type": "press-marquee",
+      "blocks": {
+        "logo_tbYzVc": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-foodandwine.svg"
+          }
+        },
+        "logo_w9mtQL": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-bonappetit.svg"
+          }
+        },
+        "logo_zhM6bX": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-gq.svg"
+          }
+        },
+        "logo_Y74LFT": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-health.svg"
+          }
+        },
+        "logo_AUytwj": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-bonappetit.svg"
+          }
+        },
+        "logo_AHGBDk": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-todayshow-horizontal.svg"
+          }
+        },
+        "logo_hEbAew": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-vogue.svg"
           }
         }
       },
@@ -149,6 +192,34 @@
         "padding_bottom_mobile": 24,
         "padding_top_desktop": 64,
         "padding_bottom_desktop": 28
+        "logo_tbYzVc",
+        "logo_w9mtQL",
+        "logo_zhM6bX",
+        "logo_Y74LFT",
+        "logo_AUytwj",
+        "logo_AHGBDk",
+        "logo_hEbAew"
+      ],
+      "name": "Press marquee",
+      "settings": {
+        "label": "First to report:",
+        "enable_marquee_desktop": false,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 32,
+        "padding_bottom_desktop": 32
+      }
+    },
+    "viewport_video_FRgn9M": {
+      "type": "viewport-video",
+      "name": "Viewport video",
+      "settings": {
+        "video_desktop": "shopify://files/videos/ezgif-32b066c49c70d90e.mp4",
+        "video_mobile": "shopify://files/videos/ezgif-32b066c49c70d90e.mp4",
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 48
       }
     },
     "product_list_fa6P9H": {
@@ -362,6 +433,8 @@
   "order": [
     "hero_jVaWmY",
     "product_variant_showcase_9b3JzG",
+    "press_marquee_BLfLFB",
+    "viewport_video_FRgn9M",
     "product_list_fa6P9H",
     "design_tokens_EttbfE"
   ]
