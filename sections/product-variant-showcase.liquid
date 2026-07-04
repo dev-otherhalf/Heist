@@ -98,7 +98,7 @@
                     assign active_comparison_title = comparison_item.title.value | default: comparison_item.title | default: product.title
                     assign active_comparison_label = comparison_item.label.value | default: comparison_item.label
                     assign active_comparison_notes = comparison_item.notes.value | default: comparison_item.notes
-                    assign active_desktop_image = comparison_item.desktop_image.value | default: comparison_item.desktop_image | default: comparison_item.mobile_image.value | default: comparison_item.mobile_image
+                    assign active_desktop_image = comparison_item.image.value | default: comparison_item.image
                     if active_desktop_image == blank
                       assign active_desktop_image = variant.featured_image | default: product.featured_image
                     endif
@@ -206,12 +206,12 @@
                           assign button_title = button_item.title.value | default: button_item.title | default: product.title
                           assign button_label = button_item.label.value | default: button_item.label
                           assign button_notes = button_item.notes.value | default: button_item.notes
-                          assign button_desktop_image = button_item.desktop_image.value | default: button_item.desktop_image | default: button_item.mobile_image.value | default: button_item.mobile_image
+                          assign button_desktop_image = button_item.image.value | default: button_item.image | default: button_item.mobile_image.value | default: button_item.mobile_image
                           if button_desktop_image == blank
                             assign button_desktop_image = variant_button.featured_image | default: product.featured_image
                           endif
                           assign button_mobile_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_desktop_image
-                          assign button_detail_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_item.desktop_image.value | default: button_item.desktop_image | default: variant_button.featured_image | default: product.featured_image
+                          assign button_detail_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_item.image.value | default: button_item.image | default: variant_button.featured_image | default: product.featured_image
                           assign button_url = button_item.cta_link.value | default: button_item.cta_link
 
                           capture button_price
@@ -318,12 +318,12 @@
                           assign button_title = button_item.title.value | default: button_item.title | default: product.title
                           assign button_label = button_item.label.value | default: button_item.label
                           assign button_notes = button_item.notes.value | default: button_item.notes
-                          assign button_desktop_image = button_item.desktop_image.value | default: button_item.desktop_image | default: button_item.mobile_image.value | default: button_item.mobile_image
+                          assign button_desktop_image = button_item.image.value | default: button_item.image | default: button_item.mobile_image.value | default: button_item.mobile_image
                           if button_desktop_image == blank
                             assign button_desktop_image = variant_button.featured_image | default: product.featured_image
                           endif
                           assign button_mobile_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_desktop_image
-                          assign button_detail_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_item.desktop_image.value | default: button_item.desktop_image | default: variant_button.featured_image | default: product.featured_image
+                          assign button_detail_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_item.image.value | default: button_item.image | default: variant_button.featured_image | default: product.featured_image
                           assign button_url = button_item.cta_link.value | default: button_item.cta_link
                           assign button_detail_video = button_item.video.value | default: button_item.video
 
