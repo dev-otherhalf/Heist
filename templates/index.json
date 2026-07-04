@@ -9,189 +9,89 @@
  */
 {
   "sections": {
-    "hero_jVaWmY": {
-      "type": "hero",
-      "blocks": {
-        "text_YLPk4p": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "{{ settings.color_palette.background }}",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "button_H9gpTf": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop all",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button-custom",
-            "custom_button_background": "rgba(0,0,0,0)",
-            "custom_button_text": "{{ settings.color_palette.background }}",
-            "custom_button_border": "{{ settings.color_palette.background }}",
-            "link_text_color": "",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
-      ],
-      "name": "t:names.hero",
-      "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
-        "media_type_1_mobile": "image",
-        "media_type_2_mobile": "image",
-        "link": "",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 24,
-        "section_width": "page-width",
-        "section_height": "medium",
-        "section_height_custom": 50,
-        "background_color": "rgba(0,0,0,0)",
-        "toggle_overlay": true,
-        "overlay_color": "#12121266",
-        "overlay_style": "solid",
-        "gradient_direction": "to bottom",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
-      }
-    },
-    "product_variant_showcase_9b3JzG": {
+    "product_variant_showcase_KzntXa": {
       "type": "product-variant-showcase",
       "blocks": {
-        "badge_nLRALg": {
-          "type": "badge",
-          "settings": {
-            "image": "shopify://shop_images/badge-wholebeans.svg"
-          }
-        },
-        "badge_cgBFGQ": {
-          "type": "badge",
-          "settings": {
-            "image": "shopify://shop_images/caffeine-free.svg"
-          }
-        },
-        "badge_7jaJJd": {
-          "type": "badge",
-          "settings": {
-            "image": "shopify://shop_images/badge-toxinfree.svg"
-          }
-        },
-        "badge_33Lcxn": {
-          "type": "badge",
-          "settings": {
-            "image": "shopify://shop_images/Isolation_Mode.svg"
-          }
-        },
-        "product_card_KcEL4E": {
+        "product_card_qY87VK": {
           "type": "product_card",
           "settings": {
             "product": "smooth-talker"
           }
         },
-        "product_card_9TBEbk": {
+        "product_card_aazcXY": {
           "type": "product_card",
           "settings": {
             "product": "blueprint"
-    "press_marquee_BLfLFB": {
-      "type": "press-marquee",
-      "blocks": {
-        "logo_tbYzVc": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/logo-foodandwine.svg"
-          }
-        },
-        "logo_w9mtQL": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/logo-bonappetit.svg"
-          }
-        },
-        "logo_zhM6bX": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/logo-gq.svg"
-          }
-        },
-        "logo_Y74LFT": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/logo-health.svg"
-          }
-        },
-        "logo_AUytwj": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/logo-bonappetit.svg"
-          }
-        },
-        "logo_AHGBDk": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/logo-todayshow-horizontal.svg"
-          }
-        },
-        "logo_hEbAew": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/logo-vogue.svg"
           }
         }
       },
       "block_order": [
-        "badge_nLRALg",
-        "badge_cgBFGQ",
-        "badge_7jaJJd",
-        "badge_33Lcxn",
-        "product_card_KcEL4E",
-        "product_card_9TBEbk"
+        "product_card_qY87VK",
+        "product_card_aazcXY"
       ],
       "name": "Product variant showcase",
       "settings": {
         "heading": "World-Class Decaf Coffee",
         "padding_top_mobile": 24,
         "padding_bottom_mobile": 24,
-        "padding_top_desktop": 64,
-        "padding_bottom_desktop": 28
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 48
+      }
+    },
+    "press_marquee_BLfLFB": {
+      "type": "press-marquee",
+      "blocks": {
+        "logo_tbYzVc": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-foodandwine.svg",
+            "image_height": 32
+          }
+        },
+        "logo_w9mtQL": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-bonappetit.svg",
+            "image_height": 32
+          }
+        },
+        "logo_zhM6bX": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-gq.svg",
+            "image_height": 32
+          }
+        },
+        "logo_Y74LFT": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-health.svg",
+            "image_height": 32
+          }
+        },
+        "logo_AUytwj": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-bonappetit.svg",
+            "image_height": 32
+          }
+        },
+        "logo_AHGBDk": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-todayshow-horizontal.svg",
+            "image_height": 32
+          }
+        },
+        "logo_hEbAew": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-vogue.svg",
+            "image_height": 32
+          }
+        }
+      },
+      "block_order": [
         "logo_tbYzVc",
         "logo_w9mtQL",
         "logo_zhM6bX",
@@ -431,8 +331,7 @@
     }
   },
   "order": [
-    "hero_jVaWmY",
-    "product_variant_showcase_9b3JzG",
+    "product_variant_showcase_KzntXa",
     "press_marquee_BLfLFB",
     "viewport_video_FRgn9M",
     "product_list_fa6P9H",
