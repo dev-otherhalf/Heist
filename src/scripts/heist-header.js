@@ -280,6 +280,9 @@ class HeistFMPlayer {
 const header = document.querySelector("[data-heist-header]");
 const stickyCta = document.querySelector("[data-heist-sticky-cta]");
 const pageWrapper = document.querySelector(".page-wrapper");
+const scrollCaptureSection = header?.classList.contains("heist-header--home")
+  ? document.querySelector(".heist-scroll-capture-section")
+  : null;
 
 if (header) {
   let lastScrollTop = 0;
@@ -318,6 +321,10 @@ if (header) {
     const scrollTop = getScrollTop();
     const delta = scrollTop - lastScrollTop;
     const beyondHeader = scrollTop > header.offsetHeight + 24;
+    const beyondScrollCapture =
+      !window.matchMedia("(min-width: 990px)").matches ||
+      !scrollCaptureSection ||
+      scrollCaptureSection.getBoundingClientRect().bottom <= 0;
 
     if (!beyondHeader) {
       header.classList.remove("is-pinned", "is-hidden");
@@ -331,6 +338,11 @@ if (header) {
     } else if (delta < -3) {
       header.classList.add("is-pinned");
       header.classList.remove("is-hidden");
+      stickyCta?.classList.remove("is-visible");
+      stickyCta?.setAttribute("aria-hidden", "true");
+    }
+
+    if (!beyondScrollCapture) {
       stickyCta?.classList.remove("is-visible");
       stickyCta?.setAttribute("aria-hidden", "true");
     }
@@ -365,6 +377,7 @@ if (header) {
 
   window.addEventListener("scroll", onScroll, { passive: true });
   pageWrapper?.addEventListener("scroll", onScroll, { passive: true });
+  updateHeader();
 
   header.querySelectorAll("[data-heist-menu-close]").forEach((button) => {
     button.addEventListener("click", () => {
