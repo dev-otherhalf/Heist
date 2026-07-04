@@ -12,6 +12,7 @@ $breakpoints: (
   md: 46.875rem,
   lg: 61.875rem,
   xl: 75rem,
+  xxl: 90rem,
 );
 
 @function breakpoint($name) {
