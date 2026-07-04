@@ -2,10 +2,13 @@ class QualityShowcase {
   constructor(section) {
     this.section = section;
     this.annotation = section.querySelector("[data-rolling-annotation]");
+    this.digits = Array.from(section.querySelectorAll("[data-digit]"));
   }
 
   init() {
     if (!this.annotation) return;
+
+    this.prepareDigits();
 
     this.observer = new IntersectionObserver(
       (entries) => this.handleIntersect(entries),
@@ -26,14 +29,38 @@ class QualityShowcase {
     this.observer.unobserve(this.section);
   }
 
-  rollDigitsIn() {
-    this.annotation.querySelectorAll("[data-digit]").forEach((digit) => {
+  prepareDigits() {
+    this.digits.forEach((digit, index) => {
       const strip = digit.querySelector("[data-digit-strip]");
       const value = Number(digit.dataset.digit);
 
       if (!strip || Number.isNaN(value)) return;
 
-      strip.style.transform = `translateY(-${value}em)`;
+      const extraCycles = 2 + (this.digits.length - index);
+      const frameCount = extraCycles * 10 + value + 1;
+
+      strip.innerHTML = Array.from(
+        { length: frameCount },
+        (_, frameIndex) => `<span>${frameIndex % 10}</span>`,
+      ).join("");
+
+      strip.style.transform = "translateY(0)";
+      strip.dataset.targetOffset = String(frameCount - 1);
+      strip.style.transitionDelay = `${index * 90}ms`;
+      strip.style.transitionDuration = `${1200 + index * 120}ms`;
+    });
+  }
+
+  rollDigitsIn() {
+    requestAnimationFrame(() => {
+      this.digits.forEach((digit) => {
+        const strip = digit.querySelector("[data-digit-strip]");
+        const targetOffset = Number(strip?.dataset.targetOffset);
+
+        if (!strip || Number.isNaN(targetOffset)) return;
+
+        strip.style.transform = `translateY(-${targetOffset}em)`;
+      });
     });
   }
 }

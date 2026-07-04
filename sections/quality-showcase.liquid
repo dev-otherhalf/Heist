@@ -71,7 +71,7 @@
         {% for block in feature_blocks %}
           {% if block.settings.position == 'left' and block.settings.text != blank %}
             <div class="quality-showcase__point" {{ block.shopify_attributes }}>
-              <p class="quality-showcase__point-text t-t2">{{ block.settings.text | escape }}</p>
+              <p class="quality-showcase__point-text t-t2">{{ block.settings.text | newline_to_br }}</p>
             </div>
           {% endif %}
         {% endfor %}
@@ -134,7 +134,7 @@
         {% for block in feature_blocks %}
           {% if block.settings.position == 'right' and block.settings.text != blank %}
             <div class="quality-showcase__point" {{ block.shopify_attributes }}>
-              <p class="quality-showcase__point-text t-t2">{{ block.settings.text | escape }}</p>
+              <p class="quality-showcase__point-text t-t2">{{ block.settings.text | newline_to_br }}</p>
             </div>
           {% endif %}
         {% endfor %}
@@ -232,7 +232,7 @@
       "label": "Top",
       "min": 0,
       "max": 160,
-      "step": 4,
+      "step": 2,
       "unit": "px",
       "default": 48
     },
@@ -242,7 +242,7 @@
       "label": "Bottom",
       "min": 0,
       "max": 160,
-      "step": 4,
+      "step": 2,
       "unit": "px",
       "default": 48
     },
@@ -288,7 +288,7 @@
           "default": "left"
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "text",
           "label": "Text",
           "default": "Feature point"
