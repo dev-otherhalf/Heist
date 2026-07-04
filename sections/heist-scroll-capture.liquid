@@ -1,0 +1,324 @@
+{%- render 'vite-tag', entry: 'sections/styles/heist-scroll-capture.scss' -%}
+{%- render 'vite-tag', entry: 'sections/scripts/heist-scroll-capture.js' -%}
+
+{%- liquid
+  assign desktop_background = section.settings.desktop_background
+  assign mobile_background = section.settings.mobile_background | default: desktop_background
+  assign desktop_glass = section.settings.glass_image
+  assign mobile_glass = section.settings.mobile_glass_image | default: desktop_glass
+  assign desktop_brand_logo = section.settings.brand_logo
+  assign mobile_brand_logo = section.settings.mobile_brand_logo | default: desktop_brand_logo
+  assign desktop_legal_logo = section.settings.legal_logo
+  assign mobile_legal_logo = section.settings.mobile_legal_logo | default: desktop_legal_logo
+  assign mobile_story_background = section.settings.mobile_story_background
+  assign hand_count = 0
+
+  for index in (1..4)
+    assign hand_key = 'hand_image_' | append: index
+    if section.settings[hand_key] != blank
+      assign hand_count = hand_count | plus: 1
+    endif
+  endfor
+-%}
+
+<heist-scroll-capture
+  id="HeistScrollCapture-{{ section.id }}"
+  class="heist-capture"
+>
+  <div class="heist-capture__canvas">
+    <div class="heist-capture__background" aria-hidden="true">
+      {%- if desktop_background != blank -%}
+        <picture>
+          {%- if mobile_background != blank -%}
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ mobile_background | image_url: width: 1000 }}"
+            >
+          {%- endif -%}
+          {{
+            desktop_background
+            | image_url: width: 2400
+            | image_tag:
+              widths: '960, 1440, 1920, 2400',
+              sizes: '100vw',
+              loading: 'eager',
+              fetchpriority: 'high',
+              alt: ''
+          }}
+        </picture>
+      {%- endif -%}
+    </div>
+
+    <div class="heist-capture__grain" aria-hidden="true"></div>
+
+    <div class="heist-capture__intro">
+      <h1 class="heist-capture__title t-h1">{{ section.settings.heading | escape }}</h1>
+
+      <div class="heist-capture__brand-logo" aria-hidden="true">
+        {%- if desktop_brand_logo != blank -%}
+          <picture>
+            {%- if mobile_brand_logo != blank -%}
+              <source
+                media="(max-width: 749px)"
+                srcset="{{ mobile_brand_logo | image_url: width: 1200 }}"
+              >
+            {%- endif -%}
+            {{
+              desktop_brand_logo
+              | image_url: width: 1800
+              | image_tag:
+                widths: '600, 900, 1200, 1500, 1800',
+                sizes: '(max-width: 749px) 84vw, 62vw',
+                loading: 'eager',
+                class: 'heist-capture__brand-logo-image',
+                alt: ''
+            }}
+          </picture>
+        {%- else -%}
+          <span class="heist-capture__brand-logo-fallback t-n3">Upload HEIST logo</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="heist-capture__glass-motion" aria-hidden="true">
+      {%- if desktop_glass != blank -%}
+        <picture>
+          {%- if mobile_glass != blank -%}
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ mobile_glass | image_url: width: 1000 }}"
+            >
+          {%- endif -%}
+          {{
+            desktop_glass
+            | image_url: width: 1200
+            | image_tag:
+              widths: '360, 540, 760, 960, 1200',
+              sizes: '(max-width: 749px) 74vw, 34vw',
+              loading: 'eager',
+              class: 'heist-capture__glass',
+              alt: section.settings.glass_alt
+          }}
+        </picture>
+      {%- else -%}
+        <div class="heist-capture__glass-fallback t-n3">Upload glass PNG</div>
+      {%- endif -%}
+    </div>
+
+    <div class="heist-capture__hand-sequence" aria-hidden="true">
+      {%- if hand_count > 0 -%}
+        {%- for index in (1..4) -%}
+          {%- liquid
+            assign hand_key = 'hand_image_' | append: index
+            assign mobile_hand_key = 'mobile_hand_image_' | append: index
+            assign desktop_hand = section.settings[hand_key]
+            assign mobile_hand = section.settings[mobile_hand_key] | default: desktop_hand
+          -%}
+          {%- if desktop_hand != blank -%}
+            <figure class="heist-capture__hand-frame" data-hand-frame>
+              <picture>
+                {%- if mobile_hand != blank -%}
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="{{ mobile_hand | image_url: width: 1200 }}"
+                  >
+                {%- endif -%}
+                {{
+                  desktop_hand
+                  | image_url: width: 1800
+                  | image_tag:
+                    widths: '600, 900, 1200, 1500, 1800',
+                    sizes: '(max-width: 749px) 92vw, 50vw',
+                    loading: 'lazy',
+                    class: 'heist-capture__hand-image',
+                    alt: ''
+                }}
+              </picture>
+            </figure>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        <div class="heist-capture__hand-fallback t-n3">Upload 1–4 transparent hand images</div>
+      {%- endif -%}
+    </div>
+
+    <div class="heist-capture__story">
+      <div class="heist-capture__story-left">
+        <div class="heist-capture__story-title heist-capture__story-title--left t-h2">
+          {{ section.settings.left_heading | escape }}
+        </div>
+
+        <div class="heist-capture__legal">
+          {%- if section.settings.copyright_text != blank -%}
+            <p class="heist-capture__copyright t-n3">{{ section.settings.copyright_text | escape }}</p>
+          {%- endif -%}
+
+          {%- if desktop_legal_logo != blank -%}
+            <picture class="heist-capture__legal-logo">
+              {%- if mobile_legal_logo != blank -%}
+                <source
+                  media="(max-width: 749px)"
+                  srcset="{{ mobile_legal_logo | image_url: width: 500 }}"
+                >
+              {%- endif -%}
+              {{
+                desktop_legal_logo
+                | image_url: width: 700
+                | image_tag:
+                  widths: '240, 360, 500, 700',
+                  sizes: '(max-width: 749px) 30vw, 12vw',
+                  loading: 'lazy',
+                  class: 'heist-capture__legal-logo-image',
+                  alt: ''
+              }}
+            </picture>
+          {%- endif -%}
+
+          {%- if section.settings.legal_caption != blank -%}
+            <p class="heist-capture__legal-caption t-n3">{{ section.settings.legal_caption | escape }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="heist-capture__story-right">
+        <div class="heist-capture__story-title heist-capture__story-title--right t-h2">
+          {{ section.settings.right_heading | escape }}
+        </div>
+
+        <div class="heist-capture__body t-t1">{{ section.settings.body }}</div>
+
+        {%- if section.settings.button_label != blank -%}
+          <a
+            class="heist-capture__button btn btn--cream btn--split"
+            href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+          >
+            {% assign words = section.settings.button_label | split: ' ' %}
+            {% assign total = words.size %}
+            {% assign half = total | plus: 1 | divided_by: 2 %}
+
+            {% capture first_half %}
+              {% for word in words limit: half %}
+                {{ word }}{% unless forloop.last %} {% endunless %}
+              {% endfor %}
+            {% endcapture %}
+
+            {% capture second_half %}
+              {% for word in words offset: half %}
+                {{ word }}{% unless forloop.last %} {% endunless %}
+              {% endfor %}
+            {% endcapture %}
+
+            <span class="btn__text">{{ first_half | strip }}</span>
+
+            {% if second_half != blank %}
+              <span class="btn__lines" aria-hidden="true"></span>
+              <span class="btn__text">{{ second_half | strip }}</span>
+            {% endif %}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.note != blank -%}
+          <div class="heist-capture__note t-n3">{{ section.settings.note | newline_to_br }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</heist-scroll-capture>
+
+<div class="heist-mobile-story">
+  {%- if mobile_story_background != blank -%}
+    <div class="heist-mobile-story__background" aria-hidden="true">
+      {{
+        mobile_story_background
+        | image_url: width: 1200
+        | image_tag: widths: '480, 750, 1000, 1200', sizes: '100vw', loading: 'lazy', alt: ''
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="heist-mobile-story__content">
+    <div class="heist-mobile-story__title t-h2">
+      {{ section.settings.left_heading | escape -}}
+      <br>
+      {{- section.settings.right_heading | escape }}
+    </div>
+
+    <div class="heist-mobile-story__body t-t1">{{ section.settings.body }}</div>
+
+    {%- if section.settings.button_label != blank -%}
+      <a
+        class="heist-mobile-story__button t-btn"
+        href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+      >
+        {{ section.settings.button_label | escape }}
+      </a>
+    {%- endif -%}
+
+    {%- if section.settings.note != blank -%}
+      <div class="heist-mobile-story__note t-n3">{{ section.settings.note | newline_to_br }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Heist scroll capture",
+  "tag": "section",
+  "class": "heist-scroll-capture-section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Background images" },
+    { "type": "image_picker", "id": "desktop_background", "label": "Desktop background" },
+    { "type": "image_picker", "id": "mobile_background", "label": "Mobile background" },
+    { "type": "header", "content": "Glass images" },
+    { "type": "image_picker", "id": "glass_image", "label": "Desktop glass (transparent PNG)" },
+    { "type": "image_picker", "id": "mobile_glass_image", "label": "Mobile glass (transparent PNG)" },
+    { "type": "text", "id": "glass_alt", "label": "Glass alt text", "default": "A glass of Heist coffee" },
+    { "type": "header", "content": "HEIST logo" },
+    { "type": "image_picker", "id": "brand_logo", "label": "Desktop HEIST logo" },
+    { "type": "image_picker", "id": "mobile_brand_logo", "label": "Mobile HEIST logo" },
+    { "type": "header", "content": "Hand sequence — desktop" },
+    { "type": "image_picker", "id": "hand_image_1", "label": "Desktop hand 1" },
+    { "type": "image_picker", "id": "hand_image_2", "label": "Desktop hand 2" },
+    { "type": "image_picker", "id": "hand_image_3", "label": "Desktop hand 3" },
+    { "type": "image_picker", "id": "hand_image_4", "label": "Desktop hand 4 (final pose)" },
+    { "type": "header", "content": "Hand sequence — mobile" },
+    { "type": "image_picker", "id": "mobile_hand_image_1", "label": "Mobile hand 1" },
+    { "type": "image_picker", "id": "mobile_hand_image_2", "label": "Mobile hand 2" },
+    { "type": "image_picker", "id": "mobile_hand_image_3", "label": "Mobile hand 3" },
+    { "type": "image_picker", "id": "mobile_hand_image_4", "label": "Mobile hand 4 (final pose)" },
+    { "type": "header", "content": "Hero content" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Coffee Without a Curfew." },
+    { "type": "header", "content": "Story content" },
+    { "type": "text", "id": "left_heading", "label": "Left heading", "default": "Steal Back" },
+    { "type": "text", "id": "right_heading", "label": "Right heading", "default": "The Night." },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Text",
+      "default": "<p>Heist is a world-class decaf coffee built for people who refuse to choose between full flavor and a good night’s sleep.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Drink decaf" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "richtext",
+      "id": "note",
+      "label": "Small note",
+      "default": "<p>30-day escape plan<br>Love it or your money back</p>"
+    },
+    { "type": "header", "content": "Mobile story section" },
+    {
+      "type": "image_picker",
+      "id": "mobile_story_background",
+      "label": "Background image",
+      "info": "Used only for the standalone mobile story section."
+    },
+    { "type": "header", "content": "Left legal block" },
+    { "type": "text", "id": "copyright_text", "label": "Copyright text", "default": "© MCMLMMXXV" },
+    { "type": "image_picker", "id": "legal_logo", "label": "Desktop legal logo" },
+    { "type": "image_picker", "id": "mobile_legal_logo", "label": "Mobile legal logo" },
+    { "type": "text", "id": "legal_caption", "label": "Legal caption", "default": "HEIST GLOBAL, INC." }
+  ],
+  "presets": [{ "name": "Heist scroll capture", "category": "Banners" }]
+}
+{% endschema %}
