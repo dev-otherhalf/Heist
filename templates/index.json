@@ -97,16 +97,16 @@
     "product_variant_showcase_9b3JzG": {
       "type": "product-variant-showcase",
       "blocks": {
-        "badge_33Lcxn": {
+        "badge_nLRALg": {
           "type": "badge",
           "settings": {
-            "image": "shopify://shop_images/Isolation_Mode.svg"
+            "image": "shopify://shop_images/badge-wholebeans.svg"
           }
         },
         "badge_cgBFGQ": {
           "type": "badge",
           "settings": {
-            "image": "shopify://shop_images/badge-global.svg"
+            "image": "shopify://shop_images/caffeine-free.svg"
           }
         },
         "badge_7jaJJd": {
@@ -115,10 +115,10 @@
             "image": "shopify://shop_images/badge-toxinfree.svg"
           }
         },
-        "badge_nLRALg": {
+        "badge_33Lcxn": {
           "type": "badge",
           "settings": {
-            "image": "shopify://shop_images/badge-wholebeans.svg"
+            "image": "shopify://shop_images/Isolation_Mode.svg"
           }
         },
         "product_card_KcEL4E": {
@@ -135,10 +135,10 @@
         }
       },
       "block_order": [
-        "badge_33Lcxn",
+        "badge_nLRALg",
         "badge_cgBFGQ",
         "badge_7jaJJd",
-        "badge_nLRALg",
+        "badge_33Lcxn",
         "product_card_KcEL4E",
         "product_card_9TBEbk"
       ],
@@ -147,8 +147,8 @@
         "heading": "World-Class Decaf Coffee",
         "padding_top_mobile": 24,
         "padding_bottom_mobile": 24,
-        "padding_top_desktop": 48,
-        "padding_bottom_desktop": 48
+        "padding_top_desktop": 64,
+        "padding_bottom_desktop": 28
       }
     },
     "product_list_fa6P9H": {

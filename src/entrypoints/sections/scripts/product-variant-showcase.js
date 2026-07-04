@@ -156,7 +156,12 @@ class ProductVariantShowcase {
 
       if (!indicator || !activeButton) return;
 
-      const offset = activeButton.offsetLeft - toggle.offsetLeft;
+      const toggleStyles = window.getComputedStyle(toggle);
+      const paddingInlineStart = Number.parseFloat(
+        toggleStyles.paddingInlineStart || toggleStyles.paddingLeft || "0",
+      );
+      const offset = Math.max(0, activeButton.offsetLeft - paddingInlineStart);
+
       toggle.style.setProperty(
         "--toggle-indicator-width",
         `${activeButton.offsetWidth}px`,

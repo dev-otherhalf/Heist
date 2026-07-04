@@ -17,12 +17,13 @@
   "
   data-product-variant-showcase
 >
+  <div class="page-width">
   <div class="product-variant-showcase__inner">
     {% if section.settings.heading != blank or section.blocks.size > 0 %}
       <div class="product-variant-showcase__header">
         <div class="product-variant-showcase__header-copy">
           {% if section.settings.heading != blank %}
-            <h2 class="product-variant-showcase__heading t-h7">
+            <h2 class="product-variant-showcase__heading t-h4">
               {{ section.settings.heading | escape }}
             </h2>
           {% endif %}
@@ -40,6 +41,7 @@
             >
               {% for block in badge_blocks %}
                 {% if block.settings.image != blank %}
+                  {% assign badge_alt = block.settings.image.alt | default: 'Badge' %}
                   <div
                     class="product-variant-showcase__badge"
                     {{ block.shopify_attributes }}
@@ -51,7 +53,7 @@
                         widths: '160, 240, 320',
                         sizes: '(min-width: 990px) 8rem, 6rem',
                         loading: 'lazy',
-                        alt: block.settings.image.alt | default: 'Badge',
+                        alt: badge_alt,
                         class: 'product-variant-showcase__badge-image'
                     }}
                   </div>
@@ -140,21 +142,21 @@
                 <div class="product-variant-showcase__visual-card">
                   <div class="product-variant-showcase__visual-copy">
                     <p
-                      class="product-variant-showcase__product-title t-s2"
+                      class="product-variant-showcase__product-title t-s1"
                       data-variant-title
                     >
                       {{ active_comparison_title | escape }}
                     </p>
 
                     <p
-                      class="product-variant-showcase__product-label t-t2{% if active_comparison_label == blank %} hidden{% endif %}"
+                      class="product-variant-showcase__product-label t-t1{% if active_comparison_label == blank %} hidden{% endif %}"
                       data-variant-label
                     >
                       {{ active_comparison_label | escape }}
                     </p>
 
                     <p
-                      class="product-variant-showcase__product-notes t-n2{% if active_comparison_notes == blank %} hidden{% endif %}"
+                      class="product-variant-showcase__product-notes t-n1{% if active_comparison_notes == blank %} hidden{% endif %}"
                       data-variant-notes
                     >
                       {{ active_comparison_notes | escape }}
@@ -255,7 +257,7 @@
 
                 <div class="product-variant-showcase__detail-card">
                   <div
-                    class="product-variant-showcase__detail-content t-t2{% if active_detail_description_source == blank %} hidden{% endif %}"
+                    class="product-variant-showcase__detail-content t-t1{% if active_detail_description_source == blank %} hidden{% endif %}"
                     data-variant-detail-description
                   >
                     {% if active_detail_description_source != blank %}
@@ -371,6 +373,7 @@
       </div>
     {% endif %}
   </div>
+</div>
 </section>
 
 {% schema %}
