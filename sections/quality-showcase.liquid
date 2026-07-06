@@ -1,0 +1,331 @@
+{% render 'vite-tag' with 'sections/styles/quality-showcase.scss' %}
+{% render 'vite-tag' with 'sections/scripts/quality-showcase.js' %}
+
+{%- liquid
+  assign feature_blocks = section.blocks | where: 'type', 'feature_point'
+  assign annotation_value = section.settings.annotation_value
+-%}
+
+<section
+  class="quality-showcase"
+  id="shopify-section-{{ section.id }}"
+  style="
+    --quality-showcase-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --quality-showcase-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --quality-showcase-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --quality-showcase-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    {% if section.settings.background_color != blank %}
+      --quality-showcase-bg: {{ section.settings.background_color }};
+    {% endif %}
+  "
+  data-quality-showcase
+>
+  {% if section.settings.background_image != blank or section.settings.background_image_mobile != blank %}
+    <picture>
+      {% if section.settings.background_image_mobile != blank %}
+        <source
+          media="(max-width: 989px)"
+          srcset="{{ section.settings.background_image_mobile | image_url: width: 1500 }}"
+        >
+      {% endif %}
+      {% if section.settings.background_image != blank %}
+        {{
+          section.settings.background_image
+          | image_url: width: 2560
+          | image_tag:
+            widths: '750, 1100, 1500, 2000, 2560',
+            sizes: '100vw',
+            loading: 'lazy',
+            class: 'quality-showcase__background-image'
+        }}
+      {% else %}
+        {{
+          section.settings.background_image_mobile
+          | image_url: width: 1500
+          | image_tag:
+            widths: '750, 1100, 1500',
+            sizes: '100vw',
+            loading: 'lazy',
+            class: 'quality-showcase__background-image'
+        }}
+      {% endif %}
+    </picture>
+  {% endif %}
+
+  <div class="page-width">
+    {% if section.settings.heading != blank %}
+      <div class="quality-showcase__header">
+        <div
+          class="quality-showcase__heading t-h5 quality-showcase__heading--{{ section.settings.heading_alignment }}"
+          {% if section.settings.heading_color != blank %}
+            style="color: {{ section.settings.heading_color }};"
+          {% endif %}
+        >
+          {{ section.settings.heading }}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="quality-showcase__content">
+      <div class="quality-showcase__column quality-showcase__column--left">
+        {% for block in feature_blocks %}
+          {% if block.settings.position == 'left' and block.settings.text != blank %}
+            <div class="quality-showcase__point" {{ block.shopify_attributes }}>
+              <p class="quality-showcase__point-text t-t2">{{ block.settings.text | newline_to_br }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="quality-showcase__media">
+        <div class="quality-showcase__video-wrapper">
+          {% if section.settings.video != blank %}
+            {{
+              section.settings.video
+              | video_tag:
+                image_size: '1600x',
+                autoplay: true,
+                loop: true,
+                muted: true,
+                controls: false,
+                playsinline: true,
+                class: 'quality-showcase__video'
+            }}
+          {% elsif section.settings.video_fallback_image != blank %}
+            {% assign fallback_alt = section.settings.heading | strip_html %}
+            {{
+              section.settings.video_fallback_image
+              | image_url: width: 1600
+              | image_tag:
+                widths: '640, 960, 1280, 1600',
+                sizes: '(min-width: 990px) 40rem, 100vw',
+                loading: 'lazy',
+                alt: fallback_alt,
+                class: 'quality-showcase__poster'
+            }}
+          {% endif %}
+        </div>
+
+        <div class="quality-showcase__frame" aria-hidden="true"></div>
+
+        {% if annotation_value != blank %}
+          <div
+            class="quality-showcase__annotation t-n2-med"
+            data-rolling-annotation
+          >
+            {%- assign annotation_groups = annotation_value | split: ' ' -%}
+            {%- for group in annotation_groups -%}
+              <span class="quality-showcase__digit-group">
+                {%- assign annotation_chars = group | split: '' -%}
+                {%- for char in annotation_chars -%}
+                  <span class="quality-showcase__digit" data-digit="{{ char }}">
+                    <span class="quality-showcase__digit-strip" data-digit-strip>
+                      <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                    </span>
+                  </span>
+                {%- endfor -%}
+              </span>
+            {%- endfor -%}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="quality-showcase__column quality-showcase__column--right">
+        {% for block in feature_blocks %}
+          {% if block.settings.position == 'right' and block.settings.text != blank %}
+            <div class="quality-showcase__point" {{ block.shopify_attributes }}>
+              <p class="quality-showcase__point-text t-t2">{{ block.settings.text | newline_to_br }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Quality showcase",
+  "tag": "section",
+  "class": "shopify-section-quality-showcase",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Roasted in Small Batches with Big Standards</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_fallback_image",
+      "label": "Fallback image",
+      "info": "Shown when no video is set"
+    },
+    {
+      "type": "header",
+      "content": "Rolling number annotation"
+    },
+    {
+      "type": "text",
+      "id": "annotation_value",
+      "label": "Annotation value",
+      "info": "Groups of digits separated by spaces; each digit rolls in when scrolled into view",
+      "default": "24724 1832 24"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_point",
+      "name": "Feature point",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Column",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Feature point"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quality showcase",
+      "blocks": [
+        {
+          "type": "feature_point",
+          "settings": { "position": "left", "text": "Top 1% of World's Arabica Beans" }
+        },
+        {
+          "type": "feature_point",
+          "settings": { "position": "left", "text": "Water Extracts the Caffeine" }
+        },
+        {
+          "type": "feature_point",
+          "settings": { "position": "left", "text": "No Solvents, no Chemicals" }
+        },
+        {
+          "type": "feature_point",
+          "settings": { "position": "right", "text": "Whole Beans to Preserve Flavor" }
+        },
+        {
+          "type": "feature_point",
+          "settings": { "position": "right", "text": "Michelin-Star Quality and Taste" }
+        },
+        {
+          "type": "feature_point",
+          "settings": { "position": "right", "text": "Tested Mold + Mycotoxin Free" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

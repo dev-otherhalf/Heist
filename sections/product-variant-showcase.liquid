@@ -1,0 +1,476 @@
+{% render 'vite-tag' with 'sections/styles/product-variant-showcase.scss' %}
+{% render 'vite-tag' with 'sections/scripts/product-variant-showcase.js' %}
+
+{%- liquid
+  assign metafield_namespace = 'custom'
+  assign metafield_key = 'homepage_comparison_chart_selections_oh'
+-%}
+
+<section
+  class="product-variant-showcase"
+  id="shopify-section-{{ section.id }}"
+  style="
+    --product-variant-showcase-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --product-variant-showcase-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --product-variant-showcase-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --product-variant-showcase-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+  data-product-variant-showcase
+>
+  <div class="page-width">
+  <div class="product-variant-showcase__inner">
+    {% if section.settings.heading != blank or section.blocks.size > 0 %}
+      <div class="product-variant-showcase__header">
+        <div class="product-variant-showcase__header-copy">
+          {% if section.settings.heading != blank %}
+            <h2 class="product-variant-showcase__heading t-h4">
+              {{ section.settings.heading | escape }}
+            </h2>
+          {% endif %}
+        </div>
+
+        {% assign badge_blocks = section.blocks | where: 'type', 'badge' %}
+        {% if badge_blocks.size > 0 %}
+          <div
+            class="product-variant-showcase__badges"
+            data-badge-marquee
+          >
+            <div
+              class="product-variant-showcase__badges-track"
+              data-badge-track
+            >
+              {% for block in badge_blocks %}
+                {% if block.settings.image != blank %}
+                  {% assign badge_alt = block.settings.image.alt | default: 'Badge' %}
+                  <div
+                    class="product-variant-showcase__badge"
+                    {{ block.shopify_attributes }}
+                  >
+                    {{
+                      block.settings.image
+                      | image_url: width: 320
+                      | image_tag:
+                        widths: '160, 240, 320',
+                        sizes: '(min-width: 990px) 8rem, 6rem',
+                        loading: 'lazy',
+                        alt: badge_alt,
+                        class: 'product-variant-showcase__badge-image'
+                    }}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% assign product_blocks = section.blocks | where: 'type', 'product_card' %}
+    {% if product_blocks.size > 0 %}
+      <div class="product-variant-showcase__grid">
+        {% for block in product_blocks %}
+          {%- liquid
+            assign product = block.settings.product
+            assign active_variant_id = blank
+            assign has_comparison_variants = false
+            assign active_comparison_title = blank
+            assign active_comparison_label = blank
+            assign active_comparison_notes = blank
+            assign active_desktop_image = blank
+            assign active_mobile_image = blank
+            assign active_variant_url = blank
+            assign active_variant_price = blank
+            assign active_detail_description_source = blank
+            assign active_detail_image = blank
+            assign active_detail_video = blank
+
+            if product != blank and metafield_namespace != blank and metafield_key != blank
+              assign selected_variant = product.selected_or_first_available_variant
+
+              for variant in product.variants
+                assign comparison_metafield = variant.metafields[metafield_namespace][metafield_key]
+                assign comparison_item = comparison_metafield.value
+
+                if comparison_item != blank
+                  assign has_comparison_variants = true
+                  if active_variant_id == blank or variant.id == selected_variant.id
+                    assign active_variant_id = variant.id
+                    assign active_comparison_title = comparison_item.title.value | default: comparison_item.title | default: product.title
+                    assign active_comparison_label = comparison_item.label.value | default: comparison_item.label
+                    assign active_comparison_notes = comparison_item.notes.value | default: comparison_item.notes
+                    assign active_desktop_image = comparison_item.image.value | default: comparison_item.image
+                    if active_desktop_image == blank
+                      assign active_desktop_image = variant.featured_image | default: product.featured_image
+                    endif
+                    assign active_mobile_image = comparison_item.mobile_image.value | default: comparison_item.mobile_image | default: active_desktop_image
+                    assign active_variant_url = comparison_item.cta_link.value | default: comparison_item.cta_link
+                    capture active_variant_price
+                      render 'format-price', price: variant.price
+                    endcapture
+                    assign active_detail_image = comparison_item.mobile_image.value | default: comparison_item.mobile_image | default: comparison_item.desktop_image.value | default: comparison_item.desktop_image | default: variant.featured_image | default: product.featured_image
+                    assign active_detail_video = comparison_item.video.value | default: comparison_item.video
+                    assign active_detail_description_source = comparison_item.description
+                  endif
+                endif
+              endfor
+            endif
+          -%}
+          <article
+            class="product-variant-showcase__product"
+            data-product-card
+            {% if active_variant_id != blank %}
+              data-active-variant-id="{{ active_variant_id }}"
+            {% endif %}
+            {{ block.shopify_attributes }}
+          >
+            {% if product == blank %}
+              <div class="product-variant-showcase__empty">
+                <p class="product-variant-showcase__empty-title t-s3">Select a product</p>
+                <p class="product-variant-showcase__empty-text t-t4">
+                  Add a product to this block to populate the comparison card.
+                </p>
+              </div>
+            {% elsif has_comparison_variants == false %}
+              <div class="product-variant-showcase__empty">
+                <p class="product-variant-showcase__empty-title t-s3">{{ product.title | escape }}</p>
+                <p class="product-variant-showcase__empty-text t-t4">
+                  No variants on this product have the configured comparison metaobject.
+                </p>
+              </div>
+            {% else %}
+              <div class="product-variant-showcase__product-grid">
+                <div class="product-variant-showcase__visual-card">
+                  <div class="product-variant-showcase__visual-copy">
+                    <p
+                      class="product-variant-showcase__product-title t-s1"
+                      data-variant-title
+                    >
+                      {{ active_comparison_title | escape }}
+                    </p>
+
+                    <p
+                      class="product-variant-showcase__product-label t-t1{% if active_comparison_label == blank %} hidden{% endif %}"
+                      data-variant-label
+                    >
+                      {{ active_comparison_label | escape }}
+                    </p>
+
+                    <p
+                      class="product-variant-showcase__product-notes t-n1{% if active_comparison_notes == blank %} hidden{% endif %}"
+                      data-variant-notes
+                    >
+                      {{ active_comparison_notes | escape }}
+                    </p>
+                  </div>
+
+                  <div class="product-variant-showcase__visual-media">
+                    {% if active_desktop_image != blank %}
+                      <picture>
+                        <source
+                          media="(max-width: 989px)"
+                          srcset="{{ active_mobile_image | image_url: width: 960 }}"
+                          data-variant-mobile-image
+                        >
+                        <img
+                          class="product-variant-showcase__visual-image"
+                          src="{{ active_desktop_image | image_url: width: 1280 }}"
+                          alt="{{ active_comparison_title | escape }}"
+                          loading="lazy"
+                          data-variant-desktop-image
+                        >
+                      </picture>
+                    {% endif %}
+                  </div>
+
+                  <div class="product-variant-showcase__footer">
+                    <div
+                      class="product-variant-showcase__toggle"
+                      data-variant-toggle
+                      role="tablist"
+                      aria-label="{{ product.title | escape }} variants"
+                    >
+                      <span
+                        class="product-variant-showcase__toggle-indicator"
+                        data-toggle-indicator
+                      ></span>
+
+                      {% for variant_button in product.variants %}
+                        {%- liquid
+                          assign button_metafield = variant_button.metafields[metafield_namespace][metafield_key]
+                          assign button_item = button_metafield.value
+
+                          if button_item == blank
+                            continue
+                          endif
+
+                          assign button_title = button_item.title.value | default: button_item.title | default: product.title
+                          assign button_label = button_item.label.value | default: button_item.label
+                          assign button_notes = button_item.notes.value | default: button_item.notes
+                          assign button_desktop_image = button_item.image.value | default: button_item.image | default: button_item.mobile_image.value | default: button_item.mobile_image
+                          if button_desktop_image == blank
+                            assign button_desktop_image = variant_button.featured_image | default: product.featured_image
+                          endif
+                          assign button_mobile_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_desktop_image
+                          assign button_detail_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_item.image.value | default: button_item.image | default: variant_button.featured_image | default: product.featured_image
+                          assign button_url = button_item.cta_link.value | default: button_item.cta_link
+
+                          capture button_price
+                            render 'format-price', price: variant_button.price
+                          endcapture
+
+                          assign button_detail_video = button_item.video.value | default: button_item.video
+                        -%}
+                        {% capture button_description %}{% if button_item.description != blank %}{{ button_item.description | metafield_tag }}{% endif %}{% endcapture %}
+                        {% capture button_detail_media %}{% if button_detail_video != blank %}{{ button_detail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'product-variant-showcase__detail-video' }}{% elsif button_detail_image != blank %}{{ button_detail_image | image_url: width: 1280 | image_tag: widths: '640, 960, 1280', sizes: '(min-width: 990px) 25rem, 100vw', loading: 'lazy', alt: button_title, class: 'product-variant-showcase__detail-image' }}{% endif %}{% endcapture %}
+
+                        <button
+                          class="product-variant-showcase__toggle-button t-s4{% if variant_button.id == active_variant_id %} is-active{% endif %}"
+                          type="button"
+                          role="tab"
+                          aria-selected="{% if variant_button.id == active_variant_id %}true{% else %}false{% endif %}"
+                          data-variant-trigger="{{ variant_button.id }}"
+                          data-variant-title-value="{{ button_title | escape }}"
+                          data-variant-label-value="{{ button_label | escape }}"
+                          data-variant-notes-value="{{ button_notes | escape }}"
+                          data-variant-desktop-image-value="{{ button_desktop_image | image_url: width: 1280 }}"
+                          data-variant-mobile-image-value="{{ button_mobile_image | image_url: width: 960 }}"
+                          data-variant-url="{{ button_url }}"
+                          data-variant-price-value="{{ button_price | strip | escape }}"
+                          data-variant-description-html="{{ button_description | strip | escape }}"
+                          data-variant-detail-media-html="{{ button_detail_media | strip | escape }}"
+                        >
+                          {{ variant_button.title | escape }}
+                        </button>
+                      {% endfor %}
+                    </div>
+
+                    <a
+                      class="product-variant-showcase__cta btn"
+                      href="{{ active_variant_url }}"
+                      data-variant-cta
+                    >
+                      <span>Shop now - from</span>
+                      <span data-variant-price>{{ active_variant_price | strip }}</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="product-variant-showcase__detail-card">
+                  <div
+                    class="product-variant-showcase__detail-content t-t1{% if active_detail_description_source == blank %} hidden{% endif %}"
+                    data-variant-detail-description
+                  >
+                    {% if active_detail_description_source != blank %}
+                      {{ active_detail_description_source | metafield_tag }}
+                    {% endif %}
+                  </div>
+
+                  <div
+                    class="product-variant-showcase__detail-media{% if active_detail_video == blank and active_detail_image == blank %} hidden{% endif %}"
+                    data-variant-detail-media
+                  >
+                    {% if active_detail_video != blank %}
+                      {{
+                        active_detail_video
+                        | video_tag:
+                          autoplay: true,
+                          loop: true,
+                          muted: true,
+                          controls: false,
+                          playsinline: true,
+                          class: 'product-variant-showcase__detail-video'
+                      }}
+                    {% elsif active_detail_image != blank %}
+                      {{
+                        active_detail_image
+                        | image_url: width: 1280
+                        | image_tag:
+                          widths: '640, 960, 1280',
+                          sizes: '(min-width: 990px) 25rem, 100vw',
+                          loading: 'lazy',
+                          alt: active_comparison_title,
+                          class: 'product-variant-showcase__detail-image'
+                      }}
+                    {% endif %}
+                  </div>
+
+                  <div class="product-variant-showcase__footer product-variant-showcase__footer--detail">
+                    <div
+                      class="product-variant-showcase__toggle"
+                      data-variant-toggle
+                      role="tablist"
+                      aria-label="{{ product.title | escape }} variants"
+                    >
+                      <span
+                        class="product-variant-showcase__toggle-indicator"
+                        data-toggle-indicator
+                      ></span>
+
+                      {% for variant_button in product.variants %}
+                        {%- liquid
+                          assign button_metafield = variant_button.metafields[metafield_namespace][metafield_key]
+                          assign button_item = button_metafield.value
+
+                          if button_item == blank
+                            continue
+                          endif
+
+                          assign button_title = button_item.title.value | default: button_item.title | default: product.title
+                          assign button_label = button_item.label.value | default: button_item.label
+                          assign button_notes = button_item.notes.value | default: button_item.notes
+                          assign button_desktop_image = button_item.image.value | default: button_item.image | default: button_item.mobile_image.value | default: button_item.mobile_image
+                          if button_desktop_image == blank
+                            assign button_desktop_image = variant_button.featured_image | default: product.featured_image
+                          endif
+                          assign button_mobile_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_desktop_image
+                          assign button_detail_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_item.image.value | default: button_item.image | default: variant_button.featured_image | default: product.featured_image
+                          assign button_url = button_item.cta_link.value | default: button_item.cta_link
+                          assign button_detail_video = button_item.video.value | default: button_item.video
+
+                          capture button_price
+                            render 'format-price', price: variant_button.price
+                          endcapture
+
+                        -%}
+                        {% capture button_description %}{% if button_item.description != blank %}{{ button_item.description | metafield_tag }}{% endif %}{% endcapture %}
+                        {% capture button_detail_media %}{% if button_detail_video != blank %}{{ button_detail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'product-variant-showcase__detail-video' }}{% elsif button_detail_image != blank %}{{ button_detail_image | image_url: width: 1280 | image_tag: widths: '640, 960, 1280', sizes: '(min-width: 990px) 25rem, 100vw', loading: 'lazy', alt: button_title, class: 'product-variant-showcase__detail-image' }}{% endif %}{% endcapture %}
+
+                        <button
+                          class="product-variant-showcase__toggle-button t-s4{% if variant_button.id == active_variant_id %} is-active{% endif %}"
+                          type="button"
+                          role="tab"
+                          aria-selected="{% if variant_button.id == active_variant_id %}true{% else %}false{% endif %}"
+                          data-variant-trigger="{{ variant_button.id }}"
+                          data-variant-title-value="{{ button_title | escape }}"
+                          data-variant-label-value="{{ button_label | escape }}"
+                          data-variant-notes-value="{{ button_notes | escape }}"
+                          data-variant-desktop-image-value="{{ button_desktop_image | image_url: width: 1280 }}"
+                          data-variant-mobile-image-value="{{ button_mobile_image | image_url: width: 960 }}"
+                          data-variant-url="{{ button_url }}"
+                          data-variant-price-value="{{ button_price | strip | escape }}"
+                          data-variant-description-html="{{ button_description | strip | escape }}"
+                          data-variant-detail-media-html="{{ button_detail_media | strip | escape }}"
+                        >
+                          {{ variant_button.title | escape }}
+                        </button>
+                      {% endfor %}
+                    </div>
+
+                    <a
+                      class="product-variant-showcase__cta btn"
+                      href="{{ active_variant_url }}"
+                      data-variant-cta
+                    >
+                      <span>Shop now - from</span>
+                      <span data-variant-price>{{ active_variant_price | strip }}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+</section>
+
+{% schema %}
+{
+  "name": "Product variant showcase",
+  "tag": "section",
+  "class": "shopify-section-product-variant-showcase",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "World-Class Decaf Coffee"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "product_card",
+      "name": "Product card",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product variant showcase",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}

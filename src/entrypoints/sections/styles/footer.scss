@@ -26,6 +26,7 @@ body:has(.footer__audio) main{
         height: 100%;
         top: 0;
         left: 0;
+        z-index: 1;
         background-size: contain;
         background-repeat: repeat;
         background-position: center;
@@ -45,7 +46,7 @@ body:has(.footer__audio) main{
   &__logo {
     width: 100%;
     position: relative;
-
+    z-index: 1;
     @include respond-down(md) {
       order: 1;
     }
@@ -70,6 +71,7 @@ body:has(.footer__audio) main{
     margin: 0;
     padding: 0;
     position: relative;
+    z-index: 1;
 
     @include respond-down(md) {
       order: 2;
@@ -114,6 +116,7 @@ body:has(.footer__audio) main{
     padding-block: calc(var(--space-24) - 0.125rem);
     padding-inline: calc(var(--space-24) - 0.125rem);
     position: relative;
+    z-index: 1;
 
     @include respond-to(md) {
       width: calc(50% - var(--space-8));
@@ -192,10 +195,11 @@ body:has(.footer__audio) main{
     padding-inline: var(--space-20);
     position: relative;
     overflow: hidden;
+    z-index: 1;
 
     @include respond-down(md) {
       position: fixed;
-      z-index: -1;
+      z-index: auto;
       right: 0;
       bottom: 0;
       left: 0;

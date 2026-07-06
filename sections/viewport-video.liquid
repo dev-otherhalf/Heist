@@ -1,0 +1,151 @@
+{% render 'vite-tag' with 'sections/styles/viewport-video.scss' %}
+{% render 'vite-tag' with 'sections/scripts/viewport-video.js' %}
+
+<section
+  class="viewport-video"
+  id="shopify-section-{{ section.id }}"
+  style="
+    --viewport-video-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --viewport-video-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --viewport-video-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --viewport-video-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+  data-viewport-video
+>
+  {%- liquid
+    assign mobile_video = section.settings.video_mobile | default: section.settings.video_desktop
+  -%}
+  <div class="page-width">
+    <div class="viewport-video__frame">
+      {% if section.settings.video_desktop != blank %}
+        <div class="viewport-video__media viewport-video__media--desktop">
+          {{
+            section.settings.video_desktop
+            | video_tag:
+              image_size: '1600x',
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true,
+              autoplay: false,
+              class: 'viewport-video__video'
+          }}
+        </div>
+      {% endif %}
+
+      {% if mobile_video != blank %}
+        <div class="viewport-video__media viewport-video__media--mobile">
+          {{
+            mobile_video
+            | video_tag:
+              image_size: '960x',
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true,
+              autoplay: false,
+              class: 'viewport-video__video'
+          }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.video_desktop != blank or section.settings.video_mobile != blank %}
+        <button
+          type="button"
+          class="viewport-video__sound-toggle"
+          data-sound-toggle
+          aria-pressed="false"
+          aria-label="Unmute video"
+        >
+          <span class="viewport-video__sound-icon" data-sound-icon-muted>
+            {%- render 'icon-sound-muted' -%}
+          </span>
+          <span class="viewport-video__sound-icon" data-sound-icon-unmuted hidden>
+            {%- render 'icon-sound-unmuted' -%}
+          </span>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Viewport video",
+  "tag": "section",
+  "class": "shopify-section-viewport-video",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video_desktop",
+      "label": "Video (desktop)"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Video (mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Viewport video",
+      "category": "Media"
+    }
+  ]
+}
+{% endschema %}
