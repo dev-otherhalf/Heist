@@ -1,0 +1,130 @@
+// =============================================================================
+// Late Night Gallery — staggered media strip on a gradient backdrop.
+// Content is metaobject-driven; videos autoplay in-view via the site-wide
+// `.js-autoplay-video` script, so this section ships no JS of its own.
+// Self-contained bundle (own Vite entry) — mirrors coffee-heist.scss.
+// =============================================================================
+
+@use "../../../styles/settings/tokens";
+@use "../../../styles/settings/breakpoints" as *;
+@use "../../../styles/components/typography";
+
+// The Shopify section wrapper is the stacking context for the full-section
+// background image (which sits behind both the gallery and the brewing guide).
+.late-night-gallery-wrapper {
+  position: relative;
+  isolation: isolate;
+}
+
+// Full-bleed metaobject background image — spans the whole section. z-index: -1
+// (clamped by the wrapper's isolation) keeps it behind all in-flow content
+// without having to position each block.
+.late-night-gallery__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.late-night-gallery {
+  position: relative;
+  padding-block: var(--late-night-gallery-padding-top-mobile)
+    var(--late-night-gallery-padding-bottom-mobile);
+  padding-inline: var(--space-16);
+
+  @include respond-to(md) {
+    padding-block: var(--late-night-gallery-padding-top-desktop)
+      var(--late-night-gallery-padding-bottom-desktop);
+    padding-inline: var(--space-32);
+  }
+
+  &__heading {
+    color: var(--neutral-white, #fff);
+    max-width: 55rem;
+    margin-block-end: var(--space-32);
+
+    @include respond-to(md) {
+      margin-block-end: var(--space-48);
+    }
+  }
+
+  // --- Media row --------------------------------------------------------
+  // Desktop: horizontal flex strip, full items tall and half items short,
+  // halves staggered up/down for the zig-zag layout.
+
+  &__list {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    min-height: 30rem;
+    overflow-x: auto;
+
+    @include respond-to(md) {
+      gap: var(--space-24);
+    }
+  }
+
+  &__item {
+    flex: 0 0 auto;
+    display: block;
+    overflow: clip;
+    border-radius: var(--space-4);
+  }
+
+  &__item--full {
+    height: 30rem;
+  }
+
+  &__item--half {
+    height: 18rem;
+
+    &:nth-of-type(odd) {
+      align-self: flex-start;
+    }
+
+    &:nth-of-type(even) {
+      align-self: flex-end;
+    }
+  }
+
+  &__media {
+    display: block;
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+  }
+
+  // --- Mobile: 2-column masonry ----------------------------------------
+
+  @include respond-down(md) {
+    &__list {
+      display: block;
+      columns: 2;
+      column-gap: var(--space-12);
+      min-height: 0;
+      overflow: visible;
+    }
+
+    &__item {
+      width: 100%;
+      height: auto;
+      margin-block-end: var(--space-12);
+      align-self: auto;
+      break-inside: avoid;
+    }
+
+    &__media {
+      width: 100%;
+      height: auto;
+    }
+
+    &__item--hide-mobile {
+      display: none;
+    }
+  }
+}
+
