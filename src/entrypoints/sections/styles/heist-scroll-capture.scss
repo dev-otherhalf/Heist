@@ -252,7 +252,7 @@
 
   &__legal-logo {
     display: block;
-    width: min(12vw, 10rem);
+    width: 100%;
     margin-inline: auto;
 
     &-image {
@@ -422,7 +422,27 @@
     }
 
     &__story {
+      display: block;
+      inset: 0;
+      padding: 0;
+      pointer-events: none;
+    }
+
+    &__story-left {
+      display: block;
+    }
+
+    &__story-title--left,
+    &__story-right {
       display: none;
+    }
+
+    &__legal {
+      position: absolute;
+      right: var(--space-30);
+      bottom: var(--space-32);
+      width: var(--space-89);
+      height: var(--space-76);
     }
   }
   @include respond-down(md) {
