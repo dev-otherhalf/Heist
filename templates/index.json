@@ -9,6 +9,39 @@
  */
 {
   "sections": {
+    "heist_scroll_capture_3hN6FK": {
+      "type": "heist-scroll-capture",
+      "name": "Heist scroll capture",
+      "settings": {
+        "desktop_background": "shopify://shop_images/Desktop_BG.jpg",
+        "mobile_background": "shopify://shop_images/Homepage_-_Section_1.jpg",
+        "glass_image": "shopify://shop_images/New.png",
+        "mobile_glass_image": "shopify://shop_images/New.png",
+        "glass_alt": "A glass of Heist coffee",
+        "brand_logo": "shopify://shop_images/Heist-Logo_271574f0-d638-445f-846d-44996bb163bb.svg",
+        "mobile_brand_logo": "shopify://shop_images/Heist-Logo_271574f0-d638-445f-846d-44996bb163bb.svg",
+        "hand_image_1": "shopify://shop_images/Finger_fb49768e-4a6f-479c-89c3-98e94756416f.png",
+        "hand_image_2": "shopify://shop_images/Finger_2.png",
+        "hand_image_3": "shopify://shop_images/Half_534f4752-3218-43de-ba79-0a42e239280e.png",
+        "hand_image_4": "shopify://shop_images/Full.png",
+        "mobile_hand_image_1": "shopify://shop_images/Finger_fb49768e-4a6f-479c-89c3-98e94756416f.png",
+        "mobile_hand_image_2": "shopify://shop_images/Finger_2_8bbc7e1a-a795-425b-b826-1c18c6e55fdc.png",
+        "mobile_hand_image_3": "shopify://shop_images/Half_8245cd80-923a-4e47-854c-40d1dd7eaada.png",
+        "mobile_hand_image_4": "shopify://shop_images/Full_9d6618ea-8530-4e84-9339-58398c9da70a.png",
+        "heading": "Coffee Without a Curfew.",
+        "left_heading": "Steal Back",
+        "right_heading": "The Night.",
+        "body": "<p>Heist is a world-class decaf coffee built for people who refuse to choose between full flavor and a good night’s sleep.</p>",
+        "button_label": "Drink decaf",
+        "button_link": "",
+        "note": "<p>30-day escape plan<br/>Love it or your money back</p>",
+        "mobile_story_background": "shopify://shop_images/Homepage_-_Section_2.jpg",
+        "copyright_text": "",
+        "legal_logo": "shopify://shop_images/badge-heistglobal.svg",
+        "mobile_legal_logo": "shopify://shop_images/badge-heistglobal.svg",
+        "legal_caption": ""
+      }
+    },
     "product_variant_showcase_KzntXa": {
       "type": "product-variant-showcase",
       "blocks": {
@@ -477,6 +510,7 @@
     }
   },
   "order": [
+    "heist_scroll_capture_3hN6FK",
     "product_variant_showcase_KzntXa",
     "quality_showcase_H7aKBp",
     "press_marquee_BLfLFB",
