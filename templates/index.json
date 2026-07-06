@@ -370,6 +370,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "Featured collection",
       "settings": {
         "collection": "all",
@@ -450,6 +451,22 @@
         "padding_bottom_desktop": 64
       }
     },
+    "press_section_WRAXwL": {
+      "type": "press-section",
+      "name": "Press section",
+      "settings": {
+        "press_selection": "homepage",
+        "label": "HOT OFF THE PRESS",
+        "background_color": "#e8e0d2",
+        "panel_background_color": "#e6dece",
+        "background_image": "shopify://shop_images/Rectangle_12_6d7c3e1a-be24-4377-ac89-faf380f0390c.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_73_6bcea163-3c26-40dd-8c38-70de6cbfdc12.jpg",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 0,
+        "padding_top_desktop": 120,
+        "padding_bottom_desktop": 120
+      }
+    },
     "design_tokens_EttbfE": {
       "type": "design-tokens",
       "name": "Design tokens",
@@ -466,6 +483,7 @@
     "viewport_video_FRgn9M",
     "product_list_fa6P9H",
     "gallery_showcase_p3M8Eq",
+    "press_section_WRAXwL",
     "design_tokens_EttbfE"
   ]
 }
