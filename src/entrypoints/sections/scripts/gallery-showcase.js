@@ -10,13 +10,23 @@ function initGalleryShowcase(root) {
   root.dataset.gallerySwiperReady = "true";
 
   root.gallerySwiperInstance = new Swiper(container, {
-    slidesPerView: 2.3,
+    slidesPerView: 1.46999,
     spaceBetween: 12,
     grabCursor: true,
     watchOverflow: true,
+    mousewheel: {
+      enabled: true,
+      forceToAxis: true,
+      sensitivity: 1,
+      releaseOnEdges: true,
+    },
     breakpoints: {
+      750: {
+        slidesPerView: 3.46999,
+        spaceBetween: 12,
+      },
       990: {
-        slidesPerView: 5,
+        slidesPerView: 4.16667,
         spaceBetween: 16,
       },
     },
