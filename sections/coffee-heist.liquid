@@ -1,0 +1,412 @@
+{%- render 'vite-tag', entry: 'sections/styles/coffee-heist.scss' -%}
+{%- render 'vite-tag', entry: 'sections/scripts/coffee-heist.js' -%}
+
+{% liquid
+  assign tabs_obj = section.settings.tabs_selection
+  assign receipts_obj = section.settings.receipts_selection
+%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background_color != blank -%}
+      --coffee-heist-section-bg: {{ section.settings.background_color }};
+    {%- endif -%}
+    {%- if section.settings.desktop_top_padding != blank -%}
+      --desktop-top-padding: {{ section.settings.desktop_top_padding }}px;
+    {%- endif -%}
+    {%- if section.settings.desktop_bottom_padding != blank -%}
+      --desktop-bottom-padding: {{ section.settings.desktop_bottom_padding }}px;
+    {%- endif -%}
+    {%- if section.settings.mobile_top_padding != blank -%}
+      --mobile-top-padding: {{ section.settings.mobile_top_padding }}px;
+    {%- endif -%}
+    {%- if section.settings.mobile_bottom_padding != blank -%}
+      --mobile-bottom-padding: {{ section.settings.mobile_bottom_padding }}px;  
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<div
+  class="coffee-heist-section"
+  {% if tabs_obj != blank and tabs_obj.tabs.value.size > 0 %}
+    data-coffee-heist-tabs
+  {% endif %}
+>
+  {% if tabs_obj != blank and tabs_obj.tabs.value.size > 0 %}
+    <div class="coffee-heist__bgs" aria-hidden="true">
+      {% for tab in tabs_obj.tabs.value %}
+        <div
+          class="coffee-heist__bg{% if forloop.first %} is-active{% endif %}"
+          data-tab-bg
+          style="
+            --gradient-start: {{ tab.background_gradient_start.value }};
+            --gradient-end: {{ tab.background_gradient_end.value }};
+            {% if tab.background_image.value != blank %}
+              background-image: url('{{ tab.background_image.value | image_url: width: 1920 }}');
+            {% endif %}
+          "
+        ></div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if tabs_obj != blank and tabs_obj.tabs.value.size > 0 %}
+    <div class="coffee-heist">
+      <div class="coffee-heist__content">
+        {% if tabs_obj.section_heading.value != blank %}
+          <h2 class="coffee-heist__heading t-h2">{{ tabs_obj.section_heading.value }}</h2>
+        {% endif %}
+        {% for tab in tabs_obj.tabs.value %}
+          {% if tab.subheading.value != blank %}
+            <p
+              class="coffee-heist__subheading t-t4"
+              data-tab-subheading
+              data-tab-index="{{ forloop.index0 }}"
+              {% unless forloop.first %}
+                hidden
+              {% endunless %}
+            >{{ tab.subheading.value }}</p>
+          {% endif %}
+        {% endfor %}
+
+        <div
+          class="coffee-heist__tablist"
+          role="tablist"
+        >
+          {% for tab in tabs_obj.tabs.value %}
+            <button
+              type="button"
+              role="tab"
+              id="coffee-heist-tab-{{ section.id }}-{{ forloop.index0 }}"
+              aria-controls="coffee-heist-panel-{{ section.id }}-{{ forloop.index0 }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              class="coffee-heist__tab t-n1-med"
+              data-tab-button
+            >
+              {{ tab.tab_label.value }}
+            </button>
+          {% endfor %}
+        </div>
+
+        <div class="coffee-heist__panels">
+          {% for tab in tabs_obj.tabs.value %}
+            {% assign scale_min = tab.scale_min.value | default: 60 %}
+            {% assign scale_range = 100 | minus: scale_min %}
+
+            <div
+              role="tabpanel"
+              id="coffee-heist-panel-{{ section.id }}-{{ forloop.index0 }}"
+              aria-labelledby="coffee-heist-tab-{{ section.id }}-{{ forloop.index0 }}"
+              class="coffee-heist__panel"
+              data-tab-panel
+              {% unless forloop.first %}
+                hidden
+              {% endunless %}
+            >
+
+              <div class="coffee-heist__panel-card">
+                {% case tab.content_type.value %}
+                  {% when 'Chart' %}
+                    <div class="coffee-heist__chart">
+                      {% for row in tab.chart_rows.value %}
+                        {% assign bar_percent = row.score.value | minus: scale_min | times: 100.0 | divided_by: scale_range %}
+
+                        <div class="coffee-heist__bar-row{% if row.is_featured.value %} coffee-heist__bar-row--featured{% endif %}">
+                          <div class="coffee-heist__bar-label t-n2-med">
+                            {% if row.roaster_image.value != blank %}
+                              {{
+                                row.roaster_image.value
+                                | image_url: width: 240
+                                | image_tag: loading: 'lazy', alt: row.roaster_name.value, class: 'coffee-heist__bar-brand-image'
+                              }}
+                            {% else %}
+                              <span class="coffee-heist__bar-brand">{{ row.roaster_name.value }}</span>
+                            {% endif %}
+                            <span class="coffee-heist__bar-product t-n3">{{ row.product_name.value }}</span>
+                          </div>
+                          <div class="coffee-heist__bar-track">
+                            <div
+                              class="coffee-heist__bar-fill"
+                              style="width: {{ bar_percent }}%;"
+                            >
+                              {% if row.is_featured.value %}
+                                <span class="coffee-heist__bar-placeholder">decaf</span>
+                              {% endif %}
+                              {% if row.bar_badge_label.value != blank %}
+                                <span class="coffee-heist__bar-badge t-n2">{{ row.bar_badge_label.value }}</span>
+                              {% endif %}
+                            </div>
+                            <span
+                              class="coffee-heist__bar-score t-n2"
+                              style="left: {{ bar_percent }}%;"
+                            >
+                              {{ row.score.value }}
+                            </span>
+                          </div>
+                        </div>
+                      {% endfor %}
+
+                      <div class="coffee-heist__axis-row">
+                        <div class="coffee-heist__axis-spacer"></div>
+                        <div
+                          class="coffee-heist__axis t-n3"
+                          aria-hidden="true"
+                        >
+                          {% assign tick_step = 100 | minus: scale_min | times: 1.0 | divided_by: 8 %}
+                          {% for i in (0..8) %}
+                            {% assign step_times_i = tick_step | times: i %}
+                            {% assign tick_value = scale_min | plus: step_times_i %}
+                            <span>{{ tick_value | round }}</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+
+                    {% if tab.source_note.value != blank %}
+                      <div class="coffee-heist__source t-n3">{{ tab.source_note | metafield_tag }}</div>
+                    {% endif %}
+                  {% when 'Evidence Table' %}
+                    <div class="coffee-heist__evidence-scroll">
+                      <table class="coffee-heist__evidence t-t4">
+                        <thead>
+                          <tr class="t-n1-med">
+                            <th>Evidence</th>
+                            <th>Standard Decafs</th>
+                            <th class="coffee-heist__evidence-heist-col">
+                              <img
+                                src="https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Heist-Logo_d239a604-ec26-4b37-b591-406de0b29470.svg?v=1783151754"
+                                alt="Heist"
+                                loading="lazy"
+                                class="coffee-heist__evidence-heist-logo"
+                              >
+                              <span class="coffee-heist__evidence-heist-sub t-n3">(Decaf)</span>
+                            </th> 
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for row in tab.evidence_rows.value %}
+                            <tr>
+                              <td>{{ row.evidence_label.value }}</td>
+                              <td>
+                                {% if row.standard_decaf_result.value %}
+                                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                                {% else %}
+                                  {{ 'icon-close.svg' | inline_asset_content }}
+                                {% endif %}
+                              </td>
+                              <td class="coffee-heist__evidence-heist-col">
+                                {% if row.heist_result.value %}
+                                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                                {% else %}
+                                  {{ 'icon-close.svg' | inline_asset_content }}
+                                {% endif %}
+                              </td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                {% endcase %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+    {% if receipts_obj != blank and receipts_obj.reviews.value.size > 0 %}
+    <div
+      class="coffee-heist-receipts"
+      data-coffee-heist-receipts
+    >
+      {% if receipts_obj.section_heading.value != blank %}
+        <h3 class="coffee-heist-receipts__heading">{{ receipts_obj.section_heading.value }}</h3>
+      {% endif %}
+
+      <div class="coffee-heist-receipts__carousel swiper" data-receipts-swiper>
+        <div class="swiper-wrapper">
+          {% for review in receipts_obj.reviews.value %}
+            <div class="swiper-slide coffee-heist-receipts__card coffee-heist-receipts__card--info">
+              <dl class="coffee-heist-receipts__meta t-n2">
+                <div>
+                  <dt>Name:</dt>
+                  <dd>{{ review.reviewer_name.value }}</dd>
+                </div>
+                <div>
+                  <dt>Rating:</dt>
+                  <dd class="coffee-heist-receipts__stars flex" aria-label="{{ review.rating.value }} out of 5 stars">
+                    {% for i in (1..5) %}
+                      {% if i <= review.rating.value %}{% render 'icon-star' %}{% else %}☆{% endif %}
+                    {% endfor %}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Product:</dt>
+                  <dd>{{ review.product_label.value }}</dd>
+                </div>
+              </dl>
+
+              {% if review.quote.value != blank %}
+                <p class="coffee-heist-receipts__quote t-t4">{{ review.quote.value }}</p>
+              {% endif %}
+
+              {%- capture receipt_footer_inner -%}
+                {% if review.brand_badge_image.value != blank %}
+                  {{
+                    review.brand_badge_image.value
+                    | image_url: width: 200
+                    | image_tag: loading: 'lazy', alt: ''
+                  }}
+                {% endif %}
+                {% if review.verified_buyer.value %}
+                  <span class="coffee-heist-receipts__verified ">
+                    {% render 'icon-barcode' %}
+                    <div class="t-n3 flex">
+                      {% render 'icon-checkbox' %}
+                      Verified buyer
+                    </div>
+                  </span>
+                {% endif %}
+              {%- endcapture -%}
+
+              {% assign receipt_product = review.product.value %}
+              {% if receipt_product != blank %}
+                <a
+                  href="{{ receipt_product.url }}"
+                  class="coffee-heist-receipts__footer coffee-heist-receipts__footer--link"
+                >
+                  {{ receipt_footer_inner }}
+                </a>
+              {% else %}
+                <div class="coffee-heist-receipts__footer">
+                  {{ receipt_footer_inner }}
+                </div>
+              {% endif %}
+            </div>
+
+            {% if review.media_video.value != blank %}
+              {% assign media_video = review.media_video.value %}
+              <div class="swiper-slide coffee-heist-receipts__card coffee-heist-receipts__card--media">
+                <video
+                  class="js-autoplay-video"
+                  {% if review.media_image.value != blank %}
+                    poster="{{ review.media_image.value | image_url: width: 800 }}"
+                  {% endif %}
+                  muted
+                  loop
+                  playsinline
+                >
+                  {% if media_video.sources.size > 0 %}
+                    {% for source in media_video.sources %}
+                      <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                    {% endfor %}
+                  {% else %}
+                    <source src="{{ media_video | file_url }}">
+                  {% endif %}
+                </video>
+                <button
+                  type="button"
+                  class="coffee-heist-receipts__sound-toggle"
+                  data-sound-toggle
+                  aria-pressed="false"
+                  aria-label="Toggle sound"
+                >
+                  {%- comment -%}
+                    Icon filenames are the inverse of their visuals:
+                    icon-sound-unmuted draws a struck speaker (shown while muted),
+                    icon-sound-muted draws a speaker with waves (shown while playing).
+                  {%- endcomment -%}
+                  <span class="coffee-heist-receipts__sound-icon coffee-heist-receipts__sound-icon--muted">
+                    {% render 'icon-sound-unmuted' %}
+                  </span>
+                  <span class="coffee-heist-receipts__sound-icon coffee-heist-receipts__sound-icon--unmuted">
+                    {% render 'icon-sound-muted' %}
+                  </span>
+                </button>
+              </div>
+            {% elsif review.media_image.value != blank %}
+              <div class="swiper-slide coffee-heist-receipts__card coffee-heist-receipts__card--media">
+                {{
+                  review.media_image.value
+                  | image_url: width: 800
+                  | image_tag: loading: 'lazy', alt: review.reviewer_name.value
+                }}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Coffee Heist Comparison",
+  "tag": "section",
+  "class": "coffee-heist-section-wrapper",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "header",
+      "content": "Tabs"
+    },
+    {
+      "type": "metaobject",
+      "id": "tabs_selection",
+      "label": "Tabs content",
+      "metaobject_type": "homepage_coffee_heist_tabs_selections_oh",
+      "info": "HOMEPAGE - COFFEE HEIST TABS - SELECTIONS - OH"
+    },
+    {
+      "type": "header",
+      "content": "Receipts"
+    },
+    {
+      "type": "metaobject",
+      "id": "receipts_selection",
+      "label": "Receipts content",
+      "metaobject_type": "homepage_coffee_heist_receipts_selections_oh",
+      "info": "HOMEPAGE - COFFEE HEIST RECEIPTS - SELECTIONS - OH. Leave blank to hide this block."
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "number",
+      "id": "desktop_top_padding",
+      "label": "Top padding - Desktop",
+      "default": 48
+    },
+    {
+      "type": "number",
+      "id": "desktop_bottom_padding",
+      "label": "Bottom padding - Desktop",
+      "default": 48
+    },
+    {
+      "type": "number",
+      "id": "mobile_top_padding",
+      "label": "Top padding - Mobile",
+      "default": 32
+    },
+    {
+      "type": "number",
+      "id": "mobile_bottom_padding",
+      "label": "Bottom padding - Mobile",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coffee Heist Comparison",
+      "category": "t:categories.storytelling"
+    }
+  ]
+}
+{% endschema %}

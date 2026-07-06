@@ -225,6 +225,19 @@
         "padding_bottom_desktop": 48
       }
     },
+    "coffee_heist_fWAWpF": {
+      "type": "coffee-heist",
+      "name": "Coffee Heist Comparison",
+      "settings": {
+        "background_color": "",
+        "tabs_selection": "the-words-biggest-coffee-heist",
+        "receipts_selection": "the-receipts-dont-lie",
+        "desktop_top_padding": 48,
+        "desktop_bottom_padding": 48,
+        "mobile_top_padding": 32,
+        "mobile_bottom_padding": 32
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -515,6 +528,7 @@
     "quality_showcase_H7aKBp",
     "press_marquee_BLfLFB",
     "viewport_video_FRgn9M",
+    "coffee_heist_fWAWpF",
     "product_list_fa6P9H",
     "gallery_showcase_p3M8Eq",
     "press_section_WRAXwL",
