@@ -127,10 +127,6 @@
 }
 
 // --- States ---------------------------------------------------------------
-// (added per SOP §3/§6 — not specified in Figma)
-.btn:hover {
-  transform: translateY(-0.0625rem);
-}
 
 .btn:active {
   transform: translateY(0);
