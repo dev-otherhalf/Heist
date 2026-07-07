@@ -45,7 +45,18 @@
               background-image: url('{{ tab.background_image.value | image_url: width: 1920 }}');
             {% endif %}
           "
-        ></div>
+        >
+          {% if tab.mobile_background_image_optional.value != blank %}
+            {{
+              tab.mobile_background_image_optional.value
+              | image_url: width: 1000
+              | image_tag:
+                loading: 'lazy',
+                alt: '',
+                class: 'coffee-heist__bg-mobile-image'
+            }}
+          {% endif %}
+        </div>
       {% endfor %}
     </div>
   {% endif %}
@@ -54,7 +65,7 @@
     <div class="coffee-heist">
       <div class="coffee-heist__content">
         {% if tabs_obj.section_heading.value != blank %}
-          <h2 class="coffee-heist__heading t-h2">{{ tabs_obj.section_heading.value }}</h2>
+          <h2 class="coffee-heist__heading t-h4">{{ tabs_obj.section_heading.value }}</h2>
         {% endif %}
         {% for tab in tabs_obj.tabs.value %}
           {% if tab.subheading.value != blank %}
@@ -80,7 +91,7 @@
               id="coffee-heist-tab-{{ section.id }}-{{ forloop.index0 }}"
               aria-controls="coffee-heist-panel-{{ section.id }}-{{ forloop.index0 }}"
               aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-              class="coffee-heist__tab t-n1-med"
+              class="coffee-heist__tab t-n1"
               data-tab-button
             >
               {{ tab.tab_label.value }}
@@ -112,7 +123,7 @@
                         {% assign bar_percent = row.score.value | minus: scale_min | times: 100.0 | divided_by: scale_range %}
 
                         <div class="coffee-heist__bar-row{% if row.is_featured.value %} coffee-heist__bar-row--featured{% endif %}">
-                          <div class="coffee-heist__bar-label t-n2-med">
+                          <div class="coffee-heist__bar-label t-n1-med">
                             {% if row.roaster_image.value != blank %}
                               {{
                                 row.roaster_image.value
@@ -122,7 +133,7 @@
                             {% else %}
                               <span class="coffee-heist__bar-brand">{{ row.roaster_name.value }}</span>
                             {% endif %}
-                            <span class="coffee-heist__bar-product t-n3">{{ row.product_name.value }}</span>
+                            <span class="coffee-heist__bar-product t-n1">{{ row.product_name.value }}</span>
                           </div>
                           <div class="coffee-heist__bar-track">
                             <div
@@ -130,14 +141,14 @@
                               style="width: {{ bar_percent }}%;"
                             >
                               {% if row.is_featured.value %}
-                                <span class="coffee-heist__bar-placeholder">decaf</span>
+                                <span class="coffee-heist__bar-placeholder t-n1">decaf</span>
                               {% endif %}
                               {% if row.bar_badge_label.value != blank %}
                                 <span class="coffee-heist__bar-badge t-n2">{{ row.bar_badge_label.value }}</span>
                               {% endif %}
                             </div>
                             <span
-                              class="coffee-heist__bar-score t-n2"
+                              class="coffee-heist__bar-score t-n1"
                               style="left: {{ bar_percent }}%;"
                             >
                               {{ row.score.value }}
@@ -149,29 +160,29 @@
                       <div class="coffee-heist__axis-row">
                         <div class="coffee-heist__axis-spacer"></div>
                         <div
-                          class="coffee-heist__axis t-n3"
+                          class="coffee-heist__axis"
                           aria-hidden="true"
                         >
                           {% assign tick_step = 100 | minus: scale_min | times: 1.0 | divided_by: 8 %}
                           {% for i in (0..8) %}
                             {% assign step_times_i = tick_step | times: i %}
                             {% assign tick_value = scale_min | plus: step_times_i %}
-                            <span>{{ tick_value | round }}</span>
+                            <span class="t-n1">{{ tick_value | round }}</span>
                           {% endfor %}
                         </div>
                       </div>
                     </div>
 
                     {% if tab.source_note.value != blank %}
-                      <div class="coffee-heist__source t-n3">{{ tab.source_note | metafield_tag }}</div>
+                      <div class="coffee-heist__source t-n2">{{ tab.source_note | metafield_tag }}</div>
                     {% endif %}
                   {% when 'Evidence Table' %}
                     <div class="coffee-heist__evidence-scroll">
                       <table class="coffee-heist__evidence t-t4">
                         <thead>
-                          <tr class="t-n1-med">
+                          <tr class="t-h6">
                             <th>Evidence</th>
-                            <th>Standard Decafs</th>
+                            <th class="coffee-heist__evidence-col">Standard Decafs</th>
                             <th class="coffee-heist__evidence-heist-col">
                               <img
                                 src="https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Heist-Logo_d239a604-ec26-4b37-b591-406de0b29470.svg?v=1783151754"
@@ -179,28 +190,74 @@
                                 loading="lazy"
                                 class="coffee-heist__evidence-heist-logo"
                               >
-                              <span class="coffee-heist__evidence-heist-sub t-n3">(Decaf)</span>
+                              <span class="coffee-heist__evidence-heist-sub t-n1">(Decaf)</span>
                             </th> 
+                            <th class="coffee-heist__evidence-heist-empty-col"></th>
                           </tr>
                         </thead>
                         <tbody>
                           {% for row in tab.evidence_rows.value %}
                             <tr>
-                              <td>{{ row.evidence_label.value }}</td>
-                              <td>
+                              <td class="t-n1">{{ row.evidence_label.value }}</td>
+                              <td class="coffee-heist__evidence-col">
+                                <span class="td_icon_svg">
                                 {% if row.standard_decaf_result.value %}
-                                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                      <g clip-path="url(#clip0_4656_10489)">
+                                        <circle cx="16" cy="16" r="14" fill="#DDD6C7"/>
+                                        <path d="M16 0C7.2 0 0 7.2 0 16C0 24.8 7.2 32 16 32C24.8 32 32 24.8 32 16C32 7.2 24.8 0 16 0ZM14 22.8L7.2 16L10 13.2L14 17.2L22 9.2L24.8 12L14 22.8Z" fill="#161414"/>
+                                      </g>
+                                      <defs>
+                                        <clipPath id="clip0_4656_10489">
+                                          <rect width="32" height="32" fill="white"/>
+                                        </clipPath>
+                                      </defs>
+                                    </svg>
                                 {% else %}
-                                  {{ 'icon-close.svg' | inline_asset_content }}
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                      <g clip-path="url(#clip0_4659_2802)">
+                                        <path d="M25.4281 6.57193L6.57192 25.4281" stroke="#282828" stroke-width="3" stroke-linecap="square"/>
+                                        <path d="M25.4281 25.4281L6.5719 6.57193" stroke="#282828" stroke-width="3" stroke-linecap="square"/>
+                                      </g>
+                                      <defs>
+                                        <clipPath id="clip0_4659_2802">
+                                          <rect width="32" height="32" fill="white"/>
+                                        </clipPath>
+                                      </defs>
+                                    </svg>
                                 {% endif %}
+                                </span>
                               </td>
                               <td class="coffee-heist__evidence-heist-col">
+                                <span class="td_icon_svg">
                                 {% if row.heist_result.value %}
-                                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                      <g clip-path="url(#clip0_4656_10489)">
+                                        <circle cx="16" cy="16" r="14" fill="#DDD6C7"/>
+                                        <path d="M16 0C7.2 0 0 7.2 0 16C0 24.8 7.2 32 16 32C24.8 32 32 24.8 32 16C32 7.2 24.8 0 16 0ZM14 22.8L7.2 16L10 13.2L14 17.2L22 9.2L24.8 12L14 22.8Z" fill="#161414"/>
+                                      </g>
+                                      <defs>
+                                        <clipPath id="clip0_4656_10489">
+                                          <rect width="32" height="32" fill="white"/>
+                                        </clipPath>
+                                      </defs>
+                                    </svg>
                                 {% else %}
-                                  {{ 'icon-close.svg' | inline_asset_content }}
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                      <g clip-path="url(#clip0_4659_2802)">
+                                        <path d="M25.4281 6.57193L6.57192 25.4281" stroke="#282828" stroke-width="3" stroke-linecap="square"/>
+                                        <path d="M25.4281 25.4281L6.5719 6.57193" stroke="#282828" stroke-width="3" stroke-linecap="square"/>
+                                      </g>
+                                      <defs>
+                                        <clipPath id="clip0_4659_2802">
+                                          <rect width="32" height="32" fill="white"/>
+                                        </clipPath>
+                                      </defs>
+                                    </svg>
                                 {% endif %}
+                                </span>
                               </td>
+                              <td class="coffee-heist__evidence-heist-empty-col"></td>
                             </tr>
                           {% endfor %}
                         </tbody>
@@ -220,14 +277,14 @@
       data-coffee-heist-receipts
     >
       {% if receipts_obj.section_heading.value != blank %}
-        <h3 class="coffee-heist-receipts__heading">{{ receipts_obj.section_heading.value }}</h3>
+        <h3 class="coffee-heist-receipts__heading t-h4">{{ receipts_obj.section_heading.value }}</h3>
       {% endif %}
 
       <div class="coffee-heist-receipts__carousel swiper" data-receipts-swiper>
         <div class="swiper-wrapper">
           {% for review in receipts_obj.reviews.value %}
             <div class="swiper-slide coffee-heist-receipts__card coffee-heist-receipts__card--info">
-              <dl class="coffee-heist-receipts__meta t-n2">
+              <dl class="coffee-heist-receipts__meta t-n1">
                 <div>
                   <dt>Name:</dt>
                   <dd>{{ review.reviewer_name.value }}</dd>
@@ -247,7 +304,7 @@
               </dl>
 
               {% if review.quote.value != blank %}
-                <p class="coffee-heist-receipts__quote t-t4">{{ review.quote.value }}</p>
+                <p class="coffee-heist-receipts__quote t-t1">{{ review.quote.value }}</p>
               {% endif %}
 
               {%- capture receipt_footer_inner -%}
@@ -261,9 +318,9 @@
                 {% if review.verified_buyer.value %}
                   <span class="coffee-heist-receipts__verified ">
                     {% render 'icon-barcode' %}
-                    <div class="t-n3 flex">
+                    <div class="t-n1 flex">
                       {% render 'icon-checkbox' %}
-                      Verified buyer
+                      <span>Verified buyer</span>
                     </div>
                   </span>
                 {% endif %}

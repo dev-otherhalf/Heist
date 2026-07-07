@@ -15,12 +15,13 @@
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  gap: var(--space-64);
+  gap: var(--space-16);
   background-color: var(--coffee-heist-section-bg, transparent);
   padding-block: var(--mobile-top-padding) var(--mobile-bottom-padding);
 
   @include respond-to(md) {
     padding-block: var(--desktop-top-padding) var(--desktop-bottom-padding);
+    gap: var(--space-104);
   }
 
   // Tab-driven gradient backdrop — spans the whole section (behind the
@@ -32,19 +33,25 @@
     inset: 0;
     z-index: 0;
   }
+
+  &[data-active-tab="1"] {
+    .coffee-heist-receipts__heading.t-h4 {
+      color: var(--ink);
+    }
+  }
 }
 
-$coffee-heist-axis-spacer: 9rem;
-$coffee-heist-axis-spacer-desktop: 12rem;
+$coffee-heist-axis-spacer: var(--space-105);
+$coffee-heist-axis-spacer-desktop: 14.875rem;
 $coffee-heist-score-reserve: var(--space-32);
 
 .coffee-heist {
   position: relative;
   z-index: 1;
-  padding: var(--space-32) var(--space-16);
+  padding: 0 var(--space-20);
 
-  @include respond-to(md) {
-    padding: var(--space-48) var(--space-32);
+  @include respond-to(xxl) {
+    padding: 0 var(--space-56);
   }
 
   // --- Background crossfade (bg layers live at section level) ------------
@@ -53,13 +60,27 @@ $coffee-heist-score-reserve: var(--space-32);
     position: absolute;
     inset: 0;
     background-image: linear-gradient(160deg, var(--gradient-start), var(--gradient-end));
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     opacity: 0;
     transition: opacity 0.5s ease;
+    pointer-events: none;
 
     &.is-active {
       opacity: 1;
+    }
+  }
+
+  &__bg-mobile-image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    @include respond-to(md) {
+      display: none;
     }
   }
 
@@ -71,29 +92,29 @@ $coffee-heist-score-reserve: var(--space-32);
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 75rem;
+    max-width: 100%;
     margin-inline: auto;
     text-align: center;
   }
 
-  &__heading {
-    color: var(--neutral-white, #fff);
-    margin-block-end: var(--space-16);
+  &__heading.t-h4 {
+    color: var(--cream);
+    font-size: var(--fs-h5);
+    line-height: var(--lh-h5);
+    letter-spacing: var(--ls-h5);
+    font-weight: var(--fw-regular);
+    margin-block-end: var(--space-24);
+    text-wrap: balance;
 
     @include respond-to(md) {
       margin-block-end: var(--space-24);
     }
   }
 
-  &__subheading {
+  &__subheading.t-t4 {
     text-align: center;
-    color: var(--neutral-white, #fff);
-    opacity: 0.8;
-    margin-block-end: var(--space-16);
-
-    @include respond-to(md) {
-      margin-block-end: var(--space-24);
-    }
+    color: var(--bone);
+    opacity: 1;
   }
 
   // --- Tabs ----------------------------------------------------------------
@@ -101,35 +122,43 @@ $coffee-heist-score-reserve: var(--space-32);
   &__tablist {
     display: inline-flex;
     align-self: flex-start;
+    position: relative;
+    margin-top: var(--space-56);
+    gap:var(--space-8);
+    margin-bottom: -0.125rem;
+    @include respond-to(md) {
+      gap:var(--space-12);
+    }
   }
 
   &__tab {
     appearance: none;
     cursor: pointer;
-    padding: var(--space-8) var(--space-16);
-    background: var(--taupe);
+    padding: 0 var(--space-15);
+    background: var(--cream);
     color: var(--ink);
-    white-space: nowrap;
-    border: var(--bw-1) solid var(--ink);
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
-
-    &:first-child {
-      border-start-start-radius: var(--space-8);
-    }
-
-    &:last-child {
-      border-start-end-radius: var(--space-8);
-    }
-
-    & + & {
-      border-inline-start: none;
+    border: var(--bw-2) solid var(--ink);
+    border-radius: 0;
+    min-width: var(--space-128);
+    max-width: var(--space-128);
+    min-height: var(--space-48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include respond-to(md) {
+      min-width: 15.5rem;
+      max-width: 100%;
+      white-space: nowrap;
+      padding: 0 var(--space-23);
+      min-height: var(--space-56);
     }
 
     &[aria-selected="true"] {
-      background: var(--cream);
+      background: var(--bone);
+      @include respond-to(md) {
+        border-bottom:none;
+        padding-bottom: var(--space-2);
+      }
     }
   }
 
@@ -140,35 +169,44 @@ $coffee-heist-score-reserve: var(--space-32);
   }
 
   &__panel-card {
-    background: var(--cream);
+    background: var(--bone);
     color: var(--ink);
-    border: var(--bw-1) solid var(--ink);
-    border-start-start-radius: 0;
-    border-start-end-radius: var(--space-8);
-    border-end-start-radius: var(--space-8);
-    border-end-end-radius: var(--space-8);
-    padding: var(--space-16);
+    border: var(--bw-2) solid var(--ink);
+    border-radius: 0;
+    padding: var(--space-30) var(--space-24) var(--space-17);
     text-align: left;
 
     @include respond-to(md) {
-      padding: var(--space-24);
+      padding: var(--space-56) var(--space-55) var(--space-27) var(--space-56);
     }
   }
 
   // --- Chart -----------------------------------------------------------
-
+  &__chart{
+    padding-top: var(--space-7);
+    overflow: hidden;
+    @include respond-to(md) {
+      padding-top: var(--space-17);
+    }
+  }
   &__bar-row {
     display: grid;
     grid-template-columns: #{$coffee-heist-axis-spacer} 1fr;
     align-items: center;
-    gap: var(--space-8);
-    padding-block: var(--space-8);
+    gap: var(--space-11);
+    padding:var(--space-6) 0;
 
     @include respond-to(md) {
       grid-template-columns: #{$coffee-heist-axis-spacer-desktop} 1fr;
-      gap: var(--space-12);
+      gap: 0;
+      padding:var(--space-8) 0;
     }
-
+    &:nth-last-child(2){
+      padding-bottom: var(--space-15);
+      @include respond-to(md) {
+        padding-bottom: var(--space-23);
+      }
+    }
     &--featured {
       .coffee-heist__bar-brand {
         font-weight: var(--fw-bold, 700);
@@ -177,17 +215,28 @@ $coffee-heist-score-reserve: var(--space-32);
       }
 
       .coffee-heist__bar-fill {
-        background: var(--color-blue-67, #577cff);
+        background: var(--secondary-blue);
       }
     }
   }
 
-  &__bar-label {
+  &__bar-label.t-n1-med {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-4);
+    align-items: center;
+    gap: var(--space-6);
     overflow: hidden;
+    
+    @include respond-down(md) {
+      gap: 0 var(--space-6);
+      font-weight: var(--fw-bold);
+      font-size: var(--fs-n2);
+      line-height: var(--lh-n2);
+      .t-n1{
+        font-size: var(--fs-n2);
+        line-height: var(--lh-n2);
+      }
+    }
   }
 
   &__bar-brand,
@@ -198,14 +247,22 @@ $coffee-heist-score-reserve: var(--space-32);
   }
 
   &__bar-brand-image {
-    max-height: 1.4em;
+    max-height: var(--space-14);
     width: auto;
     object-fit: contain;
+    @include respond-to(md) {
+      max-height: 1.572em;
+    }
   }
-
+  &__bar-placeholder.t-n1{
+      @include respond-down(md) {
+          font-size: var(--fs-n2);
+          line-height: var(--lh-n2);
+      }
+  }
   &__bar-track {
     position: relative;
-    height: var(--space-16);
+    height: var(--space-32);
     margin-inline-end: $coffee-heist-score-reserve;
   }
 
@@ -215,9 +272,11 @@ $coffee-heist-score-reserve: var(--space-32);
     inset-inline-start: 0;
     display: flex;
     align-items: center;
-    padding-inline-start: var(--space-8);
+    padding-inline-start: var(--space-12);
     overflow: hidden;
-    background: rgb(0 0 0 / 0.4);
+    background: #C4BCA9;
+    border: var(--bw-2) solid var(--ink);
+    text-transform: uppercase;
   }
 
   &__bar-badge {
@@ -231,33 +290,62 @@ $coffee-heist-score-reserve: var(--space-32);
     transform: translate(var(--space-8), -50%);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+    &.t-n1{
+        @include respond-down(md) {
+            font-size: var(--fs-n2);
+            line-height: var(--lh-n2);
+        }
+    }
   }
 
   &__axis-row {
     display: grid;
     grid-template-columns: #{$coffee-heist-axis-spacer} 1fr;
-    gap: var(--space-8);
-    margin-block-start: var(--space-8);
+    gap: var(--space-11);
+    margin-block-start: 0;
 
     @include respond-to(md) {
       grid-template-columns: #{$coffee-heist-axis-spacer-desktop} 1fr;
-      gap: var(--space-12);
+      gap: 0;
     }
   }
 
   &__axis {
     display: flex;
     justify-content: space-between;
-    margin-inline-end: $coffee-heist-score-reserve;
-    padding-block-start: var(--space-8);
-    border-block-start: 1px solid var(--ink);
-    opacity: 0.7;
+    padding-inline-end: $coffee-heist-score-reserve;
+    padding-block-start: var(--space-10);
+    border-block-start: var(--bw-2) solid var(--ink);
+    position: relative;
+    &:before{
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      height: 125rem;
+      width: var(--space-2);
+      background: var(--ink);
+    }
+    @include respond-down(md) {
+      padding-inline-end: 0;
+      padding-block-start: var(--space-12);
+      .t-n1{
+        font-size: var(--fs-n2);
+        line-height: var(--lh-n2);
+      }
+      span:nth-child(even){
+        display: none;
+      }
+    }
   }
 
-  &__source {
-    margin-block-start: var(--space-16);
-    opacity: 0.6;
-
+  &__source.t-n2 {
+    margin-block-start: var(--space-41);
+    text-transform: uppercase;
+    @include respond-down(md) {
+      margin-block-start: var(--space-27);
+      font-size: var(--fs-n3);
+      line-height: 0.9625rem;
+    }
     p {
       margin: 0;
     }
@@ -271,47 +359,170 @@ $coffee-heist-score-reserve: var(--space-32);
 
   &__evidence-scroll {
     overflow-x: auto;
+    padding: var(--space-20) 0 var(--space-27);
+    margin: -0.375rem 0 var(--space-24);
+    
+    @include respond-to(lg) {
+      margin: -1.25rem 0 var(--space-18);
+    }
   }
 
   &__evidence {
     width: 100%;
-    min-width: 28rem;
+    min-width: 100%;
     border-collapse: collapse;
-
-    th,
-    td {
-      padding: var(--space-8) var(--space-12);
-      border-block-end: 1px solid rgb(0 0 0 / 0.1);
-      text-align: start;
-
-      @include respond-to(md) {
-        padding: var(--space-12);
+    .t-n1{
+      @include respond-down(lg) {
+        font-size: var(--fs-n2);
+        line-height: var(--lh-n2);
       }
     }
-
+    th {
+      padding: 0 0 var(--space-12);
+      border-block-end: var(--bw-2) solid var(--ink);
+      text-align: start;
+      font-weight: var(--fw-regular);
+      @include respond-down(lg) {
+        font-size: var(--fs-t2);
+        line-height: var(--lh-t2);
+        letter-spacing: var(--ls-t2);
+      }
+      &.coffee-heist__evidence-col{
+        @include respond-down(lg) {
+          font-family: var(--font-mono);
+          font-size: var(--fs-n2);
+          line-height: var(--lh-n2);
+          font-weight: var(--fw-medium);
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+      }
+      @include respond-to(lg) {
+        padding: 0 0 var(--space-20);
+      }
+      &.coffee-heist__evidence-heist-col{
+        border: var(--bw-2) solid var(--ink);
+        position: relative;
+        &:before{
+          position: absolute;
+          background: var(--red);
+          content: "";
+          width: calc(100% + .25rem);
+          height: var(--space-14);
+          top: -0.875rem;
+          left: -.125rem;
+          border: var(--bw-2) solid var(--ink);
+          border-bottom: none;
+        }
+      }
+      &:nth-child(1){
+          @include respond-down(lg) {
+            width: var(--space-110);
+          }  
+      }
+    }
+    td {
+      padding: var(--space-16) 0;
+      border-block-end: var(--bw-2) solid var(--ink);
+      text-align: start;
+      &:nth-child(1){
+          @include respond-down(lg) {
+            width: var(--space-122);
+          }  
+      }
+      @include respond-to(lg) {
+        padding: var(--space-15) 0 var(--space-17);
+      }
+      &.coffee-heist__evidence-heist-col{
+        border: var(--bw-2) solid var(--ink);
+        position: relative;
+      }
+      .td_icon_svg{
+        width: var(--space-24);
+        height: var(--space-24);
+        margin: 0 auto;
+        display: block;
+        @include respond-to(lg) {
+          width: var(--space-32);
+          height: var(--space-32);
+        }
+        svg{
+          width: var(--space-24);
+          height: var(--space-24);
+          @include respond-to(lg) {
+            width: var(--space-32);
+            height: var(--space-32);
+          }
+        }
+      }
+    }
+      
     th:not(:first-child),
     td:not(:first-child) {
       text-align: center;
     }
   }
-
+  tbody{
+    tr:nth-last-child(1){
+    .coffee-heist__evidence-heist-col{
+      position: relative;
+      &:before{
+        position: absolute;
+        background: var(--red);
+        content: "";
+        width: calc(100% + .25rem);
+        height: var(--space-25);
+        bottom: -1.6875rem;
+        left: -.125rem;
+        border: var(--bw-2) solid var(--ink);
+        border-top: none;
+      }
+    }
+  }
+  }
   &__evidence-heist-col {
     background: var(--red);
-    color: var(--neutral-white, #fff);
     font-weight: var(--fw-medium);
+    width: var(--space-89);
+    @include respond-to(lg){
+      width: 12.5rem;
+    }
+  }
+  &__evidence-heist-empty-col{
+    min-width: var(--space-98);
+    max-width: var(--space-98);
+    width: var(--space-98);
+    @include respond-down(lg){
+      display: none;
+    }
+  }
+  &__evidence-col{
+    min-width: var(--space-90);
+    max-width: var(--space-90);
+    width: var(--space-90);
+    @include respond-to(lg){
+      min-width: 20.75rem;
+      max-width: 20.75rem;
+      width: 20.75rem;
+    }
   }
 
   &__evidence-heist-sub {
     display: block;
     font-weight: var(--fw-regular);
-    opacity: 0.85;
   }
 
   &__evidence-heist-logo {
-    display: inline-block;
-    height: 1.1em;
-    width: auto;
+    display: block;
+    height: var(--space-11);
+    width: 100%;
+    object-fit: contain;
     vertical-align: middle;
+    margin-bottom: var(--space-9);
+    @include respond-to(lg){
+      height: var(--space-22);
+      display: inline-block;
+    }
   }
 }
 
@@ -325,15 +536,19 @@ $coffee-heist-score-reserve: var(--space-32);
   z-index: 1;
   width: 100%;
 
-  &__heading {
-    font-style: italic;
-    color: var(--taupe);
-    padding-inline-start: var(--space-16);
-    margin-block-end: var(--space-16);
-
-    @include respond-to(md) {
-      padding-inline-start: var(--space-32);
-      margin-block-end: var(--space-24);
+  &__heading.t-h4 {
+    color: var(--cream);
+    padding-inline-start: var(--space-20);
+    margin-block-end: var(--space-32);
+    @include respond-down(md) {
+      font-size: var(--fs-h7);
+      line-height: var(--lh-h7);
+      letter-spacing: var(--ls-h7);
+    }
+    @include respond-to(xxl) {
+      padding-inline-start: var(--space-56);
+      padding-inline-end: var(--space-56);
+      margin-block-end: var(--space-48);
     }
   }
 
@@ -354,9 +569,14 @@ $coffee-heist-score-reserve: var(--space-32);
     position: relative;
     overflow: clip;
     list-style: none;
-    padding: 0;
     z-index: 1;
     display: block;
+    padding-inline-start: var(--space-20);
+
+    @include respond-to(xxl) {
+      padding-inline-start: var(--space-56);
+      padding-inline-end: var(--space-56);
+    }
   }
 
   .swiper-wrapper {
@@ -376,48 +596,82 @@ $coffee-heist-score-reserve: var(--space-32);
   }
 
   &__card {
-    width: clamp(14rem, 24vw, 18rem);
+    width: 18rem;
     height: auto;
-    border: var(--bw-1) solid var(--ink);
-    border-radius: var(--space-8);
+    border: var(--bw-2) solid var(--ink);
+    border-radius: 0;
     overflow: clip;
-
+    @include respond-to(md) {
+      width: 20rem;
+    }
     &--info {
-      background: var(--cream);
+      background: var(--bone);
       color: var(--ink);
       display: flex;
       flex-direction: column;
-      gap: var(--space-12);
-      padding: var(--space-16);
+      gap: var(--space-20);
+      padding: var(--space-24);
+      @include respond-to(md) {
+        gap: var(--space-18);
+      }
     }
 
     &--media {
       position: relative;
       aspect-ratio: 4 / 5;
-
+      padding:var(--space-15);
+      background: var(--bone);
+      @include respond-to(md) {
+        padding:var(--space-14);
+      }
       img,
       video {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        border: var(--bw-2) solid var(--ink);
       }
     }
   }
 
   &__meta {
     display: grid;
-    gap: var(--space-4);
-    padding-block-end: var(--space-12);
-    border-block-end: var(--bw-1) solid var(--ink);
-
+    gap: var(--space-17);
+    padding-block-end: var(--space-10);
+    border-block-end: 0.09375rem solid var(--ink);
+    @include respond-to(md){
+      padding-block-end: var(--space-20);
+    }
     div {
       display: flex;
       gap: var(--space-4);
+      dt{
+        width: var(--space-80);
+        @include respond-down(md){
+              font-size: var(--fs-n2);
+              line-height: var(--lh-n2);
+        }
+      }
+      dd{
+        margin:0;
+        padding: 0;
+        @include respond-down(md){
+              font-size: var(--fs-n2);
+              line-height: var(--lh-n2);
+        }
+      }
     }
   }
-
-  &__quote {
+  &__stars{
+    gap:var(--space-4);
+  }
+  &__quote.t-t1 {
     flex-grow: 1;
+    @include respond-down(md){
+      font-size: var(--fs-t2);
+      line-height: var(--lh-t2);
+      letter-spacing: var(--ls-t2);
+    }
   }
 
   &__footer {
@@ -438,15 +692,26 @@ $coffee-heist-score-reserve: var(--space-32);
 
   &__verified {
     display: inline-flex;
-    align-items: center;
-    gap: var(--space-4);
+    align-items: flex-start;
+    gap: var(--space-16);
     flex-direction: column;
+    div{
+      gap:var(--space-4);
+      align-items: center;
+      @include respond-down(md) {
+        font-size: var(--fs-n2);
+        line-height: var(--lh-n2);
+      }
+      span{
+        opacity: .8;
+      }
+    }
   }
 
   &__sound-toggle {
     position: absolute;
-    inset-block-end: var(--space-8);
-    inset-inline-end: var(--space-8);
+    inset-block-end: var(--space-29);
+    inset-inline-end: var(--space-30);
     padding: 0;
     border: none;
     background: none;

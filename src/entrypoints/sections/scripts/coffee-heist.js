@@ -20,6 +20,8 @@ function initTabs(root) {
   const backgrounds = [...root.querySelectorAll("[data-tab-bg]")];
   const subheadings = [...root.querySelectorAll("[data-tab-subheading]")];
 
+  root.dataset.activeTab = "0";
+
   root.addEventListener("click", (event) => {
     const button = event.target.closest("[data-tab-button]");
     if (!button) return;
@@ -30,6 +32,7 @@ function initTabs(root) {
     tabButtons.forEach((tabButton, i) => {
       tabButton.setAttribute("aria-selected", String(i === index));
     });
+    root.dataset.activeTab = String(index);
     panels.forEach((panel, i) => panel.toggleAttribute("hidden", i !== index));
     backgrounds.forEach((bg, i) => bg.classList.toggle("is-active", i === index));
     subheadings.forEach((subheading) => {
