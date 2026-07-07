@@ -1,0 +1,218 @@
+{%- render 'vite-tag', entry: 'sections/styles/late-night-gallery.scss' -%}
+
+{% liquid
+  assign gallery_obj = section.settings.gallery_selection
+  assign brewing_obj = section.settings.brewing_guide_selection
+%}
+
+{% if gallery_obj.background_image.value != blank %}
+  <div
+    class="late-night-gallery__bg"
+    aria-hidden="true"
+    style="background-image: url('{{ gallery_obj.background_image.value | image_url: width: 2400 }}');"
+  ></div>
+{% endif %}
+
+{% if gallery_obj != blank and gallery_obj.media_items.value.size > 0 %}
+  <div
+    class="late-night-gallery"
+    style="
+      --late-night-gallery-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+      --late-night-gallery-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+      --late-night-gallery-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+      --late-night-gallery-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    "
+  >
+    {% if gallery_obj.heading.value != blank %}
+      <h2 class="late-night-gallery__heading t-h4">{{ gallery_obj.heading.value }}</h2>
+    {% endif %}
+
+    {%- comment -%}
+      Mobile is a 2-column masonry that must match the design exactly, so we
+      assign each item to the currently-shorter column (Pinterest-style
+      shortest-column packing) here at render time rather than relying on CSS
+      `columns`, whose balanced top-to-bottom fill can't reproduce it.
+      Mobile tile heights are proportional: full ≈ 3, half ≈ 2 (their aspect
+      ratios). Desktop keeps the original left-to-right strip — the two columns
+      collapse via `display: contents` and each item's `order` restores the
+      source sequence.
+    {%- endcomment -%}
+    {%- liquid
+      assign col_a_html = ''
+      assign col_b_html = ''
+      assign height_a = 0
+      assign height_b = 0
+      assign half_index = 0
+    -%}
+
+    {%- for item in gallery_obj.media_items.value -%}
+      {%- assign size = item.size.value | default: 'half' | downcase -%}
+      {%- assign mobile_size = item.mobile_size.value | default: size | downcase -%}
+
+      {%- capture item_media -%}
+        {% if item.video.value != blank %}
+          {% assign item_video = item.video.value %}
+          <video
+            class="late-night-gallery__media js-autoplay-video"
+            {% if item.image.value != blank %}
+              poster="{{ item.image.value | image_url: width: 1000 }}"
+            {% endif %}
+            muted
+            loop
+            playsinline
+          >
+            {% if item_video.sources.size > 0 %}
+              {% for source in item_video.sources %}
+                <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              {% endfor %}
+            {% else %}
+              <source src="{{ item_video | file_url }}">
+            {% endif %}
+          </video>
+        {% elsif item.image.value != blank %}
+          {{
+            item.image.value
+            | image_url: width: 1200
+            | image_tag: loading: 'lazy', class: 'late-night-gallery__media', alt: item.image.value.alt
+          }}
+        {% endif %}
+      {%- endcapture -%}
+
+      {%- assign item_classes = 'late-night-gallery__item late-night-gallery__item--' | append: size -%}
+      {%- assign item_classes = item_classes | append: ' late-night-gallery__item--mobile-' | append: mobile_size -%}
+      {%- comment -%} Desktop-only zig-zag for half tiles (was `:nth-of-type`, which now counts per-column). {%- endcomment -%}
+      {%- if size == 'half' -%}
+        {%- assign half_parity = half_index | modulo: 2 -%}
+        {%- if half_parity == 0 -%}
+          {%- assign item_classes = item_classes | append: ' late-night-gallery__item--stagger-up' -%}
+        {%- else -%}
+          {%- assign item_classes = item_classes | append: ' late-night-gallery__item--stagger-down' -%}
+        {%- endif -%}
+        {%- assign half_index = half_index | plus: 1 -%}
+      {%- endif -%}
+      {%- if item.hide_on_mobile.value -%}
+        {%- assign item_classes = item_classes | append: ' late-night-gallery__item--hide-mobile' -%}
+      {%- endif -%}
+
+      {%- capture item_html -%}
+        {%- if item.link.value != blank -%}
+          <a href="{{ item.link.value }}" class="{{ item_classes }}" style="order: {{ forloop.index }};">{{ item_media }}</a>
+        {%- else -%}
+          <div class="{{ item_classes }}" style="order: {{ forloop.index }};">{{ item_media }}</div>
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {%- comment -%} Hidden-on-mobile tiles still render for desktop; park them in A and skip their height. {%- endcomment -%}
+      {%- if item.hide_on_mobile.value -%}
+        {%- assign col_a_html = col_a_html | append: item_html -%}
+      {%- else -%}
+        {%- assign weight = 2 -%}
+        {%- if mobile_size == 'full' -%}
+          {%- assign weight = 3 -%}
+        {%- endif -%}
+        {%- if height_a <= height_b -%}
+          {%- assign col_a_html = col_a_html | append: item_html -%}
+          {%- assign height_a = height_a | plus: weight -%}
+        {%- else -%}
+          {%- assign col_b_html = col_b_html | append: item_html -%}
+          {%- assign height_b = height_b | plus: weight -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div class="late-night-gallery__list">
+      {%- if col_a_html != blank -%}
+        <div class="late-night-gallery__col">{{ col_a_html }}</div>
+      {%- endif -%}
+      {%- if col_b_html != blank -%}
+        <div class="late-night-gallery__col">{{ col_b_html }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+{% endif %}
+
+{% render 'brewing-guide',
+  brewing_obj: brewing_obj,
+  padding_top_mobile: section.settings.padding_top_mobile,
+  padding_bottom_mobile: section.settings.padding_bottom_mobile,
+  padding_top_desktop: section.settings.padding_top_desktop,
+  padding_bottom_desktop: section.settings.padding_bottom_desktop
+%}
+
+{% schema %}
+{
+  "name": "Late Night Gallery",
+  "tag": "section",
+  "class": "late-night-gallery-wrapper",
+  "settings": [
+    {
+      "type": "metaobject",
+      "id": "gallery_selection",
+      "label": "Gallery content",
+      "metaobject_type": "homepage_late_night_gallery_selections_oh",
+      "info": "HOMEPAGE - LATE NIGHT GALLERY - SELECTIONS - OH"
+    },
+    {
+      "type": "metaobject",
+      "id": "brewing_guide_selection",
+      "label": "Brewing guide content",
+      "metaobject_type": "homepage_brewing_guide_selections_oh",
+      "info": "HOMEPAGE - BREWING GUIDE - SELECTIONS - OH. Leave blank to hide this block."
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Late Night Gallery",
+      "category": "t:categories.storytelling"
+    }
+  ]
+}
+{% endschema %}

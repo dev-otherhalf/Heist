@@ -1,0 +1,611 @@
+// =============================================================================
+// Brewing guide — card strip + native <dialog> recipe drawer.
+// Portable/self-contained: pairs with snippets/brewing-guide.liquid and
+// sections/scripts/brewing-guide.js. No dependency on any host section or on
+// the theme's dialog.js/base.css modal styles — the drawer is styled here.
+// Padding is overridable via --brewing-guide-padding-* (falls back to tokens).
+// =============================================================================
+
+@use "../../../styles/settings/tokens";
+@use "../../../styles/settings/breakpoints" as *;
+@use "../../../styles/components/typography";
+
+.brewing-guide {
+  padding-block: var(--brewing-guide-padding-top-mobile, var(--space-48)) var(--brewing-guide-padding-bottom-mobile, var(--space-48));
+  padding-inline: 0;
+
+  @include respond-to(md) {
+    padding-block: var(--brewing-guide-padding-top-desktop, var(--space-64)) var(--brewing-guide-padding-bottom-desktop, var(--space-64));
+    padding-inline: 0;
+  }
+
+  &__heading {
+    &.t-h4 {
+      color: var(--ink);
+      margin-block-end: 0;
+      padding-inline: var(--space-16);
+
+      @include respond-down(md) {
+        padding-inline: var(--space-20);
+        font-size: var(--fs-h7);
+        line-height: var(--lh-h7);
+        letter-spacing: var(--ls-h7);
+      }
+    }
+  }
+
+  // Swiper carousel (structural CSS inlined — swiper/css not imported).
+  &__list {
+    padding-inline: var(--space-20);
+    margin-top: var(--space-32);
+
+    @include respond-to(md) {
+      padding-inline: var(--space-32);
+      margin-top: var(--space-39);
+    }
+  }
+
+  .swiper {
+    overflow: clip;
+  }
+
+  .swiper-wrapper {
+    display: flex;
+    box-sizing: content-box;
+  }
+
+  &__item {
+    flex-shrink: 0;
+    width: 100%;
+    height: auto;
+    max-width: 20rem;
+
+    @include respond-down(md) {
+      max-width: 16.5rem;
+    }
+  }
+
+  // --- Card ------------------------------------------------------------
+
+  &__card {
+    appearance: none;
+    border: none;
+    padding: 0;
+    width: 100%;
+    cursor: pointer;
+    background: none;
+    color: inherit;
+    text-align: left;
+    display: block;
+    border: var(--bw-2) solid var(--ink);
+  }
+
+  &__card--static {
+    cursor: default;
+  }
+
+  &__card-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 4;
+    overflow: clip;
+    width: 100%;
+    padding-top: 135.445%;
+  }
+
+  &__card-image,
+  &__card-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__card-video {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  // Hover: reveal the video and swap the label text.
+  &__card:hover &__card-video,
+  &__card:focus-visible &__card-video {
+    opacity: 1;
+  }
+
+  &__card-text-hover {
+    display: none;
+  }
+
+  &__card:hover &__card-text-default,
+  &__card:focus-visible &__card-text-default {
+    display: none;
+  }
+
+  &__card:hover &__card-text-hover,
+  &__card:focus-visible &__card-text-hover {
+    display: inline;
+  }
+
+  &__card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    padding-block-start: var(--space-15);
+    padding-block-end: var(--space-16);
+    padding-inline: var(--space-24) var(--space-12);
+    background: var(--cream);
+
+    @include respond-down(md) {
+      padding-block-start: var(--space-12);
+      padding-block-end: var(--space-13);
+      padding-inline: var(--space-16) var(--space-16);
+    }
+  }
+
+  &__card-icon {
+    width: var(--space-72);
+    height: var(--space-85);
+    object-fit: contain;
+    position: absolute;
+    right: var(--space-12);
+    bottom: var(--space-13);
+
+    @include respond-down(md) {
+      width: var(--space-64);
+      height: var(--space-72);
+    }
+
+  }
+
+  // --- Drawer (class-toggled overlay + panel; no native <dialog>) ------
+
+  &__modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--layer-modal, 100);
+    display: flex;
+    justify-content: flex-end;
+
+    &[hidden] {
+      display: none;
+    }
+
+    @include respond-down(md) {
+      align-items: flex-end;
+      justify-content: stretch;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.5);
+    opacity: 0;
+    transition: opacity var(--animation-speed, 0.3s) ease;
+    cursor: pointer;
+  }
+
+  &__modal.is-open &__overlay {
+    opacity: 1;
+  }
+
+  &__drawer {
+    position: relative;
+    height: 100dvh;
+    max-height: 100dvh;
+    width: 37.5rem;
+    max-width: 95vw;
+    background: var(--bone);
+    color: #161414cc;
+    overflow: hidden;
+    transform: translateX(100%);
+    transition: transform var(--animation-speed, 0.3s) var(--animation-easing, ease);
+    background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
+
+    @include respond-down(md) {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      max-height: 100dvh;
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      transform: translateY(100%);
+    }
+  }
+
+  &__modal.is-open &__drawer {
+    transform: translateX(0);
+
+    @include respond-down(md) {
+      transform: translateY(0);
+    }
+  }
+
+  &__drawer-inner {
+    position: relative;
+    min-height: 100%;
+    padding: var(--space-24) calc(var(--space-27) + 4px) var(--space-24) var(--space-32);
+    overflow-y: auto;
+    max-height: 100dvh;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #FF3B27 #161414;
+    background-image: linear-gradient(to left,
+        #161414 0,
+        #161414 4px,
+        transparent 4px,
+        transparent 100%);
+    background-repeat: no-repeat;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #161414;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #FF3B27;
+      border-radius: 0 !important;
+      -webkit-border-radius: 0 !important;
+      background-clip: border-box;
+    }
+
+    &::-webkit-scrollbar-thumb:vertical {
+      border-radius: 0 !important;
+      -webkit-border-radius: 0 !important;
+    }
+
+    @include respond-down(md) {
+      min-height: 0;
+      padding-inline: var(--space-19);
+      max-height: 100dvh;
+    }
+  }
+
+  &__drawer-close {
+    position: absolute;
+    inset-block-start: var(--space-16);
+    inset-inline-end: var(--space-24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-32);
+    height: var(--space-32);
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+
+    @include respond-down(md) {
+      inset-block-start: var(--space-20);
+      inset-inline-end: var(--space-20);
+    }
+
+  }
+
+  &__recipe {
+    display: flex;
+    flex-direction: column;
+
+    // gap: var(--space-16);
+    &-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+  }
+
+  &__recipe-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-24);
+    margin-bottom: var(--space-24);
+
+    @include respond-to(md) {
+      margin-bottom: var(--space-20);
+    }
+  }
+
+  &__recipe-thumb {
+    object-fit: cover;
+    border: var(--bw-1) solid var(--ink);
+    aspect-ratio: 0.8;
+    flex: 0 0 10rem;
+    width: 100%;
+    max-width: 10rem;
+  }
+
+  &__recipe-title {
+    &.t-t7 {
+      color: var(--ink);
+      font-size: var(--fs-h7);
+      line-height: var(--lh-h7);
+      letter-spacing: var(--ls-h7);
+    }
+  }
+
+  &__recipe-meta {
+    display: grid;
+    gap: var(--space-17);
+    padding-block: var(--space-27) 0;
+
+    @include respond-down(md) {
+      padding-block: var(--space-24) 0;
+    }
+
+
+    >div {
+      display: flex;
+      gap: var(--space-8);
+    }
+
+    dt {
+      min-width: 8rem;
+    }
+
+    dd {
+      margin-left: 0;
+    }
+  }
+
+  // Serving-size stepper (buttons; JS scales the ingredient quantities).
+
+  &__servings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12);
+    padding-block: var(--space-24) var(--space-23);
+    border-block: var(--bw-2) solid var(--ink);
+
+    @include respond-down(md) {
+      flex-direction: column;
+      gap: var(--space-16);
+      align-items: flex-start;
+    }
+
+  }
+
+  &__servings-label {
+    &.t-n1 {
+      @include respond-down(md) {
+        font-size: var(--fs-t4);
+        line-height: var(--lh-t4);
+      }
+    }
+  }
+
+  &__stepper {
+    display: flex;
+    gap: var(--space-8);
+  }
+
+  &__stepper-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    padding: var(--space-4) var(--space-12);
+    border: var(--bw-1) solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+    min-width: 3.125rem;
+
+    @include respond-down(md) {
+      min-width: 2.563rem;
+      padding-inline: 4px;
+      padding-block: 0.219rem;
+    }
+
+    &:first-child {
+      border-inline-start: var(--bw-1) solid var(--ink);
+    }
+
+    &.is-active {
+      background: var(--ink);
+      color: var(--cream);
+    }
+  }
+
+  // Ingredients (name … qty with a dotted leader).
+
+  &__ingredients {
+    list-style: none;
+    display: grid;
+    gap: var(--space-12);
+    padding: 0;
+    flex: 1;
+  }
+
+  &__ingredients-wrapper {
+    margin-block: var(--space-24);
+    display: flex;
+    gap: var(--space-21);
+
+    @include respond-down(md) {
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+
+  }
+
+  &__ingredients-label {
+    &.t-n1 {
+      @include respond-down(md) {
+        font-size: var(--fs-t4);
+        line-height: var(--lh-t4);
+      }
+    }
+  }
+
+  &__ingredient {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-8);
+  }
+
+  &__ingredient-name {
+    flex: 0 1 auto;
+  }
+
+  &__ingredient::before {
+    content: "";
+    order: 1;
+    flex: 1 1 auto;
+    border-block-end: 1px dotted var(--ink);
+    opacity: 0.5;
+    transform: translateY(-0.25em);
+  }
+
+  &__ingredient-qty {
+    order: 2;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Product promo banner.
+
+  &__banner {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 12.5rem;
+    padding: var(--space-30) var(--space-72);
+    color: var(--cream);
+    overflow: clip;
+    justify-content: end;
+    border: var(--bw-2) solid var(--ink);
+
+    @include respond-down(md) {
+      margin-inline: calc(var(--space-32) * -1) calc((var(--space-27) + 4px) * -1);
+      padding: var(--space-34) var(--space-22);
+    }
+  }
+
+  &__banner-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  &__banner-image--mobile {
+    display: none;
+  }
+
+  &__banner-copy {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-8);
+    margin-top: var(--space-10);
+
+    @include respond-down(md) {
+      margin-top: var(--space-4);
+      max-width: 174px;
+    }
+  }
+
+  @include respond-down(md) {
+    &__banner-image--desktop {
+      display: none;
+    }
+
+    &__banner-image--mobile {
+      display: block;
+    }
+  }
+
+  &__banner-title,
+  &__banner-subtext {
+    // background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
+    // background-clip: text;
+    // color: transparent;
+    // background-size: contain;
+
+    @include respond-to(md) {
+      background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
+      background-clip: text;
+      color: transparent;
+      background-size: contain;
+    }
+  }
+
+  &__banner-title {
+    &.t-s2 {
+      font-size: var(--fs-s3);
+      line-height: var(--lh-s3);
+    }
+  }
+
+  &__banner-subtext {
+    &.t-t2 {
+      @include respond-down(md) {
+        font-size: var(--fs-t3);
+        line-height: var(--lh-t3);
+        letter-spacing: var(--ls-t3);
+      }
+    }
+  }
+
+  &__banner-cta {
+    @include respond-to(md) {
+      background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
+      background-size: contain;
+
+    }
+  }
+
+  &__banner-cta {
+    margin-block-start: 0;
+
+    @include respond-down(md) {
+      width: fit-content;
+      padding-inline: var(--space-11);
+      margin-top: var(--space-3);
+    }
+  }
+
+  // How to make.
+
+  &__how {
+    display: flex;
+    gap: var(--space-15);
+    margin-block: var(--space-24);
+
+    @include respond-down(md) {
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+  }
+
+  &__how-label {
+    flex-shrink: 0;
+
+    &.t-n1 {
+      @include respond-down(md) {
+        font-size: var(--fs-t4);
+        line-height: var(--lh-t4);
+      }
+    }
+  }
+
+  &__how-list {
+    display: grid;
+    gap: var(--space-8);
+    padding-inline-start: var(--space-20);
+  }
+}

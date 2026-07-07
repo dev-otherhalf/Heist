@@ -1,0 +1,184 @@
+// =============================================================================
+// Late Night Gallery — staggered media strip on a gradient backdrop.
+// Content is metaobject-driven; videos autoplay in-view via the site-wide
+// `.js-autoplay-video` script, so this section ships no JS of its own.
+// Self-contained bundle (own Vite entry) — mirrors coffee-heist.scss.
+// =============================================================================
+
+@use "../../../styles/settings/tokens";
+@use "../../../styles/settings/breakpoints" as *;
+@use "../../../styles/components/typography";
+
+// The Shopify section wrapper is the stacking context for the full-section
+// background image (which sits behind both the gallery and the brewing guide).
+.late-night-gallery-wrapper {
+  position: relative;
+  isolation: isolate;
+}
+
+// Full-bleed metaobject background image — spans the whole section. z-index: -1
+// (clamped by the wrapper's isolation) keeps it behind all in-flow content
+// without having to position each block.
+.late-night-gallery__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.late-night-gallery {
+  position: relative;
+  padding-block: var(--late-night-gallery-padding-top-mobile) var(--late-night-gallery-padding-bottom-mobile);
+  padding-inline: var(--space-20);
+
+  @include respond-to(md) {
+    padding-block: var(--late-night-gallery-padding-top-desktop) var(--late-night-gallery-padding-bottom-desktop);
+    padding-inline: var(--space-56);
+  }
+
+  &__heading {
+    color: var(--neutral-white, #fff);
+    // max-width: 55rem;
+    margin-block-end: var(--space-32);
+
+    @include respond-to(md) {
+      margin-block-end: var(--space-48);
+    }
+
+    br {
+      display: none;
+
+      @include respond-to(xxl) {
+        display: inline;
+      }
+    }
+
+    &.t-h4 {
+      @include respond-down(md) {
+        font-size: var(--fs-h7);
+        line-height: var(--lh-h7);
+      }
+    }
+  }
+
+  // --- Media row --------------------------------------------------------
+  // Mobile: two independent columns (`__col`) stacking their tiles for a
+  // shortest-column masonry — the tile-to-column assignment is done in Liquid.
+  // Desktop: the columns collapse (`display: contents`) so every tile becomes a
+  // direct flex child of `__list`, restoring the horizontal strip; each tile's
+  // inline `order` (source index) puts them back in left-to-right sequence.
+
+  &__list {
+    --late-night-gallery-gap: var(--space-16);
+    --late-night-gallery-desktop-width: 1264;
+
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--late-night-gallery-gap);
+    margin-top: var(--space-39);
+
+    @include respond-to(md) {
+      align-items: center;
+      min-height: 30rem;
+      overflow-x: clip;
+      margin-top: var(--space-80);
+    }
+  }
+
+  &__col {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--late-night-gallery-gap);
+
+    @include respond-to(md) {
+      display: contents;
+    }
+  }
+
+  &__item {
+    flex: 0 0 auto;
+    display: block;
+    overflow: clip;
+    width: 100%;
+    border: var(--bw-2) solid var(--ink);
+  }
+
+  &__item--full {
+    width: min(20rem, 22.222vw);
+    aspect-ratio: 320 / 552;
+
+    @include respond-to(md) {
+      width: calc((100% - (var(--late-night-gallery-gap) * 4)) * 320 / var(--late-night-gallery-desktop-width));
+    }
+  }
+
+  &__item--half {
+    width: min(13rem, 14.444vw);
+    aspect-ratio: 208 / 264;
+
+    @include respond-to(md) {
+      width: calc((100% - (var(--late-night-gallery-gap) * 4)) * 208 / var(--late-night-gallery-desktop-width));
+    }
+  }
+
+  // Desktop zig-zag for half tiles. Assigned in Liquid (source order) rather
+  // than `:nth-of-type`, which would now count within each `__col`. align-self
+  // only affects the desktop strip; on mobile the tile is full-column-width so
+  // it has no visible effect.
+  &__item--stagger-up {
+    @include respond-to(md) {
+      align-self: flex-start;
+    }
+  }
+
+  &__item--stagger-down {
+    @include respond-to(md) {
+      align-self: flex-end;
+    }
+  }
+
+  &__media {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  // --- Mobile: 2-column masonry ----------------------------------------
+  // Column packing is handled by the `__col` wrappers above; here we just size
+  // the tiles full-column-width and set their per-mobile-size aspect ratios.
+
+  @include respond-down(md) {
+    &__item {
+      width: 100%;
+      height: auto;
+      // Tiles are flex children of `__col`; without this their default
+      // `min-height: auto` lets a portrait image's intrinsic height override
+      // `aspect-ratio`, stretching a square half tile (e.g. to 160×198).
+      min-height: 0;
+    }
+
+    &__item--full,
+    &__item--half {
+      width: 100%;
+    }
+
+    &__item--mobile-full {
+      aspect-ratio: 160 / 240;
+    }
+
+    &__item--mobile-half {
+      aspect-ratio: 160 / 160;
+    }
+
+    &__item--hide-mobile {
+      display: none;
+    }
+  }
+}
