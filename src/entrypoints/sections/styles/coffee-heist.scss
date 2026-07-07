@@ -593,20 +593,22 @@ $coffee-heist-score-reserve: var(--space-32);
     transition-property: transform;
   }
 
-  .swiper-slide {
+  .swiper-slide.coffee-heist-receipts__card {
     flex-shrink: 0;
     position: relative;
     transition-property: transform;
+    display: flex;
+    height: auto;
   }
 
   &__card {
-    width: 18rem;
+    max-width: 18rem;
     height: auto;
     border: var(--bw-2) solid var(--ink);
     border-radius: 0;
     overflow: clip;
     @include respond-to(md) {
-      width: 20rem;
+      max-width: 20rem;
     }
     &--info {
       background: var(--bone);
