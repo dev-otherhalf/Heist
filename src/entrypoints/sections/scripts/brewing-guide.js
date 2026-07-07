@@ -179,4 +179,6 @@ function initBrewingGuide(scope = document) {
 }
 
 document.addEventListener("DOMContentLoaded", () => initBrewingGuide());
-document.addEventListener("shopify:section:load", (event) => initBrewingGuide(event.target));
+document.addEventListener("shopify:section:load", (event) =>
+  initBrewingGuide(event.target),
+);

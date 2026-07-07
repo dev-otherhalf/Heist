@@ -16,7 +16,7 @@
     flex-direction: column;
     gap: var(--space-32);
     @include respond-down(lg) {
-      padding:0;
+      padding: 0;
     }
 
     @include respond-to(lg) {
@@ -72,13 +72,13 @@
     align-items: center;
     display: inline-flex;
     flex: auto;
-    img{
+    img {
       display: block;
       height: auto;
       max-height: var(--image-max-height);
       min-height: var(--image-max-height);
       object-fit: contain;
-      width: auto;  
+      width: auto;
     }
   }
 

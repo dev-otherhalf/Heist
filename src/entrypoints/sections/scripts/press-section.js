@@ -112,7 +112,8 @@ class PressSection {
         .querySelectorAll("[data-press-section-bullet]")
         .forEach((bullet) => {
           const isActive =
-            Number(bullet.dataset.pressSectionBullet) === this.swiper.activeIndex;
+            Number(bullet.dataset.pressSectionBullet) ===
+            this.swiper.activeIndex;
 
           bullet.classList.toggle("is-active", isActive);
           bullet.setAttribute("aria-current", isActive ? "true" : "false");

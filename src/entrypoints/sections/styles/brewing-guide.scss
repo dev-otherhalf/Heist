@@ -11,7 +11,6 @@
 @use "../../../styles/components/typography";
 
 .brewing-guide {
-
   &__heading {
     &.t-h4 {
       color: var(--ink);
@@ -149,7 +148,6 @@
       width: var(--space-64);
       height: var(--space-72);
     }
-
   }
 
   // --- Drawer (class-toggled overlay + panel; no native <dialog>) ------
@@ -194,7 +192,8 @@
     color: #161414cc;
     overflow: hidden;
     transform: translateX(100%);
-    transition: transform var(--animation-speed, 0.3s) var(--animation-easing, ease);
+    transition: transform var(--animation-speed, 0.3s)
+      var(--animation-easing, ease);
     background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
 
     @include respond-down(md) {
@@ -219,17 +218,20 @@
   &__drawer-inner {
     position: relative;
     min-height: 100%;
-    padding: var(--space-24) calc(var(--space-27) + 4px) var(--space-24) var(--space-32);
+    padding: var(--space-24) calc(var(--space-27) + 4px) var(--space-24)
+      var(--space-32);
     overflow-y: auto;
     max-height: 100dvh;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
-    scrollbar-color: #FF3B27 #161414;
-    background-image: linear-gradient(to left,
-        #161414 0,
-        #161414 8px,
-        transparent 8px,
-        transparent 100%);
+    scrollbar-color: #ff3b27 #161414;
+    background-image: linear-gradient(
+      to left,
+      #161414 0,
+      #161414 8px,
+      transparent 8px,
+      transparent 100%
+    );
     background-repeat: no-repeat;
 
     &::-webkit-scrollbar {
@@ -241,7 +243,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #FF3B27;
+      background: #ff3b27;
       border-radius: 0 !important;
       -webkit-border-radius: 0 !important;
       background-clip: border-box;
@@ -278,7 +280,6 @@
       inset-block-start: var(--space-20);
       inset-inline-end: var(--space-20);
     }
-
   }
 
   &__recipe {
@@ -331,8 +332,7 @@
       padding-block: var(--space-24) 0;
     }
 
-
-    >div {
+    > div {
       display: flex;
       gap: var(--space-8);
     }
@@ -361,7 +361,6 @@
       gap: var(--space-16);
       align-items: flex-start;
     }
-
   }
 
   &__servings-label {
@@ -427,7 +426,6 @@
       flex-direction: column;
       gap: var(--space-16);
     }
-
   }
 
   &__ingredients-label {
@@ -479,7 +477,8 @@
     border: var(--bw-2) solid var(--ink);
 
     @include respond-down(md) {
-      margin-inline: calc(var(--space-32) * -1) calc((var(--space-27) + 4px) * -1);
+      margin-inline: calc(var(--space-32) * -1)
+        calc((var(--space-27) + 4px) * -1);
       padding: var(--space-34) var(--space-22);
     }
   }
@@ -558,7 +557,6 @@
     @include respond-to(md) {
       background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
       background-size: contain;
-
     }
   }
 

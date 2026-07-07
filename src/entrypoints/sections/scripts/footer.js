@@ -68,7 +68,6 @@ class AudioPlayer {
         once: true,
       });
     }
-
   }
 
   updateFooterAudioOffset() {

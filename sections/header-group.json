@@ -91,10 +91,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "heist_fm_track_4N8zJM",
-            "heist_fm_track_FzcJq9"
-          ]
+          "block_order": ["heist_fm_track_4N8zJM", "heist_fm_track_FzcJq9"]
         }
       },
       "block_order": [
@@ -135,7 +132,5 @@
       }
     }
   },
-  "order": [
-    "header_section"
-  ]
+  "order": ["header_section"]
 }

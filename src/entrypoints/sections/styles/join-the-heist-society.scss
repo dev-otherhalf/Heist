@@ -4,14 +4,16 @@
 .join-the-heist-society {
   background-color: var(--join-the-heist-society-bg, var(--cream));
   overflow: clip;
-  padding-block: var(--join-the-heist-society-padding-top-mobile) var(--join-the-heist-society-padding-bottom-mobile);
+  padding-block: var(--join-the-heist-society-padding-top-mobile)
+    var(--join-the-heist-society-padding-bottom-mobile);
 
-  >.page-width {
+  > .page-width {
     padding-inline: 0;
   }
 
   @include respond-to(lg) {
-    padding-block: var(--join-the-heist-society-padding-top-desktop) var(--join-the-heist-society-padding-bottom-desktop);
+    padding-block: var(--join-the-heist-society-padding-top-desktop)
+      var(--join-the-heist-society-padding-bottom-desktop);
   }
 
   &__layout {
@@ -135,7 +137,11 @@
 
   &__panel-overlay {
     background:
-      linear-gradient(180deg, rgba(245, 239, 229, 0.82) 0%, rgba(245, 239, 229, 0.9) 100%),
+      linear-gradient(
+        180deg,
+        rgba(245, 239, 229, 0.82) 0%,
+        rgba(245, 239, 229, 0.9) 100%
+      ),
       var(--join-the-heist-society-panel-bg, rgba(244, 237, 225, 0.82));
     z-index: 1;
   }
@@ -158,8 +164,8 @@
 
     @include respond-down(lg) {
       padding-block: var(--space-64) 0;
-       margin-inline: auto;
-       margin-right: auto;
+      margin-inline: auto;
+      margin-right: auto;
     }
   }
 
@@ -209,7 +215,7 @@
 
     &.t-h4 {
       @include respond-down(lg) {
-      font-size: var(--fs-h5);
+        font-size: var(--fs-h5);
       }
     }
   }
@@ -346,14 +352,12 @@
 
   &__product-title-link {
     &.t-n1 {
-
       @include respond-down(lg) {
         max-height: 96px;
         font-size: var(--fs-n2-med);
         line-height: var(--lh-n2);
         margin-top: var(--space-16);
       }
-
     }
   }
 

@@ -77,10 +77,13 @@
       align-items: center;
       gap: 3rem;
       grid-template-areas: "left media right";
-      grid-template-columns: minmax(0, 1.0356fr) minmax(0, 1.1fr) minmax(0, 1.0356fr);
+      grid-template-columns: minmax(0, 1.0356fr) minmax(0, 1.1fr) minmax(
+          0,
+          1.0356fr
+        );
     }
 
-        @include respond-to(xl) {
+    @include respond-to(xl) {
       gap: 5rem;
     }
   }

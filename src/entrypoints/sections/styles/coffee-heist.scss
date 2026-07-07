@@ -59,7 +59,11 @@ $coffee-heist-score-reserve: var(--space-32);
   &__bg {
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(160deg, var(--gradient-start), var(--gradient-end));
+    background-image: linear-gradient(
+      160deg,
+      var(--gradient-start),
+      var(--gradient-end)
+    );
     background-size: 100% 100%;
     background-position: center;
     opacity: 0;
@@ -124,10 +128,10 @@ $coffee-heist-score-reserve: var(--space-32);
     align-self: flex-start;
     position: relative;
     margin-top: var(--space-56);
-    gap:var(--space-8);
+    gap: var(--space-8);
     margin-bottom: -0.125rem;
     @include respond-to(md) {
-      gap:var(--space-12);
+      gap: var(--space-12);
     }
   }
 
@@ -156,7 +160,7 @@ $coffee-heist-score-reserve: var(--space-32);
     &[aria-selected="true"] {
       background: var(--bone);
       @include respond-to(md) {
-        border-bottom:none;
+        border-bottom: none;
         padding-bottom: var(--space-2);
       }
     }
@@ -182,7 +186,7 @@ $coffee-heist-score-reserve: var(--space-32);
   }
 
   // --- Chart -----------------------------------------------------------
-  &__chart{
+  &__chart {
     padding-top: var(--space-7);
     overflow: hidden;
     @include respond-to(md) {
@@ -194,14 +198,14 @@ $coffee-heist-score-reserve: var(--space-32);
     grid-template-columns: #{$coffee-heist-axis-spacer} 1fr;
     align-items: center;
     gap: var(--space-11);
-    padding:var(--space-6) 0;
+    padding: var(--space-6) 0;
 
     @include respond-to(md) {
       grid-template-columns: #{$coffee-heist-axis-spacer-desktop} 1fr;
       gap: 0;
-      padding:var(--space-8) 0;
+      padding: var(--space-8) 0;
     }
-    &:nth-last-child(2){
+    &:nth-last-child(2) {
       padding-bottom: var(--space-15);
       @include respond-to(md) {
         padding-bottom: var(--space-23);
@@ -226,13 +230,13 @@ $coffee-heist-score-reserve: var(--space-32);
     align-items: center;
     gap: var(--space-6);
     overflow: hidden;
-    
+
     @include respond-down(md) {
       gap: 0 var(--space-6);
       font-weight: var(--fw-bold);
       font-size: var(--fs-n2);
       line-height: var(--lh-n2);
-      .t-n1{
+      .t-n1 {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
@@ -254,11 +258,11 @@ $coffee-heist-score-reserve: var(--space-32);
       max-height: 1.572em;
     }
   }
-  &__bar-placeholder.t-n1{
-      @include respond-down(md) {
-          font-size: var(--fs-n2);
-          line-height: var(--lh-n2);
-      }
+  &__bar-placeholder.t-n1 {
+    @include respond-down(md) {
+      font-size: var(--fs-n2);
+      line-height: var(--lh-n2);
+    }
   }
   &__bar-track {
     position: relative;
@@ -274,7 +278,7 @@ $coffee-heist-score-reserve: var(--space-32);
     align-items: center;
     padding-inline-start: var(--space-12);
     overflow: hidden;
-    background: #C4BCA9;
+    background: #c4bca9;
     border: var(--bw-2) solid var(--ink);
     text-transform: uppercase;
   }
@@ -290,11 +294,11 @@ $coffee-heist-score-reserve: var(--space-32);
     transform: translate(var(--space-8), -50%);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-    &.t-n1{
-        @include respond-down(md) {
-            font-size: var(--fs-n2);
-            line-height: var(--lh-n2);
-        }
+    &.t-n1 {
+      @include respond-down(md) {
+        font-size: var(--fs-n2);
+        line-height: var(--lh-n2);
+      }
     }
   }
 
@@ -317,7 +321,7 @@ $coffee-heist-score-reserve: var(--space-32);
     padding-block-start: var(--space-10);
     border-block-start: var(--bw-2) solid var(--ink);
     position: relative;
-    &:before{
+    &:before {
       content: "";
       position: absolute;
       bottom: 100%;
@@ -328,11 +332,11 @@ $coffee-heist-score-reserve: var(--space-32);
     @include respond-down(md) {
       padding-inline-end: 0;
       padding-block-start: var(--space-12);
-      .t-n1{
+      .t-n1 {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
-      span:nth-child(even){
+      span:nth-child(even) {
         display: none;
       }
     }
@@ -361,7 +365,7 @@ $coffee-heist-score-reserve: var(--space-32);
     overflow-x: auto;
     padding: var(--space-20) 0 var(--space-27);
     margin: -0.375rem 0 var(--space-24);
-    
+
     @include respond-to(lg) {
       margin: -1.25rem 0 var(--space-18);
     }
@@ -371,7 +375,7 @@ $coffee-heist-score-reserve: var(--space-32);
     width: 100%;
     min-width: 100%;
     border-collapse: collapse;
-    .t-n1{
+    .t-n1 {
       @include respond-down(lg) {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
@@ -387,7 +391,7 @@ $coffee-heist-score-reserve: var(--space-32);
         line-height: var(--lh-t2);
         letter-spacing: var(--ls-t2);
       }
-      &.coffee-heist__evidence-col{
+      &.coffee-heist__evidence-col {
         @include respond-down(lg) {
           font-family: var(--font-mono);
           font-size: var(--fs-n2);
@@ -400,44 +404,44 @@ $coffee-heist-score-reserve: var(--space-32);
       @include respond-to(lg) {
         padding: 0 0 var(--space-20);
       }
-      &.coffee-heist__evidence-heist-col{
+      &.coffee-heist__evidence-heist-col {
         border: var(--bw-2) solid var(--ink);
         position: relative;
-        &:before{
+        &:before {
           position: absolute;
           background: var(--red);
           content: "";
-          width: calc(100% + .25rem);
+          width: calc(100% + 0.25rem);
           height: var(--space-14);
           top: -0.875rem;
-          left: -.125rem;
+          left: -0.125rem;
           border: var(--bw-2) solid var(--ink);
           border-bottom: none;
         }
       }
-      &:nth-child(1){
-          @include respond-down(lg) {
-            width: var(--space-110);
-          }  
+      &:nth-child(1) {
+        @include respond-down(lg) {
+          width: var(--space-110);
+        }
       }
     }
     td {
       padding: var(--space-16) 0;
       border-block-end: var(--bw-2) solid var(--ink);
       text-align: start;
-      &:nth-child(1){
-          @include respond-down(lg) {
-            width: var(--space-122);
-          }  
+      &:nth-child(1) {
+        @include respond-down(lg) {
+          width: var(--space-122);
+        }
       }
       @include respond-to(lg) {
         padding: var(--space-15) 0 var(--space-17);
       }
-      &.coffee-heist__evidence-heist-col{
+      &.coffee-heist__evidence-heist-col {
         border: var(--bw-2) solid var(--ink);
         position: relative;
       }
-      .td_icon_svg{
+      .td_icon_svg {
         width: var(--space-24);
         height: var(--space-24);
         margin: 0 auto;
@@ -446,7 +450,7 @@ $coffee-heist-score-reserve: var(--space-32);
           width: var(--space-32);
           height: var(--space-32);
         }
-        svg{
+        svg {
           width: var(--space-24);
           height: var(--space-24);
           @include respond-to(lg) {
@@ -456,51 +460,51 @@ $coffee-heist-score-reserve: var(--space-32);
         }
       }
     }
-      
+
     th:not(:first-child),
     td:not(:first-child) {
       text-align: center;
     }
   }
-  tbody{
-    tr:nth-last-child(1){
-    .coffee-heist__evidence-heist-col{
-      position: relative;
-      &:before{
-        position: absolute;
-        background: var(--red);
-        content: "";
-        width: calc(100% + .25rem);
-        height: var(--space-25);
-        bottom: -1.6875rem;
-        left: -.125rem;
-        border: var(--bw-2) solid var(--ink);
-        border-top: none;
+  tbody {
+    tr:nth-last-child(1) {
+      .coffee-heist__evidence-heist-col {
+        position: relative;
+        &:before {
+          position: absolute;
+          background: var(--red);
+          content: "";
+          width: calc(100% + 0.25rem);
+          height: var(--space-25);
+          bottom: -1.6875rem;
+          left: -0.125rem;
+          border: var(--bw-2) solid var(--ink);
+          border-top: none;
+        }
       }
     }
-  }
   }
   &__evidence-heist-col {
     background: var(--red);
     font-weight: var(--fw-medium);
     width: var(--space-89);
-    @include respond-to(lg){
+    @include respond-to(lg) {
       width: 12.5rem;
     }
   }
-  &__evidence-heist-empty-col{
+  &__evidence-heist-empty-col {
     min-width: var(--space-98);
     max-width: var(--space-98);
     width: var(--space-98);
-    @include respond-down(lg){
+    @include respond-down(lg) {
       display: none;
     }
   }
-  &__evidence-col{
+  &__evidence-col {
     min-width: var(--space-90);
     max-width: var(--space-90);
     width: var(--space-90);
-    @include respond-to(lg){
+    @include respond-to(lg) {
       min-width: 20.75rem;
       max-width: 20.75rem;
       width: 20.75rem;
@@ -519,7 +523,7 @@ $coffee-heist-score-reserve: var(--space-32);
     object-fit: contain;
     vertical-align: middle;
     margin-bottom: var(--space-9);
-    @include respond-to(lg){
+    @include respond-to(lg) {
       height: var(--space-22);
       display: inline-block;
     }
@@ -619,10 +623,10 @@ $coffee-heist-score-reserve: var(--space-32);
     &--media {
       position: relative;
       aspect-ratio: 4 / 5;
-      padding:var(--space-15);
+      padding: var(--space-15);
       background: var(--bone);
       @include respond-to(md) {
-        padding:var(--space-14);
+        padding: var(--space-14);
       }
       img,
       video {
@@ -639,35 +643,35 @@ $coffee-heist-score-reserve: var(--space-32);
     gap: var(--space-17);
     padding-block-end: var(--space-10);
     border-block-end: 0.09375rem solid var(--ink);
-    @include respond-to(md){
+    @include respond-to(md) {
       padding-block-end: var(--space-20);
     }
     div {
       display: flex;
       gap: var(--space-4);
-      dt{
+      dt {
         width: var(--space-80);
-        @include respond-down(md){
-              font-size: var(--fs-n2);
-              line-height: var(--lh-n2);
+        @include respond-down(md) {
+          font-size: var(--fs-n2);
+          line-height: var(--lh-n2);
         }
       }
-      dd{
-        margin:0;
+      dd {
+        margin: 0;
         padding: 0;
-        @include respond-down(md){
-              font-size: var(--fs-n2);
-              line-height: var(--lh-n2);
+        @include respond-down(md) {
+          font-size: var(--fs-n2);
+          line-height: var(--lh-n2);
         }
       }
     }
   }
-  &__stars{
-    gap:var(--space-4);
+  &__stars {
+    gap: var(--space-4);
   }
   &__quote.t-t1 {
     flex-grow: 1;
-    @include respond-down(md){
+    @include respond-down(md) {
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
       letter-spacing: var(--ls-t2);
@@ -695,15 +699,15 @@ $coffee-heist-score-reserve: var(--space-32);
     align-items: flex-start;
     gap: var(--space-16);
     flex-direction: column;
-    div{
-      gap:var(--space-4);
+    div {
+      gap: var(--space-4);
       align-items: center;
       @include respond-down(md) {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
-      span{
-        opacity: .8;
+      span {
+        opacity: 0.8;
       }
     }
   }

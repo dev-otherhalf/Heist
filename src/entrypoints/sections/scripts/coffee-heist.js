@@ -34,9 +34,14 @@ function initTabs(root) {
     });
     root.dataset.activeTab = String(index);
     panels.forEach((panel, i) => panel.toggleAttribute("hidden", i !== index));
-    backgrounds.forEach((bg, i) => bg.classList.toggle("is-active", i === index));
+    backgrounds.forEach((bg, i) =>
+      bg.classList.toggle("is-active", i === index),
+    );
     subheadings.forEach((subheading) => {
-      subheading.toggleAttribute("hidden", Number(subheading.dataset.tabIndex) !== index);
+      subheading.toggleAttribute(
+        "hidden",
+        Number(subheading.dataset.tabIndex) !== index,
+      );
     });
   });
 }
@@ -77,4 +82,6 @@ function initCoffeeHeist(scope = document) {
 }
 
 document.addEventListener("DOMContentLoaded", () => initCoffeeHeist());
-document.addEventListener("shopify:section:load", (event) => initCoffeeHeist(event.target));
+document.addEventListener("shopify:section:load", (event) =>
+  initCoffeeHeist(event.target),
+);

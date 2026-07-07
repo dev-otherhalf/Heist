@@ -6,7 +6,7 @@ let breakpointListenerAdded = false;
 
 const desktopMediaQuery = window.matchMedia("(min-width: 990px)");
 const reducedMotionQuery = window.matchMedia(
-  "(prefers-reduced-motion: reduce)"
+  "(prefers-reduced-motion: reduce)",
 );
 
 function createLenis() {

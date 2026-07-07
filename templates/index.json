@@ -70,10 +70,7 @@
           }
         }
       },
-      "block_order": [
-        "product_card_qY87VK",
-        "product_card_aazcXY"
-      ],
+      "block_order": ["product_card_qY87VK", "product_card_aazcXY"],
       "name": "Product variant showcase",
       "settings": {
         "heading": "World-Class Decaf Coffee",

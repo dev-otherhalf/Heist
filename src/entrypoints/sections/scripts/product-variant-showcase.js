@@ -19,7 +19,10 @@ class ProductVariantShowcase {
       card.querySelectorAll("[data-variant-trigger]").forEach((button) => {
         button.removeEventListener("click", button._comparisonClickHandler);
       });
-      card.removeEventListener("pointerenter", card._comparisonPointerEnterHandler);
+      card.removeEventListener(
+        "pointerenter",
+        card._comparisonPointerEnterHandler,
+      );
     });
   }
 
@@ -90,17 +93,14 @@ class ProductVariantShowcase {
       title.textContent = button.dataset.variantTitleValue || "";
     }
 
-    this.updateOptionalText(
-      label,
-      button.dataset.variantLabelValue || "",
-    );
-    this.updateOptionalText(
-      notes,
-      button.dataset.variantNotesValue || "",
-    );
+    this.updateOptionalText(label, button.dataset.variantLabelValue || "");
+    this.updateOptionalText(notes, button.dataset.variantNotesValue || "");
 
     if (mobileImage && button.dataset.variantMobileImageValue) {
-      mobileImage.setAttribute("srcset", button.dataset.variantMobileImageValue);
+      mobileImage.setAttribute(
+        "srcset",
+        button.dataset.variantMobileImageValue,
+      );
     }
 
     if (desktopImage && button.dataset.variantDesktopImageValue) {
@@ -152,7 +152,9 @@ class ProductVariantShowcase {
   updateIndicator(card, options = {}) {
     card.querySelectorAll("[data-variant-toggle]").forEach((toggle) => {
       const indicator = toggle.querySelector("[data-toggle-indicator]");
-      const activeButton = toggle.querySelector("[data-variant-trigger].is-active");
+      const activeButton = toggle.querySelector(
+        "[data-variant-trigger].is-active",
+      );
 
       if (!indicator || !activeButton) return;
 
@@ -238,7 +240,9 @@ const unmount = (section) => {
 document.querySelectorAll("[data-product-variant-showcase]").forEach(mount);
 
 document.addEventListener("shopify:section:load", (event) => {
-  event.target.querySelectorAll("[data-product-variant-showcase]").forEach(mount);
+  event.target
+    .querySelectorAll("[data-product-variant-showcase]")
+    .forEach(mount);
 });
 
 document.addEventListener("shopify:section:unload", (event) => {

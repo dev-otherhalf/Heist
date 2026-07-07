@@ -4,10 +4,12 @@
 .product-variant-showcase {
   color: var(--ink);
   overflow: clip;
-  padding-block: var(--product-variant-showcase-padding-top-mobile) var(--product-variant-showcase-padding-bottom-mobile);
+  padding-block: var(--product-variant-showcase-padding-top-mobile)
+    var(--product-variant-showcase-padding-bottom-mobile);
 
   @include breakpoints.respond-to(lg) {
-    padding-block: var(--product-variant-showcase-padding-top-desktop) var(--product-variant-showcase-padding-bottom-desktop);
+    padding-block: var(--product-variant-showcase-padding-top-desktop)
+      var(--product-variant-showcase-padding-bottom-desktop);
   }
 
   &__inner {
@@ -35,12 +37,12 @@
 
   &__heading {
     &.t-h4 {
-    @include breakpoints.respond-down(lg) {
-      font-size: var(--fs-h5);
-      line-height: var(--lh-h5);
-      letter-spacing: var(--ls-h5);
-      text-align: center;
-    }
+      @include breakpoints.respond-down(lg) {
+        font-size: var(--fs-h5);
+        line-height: var(--lh-h5);
+        letter-spacing: var(--ls-h5);
+        text-align: center;
+      }
     }
   }
 
@@ -69,7 +71,8 @@
   }
 
   &__badges.is-marquee-ready &__badges-track {
-    animation: product-variant-showcase-marquee var(--badge-marquee-duration, 18s) linear infinite;
+    animation: product-variant-showcase-marquee
+      var(--badge-marquee-duration, 18s) linear infinite;
   }
 
   &__badge {
@@ -178,7 +181,7 @@
       padding: 0;
     }
 
-    >.product-variant-showcase__footer {
+    > .product-variant-showcase__footer {
       @include breakpoints.respond-to(lg) {
         display: none;
       }
@@ -222,7 +225,6 @@
         line-height: 120%;
       }
     }
-
   }
 
   &__product-notes {
@@ -284,10 +286,12 @@
       padding-top: var(--space-8);
 
       @include breakpoints.respond-to(lg) {
-        background: linear-gradient(180deg,
-            rgba(15, 15, 15, 0) 0%,
-            rgba(15, 15, 15, 0.72) 26%,
-            rgba(15, 15, 15, 0.96) 100%);
+        background: linear-gradient(
+          180deg,
+          rgba(15, 15, 15, 0) 0%,
+          rgba(15, 15, 15, 0.72) 26%,
+          rgba(15, 15, 15, 0.96) 100%
+        );
         bottom: var(--space-20);
         opacity: 0;
         left: 0;
@@ -373,10 +377,12 @@
 
     &::after {
       @include breakpoints.respond-to(lg) {
-        background: linear-gradient(180deg,
-            rgba(15, 15, 15, 0.38) 0%,
-            rgba(15, 15, 15, 0.26) 32%,
-            rgba(15, 15, 15, 0.72) 100%);
+        background: linear-gradient(
+          180deg,
+          rgba(15, 15, 15, 0.38) 0%,
+          rgba(15, 15, 15, 0.26) 32%,
+          rgba(15, 15, 15, 0.72) 100%
+        );
         content: "";
         inset: 0;
         position: absolute;

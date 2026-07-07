@@ -6,28 +6,67 @@
   assign entry = entry | default: vite-tag
   assign path = entry | replace: '~/', '../' | replace: '@/', '../'
 %}
-{% liquid
-  assign path_prefix = path | slice: 0
-  if path_prefix == '/'
-    assign file_url_prefix = 'http://localhost:5173'
-  else
-    assign file_url_prefix = 'http://localhost:5173/src/entrypoints/'
-  endif
-  assign file_url = path | prepend: file_url_prefix
-  assign file_name = path | split: '/' | last
-  if file_name contains '.'
-    assign file_extension = file_name | split: '.' | last
-  endif
-  assign css_extensions = 'css|less|sass|scss|styl|stylus|pcss|postcss' | split: '|'
-  assign is_css = false
-  if css_extensions contains file_extension
-    assign is_css = true
-  endif
-%}
-<script src="http://localhost:5173/@vite/client" type="module"></script>
-<script id="hot-reload-client" src="https://cdn.jsdelivr.net/npm/@shopify/theme-hot-reload/dist/theme-hot-reload.min.js" type="module"></script>
-{% if is_css == true %}
-  <link rel="stylesheet" href="{{ file_url }}" crossorigin="anonymous">
-{% else %}
-  <script src="{{ file_url }}" type="module"></script>
+{% if path == "/src/entrypoints/sections/scripts/brewing-guide.js" or path == "sections/scripts/brewing-guide.js" %}
+  <script src="{{ 'vite-brewing-guide-NTVIMxqQ.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'vite-swiper-CCmqQlFu.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'vite-free-mode-fZNhfUM7.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+{% elsif path == "/src/entrypoints/sections/scripts/coffee-heist.js" or path == "sections/scripts/coffee-heist.js" %}
+  <script src="{{ 'vite-coffee-heist-BV5l650x.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'vite-swiper-CCmqQlFu.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+  <link rel="modulepreload" href="{{ 'vite-free-mode-fZNhfUM7.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+{% elsif path == "/src/entrypoints/sections/scripts/design-tokens.js" or path == "sections/scripts/design-tokens.js" %}
+  <script src="{{ 'vite-design-tokens-3acmHnEH.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/src/entrypoints/sections/scripts/example.js" or path == "sections/scripts/example.js" %}
+  <script src="{{ 'vite-example-DWAiyJd0.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/src/entrypoints/sections/scripts/footer.js" or path == "sections/scripts/footer.js" %}
+  <script src="{{ 'vite-footer-DdlGjzZr.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/src/entrypoints/sections/scripts/gallery-showcase.js" or path == "sections/scripts/gallery-showcase.js" %}
+  <script src="{{ 'vite-gallery-showcase-Dd8oZW2V.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'vite-swiper-CCmqQlFu.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+  {{ 'vite-gallery-showcase-Bdbi0viN.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/scripts/heist-scroll-capture.js" or path == "sections/scripts/heist-scroll-capture.js" %}
+  <script src="{{ 'vite-heist-scroll-capture-treFpps-.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/src/entrypoints/sections/scripts/press-section.js" or path == "sections/scripts/press-section.js" %}
+  <script src="{{ 'vite-press-section-ByFQF3Zt.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'vite-swiper-CCmqQlFu.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
+  {{ 'vite-press-section-3uTim8v3.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/scripts/product-variant-showcase.js" or path == "sections/scripts/product-variant-showcase.js" %}
+  <script src="{{ 'vite-product-variant-showcase-DakeiM3t.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/src/entrypoints/sections/scripts/quality-showcase.js" or path == "sections/scripts/quality-showcase.js" %}
+  <script src="{{ 'vite-quality-showcase-CMudaiwM.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/src/entrypoints/sections/scripts/viewport-video.js" or path == "sections/scripts/viewport-video.js" %}
+  <script src="{{ 'vite-viewport-video-1HHwypef.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/src/entrypoints/sections/styles/brewing-guide.scss" or path == "sections/styles/brewing-guide.scss" %}
+  {{ 'vite-brewing-guide-C4Lr-DzY.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/coffee-heist.scss" or path == "sections/styles/coffee-heist.scss" %}
+  {{ 'vite-coffee-heist-BQmapjC6.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/design-tokens.scss" or path == "sections/styles/design-tokens.scss" %}
+  {{ 'vite-design-tokens-B0OUMa3Z.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/example.scss" or path == "sections/styles/example.scss" %}
+  {{ 'vite-example-BR-nI6fT.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/footer.scss" or path == "sections/styles/footer.scss" %}
+  {{ 'vite-footer-CPbxs7D7.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/gallery-showcase.scss" or path == "sections/styles/gallery-showcase.scss" %}
+  {{ 'vite-gallery-showcase-CXfVRwo5.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/heist-scroll-capture.scss" or path == "sections/styles/heist-scroll-capture.scss" %}
+  {{ 'vite-heist-scroll-capture-BYApX_S7.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/join-the-heist-society.scss" or path == "sections/styles/join-the-heist-society.scss" %}
+  {{ 'vite-join-the-heist-society-BHLzgK7H.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/late-night-gallery.scss" or path == "sections/styles/late-night-gallery.scss" %}
+  {{ 'vite-late-night-gallery-BqcgN_GO.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/press-marquee.scss" or path == "sections/styles/press-marquee.scss" %}
+  {{ 'vite-press-marquee-DFwZyYZW.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/press-section.scss" or path == "sections/styles/press-section.scss" %}
+  {{ 'vite-press-section-DjsXkrj9.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/product-variant-showcase.scss" or path == "sections/styles/product-variant-showcase.scss" %}
+  {{ 'vite-product-variant-showcase-Bw4OMpU4.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/quality-showcase.scss" or path == "sections/styles/quality-showcase.scss" %}
+  {{ 'vite-quality-showcase-DZvxehZD.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/sections/styles/viewport-video.scss" or path == "sections/styles/viewport-video.scss" %}
+  {{ 'vite-viewport-video-CPGqicMP.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/theme.js" or path == "theme.js" %}
+  <script src="{{ 'vite-theme-5MVRZCbu.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  {{ 'vite-theme-fOJvfYOR.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/src/entrypoints/theme.scss" or path == "theme.scss" %}
+  {{ 'vite-theme-BKxy5b2b.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
 {% endif %}

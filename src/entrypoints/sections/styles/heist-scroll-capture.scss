@@ -297,41 +297,41 @@
     );
   }
   @include respond-down(xxl) {
-      --heist-glass-width: 23.8rem;
-        --heist-glass-top: 22.3rem;
-        --heist-release-y: 40rem;
-      &__title.t-h1 {
-        margin: 0;
-        white-space: normal;
-        max-width: 60rem;
-        width: 100%;
-      }
-      &__intro {
-        padding: calc(var(--space-64) + var(--space-56)) var(--space-20) 0;
-      }
-      &__hand-frame{
-        width: 21.7rem;
-      }
-      &__story{
-      padding:10rem var(--space-20) var(--space-64)
+    --heist-glass-width: 23.8rem;
+    --heist-glass-top: 22.3rem;
+    --heist-release-y: 40rem;
+    &__title.t-h1 {
+      margin: 0;
+      white-space: normal;
+      max-width: 60rem;
+      width: 100%;
     }
-    &__story-title.t-h2{
+    &__intro {
+      padding: calc(var(--space-64) + var(--space-56)) var(--space-20) 0;
+    }
+    &__hand-frame {
+      width: 21.7rem;
+    }
+    &__story {
+      padding: 10rem var(--space-20) var(--space-64);
+    }
+    &__story-title.t-h2 {
       font-size: var(--fs-h5);
       line-height: var(--lh-h5);
       letter-spacing: var(--ls-h5);
     }
-    &__body.t-t1{
+    &__body.t-t1 {
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
       letter-spacing: -0.035rem;
     }
-    &__hand-frame{
+    &__hand-frame {
       width: 29rem;
     }
-    &__brand-logo{
+    &__brand-logo {
       max-width: 48.25rem;
     }
-    &__glass-motion{
+    &__glass-motion {
       padding-bottom: 19.6875rem;
     }
   }
@@ -352,26 +352,26 @@
       max-width: 40rem;
       width: 100%;
     }
-    &__story{
-      padding:10rem var(--space-20) var(--space-64)
+    &__story {
+      padding: 10rem var(--space-20) var(--space-64);
     }
-    &__story-title.t-h2{
+    &__story-title.t-h2 {
       font-size: var(--fs-h5);
       line-height: var(--lh-h5);
       letter-spacing: var(--ls-h5);
     }
-    &__body.t-t1{
+    &__body.t-t1 {
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
       letter-spacing: -0.035rem;
     }
-    &__hand-frame{
+    &__hand-frame {
       width: 21.7rem;
     }
-    &__brand-logo{
+    &__brand-logo {
       max-width: 48.25rem;
     }
-    &__glass-motion{
+    &__glass-motion {
       padding-bottom: 15.6875rem;
     }
   }

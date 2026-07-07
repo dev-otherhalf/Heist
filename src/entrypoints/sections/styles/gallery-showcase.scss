@@ -2,10 +2,12 @@
 @use "/src/styles/settings/breakpoints" as *;
 
 .gallery-showcase {
-  padding-block: var(--gallery-showcase-padding-top-mobile) var(--gallery-showcase-padding-bottom-mobile);
+  padding-block: var(--gallery-showcase-padding-top-mobile)
+    var(--gallery-showcase-padding-bottom-mobile);
 
   @include respond-to(lg) {
-    padding-block: var(--gallery-showcase-padding-top-desktop) var(--gallery-showcase-padding-bottom-desktop);
+    padding-block: var(--gallery-showcase-padding-top-desktop)
+      var(--gallery-showcase-padding-bottom-desktop);
   }
 
   &__header {
@@ -45,10 +47,10 @@
   &__cta.btn {
     flex: 0 0 auto;
     white-space: nowrap;
-    margin-bottom:var(--space-4);
-    padding:0 var(--space-85);
+    margin-bottom: var(--space-4);
+    padding: 0 var(--space-85);
     @include respond-down(lg) {
-      margin-bottom:0;
+      margin-bottom: 0;
       width: 100%;
     }
   }
