@@ -10,7 +10,9 @@
 @font-face {
   font-family: "Feature Display Condensed";
   src: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/FeatureDisplayCondensed-Regular.woff2?v=1783331061")
-    format("woff2");
+    format("woff2"),
+    url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/FeatureDisplayCondensed-Regular.woff?v=1783331059") format("woff");
+  font-style: normal;
   font-display: swap;
   font-style: normal;
   font-weight: 400;
@@ -19,7 +21,9 @@
 @font-face {
   font-family: "Aro";
   src: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Aro-Narrow.woff2?v=1783331402")
-    format("woff2");
+    format("woff2"),
+    url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Aro-Narrow.woff?v=1783341510")
+    format("woff");
   font-display: swap;
   font-style: normal;
   font-weight: 400;

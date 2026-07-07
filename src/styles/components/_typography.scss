@@ -108,14 +108,14 @@
   font-family: var(--font-mono);
   font-size: var(--fs-n1);
   line-height: var(--lh-n1);
-  font-weight: var(--fw-regular);
+  font-weight: var(--fw-medium);
   text-transform: uppercase;
   margin: 0;
 }
 
 .t-n1-med {
   font-family: var(--font-mono);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-semibold);
   font-size: var(--fs-n1-med);
   line-height: var(--lh-n1-med);
   text-transform: uppercase;
@@ -126,13 +126,13 @@
   font-family: var(--font-mono);
   font-size: var(--fs-n2);
   line-height: var(--lh-n2);
-  font-weight: var(--fw-regular);
+  font-weight: var(--fw-medium);
   margin: 0;
 }
 
 .t-n2-med {
   font-family: var(--font-mono);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-semibold);
   font-size: var(--fs-n2-med);
   line-height: var(--lh-n2-med);
   letter-spacing: var(--ls-n2-med);
@@ -143,7 +143,7 @@
 .t-n3 {
   font-family: var(--font-mono);
   font-size: var(--fs-n3);
-  font-weight: var(--fw-regular);
+  font-weight: var(--fw-medium);
   line-height: var(--lh-n3);
   margin: 0;
 }
@@ -208,7 +208,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-nav3);
   line-height: var(--lh-nav3);
-  font-weight: var(--fw-regular);
+  font-weight: var(--fw-medium);
   text-transform: uppercase;
   margin: 0;
 }
@@ -231,6 +231,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-link);
   line-height: var(--lh-link);
+  font-weight: var(--fw-medium);
   text-decoration: underline;
   margin: 0;
 }
