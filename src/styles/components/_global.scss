@@ -89,6 +89,9 @@ html.lenis body {
   height: auto;
   min-height: 100%;
   overflow: visible;
+  &--drawer-open {
+    margin-right: 0;
+  }
 
   @include respond-to(lg) {
     height: 100vh;

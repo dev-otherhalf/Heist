@@ -200,7 +200,7 @@
     bottom: 0;
     left: 0;
     display: grid;
-    grid-template-columns: 1fr 0.81fr;
+    grid-template-columns: 1fr 0.61fr;
     gap: clamp(var(--space-64), 34vw, 33rem);
     width: 100%;
     padding: 0 var(--space-56) calc(var(--space-64) + var(--space-32));
@@ -273,7 +273,6 @@
   }
 
   &__button {
-    display: block;
     width: 100%;
   }
 
