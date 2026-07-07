@@ -14,6 +14,11 @@
 .late-night-gallery-wrapper {
   position: relative;
   isolation: isolate;
+    padding-block: var(--late-night-gallery-padding-top-mobile) var(--late-night-gallery-padding-bottom-mobile);
+
+  @include respond-to(md) {
+    padding-block: var(--late-night-gallery-padding-top-desktop) var(--late-night-gallery-padding-bottom-desktop);
+  }
 }
 
 // Full-bleed metaobject background image — spans the whole section. z-index: -1
@@ -30,13 +35,17 @@
 
 .late-night-gallery {
   position: relative;
-  padding-block: var(--late-night-gallery-padding-top-mobile) var(--late-night-gallery-padding-bottom-mobile);
-  padding-inline: var(--space-20);
+          padding-inline: var(--space-20);
+                @include respond-to(lg) {
+       padding-inline: var(--space-56);
+      }
+  // padding-block: var(--late-night-gallery-padding-top-mobile) var(--late-night-gallery-padding-bottom-mobile);
+  // padding-inline: var(--space-20);
 
-  @include respond-to(md) {
-    padding-block: var(--late-night-gallery-padding-top-desktop) var(--late-night-gallery-padding-bottom-desktop);
-    padding-inline: var(--space-56);
-  }
+  // @include respond-to(md) {
+  //   padding-block: var(--late-night-gallery-padding-top-desktop) var(--late-night-gallery-padding-bottom-desktop);
+  //   padding-inline: var(--space-56);
+  // }
 
   &__heading {
     color: var(--neutral-white, #fff);
@@ -80,12 +89,14 @@
     align-items: center;
     gap: var(--late-night-gallery-gap);
     margin-top: var(--space-39);
+    margin-bottom: var(--space-51);
 
     @include respond-to(md) {
       align-items: center;
       min-height: 30rem;
       overflow-x: clip;
       margin-top: var(--space-80);
+      margin-bottom: var(--space-96);
     }
   }
 

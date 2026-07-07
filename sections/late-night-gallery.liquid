@@ -5,6 +5,15 @@
   assign brewing_obj = section.settings.brewing_guide_selection
 %}
 
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --late-night-gallery-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --late-night-gallery-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --late-night-gallery-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --late-night-gallery-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  }
+{%- endstyle -%}
+
 {% if gallery_obj.background_image.value != blank %}
   <div
     class="late-night-gallery__bg"
@@ -14,15 +23,7 @@
 {% endif %}
 
 {% if gallery_obj != blank and gallery_obj.media_items.value.size > 0 %}
-  <div
-    class="late-night-gallery"
-    style="
-      --late-night-gallery-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
-      --late-night-gallery-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
-      --late-night-gallery-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
-      --late-night-gallery-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
-    "
-  >
+  <div class="late-night-gallery">
     {% if gallery_obj.heading.value != blank %}
       <h2 class="late-night-gallery__heading t-h4">{{ gallery_obj.heading.value }}</h2>
     {% endif %}
@@ -132,11 +133,7 @@
 {% endif %}
 
 {% render 'brewing-guide',
-  brewing_obj: brewing_obj,
-  padding_top_mobile: section.settings.padding_top_mobile,
-  padding_bottom_mobile: section.settings.padding_bottom_mobile,
-  padding_top_desktop: section.settings.padding_top_desktop,
-  padding_bottom_desktop: section.settings.padding_bottom_desktop
+  brewing_obj: brewing_obj
 %}
 
 {% schema %}

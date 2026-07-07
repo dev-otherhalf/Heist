@@ -11,10 +11,6 @@ a shared id: card `data-brewing-open="ID"` ↔ modal `data-brewing-drawer="ID"`.
 @param {metaobject} brewing_obj - The BREWING GUIDE SELECTIONS metaobject
 (needs `heading` and a `recipes` list of BREWING GUIDE ENTRIES).
 @param {string} [uid] - Unique id fragment. Defaults to the current section id.
-@param {number} [padding_top_mobile]
-@param {number} [padding_bottom_mobile]
-@param {number} [padding_top_desktop]
-@param {number} [padding_bottom_desktop]
 
 @example
 {% render 'brewing-guide', brewing_obj: section.settings.brewing_guide_selection %}
@@ -29,10 +25,6 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
 -%}
 
 <div class="brewing-guide" style="
-      {% if padding_top_mobile != blank %}--brewing-guide-padding-top-mobile: {{ padding_top_mobile }}px;{% endif %}
-      {% if padding_bottom_mobile != blank %}--brewing-guide-padding-bottom-mobile: {{ padding_bottom_mobile }}px;{% endif %}
-      {% if padding_top_desktop != blank %}--brewing-guide-padding-top-desktop: {{ padding_top_desktop }}px;{% endif %}
-      {% if padding_bottom_desktop != blank %}--brewing-guide-padding-bottom-desktop: {{ padding_bottom_desktop }}px;{% endif %}
     ">
   {% if brewing_obj.heading.value != blank %}
   <h2 class="brewing-guide__heading t-h4">{{ brewing_obj.heading.value }}</h2>
