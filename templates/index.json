@@ -266,6 +266,18 @@
         "mobile_bottom_padding": 64
       }
     },
+    "late_night_gallery_mJVqjW": {
+      "type": "late-night-gallery",
+      "name": "Late Night Gallery",
+      "settings": {
+        "gallery_selection": "for-the-late-night-conversations-and-anyone-whos-been-told-12-pm-is-their-last-cup-you-now-call-the-shots",
+        "brewing_guide_selection": "brewing-guide",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 104,
+        "padding_bottom_desktop": 64
+      }
+    },
     "join_the_heist_society_DftfJG": {
       "type": "join-the-heist-society",
       "blocks": {
@@ -406,6 +418,7 @@
     "press_marquee_BLfLFB",
     "viewport_video_FRgn9M",
     "coffee_heist_xWWnrj",
+    "late_night_gallery_mJVqjW",
     "join_the_heist_society_DftfJG",
     "press_section_WRAXwL",
     "gallery_showcase_p3M8Eq"
