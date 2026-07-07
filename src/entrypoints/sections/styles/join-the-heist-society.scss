@@ -92,6 +92,8 @@
     color: var(--ink);
     overflow: hidden;
     position: relative;
+    display: flex;
+    justify-content: center;
   }
 
   &__panel-video,
@@ -147,17 +149,17 @@
     position: relative;
     z-index: 2;
     max-width: 41rem;
-    margin-inline: auto;
     height: 100%;
 
     @include respond-to(xl) {
       padding: 3rem 3.5rem;
-      margin-left: clamp(2rem, 8.9vw, 10rem);
-      margin-right: clamp(2rem, 10vw, 16rem);
+      margin-right: 14.68%;
     }
 
     @include respond-down(lg) {
       padding-block: var(--space-64) 0;
+       margin-inline: auto;
+       margin-right: auto;
     }
   }
 
