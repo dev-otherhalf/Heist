@@ -68,7 +68,7 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
       </span>
 
       <span class="brewing-guide__card-footer">
-        <span class="brewing-guide__card-text t-n2-med">
+        <span class="brewing-guide__card-text t-n1-med">
           <span class="brewing-guide__card-text-default">{{ recipe.card_text.value }}</span>
           {% if recipe.card_hover_text.value != blank %}
           <span class="brewing-guide__card-text-hover">{{ recipe.card_hover_text.value }}</span>
@@ -112,7 +112,11 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
       <div class="brewing-guide__drawer-inner">
         <button type="button" class="brewing-guide__drawer-close" data-brewing-close
           aria-label="{{ 'accessibility.close_dialog' | t }}">
-          {{- 'icon-close.svg' | inline_asset_content -}}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.0711 4.92896L4.92894 19.0711" stroke="#282828" stroke-width="2" stroke-linecap="square"/>
+<path d="M19.0711 19.0711L4.92892 4.92896" stroke="#282828" stroke-width="2" stroke-linecap="square"/>
+</svg>
+
         </button>
 
         <div class="brewing-guide__recipe">
@@ -121,12 +125,12 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
             {{
             recipe.product_image.value
             | image_url: width: 300
-            | image_tag: loading: 'lazy', class: 'brewing-guide__recipe-thumb', alt: recipe.title.value
+            | image_tag: loading: 'lazy', class: 'brewing-guide__recipe-thumb hide-below-md', alt: recipe.title.value
             }}
             {% endif %}
             <div class="brewing-guide__recipe-wrapper">
-              <h3 class="brewing-guide__recipe-title t-h5">{{ recipe.title.value }}</h3>
-              <dl class="brewing-guide__recipe-meta t-n2">
+              <h3 class="brewing-guide__recipe-title t-h6">{{ recipe.title.value }}</h3>
+              <dl class="brewing-guide__recipe-meta t-n1">
                 {% if recipe.best_made_with.value != blank %}
                   <div>
                     <dt>Best made with:</dt>
@@ -158,12 +162,12 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
           {% assign serving_count = recipe.serving_size_count.value | default: 0 %}
           {% if serving_count > 0 %}
           <div class="brewing-guide__servings">
-            <span class="brewing-guide__servings-label t-n2-med">Serving size:</span>
+            <span class="brewing-guide__servings-label t-n1">Serving size:</span>
             <div class="brewing-guide__stepper" role="group" aria-label="Serving size" data-brewing-stepper>
               {% for i in (1..serving_count) %}
-              <button type="button" class="brewing-guide__stepper-btn{% if forloop.first %} is-active{% endif %}"
+              <button type="button" class="brewing-guide__stepper-btn t-n1{% if forloop.first %} is-active{% endif %}"
                 data-serving="{{ i }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
-                &times;{{ i }}
+                &times; {{ i }}
               </button>
               {% endfor %}
             </div>
@@ -171,30 +175,54 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
           {% endif %}
 
           {% if recipe.ingredients.value.size > 0 %}
-          <ul class="brewing-guide__ingredients t-t4">
+            <div class="brewing-guide__ingredients-wrapper">
+                <div class="brewing-guide__ingredients-label t-n1">Ingredients:</div>
+                          <ul class="brewing-guide__ingredients t-t4">
             {% for ingredient in recipe.ingredients.value %}
             <li class="brewing-guide__ingredient">
               <span class="brewing-guide__ingredient-name">{{ ingredient.name.value }}</span>
-              <span class="brewing-guide__ingredient-qty" data-brewing-qty {% if ingredient.quantity_alt.value !=blank
+              <span class="brewing-guide__ingredient-qty t-n1" data-brewing-qty {% if ingredient.quantity_alt.value !=blank
                 %}data-brewing-qty-static{% endif %}>{% if ingredient.quantity_alt.value != blank %}{{
                 ingredient.quantity_alt.value }}{% else %}{{ ingredient.quantity.value }}{% endif %}</span>
             </li>
             {% endfor %}
           </ul>
+            </div>
           {% endif %}
 
-          {% if recipe.banner_image.value != blank or recipe.banner_title.value != blank %}
-          <div class="brewing-guide__banner" {% if recipe.banner_image.value !=blank %}
-            style="background-image: url('{{ recipe.banner_image.value | image_url: width: 1000 }}');" {% endif %}>
+          {% if recipe.banner_image.value != blank or recipe.mobile_banner_image.value != blank or recipe.banner_title.value != blank %}
+          <div class="brewing-guide__banner">
+            {% assign banner_desktop_image = recipe.banner_image.value | default: recipe.mobile_banner_image.value %}
+            {% assign banner_mobile_image = recipe.mobile_banner_image.value | default: banner_desktop_image %}
+            {% if banner_desktop_image != blank %}
+            {{
+              banner_desktop_image
+              | image_url: width: 1000
+              | image_tag:
+                loading: 'lazy',
+                class: 'brewing-guide__banner-image brewing-guide__banner-image--desktop',
+                alt: recipe.banner_title.value
+            }}
+            {% endif %}
+            {% if banner_mobile_image != blank %}
+            {{
+              banner_mobile_image
+              | image_url: width: 1000
+              | image_tag:
+                loading: 'lazy',
+                class: 'brewing-guide__banner-image brewing-guide__banner-image--mobile',
+                alt: recipe.banner_title.value
+            }}
+            {% endif %}
             <div class="brewing-guide__banner-copy">
               {% if recipe.banner_title.value != blank %}
-              <span class="brewing-guide__banner-title t-s1">{{ recipe.banner_title.value }}</span>
+              <span class="brewing-guide__banner-title t-s2">{{ recipe.banner_title.value }}</span>
               {% endif %}
               {% if recipe.banner_subtext.value != blank %}
-              <span class="brewing-guide__banner-subtext t-t4">{{ recipe.banner_subtext.value }}</span>
+              <span class="brewing-guide__banner-subtext t-t2">{{ recipe.banner_subtext.value }}</span>
               {% endif %}
               {% if recipe.cta_link.value != blank %}
-              <a href="{{ recipe.cta_link.value }}" class="button brewing-guide__banner-cta t-btn">
+              <a href="{{ recipe.cta_link.value }}" class="brewing-guide__banner-cta btn btn--cream">
                 {{ recipe.cta_label.value | default: 'Shop now' }}
               </a>
               {% endif %}
@@ -204,7 +232,7 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
 
           {% if recipe.how_to_make.value.size > 0 %}
           <div class="brewing-guide__how">
-            <span class="brewing-guide__how-label t-n2-med">How to make:</span>
+            <span class="brewing-guide__how-label t-n1">How to make:</span>
             <ol class="brewing-guide__how-list t-t4">
               {% for step in recipe.how_to_make.value %}
               <li>{{ step }}</li>

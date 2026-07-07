@@ -27,54 +27,106 @@
       <h2 class="late-night-gallery__heading t-h4">{{ gallery_obj.heading.value }}</h2>
     {% endif %}
 
+    {%- comment -%}
+      Mobile is a 2-column masonry that must match the design exactly, so we
+      assign each item to the currently-shorter column (Pinterest-style
+      shortest-column packing) here at render time rather than relying on CSS
+      `columns`, whose balanced top-to-bottom fill can't reproduce it.
+      Mobile tile heights are proportional: full ≈ 3, half ≈ 2 (their aspect
+      ratios). Desktop keeps the original left-to-right strip — the two columns
+      collapse via `display: contents` and each item's `order` restores the
+      source sequence.
+    {%- endcomment -%}
+    {%- liquid
+      assign col_a_html = ''
+      assign col_b_html = ''
+      assign height_a = 0
+      assign height_b = 0
+      assign half_index = 0
+    -%}
+
+    {%- for item in gallery_obj.media_items.value -%}
+      {%- assign size = item.size.value | default: 'half' | downcase -%}
+      {%- assign mobile_size = item.mobile_size.value | default: size | downcase -%}
+
+      {%- capture item_media -%}
+        {% if item.video.value != blank %}
+          {% assign item_video = item.video.value %}
+          <video
+            class="late-night-gallery__media js-autoplay-video"
+            {% if item.image.value != blank %}
+              poster="{{ item.image.value | image_url: width: 1000 }}"
+            {% endif %}
+            muted
+            loop
+            playsinline
+          >
+            {% if item_video.sources.size > 0 %}
+              {% for source in item_video.sources %}
+                <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              {% endfor %}
+            {% else %}
+              <source src="{{ item_video | file_url }}">
+            {% endif %}
+          </video>
+        {% elsif item.image.value != blank %}
+          {{
+            item.image.value
+            | image_url: width: 1200
+            | image_tag: loading: 'lazy', class: 'late-night-gallery__media', alt: item.image.value.alt
+          }}
+        {% endif %}
+      {%- endcapture -%}
+
+      {%- assign item_classes = 'late-night-gallery__item late-night-gallery__item--' | append: size -%}
+      {%- assign item_classes = item_classes | append: ' late-night-gallery__item--mobile-' | append: mobile_size -%}
+      {%- comment -%} Desktop-only zig-zag for half tiles (was `:nth-of-type`, which now counts per-column). {%- endcomment -%}
+      {%- if size == 'half' -%}
+        {%- assign half_parity = half_index | modulo: 2 -%}
+        {%- if half_parity == 0 -%}
+          {%- assign item_classes = item_classes | append: ' late-night-gallery__item--stagger-up' -%}
+        {%- else -%}
+          {%- assign item_classes = item_classes | append: ' late-night-gallery__item--stagger-down' -%}
+        {%- endif -%}
+        {%- assign half_index = half_index | plus: 1 -%}
+      {%- endif -%}
+      {%- if item.hide_on_mobile.value -%}
+        {%- assign item_classes = item_classes | append: ' late-night-gallery__item--hide-mobile' -%}
+      {%- endif -%}
+
+      {%- capture item_html -%}
+        {%- if item.link.value != blank -%}
+          <a href="{{ item.link.value }}" class="{{ item_classes }}" style="order: {{ forloop.index }};">{{ item_media }}</a>
+        {%- else -%}
+          <div class="{{ item_classes }}" style="order: {{ forloop.index }};">{{ item_media }}</div>
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {%- comment -%} Hidden-on-mobile tiles still render for desktop; park them in A and skip their height. {%- endcomment -%}
+      {%- if item.hide_on_mobile.value -%}
+        {%- assign col_a_html = col_a_html | append: item_html -%}
+      {%- else -%}
+        {%- assign weight = 2 -%}
+        {%- if mobile_size == 'full' -%}
+          {%- assign weight = 3 -%}
+        {%- endif -%}
+        {%- if height_a <= height_b -%}
+          {%- assign col_a_html = col_a_html | append: item_html -%}
+          {%- assign height_a = height_a | plus: weight -%}
+        {%- else -%}
+          {%- assign col_b_html = col_b_html | append: item_html -%}
+          {%- assign height_b = height_b | plus: weight -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
     <div class="late-night-gallery__list">
-      {% for item in gallery_obj.media_items.value %}
-        {% assign size = item.size.value | default: 'half' | downcase %}
-
-        {%- capture item_media -%}
-          {% if item.video.value != blank %}
-            {% assign item_video = item.video.value %}
-            <video
-              class="late-night-gallery__media js-autoplay-video"
-              {% if item.image.value != blank %}
-                poster="{{ item.image.value | image_url: width: 1000 }}"
-              {% endif %}
-              muted
-              loop
-              playsinline
-            >
-              {% if item_video.sources.size > 0 %}
-                {% for source in item_video.sources %}
-                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
-                {% endfor %}
-              {% else %}
-                <source src="{{ item_video | file_url }}">
-              {% endif %}
-            </video>
-          {% elsif item.image.value != blank %}
-            {{
-              item.image.value
-              | image_url: width: 1200
-              | image_tag: loading: 'lazy', class: 'late-night-gallery__media', alt: item.image.value.alt
-            }}
-          {% endif %}
-        {%- endcapture -%}
-
-        {% assign item_classes = 'late-night-gallery__item late-night-gallery__item--' | append: size %}
-        {% if item.hide_on_mobile.value %}
-          {% assign item_classes = item_classes | append: ' late-night-gallery__item--hide-mobile' %}
-        {% endif %}
-
-        {% if item.link.value != blank %}
-          <a href="{{ item.link.value }}" class="{{ item_classes }}">
-            {{ item_media }}
-          </a>
-        {% else %}
-          <div class="{{ item_classes }}">
-            {{ item_media }}
-          </div>
-        {% endif %}
-      {% endfor %}
+      {%- if col_a_html != blank -%}
+        <div class="late-night-gallery__col">{{ col_a_html }}</div>
+      {%- endif -%}
+      {%- if col_b_html != blank -%}
+        <div class="late-night-gallery__col">{{ col_b_html }}</div>
+      {%- endif -%}
     </div>
   </div>
 {% endif %}
