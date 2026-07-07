@@ -1,0 +1,404 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.join-the-heist-society {
+  background-color: var(--join-the-heist-society-bg, var(--cream));
+  overflow: clip;
+  padding-block: var(--join-the-heist-society-padding-top-mobile) var(--join-the-heist-society-padding-bottom-mobile);
+
+  >.page-width {
+    padding-inline: 0;
+  }
+
+  @include respond-to(lg) {
+    padding-block: var(--join-the-heist-society-padding-top-desktop) var(--join-the-heist-society-padding-bottom-desktop);
+  }
+
+  &__layout {
+    display: grid;
+    min-height: 50rem;
+
+    @include respond-to(lg) {
+      grid-template-columns: minmax(0, 0.261fr) minmax(0, 0.739fr);
+    }
+  }
+
+  &__media {
+    border: var(--bw-2) solid var(--ink);
+    border-bottom: 0;
+    overflow: hidden;
+    position: relative;
+
+    @include respond-to(lg) {
+      border: 0;
+    }
+  }
+
+  &__media--aside-video {
+    @include respond-down(lg) {
+      display: none;
+    }
+  }
+
+  &__media--inline-video {
+    display: block;
+    margin-top: 0.5rem;
+    min-height: 14rem;
+
+    @include respond-to(lg) {
+      display: none;
+    }
+  }
+
+  &__media-image,
+  &__media-video,
+  &__media-placeholder {
+    display: block;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  &__media-placeholder {
+    background: rgba(22, 20, 20, 0.08);
+  }
+
+  &__media-video-item {
+    display: none;
+    height: 100%;
+    inset: 0;
+    width: 100%;
+    padding-top: 120%;
+
+    &--mobile {
+      display: block;
+      padding-top: 97%;
+
+      @include respond-to(lg) {
+        display: none;
+      }
+    }
+
+    &--desktop {
+      @include respond-to(lg) {
+        display: block;
+      }
+    }
+  }
+
+  &__panel {
+    color: var(--ink);
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__panel-video,
+  &__panel-overlay {
+    inset: 0;
+    position: absolute;
+    z-index: 2;
+  }
+
+  &__panel-video-item {
+    display: none;
+    height: 100%;
+    inset: 0;
+    position: absolute;
+    width: 100%;
+
+    &--mobile {
+      display: block;
+
+      @include respond-to(lg) {
+        display: none;
+      }
+    }
+
+    &--desktop {
+      @include respond-to(lg) {
+        display: block;
+      }
+    }
+  }
+
+  &__video {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+    object-position: top center;
+  }
+
+  &__panel-overlay {
+    background:
+      linear-gradient(180deg, rgba(245, 239, 229, 0.82) 0%, rgba(245, 239, 229, 0.9) 100%),
+      var(--join-the-heist-society-panel-bg, rgba(244, 237, 225, 0.82));
+    z-index: 1;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    position: relative;
+    z-index: 2;
+    max-width: 41rem;
+    margin-inline: auto;
+    height: 100%;
+
+    @include respond-to(xl) {
+      padding: 3rem 3.5rem;
+      margin-left: clamp(2rem, 8.9vw, 10rem);
+      margin-right: clamp(2rem, 10vw, 16rem);
+    }
+
+    @include respond-down(lg) {
+      padding-block: var(--space-64) 0;
+    }
+  }
+
+  &__heading,
+  &__subheading,
+  &__kit-heading,
+  &__kit-value,
+  &__product-title,
+  &__disclaimer,
+  &__empty-title,
+  &__empty-text {
+    margin: 0;
+  }
+
+  &__kit-value {
+    &.t-n2 {
+      text-transform: uppercase;
+      @include respond-down(md) {
+        line-height: var(--lh-n2);
+      }
+    }
+  }
+
+  &__heading {
+    margin-inline: auto;
+    text-align: center;
+
+    p {
+      margin: 0;
+    }
+
+    span {
+      display: inline-block;
+      font-size: 0.38em;
+      line-height: 1;
+      transform: translateY(-0.9em);
+      vertical-align: top;
+    }
+
+    br {
+      display: none;
+
+      @include respond-down(lg) {
+        display: inline;
+      }
+    }
+
+    &.t-h4 {
+      @include respond-down(lg) {
+      font-size: var(--fs-h5);
+      }
+    }
+  }
+
+  &__subheading,
+  &__disclaimer {
+    text-align: center;
+  }
+
+  &__subheading {
+    margin-inline: auto;
+    max-width: 40rem;
+
+    @include respond-down(md) {
+      text-align: left;
+    }
+
+    br {
+      display: none;
+
+      @include respond-down(md) {
+        display: inline;
+      }
+    }
+  }
+
+  &__disclaimer {
+    &.t-n1 {
+      margin-top: 0.5rem;
+
+      @include respond-down(md) {
+        line-height: 1.25rem;
+        margin-top: 0;
+      }
+    }
+
+    br {
+      display: none;
+
+      @include respond-down(md) {
+        display: inline;
+      }
+    }
+  }
+
+  &__features {
+    display: grid;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0 auto;
+    max-width: 30rem;
+    padding: 0;
+  }
+
+  &__feature {
+    &.t-n1 {
+      align-items: center;
+      display: grid;
+      gap: 0.625rem;
+      grid-template-columns: auto 1fr;
+      text-transform: uppercase;
+      margin-block: 0.031rem;
+
+      @include respond-down(lg) {
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  &__kit-card {
+    background: rgba(244, 237, 225, 0.92);
+    border: var(--bw-2) solid var(--ink);
+    display: grid;
+    gap: 1rem;
+    margin: 0 auto;
+    max-width: 39rem;
+    padding: 1.5rem;
+    width: 100%;
+
+    @include respond-to(lg) {
+      align-items: start;
+      grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+      padding: 1.375rem 2rem;
+      margin-top: 0.5rem;
+      gap: var(--space-5);
+    }
+  }
+
+  &__kit-copy {
+    display: grid;
+    gap: 0.3125rem;
+    text-align: left;
+  }
+
+  &__products {
+    display: grid;
+    gap: 0.625rem;
+    grid-template-columns: repeat(3, 1fr);
+
+    @include respond-to(lg) {
+      grid-template-columns: repeat(3, minmax(88px, 102px));
+    }
+  }
+
+  &__product {
+    display: grid;
+    gap: 0;
+    text-align: left;
+
+    @include respond-to(lg) {
+      text-align: center;
+      gap: 1rem;
+    }
+  }
+
+  &__product-frame {
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.42);
+    border: var(--bw-2) solid var(--ink);
+    overflow: hidden;
+    position: relative;
+
+    @include respond-to(lg) {
+      max-height: 96px;
+    }
+  }
+
+  &__product-link,
+  &__product-title-link {
+    color: inherit;
+    display: block;
+    text-decoration: none;
+  }
+
+  &__product-title-link {
+    &.t-n1 {
+
+      @include respond-down(lg) {
+        max-height: 96px;
+        font-size: var(--fs-n2-med);
+        line-height: var(--lh-n2);
+        margin-top: var(--space-16);
+      }
+
+    }
+  }
+
+  &__product-desc {
+    &.t-n3 {
+      font-weight: var(--fw-medium);
+      margin-top: var(--space-4);
+      text-transform: uppercase;
+    }
+  }
+
+  &__product-image,
+  &__product-placeholder {
+    display: block;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  &__product-placeholder {
+    background: rgba(22, 20, 20, 0.08);
+  }
+
+  &__product-title {
+    text-transform: uppercase;
+  }
+
+  &__button {
+    &.btn {
+      margin: 0 auto;
+      width: 100%;
+      padding-block: unset;
+    }
+  }
+
+  &__disclaimer {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__empty {
+    display: grid;
+    gap: 0.5rem;
+    grid-column: 1 / -1;
+    padding: 1rem 0;
+    text-align: center;
+  }
+}
