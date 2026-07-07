@@ -1,0 +1,585 @@
+{%- render 'vite-tag' with 'sections/styles/join-the-heist-society.scss' -%}
+
+{%- liquid
+  assign mobile_video = section.settings.video_mobile | default: section.settings.video_desktop
+  assign left_media_type = section.settings.left_media_type
+  assign mobile_image = section.settings.left_image_mobile | default: section.settings.left_image
+  assign left_mobile_video = section.settings.left_video_mobile | default: section.settings.left_video_desktop
+  assign product_blocks = section.blocks | where: 'type', 'product'
+  assign fallback_cta_link = blank
+  assign heading_markup = section.settings.heading | strip
+  assign heading_markup = heading_markup | remove: '<p>' | remove: '</p>'
+  assign heading_markup = heading_markup | remove: '<h1>' | remove: '</h1>'
+  assign heading_markup = heading_markup | remove: '<h2>' | remove: '</h2>'
+  assign heading_markup = heading_markup | remove: '<h3>' | remove: '</h3>'
+  assign heading_markup = heading_markup | remove: '<h4>' | remove: '</h4>'
+  assign heading_markup = heading_markup | remove: '<h5>' | remove: '</h5>'
+  assign heading_markup = heading_markup | remove: '<h6>' | remove: '</h6>'
+  assign heading_text = heading_markup | strip_html | strip
+  assign section_heading_alt = heading_text | escape
+  assign has_left_video = false
+
+  if left_media_type == 'video' and section.settings.left_video_desktop != blank
+    assign has_left_video = true
+  endif
+
+  if left_media_type == 'video' and left_mobile_video != blank
+    assign has_left_video = true
+  endif
+
+  for block in product_blocks
+    if fallback_cta_link == blank and block.settings.product != blank
+      assign fallback_cta_link = block.settings.product.url
+    endif
+  endfor
+
+  assign cta_link = section.settings.button_link | default: fallback_cta_link
+-%}
+
+<section
+  class="join-the-heist-society"
+  id="shopify-section-{{- section.id -}}"
+  style="
+    --join-the-heist-society-padding-top-mobile: {{- section.settings.padding_top_mobile -}}px;
+    --join-the-heist-society-padding-bottom-mobile: {{- section.settings.padding_bottom_mobile -}}px;
+    --join-the-heist-society-padding-top-desktop: {{- section.settings.padding_top_desktop -}}px;
+    --join-the-heist-society-padding-bottom-desktop: {{- section.settings.padding_bottom_desktop -}}px;
+    {%- if section.settings.background_color != blank -%}
+      --join-the-heist-society-bg: {{- section.settings.background_color -}};
+    {%- endif -%}
+    {%- if section.settings.panel_color != blank -%}
+      --join-the-heist-society-panel-bg: {{- section.settings.panel_color -}};
+    {%- endif -%}
+  "
+>
+  <div class="page-width">
+    <div class="join-the-heist-society__layout">
+      <div class="join-the-heist-society__media{% if has_left_video %} join-the-heist-society__media--aside-video{% endif %}">
+        {%- if has_left_video -%}
+          {%- if section.settings.left_video_desktop != blank -%}
+            <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--desktop">
+              {{-
+                section.settings.left_video_desktop
+                | video_tag:
+                  image_size: '1600x',
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  class: 'join-the-heist-society__media-video js-autoplay-video'
+              -}}
+            </div>
+          {%- endif -%}
+
+          {%- if left_mobile_video != blank -%}
+            <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--mobile">
+              {{-
+                left_mobile_video
+                | video_tag:
+                  image_size: '960x',
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  class: 'join-the-heist-society__media-video js-autoplay-video'
+              -}}
+            </div>
+          {%- endif -%}
+        {%- elsif section.settings.left_image != blank or mobile_image != blank -%}
+          <picture>
+            {%- if mobile_image != blank -%}
+              <source
+                media="(max-width: 989px)"
+                srcset="{{- mobile_image | image_url: width: 1200 -}}"
+              >
+            {%- endif -%}
+            {%- if section.settings.left_image != blank -%}
+              {{-
+                section.settings.left_image
+                | image_url: width: 1600
+                | image_tag:
+                  widths: '640, 960, 1280, 1600',
+                  sizes: '(min-width: 990px) 32rem, 100vw',
+                  loading: 'lazy',
+                  alt: section_heading_alt,
+                  class: 'join-the-heist-society__media-image'
+              -}}
+            {%- else -%}
+              {{-
+                mobile_image
+                | image_url: width: 1200
+                | image_tag:
+                  widths: '480, 720, 960, 1200',
+                  sizes: '100vw',
+                  loading: 'lazy',
+                  alt: section_heading_alt,
+                  class: 'join-the-heist-society__media-image'
+              -}}
+            {%- endif -%}
+          </picture>
+        {%- else -%}
+          <div class="join-the-heist-society__media-placeholder" aria-hidden="true"></div>
+        {%- endif -%}
+      </div>
+
+      <div class="join-the-heist-society__panel">
+        <div class="join-the-heist-society__panel-video">
+          {%- if section.settings.video_desktop != blank -%}
+            <div class="join-the-heist-society__panel-video-item join-the-heist-society__panel-video-item--desktop">
+              {{-
+                section.settings.video_desktop
+                | video_tag:
+                  image_size: '1600x',
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  class: 'join-the-heist-society__video js-autoplay-video'
+              -}}
+            </div>
+          {%- endif -%}
+
+          {%- if mobile_video != blank -%}
+            <div class="join-the-heist-society__panel-video-item join-the-heist-society__panel-video-item--mobile">
+              {{-
+                mobile_video
+                | video_tag:
+                  image_size: '960x',
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  class: 'join-the-heist-society__video js-autoplay-video'
+              -}}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="join-the-heist-society__panel-overlay"></div>
+
+        <div class="join-the-heist-society__content">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="join-the-heist-society__heading t-h4">
+              {{- heading_markup -}}
+            </h2>
+          {%- endif -%}
+
+          {%- if has_left_video -%}
+            <div class="join-the-heist-society__media join-the-heist-society__media--inline-video">
+              {%- if left_mobile_video != blank -%}
+                <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--mobile">
+                  {{-
+                    left_mobile_video
+                    | video_tag:
+                      image_size: '960x',
+                      autoplay: true,
+                      loop: true,
+                      muted: true,
+                      controls: false,
+                      playsinline: true,
+                      class: 'join-the-heist-society__media-video js-autoplay-video'
+                  -}}
+                </div>
+              {%- elsif section.settings.left_video_desktop != blank -%}
+                <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--mobile">
+                  {{-
+                    section.settings.left_video_desktop
+                    | video_tag:
+                      image_size: '960x',
+                      autoplay: true,
+                      loop: true,
+                      muted: true,
+                      controls: false,
+                      playsinline: true,
+                      class: 'join-the-heist-society__media-video js-autoplay-video'
+                  -}}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.subheading != blank -%}
+            {%- assign subheading_content = section.settings.subheading | escape | newline_to_br -%}
+            {%- assign subheading_content = subheading_content
+              | replace: '&lt;br&gt;', '<br>'
+              | replace: '&lt;br/&gt;', '<br>'
+              | replace: '&lt;br /&gt;', '<br>'
+            -%}
+            <h2 class="join-the-heist-society__subheading t-t4">
+              {{- subheading_content -}}
+            </h2>
+          {%- endif -%}
+
+          {%- if section.settings.features != blank -%}
+            {%- assign feature_items = section.settings.features | newline_to_br | split: '<br />' -%}
+            <ul class="join-the-heist-society__features" role="list">
+              {%- for item in feature_items -%}
+                {%- assign feature_text = item | strip -%}
+                {%- if feature_text != blank -%}
+                  <li class="join-the-heist-society__feature t-n1">
+                    <span class="join-the-heist-society__feature-dot" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_4839_8983)">
+                        <circle cx="8" cy="8" r="7" fill="#161414"/>
+                        <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM7 11.4L3.6 8L5 6.6L7 8.6L11 4.6L12.4 6L7 11.4Z" fill="#FF3B27"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_4839_8983">
+                        <rect width="16" height="16" fill="white"/>
+                        </clipPath>
+                        </defs>
+                      </svg>
+                    </span>
+                    <span>{{- feature_text | escape -}}</span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          <div class="join-the-heist-society__kit-card">
+            <div class="join-the-heist-society__kit-copy">
+              {%- if section.settings.kit_heading != blank -%}
+                <p class="join-the-heist-society__kit-heading t-t2">{{- section.settings.kit_heading | escape -}}</p>
+              {%- endif -%}
+              {%- if section.settings.kit_value != blank -%}
+                <p class="join-the-heist-society__kit-value t-n2">{{- section.settings.kit_value | escape -}}</p>
+              {%- endif -%}
+            </div>
+
+            <div class="join-the-heist-society__products">
+              {%- for block in product_blocks -%}
+                {%- liquid
+                  assign product = block.settings.product
+                  assign item_title = block.settings.custom_name | strip
+                  assign item_image = block.settings.custom_image
+                  assign item_alt = item_title | escape
+                  assign item_description = block.settings.custom_description | strip
+
+                  if item_title == blank and product != blank
+                    assign item_title = product.title
+                  endif
+
+                  if item_image == blank and product != blank
+                    assign item_image = product.featured_image
+                  endif
+
+                  assign item_alt = item_title | escape
+                -%}
+
+                <div class="join-the-heist-society__product" {{- block.shopify_attributes -}}>
+                  <div class="join-the-heist-society__product-frame">
+                    {%- if product != blank and cta_link == blank -%}
+                      {%- assign cta_link = product.url -%}
+                    {%- endif -%}
+
+                    {%- if item_image != blank -%}
+                      {%- if product != blank -%}
+                        <a class="join-the-heist-society__product-link" href="{{- product.url -}}">
+                          {{-
+                            item_image
+                            | image_url: width: 480
+                            | image_tag:
+                              widths: '160, 240, 320, 480',
+                              sizes: '(min-width: 990px) 7rem, 5rem',
+                              loading: 'lazy',
+                              alt: item_alt,
+                              class: 'join-the-heist-society__product-image'
+                          -}}
+                        </a>
+                      {%- else -%}
+                        {{-
+                          item_image
+                          | image_url: width: 480
+                          | image_tag:
+                            widths: '160, 240, 320, 480',
+                            sizes: '(min-width: 990px) 7rem, 5rem',
+                            loading: 'lazy',
+                            alt: item_alt,
+                            class: 'join-the-heist-society__product-image'
+                        -}}
+                      {%- endif -%}
+                    {%- else -%}
+                      <div class="join-the-heist-society__product-placeholder" aria-hidden="true"></div>
+                    {%- endif -%}
+                  </div>
+
+                  {%- if item_title != blank -%}
+                      {%- if product != blank -%}
+                        <a class="join-the-heist-society__product-title-link t-n1" href="{{- product.url -}}">
+                          {{- item_title | escape -}}
+                        </a>
+                      {%- endif -%}
+                  {%- endif -%}
+
+                                    {%- if item_description != blank -%}
+                      {%- if product != blank -%}
+                        <p class="join-the-heist-society__product-desc t-n3 hide-from-lg">
+                          {{- item_description | escape -}}
+                        </p>
+                      {%- endif -%}
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          {%- if section.settings.button_label != blank and cta_link != blank -%}
+            <a class="join-the-heist-society__button btn btn--dark btn--split btn--block" href="{{- cta_link -}}">
+              <span class="btn__text">{{- section.settings.button_label | escape -}}</span>
+              <span class="btn__lines" aria-hidden="true"></span>
+              <span class="btn__text">{{- section.settings.button_label_two | escape -}}</span>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.disclaimer != blank -%}
+            {%- assign disclaimer_content = section.settings.disclaimer | escape | newline_to_br -%}
+            {%- assign disclaimer_content = disclaimer_content
+              | replace: '&lt;br&gt;', '<br>'
+              | replace: '&lt;br/&gt;', '<br>'
+              | replace: '&lt;br /&gt;', '<br>'
+            -%}
+            <p class="join-the-heist-society__disclaimer t-n1">
+              {{- disclaimer_content -}}
+            </p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- schema -%}
+{
+  "name": "Join the Heist Society",
+  "tag": "section",
+  "class": "shopify-section-join-the-heist-society",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the Heist Society™"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "3 months prepaid today, then monthly. Pause or cancel anytime after."
+    },
+    {
+      "type": "textarea",
+      "id": "features",
+      "label": "Features",
+      "info": "Add one feature per line",
+      "default": "Lowest price. Locked forever.\nFree shipping forever, no thresholds.\nLimited-edition Smuggle Bear every 6 months.\nSmuggle Bear welcome kit (value $70)."
+    },
+    {
+      "type": "text",
+      "id": "kit_heading",
+      "label": "Kit heading",
+      "default": "Smuggle Bear Welcome Kit"
+    },
+    {
+      "type": "text",
+      "id": "kit_value",
+      "label": "Kit value text",
+      "default": "(Value $70)"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Join"
+    },
+        {
+      "type": "text",
+      "id": "button_label_two",
+      "label": "Button label Two",
+      "default": "Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "If empty, the first product block link is used"
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "default": "30-day escape plan. Love it or your money back."
+    },
+    {
+      "type": "header",
+      "content": "Left media"
+    },
+    {
+      "type": "select",
+      "id": "left_media_type",
+      "label": "Left media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Image (desktop)",
+      "visible_if": "{{ section.settings.left_media_type == 'image' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image_mobile",
+      "label": "Image (mobile)",
+      "visible_if": "{{ section.settings.left_media_type == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "left_video_desktop",
+      "label": "Video (desktop)",
+      "visible_if": "{{ section.settings.left_media_type == 'video' }}"
+    },
+    {
+      "type": "video",
+      "id": "left_video_mobile",
+      "label": "Video (mobile)",
+      "visible_if": "{{ section.settings.left_media_type == 'video' }}"
+    },
+    {
+      "type": "header",
+      "content": "Panel background video"
+    },
+    {
+      "type": "video",
+      "id": "video_desktop",
+      "label": "Video (desktop)"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Video (mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#e8e0d2"
+    },
+    {
+      "type": "color",
+      "id": "panel_color",
+      "label": "Panel overlay color",
+      "default": "#f4ede1"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "custom_name",
+          "label": "Custom name",
+          "info": "Optional. Falls back to the product title."
+        },
+        {
+          "type": "text",
+          "id": "custom_description",
+          "label": "Custom description",
+          "info": "product description."
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom image",
+          "info": "Optional. Falls back to the product featured image."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Join the Heist Society",
+      "category": "Image"
+    }
+  ]
+}
+{%- endschema -%}
