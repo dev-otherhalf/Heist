@@ -1,0 +1,40 @@
+{% comment %}
+  Variation 2 — subscription is the only inline option, with a standalone CTA
+  that opens a popup offering the Heist Society upgrade before adding to cart.
+
+  @param {block} block - the Subscription block (settings)
+  @param {product} product - the stitched parent product
+
+  Per-month pricing. The box is a non-radio tier (data-tier="standard") whose
+  price nodes the JS keeps in sync. Clicking the CTA opens the popup; the popup
+  decides whether the standard sub or the Heist upgrade is added.
+{% endcomment %}
+
+{% liquid
+  assign s = block.settings
+%}
+
+<div class="buy-box-plans buy-box-plans--v2">
+  <div class="buy-box-sub buy-box-sub--single" data-tier="standard" data-buy-box-tier>
+    <p class="buy-box-sub__bar t-n1-med">{{ s.standard_ships_label | default: 'Ships every 4 weeks' }}</p>
+    <div class="buy-box-sub__pricing">
+      <span class="buy-box-tier__price-row">
+        <span class="buy-box-tier__price t-s3" data-tier-price></span>
+        <span class="buy-box-tier__unit t-n1">/mo</span>
+        <s class="buy-box-tier__compare t-s3" data-tier-compare hidden></s>
+      </span>
+      <span class="buy-box-tier__save t-n1" data-tier-save hidden></span>
+    </div>
+    <p class="buy-box-sub__note t-t4">
+      {{ s.standard_note | default: 'Pause, skip, or cancel anytime · Free shipping' }}
+    </p>
+  </div>
+
+  <button type="button" class="buy-box__submit btn btn--block" data-buy-box-submit data-opens-popup="true">
+    <span class="buy-box__submit-label">{{ s.subscribe_cta_label | default: 'Start the heist' }}</span>
+  </button>
+
+  {% render 'buy-box-guarantee', block: block %}
+</div>
+
+{% render 'buy-box-popup', block: block %}

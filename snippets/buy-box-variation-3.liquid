@@ -1,0 +1,218 @@
+{% comment %}
+  Variation 3 — three stacked plan tiers + a live frequency select.
+
+  @param {block} block - the Subscription block (settings)
+  @param {product} product - the stitched parent product (for selling plan groups)
+
+  Radio tiers: Heist Society subscription / Subscribe & Save / One-time.
+  Each tier's price + badge nodes carry data-roles that assets/buy-box.js
+  updates live. The frequency <select> is seeded server-side from the
+  "Subscribe & Save" selling plan group so it works without JS and JS can read
+  the plan ids straight off the <option> values.
+{% endcomment %}
+
+{% liquid
+  assign s = block.settings
+  assign one_time_enabled = s.one_time_enabled
+  assign default_tier = s.default_tier | default: 'heist'
+  assign heist_hint = 'prepaid'
+
+  # Frequency options = every subscription plan on the components except the
+  # Heist (prepaid) one. Selling plans live on the components, not the parent.
+  assign has_frequency_plans = false
+  for component in components
+    for group in component.selling_plan_groups
+      for plan in group.selling_plans
+        assign plan_name_dc = plan.name | downcase
+        unless heist_hint != blank and plan_name_dc contains heist_hint
+          assign has_frequency_plans = true
+        endunless
+      endfor
+    endfor
+  endfor
+%}
+
+<fieldset class="buy-box-plans" data-buy-box-plans>
+  <legend class="buy-box__section-label t-n1">{{ s.frequency_label | default: 'Select your frequency:' }}</legend>
+
+  {%- comment -%} ---------- Tier 1 · Heist Society ---------- {%- endcomment -%}
+  <label class="buy-box-tier" data-tier="heist" data-buy-box-tier>
+    <input
+      type="radio"
+      name="buy-box-tier-{{ block.id }}"
+      value="heist"
+      class="buy-box-tier__radio visually-hidden"
+      {% if default_tier == 'heist' %}checked{% endif %}
+    >
+    <span class="buy-box-tier__toggle" aria-hidden="true"></span>
+
+    <span class="buy-box-tier__body">
+      <span class="buy-box-tier__row">
+        <span class="buy-box-tier__title t-n1-med">{{ s.heist_title | default: 'Heist Society™ Subscription' }}</span>
+        <span class="buy-box-tier__badge t-n2-med" data-tier-badge data-badge="{{ s.heist_badge | escape }}" hidden></span>
+      </span>
+
+      <span class="buy-box-tier__price-row">
+        <span class="buy-box-tier__price t-s3" data-tier-price></span>
+        <span class="buy-box-tier__unit t-n1">/mo</span>
+        <s class="buy-box-tier__compare t-s3" data-tier-compare hidden></s>
+      </span>
+
+      {% if s.heist_subtitle != blank %}
+        <span class="buy-box-tier__subtitle t-t4">{{ s.heist_subtitle }}</span>
+      {% endif %}
+
+      {% assign perks = s.perk_list | strip | newline_to_br | split: '<br />' %}
+      {% if perks.size > 0 %}
+        <span class="buy-box-tier__perks">
+          {% for perk in perks %}
+            {% assign perk_text = perk | strip_html | strip %}
+            {% if perk_text != blank %}
+              <span class="buy-box-perk t-n2">
+                <span class="buy-box-perk__icon svg-wrapper">{% render 'icon-red-checkbox' %}</span>
+                {{ perk_text }}
+              </span>
+            {% endif %}
+          {% endfor %}
+        </span>
+      {% endif %}
+
+      {% assign has_kit = false %}
+      {% if s.kit_image_1 != blank or s.kit_image_2 != blank or s.kit_image_3 != blank %}
+        {% assign has_kit = true %}
+      {% endif %}
+      {% if has_kit %}
+        <span class="buy-box-kit">
+          {% if s.kit_label != blank %}
+            <span class="buy-box-kit__label t-n1">{{ s.kit_label }}</span>
+          {% endif %}
+          <span class="buy-box-kit__items">
+            {% for i in (1..3) %}
+              {% assign img_key = 'kit_image_' | append: i %}
+              {% assign cap_key = 'kit_caption_' | append: i %}
+              {% assign kit_img = s[img_key] %}
+              {% if kit_img != blank %}
+                <span class="buy-box-kit__item">
+                  <span class="buy-box-kit__thumb">
+                    {{ kit_img | image_url: width: 240 | image_tag: loading: 'lazy', alt: s[cap_key] | default: '', sizes: '120px', widths: '120, 240' }}
+                  </span>
+                  <span class="buy-box-kit__caption t-n1">{{ s[cap_key] }}</span>
+                </span>
+              {% endif %}
+            {% endfor %}
+          </span>
+        </span>
+      {% endif %}
+    </span>
+  </label>
+
+  {%- comment -%} ---------- Tier 2 · Subscribe & Save ---------- {%- endcomment -%}
+  <label class="buy-box-tier" data-tier="standard" data-buy-box-tier>
+    <input
+      type="radio"
+      name="buy-box-tier-{{ block.id }}"
+      value="standard"
+      class="buy-box-tier__radio visually-hidden"
+      {% if default_tier == 'standard' %}checked{% endif %}
+    >
+    <span class="buy-box-tier__toggle" aria-hidden="true"></span>
+
+    <span class="buy-box-tier__body">
+      <span class="buy-box-tier__row">
+        <span class="buy-box-tier__title t-n1-med">{{ s.standard_title | default: 'Subscribe & Save' }}</span>
+        <span class="buy-box-tier__badge t-n2-med" data-tier-badge data-badge="{{ s.standard_badge | escape }}" hidden></span>
+      </span>
+
+      <span class="buy-box-tier__price-row">
+        <span class="buy-box-tier__price t-s3" data-tier-price></span>
+        <span class="buy-box-tier__unit t-n1">/mo</span>
+        <s class="buy-box-tier__compare t-s3" data-tier-compare hidden></s>
+      </span>
+
+      {% if has_frequency_plans %}
+        <span class="buy-box-frequency">
+          <label class="visually-hidden" for="buy-box-frequency-{{ block.id }}">Delivery frequency</label>
+          <select
+            id="buy-box-frequency-{{ block.id }}"
+            class="buy-box-frequency__select t-n1"
+            data-buy-box-frequency
+          >
+            {% assign default_freq = s.default_frequency_label | default: '2 weeks' | downcase %}
+            {%- comment -%}
+              Dedupe by plan NAME: each product has its own id for the same
+              frequency, but the JS matches the chosen frequency by name.
+            {%- endcomment -%}
+            {% assign seen_plan_names = '' %}
+            {% for component in components %}
+              {% for group in component.selling_plan_groups %}
+                {% for plan in group.selling_plans %}
+                  {% assign plan_name_dc = plan.name | downcase %}
+                  {% assign name_key = '[' | append: plan_name_dc | append: ']' %}
+                  {% unless seen_plan_names contains name_key %}
+                    {% unless heist_hint != blank and plan_name_dc contains heist_hint %}
+                      {% assign seen_plan_names = seen_plan_names | append: name_key %}
+                      <option
+                        value="{{ plan.id }}"
+                        {% if default_freq != blank and plan_name_dc contains default_freq %}selected{% endif %}
+                      >{{ plan.name }}</option>
+                    {% endunless %}
+                  {% endunless %}
+                {% endfor %}
+              {% endfor %}
+            {% endfor %}
+          </select>
+          <span class="buy-box-frequency__chevron svg-wrapper" aria-hidden="true">
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </span>
+        </span>
+      {% endif %}
+
+      {% assign std_perks = s.standard_perk_list | strip | newline_to_br | split: '<br />' %}
+      {% if std_perks.size > 0 %}
+        <span class="buy-box-tier__perks">
+          {% for perk in std_perks %}
+            {% assign perk_text = perk | strip_html | strip %}
+            {% if perk_text != blank %}
+              <span class="buy-box-perk t-n2">
+                <span class="buy-box-perk__icon svg-wrapper">{% render 'icon-red-checkbox' %}</span>
+                {{ perk_text }}
+              </span>
+            {% endif %}
+          {% endfor %}
+        </span>
+      {% endif %}
+    </span>
+  </label>
+
+  {%- comment -%} ---------- Tier 3 · One time ---------- {%- endcomment -%}
+  {% if one_time_enabled %}
+    <label class="buy-box-tier buy-box-tier--compact" data-tier="one_time" data-buy-box-tier>
+      <input
+        type="radio"
+        name="buy-box-tier-{{ block.id }}"
+        value="one_time"
+        class="buy-box-tier__radio visually-hidden"
+        {% if default_tier == 'one_time' %}checked{% endif %}
+      >
+      <span class="buy-box-tier__toggle" aria-hidden="true"></span>
+
+      <span class="buy-box-tier__body">
+        <span class="buy-box-tier__row">
+          <span class="buy-box-tier__title t-n1-med">{{ s.one_time_title | default: 'One time purchase' }}</span>
+          <span class="buy-box-tier__price-row buy-box-tier__price-row--inline">
+            <span class="buy-box-tier__price t-s3" data-tier-price></span>
+            <s class="buy-box-tier__compare t-s3" data-tier-compare hidden></s>
+          </span>
+        </span>
+      </span>
+    </label>
+  {% endif %}
+</fieldset>
+
+{%- comment -%} ---------- CTA + guarantee ---------- {%- endcomment -%}
+<button type="button" class="buy-box__submit btn btn--block" data-buy-box-submit data-show-price="true">
+  <span class="buy-box__submit-label">{{ s.cta_label | default: 'Add to cart' }}</span>
+  <span class="buy-box__submit-price" data-submit-price></span>
+</button>
+
+{% render 'buy-box-guarantee', block: block %}

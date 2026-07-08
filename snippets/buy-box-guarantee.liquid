@@ -1,0 +1,25 @@
+{% comment %}
+  The guarantee line + optional info tooltip, shared across all variations.
+
+  @param {block} block - the Subscription block (settings)
+  @param {string} detail - '' | 'sub' | 'onetime'. Adds the V1 collapse hook
+    (data-sub-detail / data-onetime-detail) so the line collapses with its box.
+
+  The tooltip is a plain popover toggled by assets/buy-box.js (open/close, outside
+  click, Esc). It sits absolutely above the row, spanning the buy-box column.
+{% endcomment %}
+
+{% liquid
+  assign s = block.settings
+  assign detail = detail | default: ''
+%}
+
+{% if s.guarantee_text != blank or s.guarantee_tooltip != blank %}
+  <div
+    class="buy-box__guarantee t-n1"
+    {% if detail == 'sub' %}data-sub-detail{% elsif detail == 'onetime' %}data-onetime-detail hidden{% endif %}
+  >
+    <span class="buy-box__guarantee-text">{{ s.guarantee_text }}</span>
+    {% render 'buy-box-tooltip', content: s.guarantee_tooltip, label: s.guarantee_text %}
+  </div>
+{% endif %}

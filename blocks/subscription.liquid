@@ -1,0 +1,514 @@
+{% comment %}
+  Subscription buy box (Heist "stitched product" PDP).
+
+  A theme block that renders the stitched purchase UI: the component product
+  tiles ("SELECT YOUR BAGS") plus the plan/frequency selector ("SELECT YOUR
+  FREQUENCY"). Add it inside blocks/_product-details.liquid via the theme
+  editor — it already accepts @theme blocks, so no section schema edit is
+  needed.
+
+  Data:
+    - closest.product.metafields.custom.buy_box_products  → list of component
+      products (Smooth Talker, Blueprint) picked by the merchant.
+  Everything else (plan group names, frequency labels, perks, copy) is a
+  block setting edited in the customizer.
+
+  layout_variation switches between three layouts, all sharing the same tiles,
+  pricing engine, and data island:
+    - variation_1: Subscribe & Save (with nested Heist upgrade) vs One-time,
+      per-bag pricing, CTA inside the box.
+    - variation_2: subscription-only + a standalone CTA that opens the Heist
+      upgrade popup, per-month pricing.
+    - variation_3: three stacked plan tiers + a live frequency select.
+{% endcomment %}
+
+{% liquid
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+
+  assign components = product.metafields.custom.buy_box_stitched_products.value
+  assign block_id = block.id
+
+  # Variation 1 shows a blended per-bag price; 2 & 3 show the per-delivery total.
+  assign variation = block.settings.layout_variation
+  assign price_mode = 'total'
+  if variation == 'variation_1'
+    assign price_mode = 'per_bag'
+  endif
+
+  # Variation 2's default tier is the standard subscription (only inline option).
+  assign default_tier = block.settings.default_tier
+  if variation == 'variation_2'
+    assign default_tier = 'standard'
+  endif
+%}
+
+{% render 'vite-tag' with 'sections/styles/buy-box.scss' %}
+
+<buy-box
+  class="buy-box buy-box--{{ variation }}"
+  data-block-id="{{ block_id }}"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-variation="{{ variation }}"
+  data-price-mode="{{ price_mode }}"
+  data-heist-hint="prepaid"
+  data-standard-hint="week"
+  data-prepaid-divisor="{{ block.settings.heist_prepaid_divisor | default: 3 }}"
+  data-one-time-enabled="{{ block.settings.one_time_enabled }}"
+  data-default-tier="{{ default_tier }}"
+  data-cta-standard="{{ block.settings.subscribe_cta_label | default: 'Start the heist' | escape }}"
+  data-cta-heist="{{ block.settings.cta_heist_label | default: 'Join the Heist Society™' | escape }}"
+  data-cta-onetime="{{ block.settings.cta_one_time_label | default: 'Buy now' | escape }}"
+  data-standard-subtitle="{{ block.settings.standard_subtitle | default: 'Ships every 4 weeks · Pause, skip, or cancel anytime · Free shipping' | escape }}"
+  data-heist-subtitle="{{ block.settings.heist_summary_subtitle | default: 'Heist Society™ price locked for life · Pause, skip, or cancel anytime' | escape }}"
+  data-heist-badge="{{ block.settings.heist_badge | escape }}"
+  data-standard-badge="{{ block.settings.standard_badge | escape }}"
+  {{ block.shopify_attributes }}
+>
+  {% if components == blank %}
+    {% comment %} Editor guidance when the metafield is empty {% endcomment %}
+    {% if request.design_mode %}
+      <p class="buy-box__empty t-n1">
+        {{ 'Add products to the "Buy Box — Stitched Products" metafield (custom.buy_box_stitched_products) on this product to populate the buy box.' }}
+      </p>
+    {% endif %}
+  {% else %}
+    {%- comment -%} ---------- Component product tiles ---------- {%- endcomment -%}
+    <div class="buy-box__bags">
+      <p class="buy-box__section-label t-n1">
+        {{ block.settings.bags_label | default: 'Select your bags: take more, save more.' }}
+      </p>
+      <div class="buy-box__tiles" ref="tiles">
+        {% for component in components %}
+          {% render 'buy-box-component',
+            product: component,
+            index: forloop.index0,
+            default_quantity: block.settings.default_bag_quantity
+          %}
+        {% endfor %}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Plan selector (per layout variation) ---------- {%- endcomment -%}
+    {% case variation %}
+      {% when 'variation_1' %}
+        {% render 'buy-box-variation-1', block: block, product: product, components: components %}
+      {% when 'variation_2' %}
+        {% render 'buy-box-variation-2', block: block, product: product, components: components %}
+      {% when 'variation_3' %}
+        {% render 'buy-box-variation-3', block: block, product: product, components: components %}
+    {% endcase %}
+
+    {%- comment -%} ---------- Data island consumed by assets/buy-box.js ---------- {%- endcomment -%}
+    <script type="application/json" data-buy-box-data>
+      {
+        "moneyFormat": {{ shop.money_format | json }},
+        "components": [
+          {%- for component in components -%}
+            {
+              "productId": {{ component.id }},
+              "title": {{ component.title | json }},
+              "optionName": {{ component.options.first | json }},
+              "variants": [
+                {%- for v in component.variants -%}
+                  {
+                    "id": {{ v.id }},
+                    "title": {{ v.title | json }},
+                    "option1": {{ v.option1 | json }},
+                    "available": {{ v.available }},
+                    "price": {{ v.price }},
+                    "compareAtPrice": {{ v.compare_at_price | default: 0 }},
+                    "sellingPlanAllocations": [
+                      {%- for a in v.selling_plan_allocations -%}
+                        {
+                          "sellingPlanId": {{ a.selling_plan.id }},
+                          "name": {{ a.selling_plan.name | json }},
+                          "price": {{ a.price }},
+                          "perDeliveryPrice": {{ a.per_delivery_price }},
+                          "compareAtPrice": {{ a.compare_at_price | default: v.price }}
+                        }{%- unless forloop.last -%},{%- endunless -%}
+                      {%- endfor -%}
+                    ]
+                  }{%- unless forloop.last -%},{%- endunless -%}
+                {%- endfor -%}
+              ]
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ],
+        "sellingPlanGroups": [
+          {%- comment -%}
+            Selling plans live on the component products, not the stitched
+            parent — gather them from the components, deduped by group id.
+          {%- endcomment -%}
+          {%- assign seen_group_ids = '' -%}
+          {%- assign group_first = true -%}
+          {%- for component in components -%}
+            {%- for group in component.selling_plan_groups -%}
+              {%- assign group_key = '[' | append: group.id | append: ']' -%}
+              {%- unless seen_group_ids contains group_key -%}
+                {%- assign seen_group_ids = seen_group_ids | append: group_key -%}
+                {%- unless group_first -%},{%- endunless -%}
+                {%- assign group_first = false -%}
+                {
+                  "id": {{ group.id | json }},
+                  "name": {{ group.name | json }},
+                  "sellingPlans": [
+                    {%- for plan in group.selling_plans -%}
+                      {
+                        "id": {{ plan.id }},
+                        "name": {{ plan.name | json }},
+                        "optionValue": {{ plan.options.first.value | json }}
+                      }{%- unless forloop.last -%},{%- endunless -%}
+                    {%- endfor -%}
+                  ]
+                }
+              {%- endunless -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+
+    {% if block.settings.enable_sticky_bar %}
+      {% render 'buy-box-sticky', block: block, components: components, variation: variation %}
+    {% endif %}
+  {% endif %}
+</buy-box>
+
+{% render 'vite-tag' with 'sections/scripts/buy-box.js' %}
+
+{% schema %}
+{
+  "name": "Subscription",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout_variation",
+      "label": "Layout",
+      "options": [
+        { "value": "variation_1", "label": "Variation 1 — Subscribe / One-time" },
+        { "value": "variation_2", "label": "Variation 2 — Sub only + popup" },
+        { "value": "variation_3", "label": "Variation 3 — 3-tier + frequency" }
+      ],
+      "default": "variation_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "one_time_enabled",
+      "label": "Show one-time purchase tier",
+      "default": true,
+      "visible_if": "{{ block.settings.layout_variation != 'variation_2' }}"
+    },
+    {
+      "type": "select",
+      "id": "default_tier",
+      "label": "Default selected tier",
+      "options": [
+        { "value": "heist", "label": "Heist Society" },
+        { "value": "standard", "label": "Subscribe & Save" },
+        { "value": "one_time", "label": "One time" }
+      ],
+      "default": "heist",
+      "visible_if": "{{ block.settings.layout_variation != 'variation_2' }}"
+    },
+    {
+      "type": "header",
+      "content": "Bags"
+    },
+    {
+      "type": "text",
+      "id": "bags_label",
+      "label": "Bags label",
+      "default": "Select your bags: take more, save more."
+    },
+    {
+      "type": "range",
+      "id": "default_bag_quantity",
+      "label": "Default quantity per bag",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Heist Society"
+    },
+    {
+      "type": "text",
+      "id": "heist_title",
+      "label": "Tier title",
+      "default": "Heist Society™ Subscription",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_3' }}"
+    },
+    {
+      "type": "text",
+      "id": "heist_subtitle",
+      "label": "Tier subtitle",
+      "default": "3 month commitment, prepaid. Then ships every 4 weeks.",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_3' }}"
+    },
+    {
+      "type": "text",
+      "id": "heist_upgrade_title",
+      "label": "Upgrade card title (V1)",
+      "default": "Upgrade & Join the Heist Society™",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_1' }}"
+    },
+    {
+      "type": "text",
+      "id": "heist_summary_subtitle",
+      "label": "Summary subtitle when Heist selected (V1)",
+      "default": "Heist Society™ price locked for life · Pause, skip, or cancel anytime",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_1' }}"
+    },
+    {
+      "type": "text",
+      "id": "heist_badge",
+      "label": "Heist discount badge",
+      "info": "Manual badge (e.g. \"20% off\"). Overrides the auto-calculated discount. Leave blank to auto-calculate.",
+      "visible_if": "{{ block.settings.layout_variation != 'variation_2' }}"
+    },
+    {
+      "type": "range",
+      "id": "heist_prepaid_divisor",
+      "label": "Prepaid: divide per-bag price by",
+      "info": "The prepaid plan bills one fixed price for its whole term. Divide by the number of deliveries (e.g. 3 for a 3-month prepaid) to show the real per-bag price. Set to 1 if your plan is already per delivery.",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "textarea",
+      "id": "perk_list",
+      "label": "Perks (one per line)",
+      "default": "Lowest price. Locked forever.\nFree shipping forever, No thresholds.\nLimited-edition Smuggle Bear every 6 months.\nSmuggle Bear Welcome Kit (value $70)."
+    },
+    {
+      "type": "text",
+      "id": "kit_label",
+      "label": "Welcome kit label",
+      "default": "Welcome kit arrives with first order."
+    },
+    {
+      "type": "image_picker",
+      "id": "kit_image_1",
+      "label": "Kit image 1"
+    },
+    {
+      "type": "text",
+      "id": "kit_caption_1",
+      "label": "Kit caption 1",
+      "default": "storage tin"
+    },
+    {
+      "type": "image_picker",
+      "id": "kit_image_2",
+      "label": "Kit image 2"
+    },
+    {
+      "type": "text",
+      "id": "kit_caption_2",
+      "label": "Kit caption 2",
+      "default": "wooden scoop"
+    },
+    {
+      "type": "image_picker",
+      "id": "kit_image_3",
+      "label": "Kit image 3"
+    },
+    {
+      "type": "text",
+      "id": "kit_caption_3",
+      "label": "Kit caption 3",
+      "default": "smuggle bear"
+    },
+    {
+      "type": "header",
+      "content": "Subscribe & Save tier",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_3' }}"
+    },
+    {
+      "type": "text",
+      "id": "standard_title",
+      "label": "Title",
+      "default": "Subscribe & Save",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_3' }}"
+    },
+    {
+      "type": "text",
+      "id": "subscribe_bar_label",
+      "label": "Box bar label (V1)",
+      "default": "Subscribe & Save up to 25%",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_1' }}"
+    },
+    {
+      "type": "text",
+      "id": "standard_subtitle",
+      "label": "Summary subtitle when 4-week selected (V1)",
+      "default": "Ships every 4 weeks · Pause, skip, or cancel anytime · Free shipping",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_1' }}"
+    },
+    {
+      "type": "text",
+      "id": "standard_badge",
+      "label": "Subscribe & Save discount badge",
+      "info": "Manual badge (e.g. \"15% off\"). Overrides the auto-calculated discount. Leave blank to auto-calculate.",
+      "visible_if": "{{ block.settings.layout_variation != 'variation_2' }}"
+    },
+    {
+      "type": "textarea",
+      "id": "standard_perk_list",
+      "label": "Perks (one per line)",
+      "default": "Free shipping on every order.\nPause, skip or cancel anytime.",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_3' }}"
+    },
+    {
+      "type": "text",
+      "id": "default_frequency_label",
+      "label": "Default frequency",
+      "info": "The frequency option whose name contains this is preselected (e.g. \"2 weeks\").",
+      "default": "2 weeks",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_3' }}"
+    },
+    {
+      "type": "header",
+      "content": "One time tier",
+      "visible_if": "{{ block.settings.layout_variation != 'variation_2' }}"
+    },
+    {
+      "type": "text",
+      "id": "one_time_title",
+      "label": "Title",
+      "default": "One time purchase",
+      "visible_if": "{{ block.settings.layout_variation != 'variation_2' }}"
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label (Variation 3)",
+      "info": "The live total price is appended automatically.",
+      "default": "Add to cart",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_3' }}"
+    },
+    {
+      "type": "text",
+      "id": "subscribe_cta_label",
+      "label": "Subscribe button label (V1 & V2)",
+      "default": "Start the heist",
+      "visible_if": "{{ block.settings.layout_variation != 'variation_3' }}"
+    },
+    {
+      "type": "text",
+      "id": "cta_heist_label",
+      "label": "Heist button label (V1)",
+      "default": "Join the Heist Society™",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_1' }}"
+    },
+    {
+      "type": "text",
+      "id": "cta_one_time_label",
+      "label": "One-time button label (V1)",
+      "default": "Buy now",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_1' }}"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_text",
+      "label": "Guarantee line",
+      "default": "30-day satisfaction guarantee • Refill ships in 30 days"
+    },
+    {
+      "type": "textarea",
+      "id": "guarantee_tooltip",
+      "label": "Guarantee tooltip (ⓘ)",
+      "info": "Shown in a popover when the info icon is clicked. Leave blank to hide the icon. Blank line = new paragraph.",
+      "default": "By default you will receive a refill every 30 days of your selected quantity. Skip, pause, or cancel anytime.\n\nBy subscribing and/or joining Heist Society, you get discounted pricing and benefits and gifts available only to your chosen subscription level."
+    },
+    {
+      "type": "header",
+      "content": "Sticky bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_bar",
+      "label": "Enable sticky bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sticky_label",
+      "label": "Summary label (desktop)",
+      "default": "Order Summary:",
+      "visible_if": "{{ block.settings.enable_sticky_bar }}"
+    },
+    {
+      "type": "text",
+      "id": "sticky_cta_label",
+      "label": "Sticky button label",
+      "default": "Finalize your order",
+      "visible_if": "{{ block.settings.enable_sticky_bar }}"
+    },
+    {
+      "type": "text",
+      "id": "sticky_saving_label",
+      "label": "Sticky saving label",
+      "default": "Your saving",
+      "visible_if": "{{ block.settings.enable_sticky_bar }}"
+    },
+    {
+      "type": "header",
+      "content": "Upgrade popup (Variation 2)",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_2' }}"
+    },
+    {
+      "type": "text",
+      "id": "popup_title",
+      "label": "Title",
+      "default": "Want to Upgrade to the Heist Society™ and Save 25%?",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_2' }}"
+    },
+    {
+      "type": "text",
+      "id": "popup_subtitle",
+      "label": "Subtitle",
+      "info": "Also used as the Heist upgrade subtitle in Variation 1.",
+      "default": "3 months prepaid today, then monthly. Cancel anytime after.",
+      "visible_if": "{{ block.settings.layout_variation != 'variation_3' }}"
+    },
+    {
+      "type": "textarea",
+      "id": "popup_tooltip",
+      "label": "Subtitle tooltip (ⓘ)",
+      "info": "Shown in a popover when the info icon next to the subtitle is clicked. Leave blank to hide the icon.",
+      "default": "By default you will receive a refill every 30 days of your selected quantity. Skip, pause, or cancel anytime.\n\nBy subscribing and/or joining Heist Society, you get discounted pricing and benefits and gifts available only to your chosen subscription level.",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_2' }}"
+    },
+    {
+      "type": "text",
+      "id": "popup_cta_label",
+      "label": "Upgrade button label",
+      "default": "Join the Heist Society™",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_2' }}"
+    },
+    {
+      "type": "text",
+      "id": "popup_footer",
+      "label": "Footer line",
+      "default": "30-day escape plan • Love it or your money back",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_2' }}"
+    }
+  ],
+  "presets": [
+    { "name": "Subscription" }
+  ]
+}
+{% endschema %}

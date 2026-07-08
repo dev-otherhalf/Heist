@@ -1,0 +1,62 @@
+{% comment %}
+  Sticky "Finalize your order" bar for the buy box. Fixed to the bottom of the
+  viewport; assets/buy-box.js reveals it (data-stuck) once the buy box scrolls
+  out of view, keeps the saving amount live, and shows a thumbnail per selected
+  variant (qty > 0) on desktop.
+
+  @param {block} block - the Subscription block (settings)
+  @param {array} components - the stitched component products
+  @param {string} variation - layout_variation (for the popup CTA behaviour)
+
+  Mobile hides the summary (label + thumbnails) and just shows the CTA + saving.
+{% endcomment %}
+
+{% liquid
+  assign s = block.settings
+  assign opens_popup = false
+  if variation == 'variation_2'
+    assign opens_popup = true
+  endif
+%}
+
+<div
+  class="buy-box-sticky"
+  data-buy-box-sticky
+  data-stuck="false"
+  data-saving-label="{{ s.sticky_saving_label | default: 'Your saving' | escape }}"
+>
+  <div class="buy-box-sticky__inner">
+    <div class="buy-box-sticky__summary">
+      <span class="buy-box-sticky__label t-t1">{{ s.sticky_label | default: 'Order Summary:' }}</span>
+      <div class="buy-box-sticky__thumbs">
+        {% for component in components %}
+          {% for variant in component.variants %}
+            {% assign thumb = variant.featured_image | default: component.featured_image %}
+            {% if thumb != blank %}
+              {% assign thumb_alt = variant.title | escape %}
+              <span class="buy-box-sticky__thumb" data-sticky-thumb data-variant-id="{{ variant.id }}" hidden>
+                {{
+                  thumb
+                  | image_url: width: 96
+                  | image_tag: loading: 'lazy', alt: thumb_alt, widths: '48, 96', sizes: '48px'
+                }}
+              </span>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="buy-box-sticky__actions">
+      <span class="buy-box-sticky__saving t-n1" data-sticky-saving hidden></span>
+      <button
+        type="button"
+        class="buy-box-sticky__cta btn"
+        data-buy-box-submit
+        {% if opens_popup %}data-opens-popup="true"{% endif %}
+      >
+        <span class="buy-box__submit-label">{{ s.sticky_cta_label | default: 'Finalize your order' }}</span>
+      </button>
+    </div>
+  </div>
+</div>

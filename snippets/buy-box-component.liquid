@@ -1,0 +1,136 @@
+{% comment %}
+  Renders one stitched component tile inside the Subscription buy box.
+
+  @param {product} product - a component product (e.g. Smooth Talker)
+  @param {number} index - 0-based position in the stitched list
+  @param {number} default_quantity - qty applied to this tile's first variant
+
+  Per-bag price + badge are seeded server-side from the variant's cheapest
+  selling-plan allocation (or one-time price if none) and then kept in sync by
+  assets/buy-box.js as the shopper switches tier/frequency. Tasting notes and
+  roast are read from optional component-product metafields, falling back
+  gracefully so the tile still renders without them.
+{% endcomment %}
+
+{% liquid
+  assign first_variant = product.selected_or_first_available_variant | default: product.variants.first
+  assign roast = product.metafields.custom.product_subtitle.value | default: product.metafields.custom.product_subtitle
+  assign tasting_notes = product.metafields.custom.product_notes.value | default: product.metafields.custom.product_notes
+  assign image_alt = product.title | escape
+
+  # Seed price/badge from the best (lowest per-delivery) allocation if a plan exists.
+  assign seed_price = first_variant.price
+  assign seed_compare = first_variant.compare_at_price | default: first_variant.price
+  assign best_alloc_price = first_variant.price
+  for alloc in first_variant.selling_plan_allocations
+    if alloc.per_delivery_price < best_alloc_price
+      assign best_alloc_price = alloc.per_delivery_price
+    endif
+  endfor
+  if best_alloc_price < seed_price
+    assign seed_compare = seed_price
+    assign seed_price = best_alloc_price
+  endif
+
+  assign discount_pct = 0
+  if seed_compare > 0 and seed_price < seed_compare
+    assign diff = seed_compare | minus: seed_price | times: 100.0
+    assign discount_pct = diff | divided_by: seed_compare | round
+  endif
+%}
+
+<div
+  class="buy-box-tile"
+  data-buy-box-tile
+  data-product-id="{{ product.id }}"
+  data-index="{{ index }}"
+>
+  {% if discount_pct > 0 %}
+    <span class="buy-box-tile__badge t-n2-med" data-tile-badge>{{ discount_pct }}% off</span>
+  {% else %}
+    <span class="buy-box-tile__badge t-n2-med" data-tile-badge hidden></span>
+  {% endif %}
+
+  {% if first_variant.featured_media != blank or product.featured_media != blank %}
+    {% assign tile_image = first_variant.featured_media | default: product.featured_media %}
+    {% if product.metafields.custom.stitched_products_image.value != blank %}
+      {% assign tile_image = product.metafields.custom.stitched_products_image.value %}
+    {% endif %}
+    <div class="buy-box-tile__image">
+      {{
+        tile_image
+        | image_url: width: 264
+        | image_tag: loading: 'lazy', alt: image_alt, sizes: '264px', widths: '132, 264, 396'
+      }}
+    </div>
+  {% endif %}
+
+  <div class="buy-box-tile__head">
+    <p class="buy-box-tile__name t-s3">{{ product.title | escape }}</p>
+    {% if roast != blank %}
+      <p class="buy-box-tile__roast t-t3">{{ roast }}</p>
+    {% endif %}
+    <div class="buy-box-tile__price-row">
+      <span class="buy-box-tile__price t-n1-med" data-tile-price>{{ seed_price | money }}</span>
+      <span class="buy-box-tile__unit t-n1">/bag</span>
+      <span
+        class="buy-box-tile__compare"
+        data-tile-compare
+        {% unless seed_compare > seed_price %}hidden{% endunless %}
+      >
+        <s class="t-n1-med">{{ seed_compare | money }}</s>
+      </span>
+    </div>
+  </div>
+
+  <hr class="buy-box-tile__rule">
+
+  {% if tasting_notes != blank %}
+    <div class="buy-box-tile__notes">
+      <p class="buy-box-tile__notes-label t-n1">{{ 'tasting notes:' }}</p>
+      <p class="buy-box-tile__notes-body t-t4">{{ tasting_notes }}</p>
+    </div>
+    <hr class="buy-box-tile__rule">
+  {% endif %}
+
+  {%- comment -%} One quantity stepper per variant (Decaf / ¼ Caf / …) {%- endcomment -%}
+  <div class="buy-box-tile__steppers">
+    {% for variant in product.variants %}
+      {% liquid
+        # Every variant defaults to the configured quantity (1 by default).
+        assign qty = default_quantity | default: 1
+        assign label = variant.option1 | default: variant.title
+      %}
+      <div class="buy-box-stepper" {% unless variant.available %}data-unavailable="true"{% endunless %}>
+        <span class="buy-box-stepper__label t-n1">{{ label | escape }}</span>
+        <div
+          class="buy-box-stepper__control"
+          data-buy-box-stepper
+          data-variant-id="{{ variant.id }}"
+          data-product-id="{{ product.id }}"
+        >
+          <button
+            type="button"
+            class="buy-box-stepper__btn"
+            data-stepper-decrease
+            aria-label="Decrease quantity for {{ label | escape }}"
+            {% if qty == 0 %}disabled{% endif %}
+          >
+            <span class="svg-wrapper">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+          </button>
+          <span class="buy-box-stepper__value t-n1" data-stepper-value>{{ qty }}</span>
+          <input type="hidden" data-stepper-input value="{{ qty }}">
+          <button
+            type="button"
+            class="buy-box-stepper__btn"
+            data-stepper-increase
+            aria-label="Increase quantity for {{ label | escape }}"
+            {% unless variant.available %}disabled{% endunless %}
+          >
+            <span class="svg-wrapper">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+          </button>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
