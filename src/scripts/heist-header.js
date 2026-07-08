@@ -321,28 +321,31 @@ if (header) {
     const scrollTop = getScrollTop();
     const delta = scrollTop - lastScrollTop;
     const beyondHeader = scrollTop > header.offsetHeight + 24;
-    const beyondScrollCapture =
-      !window.matchMedia("(min-width: 990px)").matches ||
+    const isDesktop = window.matchMedia("(min-width: 990px)").matches;
+    const hasClearedScrollCapture =
       !scrollCaptureSection ||
       scrollCaptureSection.getBoundingClientRect().bottom <= 0;
+    const canShowStickyHeader = beyondHeader && hasClearedScrollCapture;
+    const canShowStickyCta =
+      beyondHeader && (!isDesktop || hasClearedScrollCapture);
 
-    if (!beyondHeader) {
+    if (!canShowStickyHeader) {
       header.classList.remove("is-pinned", "is-hidden");
-      stickyCta?.classList.remove("is-visible");
-      stickyCta?.setAttribute("aria-hidden", "true");
     } else if (delta > 3) {
       header.classList.remove("is-pinned");
       header.classList.add("is-hidden");
-      stickyCta?.classList.add("is-visible");
-      stickyCta?.setAttribute("aria-hidden", "false");
     } else if (delta < -3) {
       header.classList.add("is-pinned");
       header.classList.remove("is-hidden");
-      stickyCta?.classList.remove("is-visible");
-      stickyCta?.setAttribute("aria-hidden", "true");
     }
 
-    if (!beyondScrollCapture) {
+    if (!canShowStickyCta) {
+      stickyCta?.classList.remove("is-visible");
+      stickyCta?.setAttribute("aria-hidden", "true");
+    } else if (delta > 3) {
+      stickyCta?.classList.add("is-visible");
+      stickyCta?.setAttribute("aria-hidden", "false");
+    } else if (delta < -3) {
       stickyCta?.classList.remove("is-visible");
       stickyCta?.setAttribute("aria-hidden", "true");
     }
