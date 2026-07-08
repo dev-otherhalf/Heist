@@ -139,9 +139,86 @@ function ensureDelegation() {
   });
 }
 
+function initDrawerScrollbar(drawer) {
+  const inner = drawer.querySelector(".brewing-guide__drawer-inner");
+  if (!inner || inner.dataset.scrollbarReady === "true") return;
+  inner.dataset.scrollbarReady = "true";
+
+  const track = document.createElement("div");
+  track.className = "brewing-guide__scrollbar";
+  const thumb = document.createElement("div");
+  thumb.className = "brewing-guide__scrollbar-thumb";
+  track.appendChild(thumb);
+  drawer.appendChild(track);
+
+  const MIN_THUMB = 24;
+
+  function update() {
+    const { scrollHeight, clientHeight, scrollTop } = inner;
+    const scrollable = scrollHeight - clientHeight;
+    if (scrollable <= 1) {
+      track.classList.remove("is-active");
+      return;
+    }
+    track.classList.add("is-active");
+    const trackH = track.clientHeight;
+    const thumbH = Math.max((clientHeight / scrollHeight) * trackH, MIN_THUMB);
+    const maxThumbTop = trackH - thumbH;
+    const top = maxThumbTop > 0 ? (scrollTop / scrollable) * maxThumbTop : 0;
+    thumb.style.height = `${thumbH}px`;
+    thumb.style.transform = `translateY(${top}px)`;
+  }
+
+  inner.addEventListener("scroll", update, { passive: true });
+  if (typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(update).observe(inner);
+  }
+
+  let dragStartY = 0;
+  let dragStartScroll = 0;
+  function onMove(event) {
+    const scrollable = inner.scrollHeight - inner.clientHeight;
+    const maxThumbTop = track.clientHeight - thumb.offsetHeight;
+    if (maxThumbTop <= 0) return;
+    const delta = ((event.clientY - dragStartY) / maxThumbTop) * scrollable;
+    inner.scrollTop = dragStartScroll + delta;
+  }
+  function onUp() {
+    document.removeEventListener("pointermove", onMove);
+    document.removeEventListener("pointerup", onUp);
+    thumb.classList.remove("is-dragging");
+  }
+  thumb.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    dragStartY = event.clientY;
+    dragStartScroll = inner.scrollTop;
+    thumb.classList.add("is-dragging");
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerup", onUp);
+  });
+
+  track.addEventListener("pointerdown", (event) => {
+    if (event.target === thumb) return;
+    const scrollable = inner.scrollHeight - inner.clientHeight;
+    const maxThumbTop = track.clientHeight - thumb.offsetHeight;
+    if (maxThumbTop <= 0) return;
+    const clickY = event.clientY - track.getBoundingClientRect().top;
+    const targetTop = Math.max(
+      0,
+      Math.min(clickY - thumb.offsetHeight / 2, maxThumbTop),
+    );
+    inner.scrollTop = (targetTop / maxThumbTop) * scrollable;
+  });
+
+  update();
+}
+
 function registerDrawer(modal) {
   if (modal.dataset.brewingReady === "true") return;
   modal.dataset.brewingReady = "true";
+
+  const drawer = modal.querySelector(".brewing-guide__drawer");
+  if (drawer) initDrawerScrollbar(drawer);
 
   // Snapshot the ×1 (base) quantity for each scalable ingredient. Anything
   // without a leading number (e.g. "GENEROUS") is flagged static and skipped.

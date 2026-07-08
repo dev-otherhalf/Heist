@@ -10,6 +10,10 @@
 @use "../../../styles/settings/breakpoints" as *;
 @use "../../../styles/components/typography";
 
+body:has(.brewing-guide__modal.is-open) {
+  overflow: hidden;
+}
+
 .brewing-guide {
   &__heading {
     &.t-h4 {
@@ -220,42 +224,61 @@
       var(--space-32);
     overflow-y: auto;
     max-height: 100dvh;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: #ff3b27 #161414;
-    background-image: linear-gradient(
-      to left,
-      #161414 0,
-      #161414 8px,
-      transparent 8px,
-      transparent 100%
-    );
-    background-repeat: no-repeat;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 
     &::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #161414;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #ff3b27;
-      border-radius: 0 !important;
-      -webkit-border-radius: 0 !important;
-      background-clip: border-box;
-    }
-
-    &::-webkit-scrollbar-thumb:vertical {
-      border-radius: 0 !important;
-      -webkit-border-radius: 0 !important;
+      width: 0;
+      height: 0;
+      display: none;
     }
 
     @include respond-down(md) {
       min-height: 0;
       padding-inline: var(--space-19);
       max-height: 100dvh;
+    }
+  }
+
+  &__scrollbar {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: 6px;
+    background: #161414;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 4;
+
+    &.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @include respond-down(md) {
+      width: 4px;
+    }
+  }
+
+  &__scrollbar-thumb {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 2px;
+    width: 4px;
+    height: 0;
+    background: #ff3b27;
+    border-radius: 0;
+    cursor: grab;
+    will-change: transform;
+
+    &.is-dragging {
+      cursor: grabbing;
+    }
+
+    @include respond-down(md) {
+      inset-inline-end: 0;
     }
   }
 
@@ -475,8 +498,7 @@
     border: var(--bw-2) solid var(--ink);
 
     @include respond-down(md) {
-      margin-inline: calc(var(--space-32) * -1)
-        calc((var(--space-27) + 4px) * -1);
+      margin-inline: calc(var(--space-19) * -1);
       padding: var(--space-34) var(--space-22);
     }
   }
@@ -521,10 +543,6 @@
 
   &__banner-title,
   &__banner-subtext {
-    // background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
-    // background-clip: text;
-    // color: transparent;
-    // background-size: contain;
 
     @include respond-to(md) {
       background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
