@@ -86,20 +86,15 @@ document.addEventListener("shopify:section:load", (event) =>
   initCoffeeHeist(event.target),
 );
 
-
-
 class CoffeeHeistAnimation {
   constructor() {
     this.sections = document.querySelectorAll(".coffee-heist");
 
     if (!this.sections.length) return;
 
-    this.observer = new IntersectionObserver(
-      this.handleIntersect.bind(this),
-      {
-        threshold: 0.3,
-      }
-    );
+    this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+      threshold: 0.3,
+    });
 
     this.sections.forEach((section) => {
       this.prepare(section);
@@ -112,14 +107,16 @@ class CoffeeHeistAnimation {
     const scores = section.querySelectorAll(".coffee-heist__bar-score");
 
     fills.forEach((fill) => {
-      const targetWidth = fill.style.width || window.getComputedStyle(fill).width;
+      const targetWidth =
+        fill.style.width || window.getComputedStyle(fill).width;
 
       fill.dataset.targetWidth = targetWidth;
       fill.style.width = "0%";
     });
 
     scores.forEach((score) => {
-      const targetLeft = score.style.left || window.getComputedStyle(score).left;
+      const targetLeft =
+        score.style.left || window.getComputedStyle(score).left;
       const targetValue = parseFloat(score.textContent) || 0;
 
       score.dataset.targetLeft = targetLeft;
@@ -147,33 +144,21 @@ class CoffeeHeistAnimation {
     const scores = section.querySelectorAll(".coffee-heist__bar-score");
 
     fills.forEach((fill) => {
-      fill.animate(
-        [
-          { width: "0%" },
-          { width: fill.dataset.targetWidth },
-        ],
-        {
-          duration: 1600,
-          easing: "ease-out",
-          fill: "forwards",
-        }
-      );
+      fill.animate([{ width: "0%" }, { width: fill.dataset.targetWidth }], {
+        duration: 1600,
+        easing: "ease-out",
+        fill: "forwards",
+      });
     });
 
     scores.forEach((score) => {
       const target = parseFloat(score.dataset.targetValue);
 
-      score.animate(
-        [
-          { left: "0%" },
-          { left: score.dataset.targetLeft },
-        ],
-        {
-          duration: 1600,
-          easing: "ease-out",
-          fill: "forwards",
-        }
-      );
+      score.animate([{ left: "0%" }, { left: score.dataset.targetLeft }], {
+        duration: 1600,
+        easing: "ease-out",
+        fill: "forwards",
+      });
 
       const start = performance.now();
       const duration = 1600;
