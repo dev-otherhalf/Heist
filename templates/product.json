@@ -227,7 +227,6 @@
         "equal_columns": false,
         "limit_details_width": false,
         "gap": 48,
-        "enable_sticky_add_to_cart": true,
         "background_color": "rgba(0,0,0,0)",
         "padding-block-start": 0,
         "padding-block-end": 0
