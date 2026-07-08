@@ -48,10 +48,11 @@
                       image_size: '800x',
                       loop: true,
                       muted: true,
-                      autoplay: true,
+                      autoplay: false,
+                      preload: 'none',
                       controls: false,
                       playsinline: true,
-                      class: 'gallery-showcase__media'
+                      class: 'gallery-showcase__media js-autoplay-video'
                   }}
                 {%- else -%}
                   {% render 'responsive-image',

@@ -347,6 +347,7 @@
                 <div class="coffee-heist-receipts__card--media_inner">
                 <video
                   class="js-autoplay-video"
+                  preload="none"
                   {% if review.media_image.value != blank %}
                     poster="{{ review.media_image.value | image_url: width: 800 }}"
                   {% endif %}

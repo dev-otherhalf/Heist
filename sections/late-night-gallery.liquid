@@ -55,6 +55,7 @@
           {% assign item_video = item.video.value %}
           <video
             class="late-night-gallery__media js-autoplay-video"
+            preload="none"
             {% if item.image.value != blank %}
               poster="{{ item.image.value | image_url: width: 1000 }}"
             {% endif %}
