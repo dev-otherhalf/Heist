@@ -161,10 +161,7 @@
                   "blocks": {}
                 }
               },
-              "block_order": [
-                "text_xrnftG",
-                "product_description_6Gh6YA"
-              ]
+              "block_order": ["text_xrnftG", "product_description_6Gh6YA"]
             },
             "subscription_bPmTtM": {
               "type": "subscription",
@@ -213,11 +210,34 @@
                 "popup_footer": "30-day escape plan • Love it or your money back"
               },
               "blocks": {}
+            },
+            "product_faqs_mQWJKi": {
+              "type": "product-faqs",
+              "name": "Product FAQs",
+              "settings": {
+                "heading": "",
+                "open_first": false,
+                "padding-block-start": 24,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "product_videos_UQHjp8": {
+              "type": "product-videos",
+              "name": "Product Videos",
+              "settings": {
+                "heading": "Hear from members of the Heist Society™",
+                "padding-block-start": 24,
+                "padding-block-end": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "group_icgrde",
-            "subscription_bPmTtM"
+            "subscription_bPmTtM",
+            "product_faqs_mQWJKi",
+            "product_videos_UQHjp8"
           ]
         }
       },
@@ -241,8 +261,5 @@
       }
     }
   },
-  "order": [
-    "main",
-    "design_tokens_LnMchk"
-  ]
+  "order": ["main", "design_tokens_LnMchk"]
 }

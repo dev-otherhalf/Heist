@@ -276,7 +276,6 @@
       "type": "range",
       "id": "heist_prepaid_divisor",
       "label": "Prepaid: divide per-bag price by",
-      "info": "The prepaid plan bills one fixed price for its whole term. Divide by the number of deliveries (e.g. 3 for a 3-month prepaid) to show the real per-bag price. Set to 1 if your plan is already per delivery.",
       "min": 1,
       "max": 12,
       "step": 1,
@@ -487,7 +486,7 @@
     {
       "type": "textarea",
       "id": "popup_tooltip",
-      "label": "Subtitle tooltip (ⓘ)",
+      "label": "Subtitle tooltip",
       "info": "Shown in a popover when the info icon next to the subtitle is clicked. Leave blank to hide the icon.",
       "default": "By default you will receive a refill every 30 days of your selected quantity. Skip, pause, or cancel anytime.\n\nBy subscribing and/or joining Heist Society, you get discounted pricing and benefits and gifts available only to your chosen subscription level.",
       "visible_if": "{{ block.settings.layout_variation == 'variation_2' }}"

@@ -1,0 +1,111 @@
+{% comment %}
+  Product Videos
+
+  Renders a heading + a horizontal row of portrait videos sourced from the
+  product metafield `custom.product_member_videos_oh` — a list of videos
+  ("Product - Member Videos - OH"). Each video lazy-loads and autoplays (muted)
+  while it is in the viewport via the shared `js-autoplay-video` system.
+
+  Add this block inside the Product information section. It renders nothing when
+  the product has no videos assigned.
+{% endcomment %}
+
+{% render 'vite-tag' with 'sections/styles/product-videos.scss' %}
+
+{% liquid
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+  assign videos = product.metafields.custom.product_member_videos_oh.value
+%}
+
+{% if videos != blank and videos.size > 0 %}
+  {% render 'vite-tag' with 'sections/scripts/product-videos.js' %}
+  <div
+    class="product-videos"
+    style="
+      padding-block: {{ block.settings.padding-block-start }}px {{ block.settings.padding-block-end }}px;
+    "
+    data-product-videos
+    {{ block.shopify_attributes }}
+  >
+    {% if block.settings.heading != blank %}
+      <h2 class="product-videos__heading t-n1">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="product-videos__row swiper" data-product-videos-swiper>
+      <div class="swiper-wrapper">
+        {% for video in videos %}
+          {%- if video.sources.size == 0 -%}
+            {%- continue -%}
+          {%- endif -%}
+          <div class="product-videos__slide swiper-slide">
+            <div class="product-videos__card">
+              <video
+                class="product-videos__media js-autoplay-video"
+                preload="none"
+                muted
+                loop
+                playsinline
+                {% if video.preview_image != blank %}
+                  poster="{{ video.preview_image | image_url: width: 800 }}"
+                {% endif %}
+              >
+                {% for source in video.sources %}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {% endfor %}
+              </video>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Videos",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Hear from members of the Heist Society™",
+      "info": "Leave blank to hide."
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Videos",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,39 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.product-videos {
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+
+  &__heading {
+    color: var(--ink);
+    margin-bottom: 0.875rem;
+  }
+
+  &__row {
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  &__slide.swiper-slide {
+    max-width: var(--space-127);
+  }
+
+  &__card {
+    aspect-ratio: 3 / 4;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__media {
+    block-size: 100%;
+    inline-size: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+  }
+}

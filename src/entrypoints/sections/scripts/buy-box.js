@@ -245,7 +245,10 @@ class BuyBox extends HTMLElement {
   // --------------------------------------------------------------- mutation
 
   #changeQty(variantId, delta) {
-    this.#setQty(variantId, (this.state.quantities.get(variantId) || 0) + delta);
+    this.#setQty(
+      variantId,
+      (this.state.quantities.get(variantId) || 0) + delta,
+    );
   }
 
   /** Set a variant's quantity (state + stepper DOM). */
@@ -309,8 +312,13 @@ class BuyBox extends HTMLElement {
 
     // Each allocation carries its own plan name (falls back to the id→name map).
     const nameOf = (a) =>
-      (a.name || this.planNameById.get(String(a.sellingPlanId)) || "").toLowerCase();
-    const has = (a, ...tokens) => tokens.some((t) => t && nameOf(a).includes(t));
+      (
+        a.name ||
+        this.planNameById.get(String(a.sellingPlanId)) ||
+        ""
+      ).toLowerCase();
+    const has = (a, ...tokens) =>
+      tokens.some((t) => t && nameOf(a).includes(t));
     const heistHint = (this.dataset.heistHint || "").toLowerCase().trim();
     const stdHint = (this.dataset.standardHint || "").toLowerCase().trim();
 
@@ -510,7 +518,8 @@ class BuyBox extends HTMLElement {
     if (!this.sticky) return;
 
     this.sticky.querySelectorAll("[data-sticky-thumb]").forEach((thumb) => {
-      thumb.hidden = (this.state.quantities.get(thumb.dataset.variantId) || 0) <= 0;
+      thumb.hidden =
+        (this.state.quantities.get(thumb.dataset.variantId) || 0) <= 0;
     });
 
     const { total, compare } = this.#totalsForTier(this.state.tier);

@@ -1,0 +1,130 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.product-faqs {
+  --faq-line: #{color-mix(in srgb, var(--ink) 18%, transparent)};
+  --faq-row-gap: 1.125rem;
+
+  width: 100%;
+
+  &__heading {
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    opacity: 0.7;
+  }
+
+  &__list {
+    border-top: 1px solid var(--faq-line);
+  }
+
+  &__item {
+    border-bottom: 1px solid var(--faq-line);
+  }
+
+  &__summary {
+    align-items: center;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    list-style: none;
+    padding-block: var(--faq-row-gap);
+    user-select: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &::marker {
+      content: "";
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+  }
+
+  &__question {
+    flex: 1 1 auto;
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    height: 0.75rem;
+    position: relative;
+    width: 0.75rem;
+
+    &::before,
+    &::after {
+      background: var(--ink);
+      content: "";
+      inset: 0;
+      margin: auto;
+      position: absolute;
+      transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+    }
+
+    &::before {
+      height: 1px;
+      width: 100%;
+    }
+
+    &::after {
+      height: 100%;
+      width: 1px;
+    }
+  }
+
+  &__answer {
+    color: var(--ink);
+    overflow: hidden;
+    padding-bottom: var(--faq-row-gap);
+    padding-right: 1.75rem;
+    animation: product-faqs-reveal 0.28s ease both;
+
+    > :first-child {
+      margin-top: 0;
+    }
+    > :last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: var(--ink);
+      text-decoration: underline;
+    }
+  }
+
+  &__item[open] &__icon::after {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  @include respond-to(lg) {
+    --faq-row-gap: 1.375rem;
+  }
+}
+
+@keyframes product-faqs-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-faqs__answer {
+    animation: none;
+  }
+  .product-faqs__icon::before,
+  .product-faqs__icon::after {
+    transition: none;
+  }
+}
