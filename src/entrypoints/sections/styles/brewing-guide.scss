@@ -28,11 +28,9 @@
 
   // Swiper carousel (structural CSS inlined — swiper/css not imported).
   &__list {
-    padding-inline: var(--space-20);
     margin-top: var(--space-32);
 
     @include respond-to(md) {
-      padding-inline: var(--space-56);
       margin-top: var(--space-39);
     }
   }
@@ -172,7 +170,7 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    background: rgb(0 0 0 / 0.5);
+    background: rgb(0 0 0 / 0.8);
     opacity: 0;
     transition: opacity var(--animation-speed, 0.3s) ease;
     cursor: pointer;

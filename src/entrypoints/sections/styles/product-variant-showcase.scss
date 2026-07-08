@@ -24,7 +24,7 @@
     @include breakpoints.respond-to(lg) {
       align-items: end;
       gap: var(--space-24);
-      grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+      grid-template-columns: minmax(0, auto) minmax(0, 1fr);
       margin-bottom: var(--space-32);
     }
   }
@@ -62,11 +62,13 @@
     display: inline-flex;
     gap: var(--space-8);
     min-width: max-content;
+    flex-wrap: nowrap;
+    width: 100%;
 
     @include breakpoints.respond-to(lg) {
-      flex-wrap: wrap;
       justify-content: flex-end;
-      min-width: 0;
+      min-width: auto;
+      flex-wrap: wrap;
     }
   }
 
@@ -337,6 +339,7 @@
       left: 50%;
       transform: translateX(-50%);
       max-width: 30rem;
+      width: 100%;
       text-align: center;
       opacity: 0;
       top: var(--space-56);

@@ -166,9 +166,17 @@ function initSwiper(el) {
     modules: [FreeMode, Mousewheel],
     slidesPerView: "auto",
     spaceBetween: 16,
+    slidesOffsetBefore: 20,
+    slidesOffsetAfter: 20,
     freeMode: true,
     grabCursor: true,
     mousewheel: { forceToAxis: true },
+    breakpoints: {
+      750: {
+        slidesOffsetBefore: 56,
+        slidesOffsetAfter: 56,
+      },
+    },
   });
 }
 
