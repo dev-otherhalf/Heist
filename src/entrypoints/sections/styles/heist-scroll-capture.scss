@@ -200,10 +200,10 @@
     bottom: 0;
     left: 0;
     display: grid;
-    grid-template-columns: 1fr 0.61fr;
+    grid-template-columns: 1fr 0.62fr;
     gap: clamp(var(--space-64), 34vw, 33rem);
     width: 100%;
-    padding: 0 var(--space-56) calc(var(--space-64) + var(--space-32));
+    padding: 0 var(--space-56) var(--space-96);
   }
 
   &__story-left {
@@ -217,6 +217,9 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    .heist-capture__story-title {
+      margin-left: -0.8125rem;
+    }
   }
 
   &__story-title {
@@ -230,6 +233,8 @@
     height: 9rem;
     text-align: center;
     position: relative;
+    margin-left: var(--space-24);
+    margin-bottom: -0.1875rem;
     img {
       position: absolute;
       top: 0;
@@ -274,13 +279,16 @@
 
   &__button {
     width: 100%;
+    padding: var(--space-3) var(--space-10);
+    min-height: var(--space-48);
   }
 
-  &__note.t-n3 {
+  &__note.t-n1 {
     margin-block-start: auto;
     padding-block-start: var(--space-24);
     text-align: center;
     text-transform: uppercase;
+    line-height: 1.4;
     margin-bottom: var(--space-64);
     p {
       margin-bottom: var(--space-8);
@@ -438,8 +446,8 @@
 
     &__legal {
       position: absolute;
-      right: var(--space-30);
-      bottom: var(--space-32);
+      right: var(--space-29);
+      bottom: var(--space-36);
       width: var(--space-89);
       height: var(--space-76);
     }
@@ -498,7 +506,7 @@
     }
 
     &__body.t-t1 {
-      margin-bottom: var(--space-24);
+      margin-bottom: var(--space-26);
       font-family: var(--font-display);
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
@@ -511,7 +519,7 @@
 
     &__button {
       display: grid;
-      min-height: var(--control-h-lg);
+      min-height: var(--space-48);
       margin-block-start: var(--space-48);
       padding: var(--space-12) var(--space-20);
       place-items: center;
@@ -525,7 +533,7 @@
       margin-top: var(--space-24);
       font-family: var(--font-mono);
       font-size: var(--fs-n1);
-      line-height: var(--lh-n1);
+      line-height: 1.4;
       text-transform: uppercase;
       p {
         margin-bottom: var(--space-8);

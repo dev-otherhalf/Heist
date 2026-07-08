@@ -344,6 +344,7 @@
             {% if review.media_video.value != blank %}
               {% assign media_video = review.media_video.value %}
               <div class="swiper-slide coffee-heist-receipts__card coffee-heist-receipts__card--media">
+                <div class="coffee-heist-receipts__card--media_inner">
                 <video
                   class="js-autoplay-video"
                   {% if review.media_image.value != blank %}
@@ -380,14 +381,17 @@
                     {% render 'icon-sound-muted' %}
                   </span>
                 </button>
+                </div>
               </div>
             {% elsif review.media_image.value != blank %}
               <div class="swiper-slide coffee-heist-receipts__card coffee-heist-receipts__card--media">
+                <div class="coffee-heist-receipts__card--media_inner">
                 {{
                   review.media_image.value
                   | image_url: width: 800
                   | image_tag: loading: 'lazy', alt: review.reviewer_name.value
                 }}
+                </div>
               </div>
             {% endif %}
           {% endfor %}

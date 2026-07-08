@@ -76,7 +76,7 @@
     height: 100%;
 
     @include respond-to(lg) {
-      grid-template-columns: minmax(0, 0.98745fr) minmax(0, 1.35fr);
+      grid-template-columns: minmax(0, 0.999fr) minmax(0, 1.35fr);
     }
   }
 
@@ -84,7 +84,7 @@
     // min-height: 21rem;
     position: relative;
     border: var(--bw-2) solid var(--ink);
-    padding-top: 121.926%;
+    padding-top: 120.926%;
 
     @include respond-to(lg) {
       // min-height: 100%;
@@ -255,6 +255,7 @@
     object-fit: contain;
     @include respond-to(lg) {
       max-height: 3.5rem;
+      width: 100%;
     }
   }
 
@@ -262,7 +263,7 @@
     &.t-h4 {
       border-block: var(--bw-2) solid var(--ink);
       margin-block: var(--space-6);
-      padding-bottom: var(--space-24);
+      padding-bottom: var(--space-35);
       padding-top: var(--space-15);
       text-align: center;
       text-wrap: balance;
@@ -288,11 +289,11 @@
     border-top: var(--bw-2) solid var(--ink);
 
     @include respond-to(md) {
-      grid-template-columns: minmax(0, 1.0055fr) minmax(0, 1.2577fr);
+      grid-template-columns: minmax(0, 1.1055fr) minmax(0, 1.2577fr);
     }
 
     @include respond-to(lg) {
-      padding-top: var(--space-56);
+      padding-top: var(--space-52);
       display: grid;
       gap: var(--space-30);
     }

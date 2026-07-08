@@ -68,10 +68,13 @@
   }
 
   &__card {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 3/3.81;
     border: var(--bw-2) solid var(--ink);
     height: auto;
     overflow: hidden;
+    @include respond-to(lg) {
+      aspect-ratio: 3 / 4.1;
+    }
   }
 
   &__media-wrapper,
