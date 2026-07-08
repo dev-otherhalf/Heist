@@ -543,7 +543,6 @@ body:has(.brewing-guide__modal.is-open) {
 
   &__banner-title,
   &__banner-subtext {
-
     @include respond-to(md) {
       background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
       background-clip: text;
