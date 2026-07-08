@@ -82,7 +82,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-8);
+  gap: var(--space-10);
   color: var(--announcement-inner-text);
   background: var(--announcement-inner-bg);
   font-weight: var(--fw-medium);
@@ -121,7 +121,7 @@
 }
 
 .heist-desktop-header {
-  min-height: 4.5rem;
+  min-height: 5.2rem;
   padding: 0 var(--space-56);
   display: grid;
   grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
@@ -322,7 +322,7 @@
   display: none;
 
   @include respond-down(lg) {
-    min-height: 5.125rem;
+    min-height: 4.825rem;
     padding: var(--space-12) var(--space-20);
     display: grid;
     grid-template-columns: var(--space-48) 1fr var(--space-48);

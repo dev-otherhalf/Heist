@@ -60,9 +60,9 @@
 
 html,
 body {
-  overflow-x: clip;
-  overflow-y: auto;
-  overscroll-behavior: none;
+  // overflow-x: clip;
+  // overflow-y: auto;
+  // overscroll-behavior: none;
 
   @include respond-to(lg) {
     overflow: hidden;

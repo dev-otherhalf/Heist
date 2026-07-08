@@ -102,8 +102,9 @@
     @include respond-to(lg) {
       align-items: center;
       display: flex;
-      gap: var(--space-72);
+      gap: var(--space-61);
       flex: 1;
+      margin-top: var(--space-2);
     }
   }
 }
