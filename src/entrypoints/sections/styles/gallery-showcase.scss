@@ -55,25 +55,55 @@
     }
   }
 
-  &__row {
-    padding-inline: var(--space-20);
+  &__marquee {
+    --gallery-showcase-gap: var(--space-12);
+
+    container-type: inline-size;
+    display: block;
+    overflow: hidden;
+    background: transparent;
 
     @include respond-to(lg) {
-      padding-inline: var(--space-32);
+      --gallery-showcase-gap: var(--space-16);
     }
+  }
 
-    @include respond-to(xl) {
-      padding-inline: var(--space-56);
+  &__wrapper {
+    display: flex;
+    gap: var(--gallery-showcase-gap);
+    width: fit-content;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: gallery-showcase-scroll var(--marquee-speed, 40s) linear
+        infinite;
     }
+  }
+
+  &__content,
+  &__track {
+    display: flex;
+    gap: var(--gallery-showcase-gap);
+    min-width: max-content;
   }
 
   &__card {
     aspect-ratio: 3/3.81;
     border: var(--bw-2) solid var(--ink);
+    flex: 0 0 auto;
     height: auto;
     overflow: hidden;
+
+    // Cards keep the widths the Swiper carousel produced: the visible track
+    // fits N cards plus the gaps between them (N = 1.46999 / 3.46999 / 4.16667).
+    width: calc((100cqw - (var(--gallery-showcase-gap) * 0.46999)) / 1.46999);
+
+    @include respond-to(md) {
+      width: calc((100cqw - (var(--gallery-showcase-gap) * 2.46999)) / 3.46999);
+    }
+
     @include respond-to(lg) {
       aspect-ratio: 3 / 4.1;
+      width: calc((100cqw - (var(--gallery-showcase-gap) * 3.16667)) / 4.16667);
     }
   }
 
@@ -86,5 +116,17 @@
 
   &__media {
     object-fit: cover;
+  }
+}
+
+// The wrapper holds the content plus one aria-hidden clone, separated by a gap,
+// so a full content-width scroll is half the wrapper plus half that gap.
+@keyframes gallery-showcase-scroll {
+  to {
+    transform: translate3d(
+      calc(-50% - (var(--gallery-showcase-gap) / 2)),
+      0,
+      0
+    );
   }
 }

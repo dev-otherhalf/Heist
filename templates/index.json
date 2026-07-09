@@ -305,7 +305,11 @@
           }
         }
       },
-      "block_order": ["product_bjHE3X", "product_zWXPXB", "product_43rK8n"],
+      "block_order": [
+        "product_bjHE3X",
+        "product_zWXPXB",
+        "product_43rK8n"
+      ],
       "name": "Join the Heist Society",
       "settings": {
         "heading": "Join the Heist Society™",
@@ -323,7 +327,7 @@
         "video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 10.42.14 AM (1).mp4",
         "background_color": "#e8e0d2",
         "panel_color": "#f4ede1",
-        "padding_top_mobile": 64,
+        "padding_top_mobile": 0,
         "padding_bottom_mobile": 0,
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 0
@@ -398,6 +402,7 @@
         "heading": "For those who are serious about coffee.",
         "cta_label": "Follow @Heist",
         "cta_link": "/",
+        "marquee_speed": 40,
         "padding_top_mobile": 64,
         "padding_bottom_mobile": 64,
         "padding_top_desktop": 104,

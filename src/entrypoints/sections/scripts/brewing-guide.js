@@ -245,7 +245,7 @@ function initSwiper(el) {
     spaceBetween: 16,
     slidesOffsetBefore: 20,
     slidesOffsetAfter: 20,
-    freeMode: true,
+    freeMode: false,
     grabCursor: true,
     mousewheel: { forceToAxis: true },
     breakpoints: {
