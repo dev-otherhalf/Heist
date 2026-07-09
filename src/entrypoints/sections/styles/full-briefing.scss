@@ -1,0 +1,225 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.full-briefing {
+  color: var(--ink);
+  padding-block: var(--full-briefing-padding-top-mobile)
+    var(--full-briefing-padding-bottom-mobile);
+  position: relative;
+
+  @include respond-to(lg) {
+    padding-block: var(--full-briefing-padding-top-desktop)
+      var(--full-briefing-padding-bottom-desktop);
+  }
+
+  // --- Layout --------------------------------------------------------------
+  &__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+    padding-inline: var(--space-20);
+
+    @include respond-to(lg) {
+      align-items: stretch;
+      display: grid;
+      gap: 0;
+      grid-template-columns: minmax(0, 776fr) minmax(0, 664fr);
+      min-height: 43.75rem; // 700px
+      padding-inline: 0;
+    }
+  }
+
+  // --- Media (feature image + heading overlay) -----------------------------
+  &__media {
+    aspect-ratio: 335 / 346;
+    border: var(--bw-2) solid var(--ink);
+    overflow: hidden;
+    position: relative;
+
+    @include respond-to(lg) {
+      aspect-ratio: auto;
+      border: 0;
+      min-height: 100%;
+    }
+  }
+
+  &__media-image,
+  &__media-placeholder {
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    object-position: bottom;
+    position: absolute;
+    width: 100%;
+  }
+
+  &__media-placeholder {
+    background: rgba(22, 20, 20, 0.35);
+  }
+
+  &__heading {
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h6); // 48px — mobile
+    line-height: var(--lh-h6);
+    letter-spacing: var(--ls-h6);
+    left: 50%;
+    margin: 0;
+    position: absolute;
+    text-align: center;
+    top: var(--space-40);
+    transform: translateX(-50%);
+    width: calc(100% - (var(--space-40) * 2));
+    z-index: 1;
+
+    @include respond-to(lg) {
+      font-size: var(--fs-h4); // 72px — desktop
+      left: var(--space-48);
+      line-height: var(--lh-h4);
+      letter-spacing: var(--ls-h4);
+      max-width: 62%;
+      text-align: left;
+      top: 50%;
+      transform: translateY(-50%);
+      width: auto;
+    }
+  }
+
+  // --- Content -------------------------------------------------------------
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+
+    @include respond-to(lg) {
+      justify-content: center;
+      padding-inline: var(--space-64) var(--space-56);
+    }
+  }
+
+  // --- FAQ accordion -------------------------------------------------------
+  &__faqs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__faq {
+    border-bottom: var(--bw-2) solid var(--ink);
+  }
+
+  &__q {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: var(--space-16);
+    justify-content: space-between;
+    list-style: none;
+    padding-block: var(--space-16);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:focus-visible {
+      outline: var(--bw-2) solid var(--ink);
+      outline-offset: var(--focus-offset);
+    }
+  }
+
+  &__q-text {
+    font-family: var(--font-mono);
+    font-size: var(--fs-n1);
+    line-height: var(--lh-n1);
+    font-weight: var(--fw-regular);
+    letter-spacing: 0;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  &__q-icon {
+    flex-shrink: 0;
+    height: 1rem;
+    position: relative;
+    width: 1rem;
+
+    &::before,
+    &::after {
+      background: var(--ink);
+      content: "";
+      inset: 0;
+      margin: auto;
+      position: absolute;
+    }
+
+    &::before {
+      height: var(--bw-2);
+      width: 100%;
+    }
+
+    &::after {
+      height: 100%;
+      transition: opacity var(--dur) var(--ease);
+      width: var(--bw-2);
+    }
+  }
+
+  &__faq[open] &__q-icon::after {
+    opacity: 0;
+  }
+
+  &__a {
+    margin: 0;
+    padding-bottom: var(--space-16);
+
+    p {
+      margin: 0 0 var(--space-8);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // --- Gallery -------------------------------------------------------------
+  &__gallery {
+    display: grid;
+    gap: var(--space-12);
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &__gallery-item {
+    aspect-ratio: 1 / 1;
+    border: var(--bw-2) solid var(--ink);
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__gallery-image {
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  // --- CTA -----------------------------------------------------------------
+  &__cta {
+    margin-top: var(--space-4);
+  }
+
+  // --- Empty state ---------------------------------------------------------
+  &__empty {
+    border: var(--bw-2) solid var(--ink);
+    display: grid;
+    gap: var(--space-12);
+    margin-inline: var(--space-20);
+    padding: var(--space-24);
+    text-align: center;
+  }
+
+  &__empty-title,
+  &__empty-text {
+    margin: 0;
+  }
+}

@@ -1,0 +1,163 @@
+{%- render 'vite-tag', entry: 'sections/styles/full-briefing.scss' -%}
+
+{%- liquid
+  assign briefing = section.settings.briefing.value | default: section.settings.briefing
+  assign heading = briefing.heading.value | default: briefing.heading
+  assign feature_image = briefing.feature_image.value | default: briefing.feature_image
+  assign faqs = briefing.faqs.value | default: briefing.faqs
+  assign gallery = briefing.gallery_images.value | default: briefing.gallery_images
+  assign button_label = briefing.button_label.value | default: briefing.button_label
+  assign button_link = briefing.button_link.value | default: briefing.button_link
+  assign heading_alt = heading | strip_html | strip | escape
+-%}
+
+<section
+  class="full-briefing"
+  id="shopify-section-{{ section.id }}"
+  style="
+    --full-briefing-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --full-briefing-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --full-briefing-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --full-briefing-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+  data-full-briefing
+>
+  {%- if briefing != blank -%}
+    <div class="full-briefing__grid">
+      <div class="full-briefing__media">
+        {%- if feature_image != blank -%}
+          {{
+            feature_image
+            | image_url: width: 1600
+            | image_tag:
+              widths: '375, 640, 776, 1000, 1400, 1600',
+              sizes: '(min-width: 990px) 54vw, 100vw',
+              loading: 'lazy',
+              alt: heading_alt,
+              class: 'full-briefing__media-image'
+          }}
+        {%- else -%}
+          <div class="full-briefing__media-placeholder" aria-hidden="true"></div>
+        {%- endif -%}
+        {%- if heading != blank -%}
+          <h2 class="full-briefing__heading">{{ heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+
+      <div class="full-briefing__content">
+        {%- if faqs != blank -%}
+          <div class="full-briefing__faqs">
+            {%- for faq in faqs -%}
+              {%- liquid
+                assign question = faq.question.value | default: faq.question
+                assign answer = faq.answer.value | default: faq.answer
+              -%}
+              <details class="full-briefing__faq" name="full-briefing-{{ section.id }}">
+                <summary class="full-briefing__q">
+                  <span class="full-briefing__q-text t-n1">{{ question | escape }}</span>
+                  <span class="full-briefing__q-icon" aria-hidden="true"></span>
+                </summary>
+                {%- if answer != blank -%}
+                  <div class="full-briefing__a t-t4">{{ answer | escape | newline_to_br }}</div>
+                {%- endif -%}
+              </details>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if gallery != blank -%}
+          <div class="full-briefing__gallery">
+            {%- for image in gallery limit: 3 -%}
+              <div class="full-briefing__gallery-item">
+                {{
+                  image
+                  | image_url: width: 480
+                  | image_tag:
+                    widths: '104, 172, 344, 480',
+                    sizes: '(min-width: 990px) 11rem, 30vw',
+                    loading: 'lazy',
+                    alt: '',
+                    class: 'full-briefing__gallery-image'
+                }}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if button_label != blank -%}
+          <a
+            class="btn btn--dark btn--block btn--split-static full-briefing__cta"
+            {% if button_link != blank %}href="{{ button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+          >
+            <span class="btn__text">{{ button_label | escape }}</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- else -%}
+    <div class="full-briefing__empty">
+      <p class="full-briefing__empty-title t-s3">Select a full briefing selection</p>
+      <p class="full-briefing__empty-text t-t4">
+        Choose a <code>pdp_full_briefing_selections_oh</code> entry in the section settings to
+        populate this section.
+      </p>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Full briefing",
+  "tag": "section",
+  "class": "shopify-section-full-briefing",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "metaobject",
+      "id": "briefing",
+      "label": "Briefing",
+      "metaobject_type": "pdp_full_briefing_selections_oh"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Full briefing",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
