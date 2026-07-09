@@ -82,12 +82,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-10);
+  gap: var(--space-7);
   color: var(--announcement-inner-text);
   background: var(--announcement-inner-bg);
   font-weight: var(--fw-medium);
   text-align: center;
   text-transform: uppercase;
+  @include respond-down(md) {
+    .t-n2 {
+      letter-spacing: 0.02rem;
+    }
+  }
 
   .heist-header--home & {
     color: var(--announcement-home-text);

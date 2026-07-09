@@ -156,6 +156,7 @@
     z-index: 2;
     max-width: 41rem;
     height: 100%;
+    width: 100%;
 
     @include respond-to(xl) {
       padding: 3rem 3.5rem 4.2rem;
@@ -216,6 +217,7 @@
     &.t-h4 {
       @include respond-down(lg) {
         font-size: var(--fs-h5);
+        text-wrap-style: balance;
       }
     }
   }
@@ -231,6 +233,8 @@
 
     @include respond-down(md) {
       text-align: left;
+      max-width: 19rem;
+      margin: 0;
     }
 
     br {
@@ -290,7 +294,7 @@
     border: var(--bw-2) solid var(--ink);
     display: grid;
     gap: 1rem;
-    margin: 0 auto;
+    margin: 0.1rem auto 0;
     max-width: 39rem;
     padding: 1.5rem;
     width: 100%;
@@ -333,7 +337,7 @@
   }
 
   &__product-frame {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1.0951;
     background: rgba(255, 255, 255, 0.42);
     border: var(--bw-2) solid var(--ink);
     overflow: hidden;
@@ -341,6 +345,7 @@
 
     @include respond-to(lg) {
       max-height: 96px;
+      aspect-ratio: 1 / 1;
     }
   }
 
@@ -393,6 +398,10 @@
       margin: 0 auto;
       width: 100%;
       padding-block: unset;
+      gap: var(--space-2);
+      &:hover {
+        gap: var(--space-8);
+      }
     }
   }
 

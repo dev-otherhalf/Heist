@@ -202,7 +202,7 @@
     gap: 0.563rem;
 
     @include breakpoints.respond-to(lg) {
-      gap: var(--space-16);
+      gap: var(--space-15);
       top: var(--space-56);
     }
   }

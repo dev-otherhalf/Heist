@@ -43,7 +43,7 @@
 
 $coffee-heist-axis-spacer: var(--space-105);
 $coffee-heist-axis-spacer-desktop: 14.6rem;
-$coffee-heist-score-reserve: var(--space-32);
+$coffee-heist-score-reserve: var(--space-50);
 
 .coffee-heist {
   position: relative;
@@ -319,7 +319,7 @@ $coffee-heist-score-reserve: var(--space-32);
     display: flex;
     justify-content: space-between;
     padding-inline-end: $coffee-heist-score-reserve;
-    padding-block-start: var(--space-10);
+    padding-block-start: var(--space-7);
     border-block-start: var(--bw-2) solid var(--ink);
     position: relative;
     &:before {
@@ -344,7 +344,7 @@ $coffee-heist-score-reserve: var(--space-32);
   }
 
   &__source.t-n2 {
-    margin-block-start: var(--space-41);
+    margin-block-start: var(--space-44);
     text-transform: uppercase;
     @include respond-down(md) {
       margin-block-start: var(--space-22);
@@ -616,17 +616,15 @@ $coffee-heist-score-reserve: var(--space-32);
       color: var(--ink);
       display: flex;
       flex-direction: column;
-      gap: var(--space-20);
       padding: var(--space-21) var(--space-22);
-      @include respond-to(md) {
-        gap: var(--space-18);
-      }
     }
 
     &--media {
       position: relative;
       padding: var(--space-15);
       background: var(--bone);
+      max-width: 18rem;
+      width: 100%;
       &_inner {
         width: 100%;
         margin: 0;
@@ -634,9 +632,13 @@ $coffee-heist-score-reserve: var(--space-32);
         display: block;
         position: relative;
         height: 100%;
+        @include respond-to(md) {
+          padding-bottom: 178.9%;
+        }
       }
       @include respond-to(md) {
         padding: var(--space-11);
+        max-width: 20rem;
       }
       img,
       video {
@@ -656,8 +658,10 @@ $coffee-heist-score-reserve: var(--space-32);
     gap: var(--space-17);
     padding-block-end: var(--space-10);
     border-block-end: 0.09375rem solid var(--ink);
+    margin-bottom: var(--space-20);
     @include respond-to(md) {
       padding-block-end: var(--space-22);
+      margin-bottom: var(--space-18);
     }
     div {
       display: flex;
@@ -665,6 +669,7 @@ $coffee-heist-score-reserve: var(--space-32);
       dt {
         width: var(--space-80);
         @include respond-down(md) {
+          width: var(--space-68);
           font-size: var(--fs-n2);
           line-height: var(--lh-n2);
         }
@@ -681,9 +686,16 @@ $coffee-heist-score-reserve: var(--space-32);
   }
   &__stars {
     gap: var(--space-4);
+    @include respond-down(md) {
+      gap: var(--space-1);
+    }
   }
   &__quote.t-t1 {
     flex-grow: 1;
+    margin-top: var(--space-20);
+    @include respond-to(md) {
+      margin-top: var(--space-18);
+    }
     @include respond-down(md) {
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);

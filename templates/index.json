@@ -34,7 +34,7 @@
         "body": "<p>Heist is a world-class decaf coffee built for people who refuse to choose between full flavor and a good night’s sleep.</p>",
         "button_label": "Drink decaf",
         "button_link": "",
-        "note": "<p>30-day escape plan<br/>Love it or your money back</p>",
+        "note": "<p>30-day escape plan</p><p>Love it or your money back</p>",
         "mobile_story_background": "shopify://shop_images/Homepage_-_Section_2.jpg",
         "copyright_text": "",
         "legal_logo": "shopify://shop_images/badge-heistglobal.svg",
@@ -260,7 +260,7 @@
         "tabs_selection": "the-words-biggest-coffee-heist",
         "receipts_selection": "the-receipts-dont-lie",
         "desktop_top_padding": 121,
-        "desktop_bottom_padding": 114,
+        "desktop_bottom_padding": 106,
         "mobile_top_padding": 64,
         "mobile_bottom_padding": 64
       }
@@ -305,11 +305,7 @@
           }
         }
       },
-      "block_order": [
-        "product_bjHE3X",
-        "product_zWXPXB",
-        "product_43rK8n"
-      ],
+      "block_order": ["product_bjHE3X", "product_zWXPXB", "product_43rK8n"],
       "name": "Join the Heist Society",
       "settings": {
         "heading": "Join the Heist Society™",
@@ -323,6 +319,7 @@
         "disclaimer": "30-day escape plan. Love it or your money back.",
         "left_media_type": "video",
         "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
+        "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
         "video_desktop": "shopify://files/videos/Screen Recording 2026-07-04 at 1.48.04 PM.mp4",
         "video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 10.42.14 AM (1).mp4",
         "background_color": "#e8e0d2",

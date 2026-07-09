@@ -87,7 +87,7 @@
   }
 
   &__card {
-    aspect-ratio: 3/3.81;
+    aspect-ratio: 3/3.8625;
     border: var(--bw-2) solid var(--ink);
     flex: 0 0 auto;
     height: auto;
@@ -95,15 +95,15 @@
 
     // Cards keep the widths the Swiper carousel produced: the visible track
     // fits N cards plus the gaps between them (N = 1.46999 / 3.46999 / 4.16667).
-    width: calc((100cqw - (var(--gallery-showcase-gap) * 0.46999)) / 1.46999);
+    width: 14.4405%;
 
     @include respond-to(md) {
-      width: calc((100cqw - (var(--gallery-showcase-gap) * 2.46999)) / 3.46999);
+      width: 18.4014%;
     }
 
     @include respond-to(lg) {
-      aspect-ratio: 3 / 4.1;
-      width: calc((100cqw - (var(--gallery-showcase-gap) * 3.16667)) / 4.16667);
+      aspect-ratio: 3/4.93;
+      width: 18.4014%;
     }
   }
 
