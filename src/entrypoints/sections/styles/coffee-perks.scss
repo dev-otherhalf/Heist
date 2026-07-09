@@ -1,0 +1,205 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.coffee-perks {
+  color: var(--ink);
+  overflow: clip;
+  padding-block: var(--coffee-perks-padding-top-mobile)
+    var(--coffee-perks-padding-bottom-mobile);
+  position: relative;
+
+  // subtle film grain to echo the Figma noise-bg effect
+  &::before {
+    content: "";
+    inset: 0;
+    mix-blend-mode: multiply;
+    opacity: 0.05;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @include respond-to(lg) {
+    padding-block: var(--coffee-perks-padding-top-desktop)
+      var(--coffee-perks-padding-bottom-desktop);
+  }
+
+  > .page-width {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+
+    @include respond-to(lg) {
+      gap: var(--space-30);
+    }
+  }
+
+  // --- Heading -------------------------------------------------------------
+  &__head {
+    order: 1;
+    text-align: center;
+  }
+
+  &__heading {
+    text-wrap: balance;
+
+    @include respond-down(lg) {
+      font-size: var(--fs-h5);
+      line-height: var(--lh-h5);
+      letter-spacing: var(--ls-h5);
+    }
+  }
+
+  // --- Toggle link ---------------------------------------------------------
+  &__bar {
+    order: 3;
+    display: flex;
+    justify-content: center;
+
+    @include respond-to(lg) {
+      order: 2;
+      justify-content: flex-end;
+    }
+  }
+
+  &__toggle {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--fs-link);
+    line-height: var(--lh-link);
+    font-weight: var(--fw-medium);
+    letter-spacing: 0;
+    padding: var(--space-4) 0;
+    text-align: center;
+    text-decoration: underline;
+    text-transform: uppercase;
+    text-underline-offset: 0.15em;
+    transition: opacity var(--dur) var(--ease);
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &:focus-visible {
+      outline: var(--bw-2) solid var(--ink);
+      outline-offset: var(--focus-offset);
+    }
+  }
+
+  // --- Views (only one visible at a time) ----------------------------------
+  &__views {
+    order: 2;
+
+    @include respond-to(lg) {
+      order: 3;
+    }
+  }
+
+  &__view[hidden] {
+    display: none;
+  }
+
+  &__slider {
+    overflow: visible;
+    position: relative;
+    width: 100%;
+  }
+
+  &__track {
+    box-sizing: content-box;
+    display: flex;
+  }
+
+  // --- Card ----------------------------------------------------------------
+  &__card {
+    background-color: var(--coffee-perks-card-bg, var(--bone));
+    border: var(--bw-2) solid var(--ink);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: var(--space-16);
+    height: auto;
+    min-height: 25rem;
+    padding: var(--space-18);
+    width: 16.5rem; // 264px — mobile
+
+    @include respond-to(lg) {
+      min-height: 28.0625rem; // 449px
+      padding: var(--space-22);
+      width: 20rem; // 320px — desktop
+    }
+  }
+
+  &__card-media {
+    aspect-ratio: 1 / 1;
+    border: var(--bw-2) solid var(--ink);
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  &__card-image,
+  &__card-placeholder {
+    display: block;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  &__card-placeholder {
+    background: rgba(22, 20, 20, 0.08);
+  }
+
+  &__card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  &__card-title {
+    font-family: var(--font-display);
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-t1); // 32px — mobile
+    line-height: var(--lh-t1);
+    letter-spacing: var(--ls-t1);
+    margin: 0;
+
+    @include respond-to(lg) {
+      font-size: var(--fs-h7); // 40px — desktop
+      line-height: var(--lh-h7);
+      letter-spacing: var(--ls-h7);
+    }
+  }
+
+  &__card-text {
+    margin: 0;
+  }
+
+  // --- Empty state ---------------------------------------------------------
+  &__empty {
+    border: var(--bw-2) solid var(--ink);
+    display: grid;
+    gap: var(--space-12);
+    padding: var(--space-24);
+    text-align: center;
+  }
+
+  &__empty-title,
+  &__empty-text {
+    margin: 0;
+  }
+}
