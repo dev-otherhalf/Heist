@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */ {
+ */
+{
   "sections": {
     "main": {
       "type": "product-information",
@@ -117,6 +118,7 @@
                 "border_opacity": 100,
                 "border_color": "",
                 "border_radius": 0,
+                "link": "",
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 0,
@@ -174,7 +176,10 @@
                   "blocks": {}
                 }
               },
-              "block_order": ["text_xrnftG", "price_tVjtKg"]
+              "block_order": [
+                "text_xrnftG",
+                "price_tVjtKg"
+              ]
             },
             "divider_VJhene": {
               "type": "_divider",
@@ -307,7 +312,9 @@
           ]
         }
       },
-      "block_order": ["disclosures_g9mWze"],
+      "block_order": [
+        "disclosures_g9mWze"
+      ],
       "settings": {
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
@@ -439,7 +446,9 @@
           ]
         }
       },
-      "block_order": ["text_cbcgyb"],
+      "block_order": [
+        "text_cbcgyb"
+      ],
       "name": "t:names.product_recommendations",
       "settings": {
         "product": "{{ closest.product }}",
@@ -459,7 +468,27 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "coffee_standards_MbmQGk": {
+      "type": "coffee-standards",
+      "name": "Coffee standards",
+      "settings": {
+        "content_selection": "great-coffee-shouldnt-come-with-consequences-heist-is-water-processed-which-means-no-chemicals-and-no-shortcuts-nothing-stripped-but-the-caffeine",
+        "badge_marquee_speed": 25,
+        "show_press_row": true,
+        "enable_press_marquee_desktop": false,
+        "press_marquee_speed": 25,
+        "background_color": "",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 0,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 0
+      }
     }
   },
-  "order": ["main", "product_recommendations_qggXJq"]
+  "order": [
+    "main",
+    "product_recommendations_qggXJq",
+    "coffee_standards_MbmQGk"
+  ]
 }

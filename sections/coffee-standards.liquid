@@ -1,0 +1,371 @@
+{%- render 'vite-tag', entry: 'sections/styles/coffee-standards.scss' -%}
+{%- render 'vite-tag', entry: 'sections/scripts/coffee-standards.js' -%}
+
+{%- liquid
+  assign standards = section.settings.content_selection.value | default: section.settings.content_selection
+
+  assign heading = standards.heading.value | default: standards.heading
+  assign annotation_value = standards.annotation_value.value | default: standards.annotation_value
+  assign badges = standards.badges.value | default: standards.badges
+  assign features_left = standards.features_left.value | default: standards.features_left
+  assign features_right = standards.features_right.value | default: standards.features_right
+  assign standards_video = standards.video.value | default: standards.video
+  assign poster_image = standards.video_fallback_image.value | default: standards.video_fallback_image
+  assign background_image = standards.background_image.value | default: standards.background_image
+  assign background_image_mobile = standards.background_image_mobile.value | default: standards.background_image_mobile
+
+  assign press_label = standards.press_label.value | default: standards.press_label
+  assign press_logos = standards.press_logos.value | default: standards.press_logos
+
+  assign show_press_row = section.settings.show_press_row
+  if press_logos == blank
+    assign show_press_row = false
+  endif
+-%}
+
+{%- if badges != blank or show_press_row -%}
+  <script
+    src="{{ 'marquee.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+{%- endif -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --coffee-standards-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --coffee-standards-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --coffee-standards-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --coffee-standards-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    {%- if section.settings.background_color != blank %}
+      --coffee-standards-bg: {{ section.settings.background_color }};
+    {%- endif %}
+  }
+{%- endstyle -%}
+
+<section class="coffee-standards" data-coffee-standards>
+  {%- if standards == blank -%}
+    {%- if request.design_mode -%}
+      <div class="coffee-standards__empty">
+        <p class="t-s3">Select a Coffee standards metaobject entry.</p>
+      </div>
+    {%- endif -%}
+  {%- else -%}
+    {%- if background_image != blank or background_image_mobile != blank -%}
+      <picture class="coffee-standards__background" aria-hidden="true">
+        {%- if background_image_mobile != blank -%}
+          <source
+            media="(max-width: 989px)"
+            srcset="{{ background_image_mobile | image_url: width: 1200 }}"
+          >
+        {%- endif -%}
+        {%- assign background_fallback = background_image | default: background_image_mobile -%}
+        {{
+          background_fallback
+          | image_url: width: 2560
+          | image_tag:
+            widths: '750, 1100, 1500, 2000, 2560',
+            sizes: '100vw',
+            loading: 'lazy',
+            alt: '',
+            class: 'coffee-standards__background-image'
+        }}
+      </picture>
+    {%- endif -%}
+
+    <div class="coffee-standards__inner">
+      {%- if heading != blank -%}
+        <h2 class="coffee-standards__heading t-h4">{{ heading }}</h2>
+      {%- endif -%}
+
+      {%- if badges != blank -%}
+        {%- comment -%}
+          Badges are a static wrapped row on desktop and a full-bleed marquee on
+          mobile, so each layout gets its own copy of the images.
+        {%- endcomment -%}
+        <div class="coffee-standards__badges" role="list">
+          {%- for badge in badges -%}
+            <div class="coffee-standards__badge" role="listitem">
+              {{
+                badge
+                | image_url: width: 400
+                | image_tag:
+                  widths: '136, 272, 400',
+                  sizes: '8.5rem',
+                  loading: 'lazy',
+                  alt: badge.alt,
+                  class: 'coffee-standards__badge-image'
+              }}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <marquee-component
+          class="coffee-standards__badge-marquee"
+          data-speed-factor="{{ section.settings.badge_marquee_speed }}"
+        >
+          <div class="coffee-standards__marquee-wrapper" ref="wrapper">
+            <div class="coffee-standards__marquee-content" ref="content">
+              <div class="coffee-standards__marquee-track" ref="marqueeItems[]">
+                {%- for badge in badges -%}
+                  <div class="coffee-standards__badge coffee-standards__badge--marquee">
+                    {{
+                      badge
+                      | image_url: width: 400
+                      | image_tag:
+                        widths: '128, 256, 400',
+                        sizes: '8rem',
+                        loading: 'lazy',
+                        alt: badge.alt,
+                        class: 'coffee-standards__badge-image'
+                    }}
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </marquee-component>
+      {%- endif -%}
+
+      <div class="coffee-standards__content">
+        {%- if features_left != blank -%}
+          <ul class="coffee-standards__column coffee-standards__column--left">
+            {%- for feature in features_left -%}
+              <li class="coffee-standards__feature t-h6">{{ feature }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <div class="coffee-standards__media">
+          <div class="coffee-standards__media-inner">
+            {%- if standards_video != blank -%}
+              <video
+                class="coffee-standards__video js-autoplay-video"
+                preload="none"
+                {% if poster_image != blank %}
+                  poster="{{ poster_image | image_url: width: 1200 }}"
+                {% endif %}
+                muted
+                loop
+                playsinline
+              >
+                {%- if standards_video.sources.size > 0 -%}
+                  {%- for source in standards_video.sources -%}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {%- endfor -%}
+                {%- else -%}
+                  <source src="{{ standards_video | file_url }}">
+                {%- endif -%}
+              </video>
+            {%- elsif poster_image != blank -%}
+              {{
+                poster_image
+                | image_url: width: 1200
+                | image_tag:
+                  widths: '600, 900, 1200',
+                  sizes: '(min-width: 990px) 40rem, 100vw',
+                  loading: 'lazy',
+                  alt: poster_image.alt,
+                  class: 'coffee-standards__poster'
+              }}
+            {%- endif -%}
+
+            <div class="coffee-standards__frame" aria-hidden="true"></div>
+
+            {%- if annotation_value != blank -%}
+              <div class="coffee-standards__annotation t-n2-med" data-rolling-annotation>
+                <span class="coffee-standards__sr">{{ annotation_value }}</span>
+                <span class="coffee-standards__digits" aria-hidden="true">
+                  {%- assign annotation_groups = annotation_value | split: ' ' -%}
+                  {%- for group in annotation_groups -%}
+                    <span class="coffee-standards__digit-group">
+                      {%- assign annotation_chars = group | split: '' -%}
+                      {%- for char in annotation_chars -%}
+                        <span class="coffee-standards__digit" data-digit="{{ char }}">
+                          <span class="coffee-standards__digit-strip" data-digit-strip>
+                            <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span
+                            ><span>6</span><span>7</span><span>8</span><span>9</span>
+                          </span>
+                        </span>
+                      {%- endfor -%}
+                    </span>
+                  {%- endfor -%}
+                </span>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- if features_right != blank -%}
+          <ul class="coffee-standards__column coffee-standards__column--right">
+            {%- for feature in features_right -%}
+              <li class="coffee-standards__feature t-h6">{{ feature }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if show_press_row -%}
+      <div class="coffee-standards__press">
+        {%- if press_label != blank -%}
+          <p class="coffee-standards__press-label t-n1">{{ press_label }}</p>
+        {%- endif -%}
+
+        <marquee-component
+          class="coffee-standards__press-marquee{% unless section.settings.enable_press_marquee_desktop %} coffee-standards__press-marquee--mobile-only{% endunless %}"
+          data-speed-factor="{{ section.settings.press_marquee_speed }}"
+        >
+          <div class="coffee-standards__marquee-wrapper" ref="wrapper">
+            <div class="coffee-standards__marquee-content" ref="content">
+              <div class="coffee-standards__marquee-track" ref="marqueeItems[]">
+                {%- for logo in press_logos -%}
+                  <div class="coffee-standards__press-logo">
+                    {{
+                      logo
+                      | image_url: width: 320
+                      | image_tag:
+                        widths: '160, 240, 320',
+                        sizes: '(min-width: 990px) 9rem, 7rem',
+                        loading: 'lazy',
+                        alt: logo.alt,
+                        class: 'coffee-standards__press-logo-image'
+                    }}
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </marquee-component>
+
+        {%- unless section.settings.enable_press_marquee_desktop -%}
+          <div class="coffee-standards__press-static">
+            {%- for logo in press_logos -%}
+              <div class="coffee-standards__press-logo">
+                {{
+                  logo
+                  | image_url: width: 320
+                  | image_tag:
+                    widths: '160, 240, 320',
+                    sizes: '9rem',
+                    loading: 'lazy',
+                    alt: logo.alt,
+                    class: 'coffee-standards__press-logo-image'
+                }}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Coffee standards",
+  "tag": "section",
+  "class": "shopify-section-coffee-standards",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "metaobject",
+      "id": "content_selection",
+      "label": "Coffee standards content",
+      "metaobject_type": "pdp_coffee_standards_selections_oh"
+    },
+    {
+      "type": "header",
+      "content": "Badges"
+    },
+    {
+      "type": "range",
+      "id": "badge_marquee_speed",
+      "label": "Mobile badge marquee duration",
+      "info": "Badges are a static row on desktop and a marquee on mobile. Higher is slower.",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "Press row"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_press_row",
+      "label": "Show press row",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_press_marquee_desktop",
+      "label": "Enable press marquee on desktop",
+      "info": "When off, logos display in a static row on desktop. Mobile always scrolls.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "press_marquee_speed",
+      "label": "Press marquee duration",
+      "info": "Higher is slower.",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "default": 48
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "default": 96
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coffee standards",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
