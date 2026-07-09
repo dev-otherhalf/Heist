@@ -252,7 +252,8 @@
 
       @include respond-down(md) {
         line-height: 1.25rem;
-        margin-top: 0;
+        max-width: 12.6rem;
+        margin: 0 auto;
       }
     }
 
@@ -290,13 +291,13 @@
   }
 
   &__kit-card {
-    background: rgba(244, 237, 225, 0.92);
+    background: var(--bone);
     border: var(--bw-2) solid var(--ink);
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
     margin: 0.1rem auto 0;
     max-width: 39rem;
-    padding: 1.5rem;
+    padding: var(--space-26) var(--space-22) var(--space-19);
     width: 100%;
 
     @include respond-to(lg) {
@@ -317,7 +318,7 @@
 
   &__products {
     display: grid;
-    gap: 0.625rem;
+    gap: 0.725rem;
     grid-template-columns: repeat(3, 1fr);
 
     @include respond-to(lg) {
@@ -362,7 +363,7 @@
         max-height: 96px;
         font-size: var(--fs-n2-med);
         line-height: var(--lh-n2);
-        margin-top: var(--space-16);
+        margin-top: var(--space-12);
       }
     }
   }
@@ -370,7 +371,7 @@
   &__product-desc {
     &.t-n3 {
       font-weight: var(--fw-medium);
-      margin-top: var(--space-4);
+      margin-top: 0;
       text-transform: uppercase;
     }
   }

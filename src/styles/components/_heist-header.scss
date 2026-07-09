@@ -42,7 +42,7 @@
   &.is-pinned {
     position: fixed;
     inset: 0 0 auto;
-    z-index: 40;
+    z-index: 46;
     border-bottom: var(--bw-2) solid currentColor;
     animation: heist-header-in var(--animation-speed-slow)
       var(--animation-easing) backwards;
