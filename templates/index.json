@@ -93,7 +93,7 @@
       "name": "Product variant showcase",
       "settings": {
         "heading": "World-Class Decaf Coffee",
-        "padding_top_mobile": 64,
+        "padding_top_mobile": 66,
         "padding_bottom_mobile": 66,
         "padding_top_desktop": 90,
         "padding_bottom_desktop": 97
@@ -158,15 +158,15 @@
         "heading": "<p>Roasted in Small Batches with Big Standards</p>",
         "heading_alignment": "center",
         "heading_color": "",
-        "video": "shopify://files/videos/coffee.mp4",
+        "video": "shopify://files/videos/coffee (1).mp4",
         "annotation_value": "24724 1832 248",
         "background_color": "",
         "background_image": "shopify://shop_images/bg.jpg",
-        "background_image_mobile": "shopify://shop_images/Rectangle_12.jpg",
+        "background_image_mobile": "shopify://shop_images/bg.jpg",
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 0,
-        "padding_bottom_desktop": 96
+        "padding_bottom_desktop": 105
       }
     },
     "press_marquee_BLfLFB": {
@@ -175,50 +175,50 @@
         "logo_tbYzVc": {
           "type": "logo",
           "settings": {
-            "image": "shopify://shop_images/logo-foodandwine.svg",
+            "image": "shopify://shop_images/Vector.svg",
             "image_height": 32
           }
         },
         "logo_w9mtQL": {
           "type": "logo",
           "settings": {
-            "image": "shopify://shop_images/logo-bonappetit.svg",
-            "image_height": 32
+            "image": "shopify://shop_images/logo-bonappetit_e728b5a5-97c7-4a12-8d2d-d5a28314b94c.svg",
+            "image_height": 24
           }
         },
         "logo_zhM6bX": {
           "type": "logo",
           "settings": {
-            "image": "shopify://shop_images/logo-gq.svg",
-            "image_height": 32
+            "image": "shopify://shop_images/logo-epicurious_9ba91fb4-623a-45b4-8ca2-3d8da7d50ff0.svg",
+            "image_height": 24
           }
         },
         "logo_Y74LFT": {
           "type": "logo",
           "settings": {
-            "image": "shopify://shop_images/logo-health.svg",
-            "image_height": 32
+            "image": "shopify://shop_images/logo-vogue_82dfb8dd-bf95-4ad3-ada1-a24ebe127e30.svg",
+            "image_height": 24
           }
         },
         "logo_AUytwj": {
           "type": "logo",
           "settings": {
-            "image": "shopify://shop_images/logo-bonappetit.svg",
-            "image_height": 32
+            "image": "shopify://shop_images/logo-health_22992f24-0b82-4c6f-9fc0-f8299de7e5e7.svg",
+            "image_height": 24
           }
         },
         "logo_AHGBDk": {
           "type": "logo",
           "settings": {
-            "image": "shopify://shop_images/logo-todayshow-horizontal.svg",
-            "image_height": 32
+            "image": "shopify://shop_images/logo-todayshow-horizontal_7a2a7930-6d0a-486c-bc75-d79fa3d8c000.svg",
+            "image_height": 20
           }
         },
         "logo_hEbAew": {
           "type": "logo",
           "settings": {
-            "image": "shopify://shop_images/logo-vogue.svg",
-            "image_height": 32
+            "image": "shopify://shop_images/logo-foodandwine_cb4300b3-9033-47f0-afc4-5a9f4cdbdb3a.svg",
+            "image_height": 20
           }
         }
       },
@@ -246,7 +246,6 @@
       "name": "Viewport video",
       "settings": {
         "video_desktop": "shopify://files/videos/ezgif-32b066c49c70d90e.mp4",
-        "video_mobile": "shopify://files/videos/ezgif-32b066c49c70d90e.mp4",
         "padding_top_mobile": 64,
         "padding_bottom_mobile": 64,
         "padding_top_desktop": 41,
@@ -260,7 +259,7 @@
         "background_color": "",
         "tabs_selection": "the-words-biggest-coffee-heist",
         "receipts_selection": "the-receipts-dont-lie",
-        "desktop_top_padding": 119,
+        "desktop_top_padding": 121,
         "desktop_bottom_padding": 114,
         "mobile_top_padding": 64,
         "mobile_bottom_padding": 64
@@ -319,10 +318,9 @@
         "button_link": "",
         "disclaimer": "30-day escape plan. Love it or your money back.",
         "left_media_type": "video",
-        "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM.mov",
-        "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM.mov",
+        "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
         "video_desktop": "shopify://files/videos/Screen Recording 2026-07-04 at 1.48.04 PM.mp4",
-        "video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 10.42.14 AM.mov",
+        "video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 10.42.14 AM (1).mp4",
         "background_color": "#e8e0d2",
         "panel_color": "#f4ede1",
         "padding_top_mobile": 64,

@@ -52,19 +52,26 @@ class HeistScrollCapture extends HTMLElement {
   update() {
     const rect = this.getBoundingClientRect();
     const scrolled = Math.max(-rect.top, 0);
+
     const releaseDistance = Math.max(
       this.releaseMeasure?.getBoundingClientRect().height ||
         window.innerHeight * 1.2,
       1,
     );
+
     const glassDistance = this.reducedMotion.matches
       ? releaseDistance
       : Math.min(scrolled, releaseDistance);
+
     const progress = Math.min(scrolled / releaseDistance, 1);
 
     this.style.setProperty("--heist-glass-y", `${glassDistance.toFixed(2)}px`);
     this.style.setProperty("--heist-progress", progress.toFixed(4));
-    this.toggleAttribute("data-released", progress >= 1);
+
+    const isReleased = progress >= 1;
+
+    this.toggleAttribute("data-released", isReleased);
+    this.classList.toggle("is-released", isReleased);
   }
 }
 

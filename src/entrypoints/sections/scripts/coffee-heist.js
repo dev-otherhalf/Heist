@@ -85,3 +85,100 @@ document.addEventListener("DOMContentLoaded", () => initCoffeeHeist());
 document.addEventListener("shopify:section:load", (event) =>
   initCoffeeHeist(event.target),
 );
+
+class CoffeeHeistAnimation {
+  constructor() {
+    this.sections = document.querySelectorAll(".coffee-heist");
+
+    if (!this.sections.length) return;
+
+    this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+      threshold: 0.3,
+    });
+
+    this.sections.forEach((section) => {
+      this.prepare(section);
+      this.observer.observe(section);
+    });
+  }
+
+  prepare(section) {
+    const fills = section.querySelectorAll(".coffee-heist__bar-fill");
+    const scores = section.querySelectorAll(".coffee-heist__bar-score");
+
+    fills.forEach((fill) => {
+      const targetWidth =
+        fill.style.width || window.getComputedStyle(fill).width;
+
+      fill.dataset.targetWidth = targetWidth;
+      fill.style.width = "0%";
+    });
+
+    scores.forEach((score) => {
+      const targetLeft =
+        score.style.left || window.getComputedStyle(score).left;
+      const targetValue = parseFloat(score.textContent) || 0;
+
+      score.dataset.targetLeft = targetLeft;
+      score.dataset.targetValue = targetValue;
+
+      score.style.left = "0%";
+      score.textContent = "0";
+    });
+  }
+
+  handleIntersect(entries) {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      const section = entry.target;
+
+      this.animate(section);
+
+      this.observer.unobserve(section);
+    });
+  }
+
+  animate(section) {
+    const fills = section.querySelectorAll(".coffee-heist__bar-fill");
+    const scores = section.querySelectorAll(".coffee-heist__bar-score");
+
+    fills.forEach((fill) => {
+      fill.animate([{ width: "0%" }, { width: fill.dataset.targetWidth }], {
+        duration: 1600,
+        easing: "ease-out",
+        fill: "forwards",
+      });
+    });
+
+    scores.forEach((score) => {
+      const target = parseFloat(score.dataset.targetValue);
+
+      score.animate([{ left: "0%" }, { left: score.dataset.targetLeft }], {
+        duration: 1600,
+        easing: "ease-out",
+        fill: "forwards",
+      });
+
+      const start = performance.now();
+      const duration = 1600;
+
+      const update = (time) => {
+        const progress = Math.min((time - start) / duration, 1);
+        const value = Math.round(target * progress);
+
+        score.textContent = value;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          score.textContent = target;
+        }
+      };
+
+      requestAnimationFrame(update);
+    });
+  }
+}
+
+new CoffeeHeistAnimation();

@@ -20,7 +20,7 @@
   position: relative;
   display: block;
   width: 100%;
-  overflow: clip;
+  overflow: hidden;
   isolation: isolate;
   color: var(--cream);
   background-color: var(--secondary-blue);
@@ -57,13 +57,7 @@
   }
 
   &__grain {
-    position: absolute;
-    z-index: 10;
-    inset: 0;
-    opacity: var(--heist-grain-opacity);
-    pointer-events: none;
-    mix-blend-mode: soft-light;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.68'/%3E%3C/svg%3E");
+    display: none;
   }
 
   &__intro {
@@ -105,15 +99,18 @@
   }
 
   &__glass-motion {
-    position: absolute;
+    position: fixed;
     z-index: 4;
     top: var(--heist-glass-top);
     left: 50%;
     width: var(--heist-glass-width);
     pointer-events: none;
-    transform: translate3d(-50%, var(--heist-glass-y), 0);
+    transform: translate(-50%, 0);
     will-change: transform;
     padding-bottom: 23.6875rem;
+    contain: layout paint;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     img {
       position: absolute;
       top: 0;
@@ -128,14 +125,18 @@
       width: 100%;
     }
   }
+  &.is-released {
+    .heist-capture__glass-motion {
+      position: absolute;
+      transform: translate3d(-50%, var(--heist-glass-y), 0);
+    }
+  }
 
   &__glass {
     width: 100%;
     height: auto;
-    filter: drop-shadow(
-      0 var(--space-16) var(--space-24)
-        color-mix(in srgb, var(--ink), transparent 76%)
-    );
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   &__glass-fallback {
@@ -200,10 +201,10 @@
     bottom: 0;
     left: 0;
     display: grid;
-    grid-template-columns: 1fr 0.61fr;
+    grid-template-columns: 1fr 0.62fr;
     gap: clamp(var(--space-64), 34vw, 33rem);
     width: 100%;
-    padding: 0 var(--space-56) calc(var(--space-64) + var(--space-32));
+    padding: 0 var(--space-56) var(--space-96);
   }
 
   &__story-left {
@@ -217,6 +218,9 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    .heist-capture__story-title {
+      margin-left: -0.8125rem;
+    }
   }
 
   &__story-title {
@@ -230,6 +234,8 @@
     height: 9rem;
     text-align: center;
     position: relative;
+    margin-left: var(--space-24);
+    margin-bottom: -0.1875rem;
     img {
       position: absolute;
       top: 0;
@@ -274,13 +280,16 @@
 
   &__button {
     width: 100%;
+    padding: var(--space-3) var(--space-10);
+    min-height: var(--space-48);
   }
 
-  &__note.t-n3 {
+  &__note.t-n1 {
     margin-block-start: auto;
     padding-block-start: var(--space-24);
     text-align: center;
     text-transform: uppercase;
+    line-height: 1.4;
     margin-bottom: var(--space-64);
     p {
       margin-bottom: var(--space-8);
@@ -438,8 +447,8 @@
 
     &__legal {
       position: absolute;
-      right: var(--space-30);
-      bottom: var(--space-32);
+      right: var(--space-29);
+      bottom: var(--space-36);
       width: var(--space-89);
       height: var(--space-76);
     }
@@ -498,7 +507,7 @@
     }
 
     &__body.t-t1 {
-      margin-bottom: var(--space-24);
+      margin-bottom: var(--space-26);
       font-family: var(--font-display);
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
@@ -511,7 +520,7 @@
 
     &__button {
       display: grid;
-      min-height: var(--control-h-lg);
+      min-height: var(--space-48);
       margin-block-start: var(--space-48);
       padding: var(--space-12) var(--space-20);
       place-items: center;
@@ -525,7 +534,7 @@
       margin-top: var(--space-24);
       font-family: var(--font-mono);
       font-size: var(--fs-n1);
-      line-height: var(--lh-n1);
+      line-height: 1.4;
       text-transform: uppercase;
       p {
         margin-bottom: var(--space-8);

@@ -84,12 +84,13 @@
               section.settings.video
               | video_tag:
                 image_size: '1600x',
-                autoplay: true,
+                autoplay: false,
+                preload: 'none',
                 loop: true,
                 muted: true,
                 controls: false,
                 playsinline: true,
-                class: 'quality-showcase__video'
+                class: 'quality-showcase__video js-autoplay-video'
             }}
           {% elsif section.settings.video_fallback_image != blank %}
             {% assign fallback_alt = section.settings.heading | strip_html %}
