@@ -484,6 +484,10 @@ body:has(.footer__audio) main {
 
         &--active {
           color: var(--background-color);
+
+          svg path {
+            stroke: var(--background-color);
+          }
         }
       }
 
@@ -508,14 +512,6 @@ body:has(.footer__audio) main {
           width: var(--space-48);
           height: var(--space-48);
         }
-      }
-
-      &-status {
-        text-align: center;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-block-start: var(--space-8);
       }
     }
 
