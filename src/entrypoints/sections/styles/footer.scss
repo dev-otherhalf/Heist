@@ -74,6 +74,11 @@ body:has(.footer__audio) main {
 
     @include respond-down(md) {
       order: 2;
+      display: grid;
+      grid-template-rows: repeat(4, auto);
+      grid-auto-flow: column;
+      gap: var(--space-16) var(--space-40);
+      max-width: 92%;
     }
 
     @include respond-to(lg) {
@@ -81,7 +86,7 @@ body:has(.footer__audio) main {
     }
 
     &-item {
-      width: calc(50% - var(--space-8));
+      width: 100%;
       list-style-type: none;
 
       @include respond-to(md) {
@@ -180,6 +185,11 @@ body:has(.footer__audio) main {
   &__newsletter-barcode {
     width: 100%;
     margin-block-start: var(--space-32);
+    img {
+      height: var(--space-32);
+      object-fit: contain;
+      width: 100%;
+    }
   }
 
   &__barcode-image {
@@ -337,6 +347,7 @@ body:has(.footer__audio) main {
 
         @include respond-down(md) {
           margin-block: var(--space-8);
+          text-wrap: nowrap;
         }
       }
 

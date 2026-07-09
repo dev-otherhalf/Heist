@@ -19,6 +19,7 @@
   assign newsletter_text_color = section.settings.newsletter_text_color
   assign heading_text = section.settings.heading_text
   assign barcode_image = section.settings.barcode_image
+  assign barcode_image_mobile = section.settings.barcode_image_mobile
 
   assign audio_bg_color = section.settings.audio_bg_color
   assign audio_text_color = section.settings.audio_text_color
@@ -218,7 +219,7 @@
               <div class="footer__newsletter-barcode">
                 {% render 'responsive-image',
                   desktop_image: barcode_image,
-                  mobile_image: barcode_image,
+                  mobile_image: barcode_image_mobile,
                   alt: 'barcode',
                   class: 'footer__barcode-image',
                   sizes: '(max-width: 749px) 100vw, 100vw'
@@ -566,6 +567,11 @@
       "type": "image_picker",
       "id": "barcode_image",
       "label": "Add barcode image"
+    },
+    {
+      "type": "image_picker",
+      "id": "barcode_image_mobile",
+      "label": "Add barcode image Mobile"
     },
     {
       "type": "header",
