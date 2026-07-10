@@ -666,7 +666,12 @@ class BuyBox extends HTMLElement {
     const saveEl = root.querySelector(s.save);
     if (saveEl) {
       if (pct > 0) {
-        saveEl.textContent = `Save ${this.formatMoney(compareDisp - priceDisp)}${this.unit}`;
+        // Unit lives in its own span so it can be styled apart from the amount.
+        saveEl.textContent = `Save ${this.formatMoney(compareDisp - priceDisp)}`;
+        const unitEl = document.createElement("span");
+        unitEl.className = "buy-box-tier__save-unit";
+        unitEl.textContent = this.unit;
+        saveEl.appendChild(unitEl);
         saveEl.hidden = false;
       } else {
         saveEl.hidden = true;
