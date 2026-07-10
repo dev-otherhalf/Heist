@@ -279,25 +279,7 @@
 
                 <div class="join-the-heist-society__product" {{- block.shopify_attributes -}}>
                   <div class="join-the-heist-society__product-frame">
-                    {%- if product != blank and cta_link == blank -%}
-                      {%- assign cta_link = product.url -%}
-                    {%- endif -%}
-
                     {%- if item_image != blank -%}
-                      {%- if product != blank -%}
-                        <a class="join-the-heist-society__product-link" href="{{- product.url -}}">
-                          {{-
-                            item_image
-                            | image_url: width: 480
-                            | image_tag:
-                              widths: '160, 240, 320, 480',
-                              sizes: '(min-width: 990px) 7rem, 5rem',
-                              loading: 'lazy',
-                              alt: item_alt,
-                              class: 'join-the-heist-society__product-image'
-                          -}}
-                        </a>
-                      {%- else -%}
                         {{-
                           item_image
                           | image_url: width: 480
@@ -308,26 +290,22 @@
                             alt: item_alt,
                             class: 'join-the-heist-society__product-image'
                         -}}
-                      {%- endif -%}
                     {%- else -%}
                       <div class="join-the-heist-society__product-placeholder" aria-hidden="true"></div>
                     {%- endif -%}
                   </div>
 
                   {%- if item_title != blank -%}
-                      {%- if product != blank -%}
-                        <a class="join-the-heist-society__product-title-link t-n1" href="{{- product.url -}}">
+                        <div class="join-the-heist-society__product-title-link t-n1">
                           {{- item_title | escape -}}
-                        </a>
-                      {%- endif -%}
+                        </div>
                   {%- endif -%}
 
                                     {%- if item_description != blank -%}
-                      {%- if product != blank -%}
+                      
                         <p class="join-the-heist-society__product-desc t-n3 hide-from-lg">
                           {{- item_description | escape -}}
                         </p>
-                      {%- endif -%}
                   {%- endif -%}
                 </div>
               {%- endfor -%}
@@ -539,11 +517,6 @@
       "type": "product",
       "name": "Product",
       "settings": [
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Product"
-        },
         {
           "type": "text",
           "id": "custom_name",

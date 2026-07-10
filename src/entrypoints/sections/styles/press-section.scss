@@ -2,7 +2,7 @@
 @use "/src/styles/settings/breakpoints" as *;
 
 .press-section {
-  background-color: var(--press-section-bg, var(--cream));
+  background-color: transparent;
   color: var(--ink);
   overflow: clip;
   padding-block: var(--press-section-padding-top-mobile)
@@ -10,6 +10,7 @@
   position: relative;
 
   @include respond-to(lg) {
+    background-color: var(--press-section-bg, var(--cream));
     padding-block: var(--press-section-padding-top-desktop)
       var(--press-section-padding-bottom-desktop);
   }
@@ -21,6 +22,10 @@
     position: absolute;
     width: 100%;
     z-index: 0;
+    display: none;
+    @include respond-to(lg) {
+      display: block;
+    }
   }
 
   > .page-width {
@@ -38,7 +43,7 @@
     gap: var(--space-12);
     grid-template-columns: 1fr auto;
     min-height: 2.625rem;
-    padding: var(--space-23) var(--space-24) var(--space-23);
+    padding: var(--space-19) var(--space-21) var(--space-24);
     width: 100%;
     justify-content: space-between;
 
@@ -190,6 +195,10 @@
     display: inline-flex;
     gap: var(--space-13);
     width: fit-content;
+    margin-top: var(--space-3);
+    @include respond-to(lg) {
+      margin-top: 0;
+    }
   }
 
   &__nav-button {
@@ -223,7 +232,7 @@
     display: grid;
     flex: 1;
     gap: 0;
-    padding: 0 var(--space-24) var(--space-24);
+    padding: 0 var(--space-22) var(--space-22);
 
     @include respond-to(lg) {
       gap: 0;
@@ -249,8 +258,8 @@
   &__logo {
     display: block;
     height: auto;
-    width: auto;
-    max-width: min(100%, 27.6875rem);
+    width: 100%;
+    max-width: 100%;
     max-height: 2rem;
     object-fit: contain;
     @include respond-to(lg) {
@@ -289,7 +298,7 @@
     border-top: var(--bw-2) solid var(--ink);
 
     @include respond-to(md) {
-      grid-template-columns: minmax(0, 1.1055fr) minmax(0, 1.2577fr);
+      grid-template-columns: minmax(0, 1.0355fr) minmax(0, 1.2577fr);
     }
 
     @include respond-to(lg) {
@@ -310,10 +319,10 @@
 
   &__bottom-media {
     position: relative;
-    padding-top: 79.155%;
+    padding-top: 78.455%;
 
     @include respond-to(lg) {
-      padding-top: 49.87%;
+      padding-top: 51.87%;
     }
   }
 

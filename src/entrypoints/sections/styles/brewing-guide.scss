@@ -21,7 +21,7 @@ body:has(.brewing-guide__modal.is-open) {
       margin-block-end: 0;
       padding-inline: var(--space-56);
 
-      @include respond-down(md) {
+      @include respond-down(xxl) {
         padding-inline: var(--space-20);
         font-size: var(--fs-h7);
         line-height: var(--lh-h7);
@@ -130,6 +130,7 @@ body:has(.brewing-guide__modal.is-open) {
     padding-block-end: var(--space-16);
     padding-inline: var(--space-22) var(--space-12);
     background: var(--cream);
+    position: relative;
 
     @include respond-down(md) {
       padding-block-start: var(--space-12);
@@ -188,7 +189,7 @@ body:has(.brewing-guide__modal.is-open) {
     position: relative;
     height: 100dvh;
     max-height: 100dvh;
-    width: 37.5rem;
+    width: 37.625rem;
     max-width: 95vw;
     background: var(--bone);
     color: #161414cc;
@@ -220,13 +221,14 @@ body:has(.brewing-guide__modal.is-open) {
   &__drawer-inner {
     position: relative;
     min-height: 100%;
-    padding: var(--space-24) calc(var(--space-27) + 4px) var(--space-24)
+    padding: var(--space-24) calc(var(--space-24) + 4px) var(--space-24)
       var(--space-32);
     overflow-y: auto;
     max-height: 100dvh;
     overflow-x: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    border-left: var(--bw-2) solid var(--ink);
 
     &::-webkit-scrollbar {
       width: 0;
@@ -238,6 +240,8 @@ body:has(.brewing-guide__modal.is-open) {
       min-height: 0;
       padding-inline: var(--space-19);
       max-height: 100dvh;
+      border-left: 0;
+      border-block: var(--bw-2) solid var(--ink);
     }
   }
 
@@ -284,8 +288,8 @@ body:has(.brewing-guide__modal.is-open) {
 
   &__drawer-close {
     position: absolute;
-    inset-block-start: var(--space-16);
-    inset-inline-end: var(--space-24);
+    inset-block-start: var(--space-11);
+    inset-inline-end: var(--space-20);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -298,8 +302,8 @@ body:has(.brewing-guide__modal.is-open) {
     color: inherit;
 
     @include respond-down(md) {
-      inset-block-start: var(--space-20);
-      inset-inline-end: var(--space-20);
+      inset-block-start: var(--space-15);
+      inset-inline-end: var(--space-15);
     }
   }
 
@@ -317,9 +321,9 @@ body:has(.brewing-guide__modal.is-open) {
 
   &__recipe-head {
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: var(--space-24);
-    margin-bottom: var(--space-24);
+    margin-bottom: var(--space-26);
 
     @include respond-to(md) {
       margin-bottom: var(--space-20);
@@ -336,11 +340,13 @@ body:has(.brewing-guide__modal.is-open) {
   }
 
   &__recipe-title {
-    &.t-t7 {
-      color: var(--ink);
-      font-size: var(--fs-h7);
-      line-height: var(--lh-h7);
-      letter-spacing: var(--ls-h7);
+    color: var(--ink);
+    @include respond-down(md) {
+      &.t-h6 {
+        font-size: var(--fs-h7);
+        line-height: var(--lh-h7);
+        letter-spacing: var(--ls-h7);
+      }
     }
   }
 
@@ -350,12 +356,12 @@ body:has(.brewing-guide__modal.is-open) {
     padding-block: var(--space-27) 0;
 
     @include respond-down(md) {
-      padding-block: var(--space-24) 0;
+      padding-block: var(--space-21) 0;
     }
 
     > div {
       display: flex;
-      gap: var(--space-8);
+      gap: var(--space-10);
     }
 
     dt {
@@ -372,7 +378,6 @@ body:has(.brewing-guide__modal.is-open) {
   &__servings {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--space-12);
     padding-block: var(--space-24) var(--space-23);
     border-block: var(--bw-2) solid var(--ink);
@@ -381,15 +386,7 @@ body:has(.brewing-guide__modal.is-open) {
       flex-direction: column;
       gap: var(--space-16);
       align-items: flex-start;
-    }
-  }
-
-  &__servings-label {
-    &.t-n1 {
-      @include respond-down(md) {
-        font-size: var(--fs-t4);
-        line-height: var(--lh-t4);
-      }
+      padding-block: var(--space-24);
     }
   }
 
@@ -404,13 +401,14 @@ body:has(.brewing-guide__modal.is-open) {
     align-items: center;
     justify-content: center;
     min-width: 2rem;
-    padding: var(--space-4) var(--space-12);
+    padding: var(--space-3) var(--space-11);
     border: var(--bw-1) solid var(--ink);
     background: transparent;
     color: var(--ink);
     cursor: pointer;
     font-variant-numeric: tabular-nums;
     min-width: 3.125rem;
+    min-height: var(--space-24);
 
     @include respond-down(md) {
       min-width: 2.563rem;
@@ -449,15 +447,6 @@ body:has(.brewing-guide__modal.is-open) {
     }
   }
 
-  &__ingredients-label {
-    &.t-n1 {
-      @include respond-down(md) {
-        font-size: var(--fs-t4);
-        line-height: var(--lh-t4);
-      }
-    }
-  }
-
   &__ingredient {
     display: flex;
     align-items: baseline;
@@ -472,9 +461,12 @@ body:has(.brewing-guide__modal.is-open) {
     content: "";
     order: 1;
     flex: 1 1 auto;
-    border-block-end: 1px dotted var(--ink);
-    opacity: 0.5;
-    transform: translateY(-0.25em);
+    opacity: 0.8;
+    transform: translateY(-0.2em);
+    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Frame_1410127468.svg?v=1783608306);
+    background-repeat: repeat;
+    background-size: unset;
+    height: 2px;
   }
 
   &__ingredient-qty {
@@ -491,7 +483,7 @@ body:has(.brewing-guide__modal.is-open) {
     display: flex;
     align-items: flex-end;
     min-height: 12.5rem;
-    padding: var(--space-30) var(--space-72);
+    padding: var(--space-30) var(--space-70) var(--space-30) var(--space-72);
     color: var(--cream);
     overflow: clip;
     justify-content: end;
@@ -499,7 +491,7 @@ body:has(.brewing-guide__modal.is-open) {
 
     @include respond-down(md) {
       margin-inline: calc(var(--space-19) * -1);
-      padding: var(--space-34) var(--space-22);
+      padding: var(--space-24) var(--space-18) var(--space-32) var(--space-22);
     }
   }
 
@@ -523,11 +515,9 @@ body:has(.brewing-guide__modal.is-open) {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-8);
-    margin-top: var(--space-10);
 
     @include respond-down(md) {
-      margin-top: var(--space-4);
-      max-width: 174px;
+      max-width: 149px;
     }
   }
 
@@ -553,8 +543,10 @@ body:has(.brewing-guide__modal.is-open) {
 
   &__banner-title {
     &.t-s2 {
-      font-size: var(--fs-s3);
-      line-height: var(--lh-s3);
+      @include respond-down(md) {
+        font-size: var(--fs-s3);
+        line-height: var(--lh-s3);
+      }
     }
   }
 
@@ -569,19 +561,18 @@ body:has(.brewing-guide__modal.is-open) {
   }
 
   &__banner-cta {
+    margin-block-start: 0;
+    padding-block: inherit;
+    padding-inline: 0.969rem;
     @include respond-to(md) {
       background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
       background-size: contain;
     }
-  }
-
-  &__banner-cta {
-    margin-block-start: 0;
-
     @include respond-down(md) {
-      width: fit-content;
+      width: 100%;
       padding-inline: var(--space-11);
       margin-top: var(--space-3);
+      min-height: var(--space-40);
     }
   }
 
@@ -590,7 +581,7 @@ body:has(.brewing-guide__modal.is-open) {
   &__how {
     display: flex;
     gap: var(--space-15);
-    margin-block: var(--space-24);
+    margin-block: var(--space-22) var(--space-24);
 
     @include respond-down(md) {
       flex-direction: column;
@@ -600,18 +591,15 @@ body:has(.brewing-guide__modal.is-open) {
 
   &__how-label {
     flex-shrink: 0;
-
-    &.t-n1 {
-      @include respond-down(md) {
-        font-size: var(--fs-t4);
-        line-height: var(--lh-t4);
-      }
-    }
   }
 
   &__how-list {
     display: grid;
-    gap: var(--space-8);
-    padding-inline-start: var(--space-20);
+    gap: var(--space-7);
+    padding-inline-start: var(--space-23);
+    padding-inline-end: 0;
+    @include respond-to(md) {
+      padding-inline-end: var(--space-16);
+    }
   }
 }

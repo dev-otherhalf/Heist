@@ -57,7 +57,7 @@ function initReceipts(root) {
       modules: [FreeMode, Mousewheel],
       slidesPerView: "auto",
       spaceBetween: 16,
-      freeMode: true,
+      freeMode: false,
       grabCursor: true,
       mousewheel: { forceToAxis: true },
     });

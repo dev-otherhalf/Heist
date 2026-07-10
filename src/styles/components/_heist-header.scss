@@ -42,7 +42,7 @@
   &.is-pinned {
     position: fixed;
     inset: 0 0 auto;
-    z-index: 40;
+    z-index: 46;
     border-bottom: var(--bw-2) solid currentColor;
     animation: heist-header-in var(--animation-speed-slow)
       var(--animation-easing) backwards;
@@ -82,12 +82,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-10);
+  gap: var(--space-7);
   color: var(--announcement-inner-text);
   background: var(--announcement-inner-bg);
   font-weight: var(--fw-medium);
   text-align: center;
   text-transform: uppercase;
+  @include respond-down(md) {
+    .t-n2 {
+      letter-spacing: 0.02rem;
+    }
+  }
 
   .heist-header--home & {
     color: var(--announcement-home-text);
@@ -116,6 +121,11 @@
     .heist-header--home:not(.is-pinned) & {
       color: var(--announcement-mobile-home-text);
       background: var(--announcement-mobile-home-bg);
+    }
+
+    .heist-header:has(.heist-mobile-menu[open]) & {
+      color: var(--cream);
+      background: var(--ink);
     }
   }
 }
@@ -302,7 +312,10 @@
 }
 .heist-cart__mobile {
   display: none;
-
+  &.t-nav3 {
+    font-weight: var(--fw-bold);
+    font-family: var(--font-ui);
+  }
   @include respond-down(lg) {
     width: var(--space-32);
     aspect-ratio: 1;
@@ -311,6 +324,7 @@
     border: 0.1875rem solid currentColor;
     border-radius: var(--style-border-radius-50);
     font-weight: var(--fw-bold);
+    font-family: var(--font-ui);
   }
 }
 .heist-cart__desktop {
@@ -548,11 +562,11 @@
     margin-top: 0;
     display: flex;
     align-items: center;
-    gap: var(--space-16);
+    gap: var(--space-4);
 
     .heist-mobile-social-link {
-      width: var(--space-32);
-      height: var(--space-32);
+      width: var(--space-24);
+      height: var(--space-24);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -578,7 +592,7 @@
 
 .heist-mobile-fm-mount {
   @include respond-down(lg) {
-    margin-top: var(--space-32);
+    margin-top: var(--space-46);
     padding-bottom: var(--space-32);
 
     .heist-fm-player-block {
@@ -589,7 +603,7 @@
 
 .heist-fm-player {
   @include respond-down(lg) {
-    padding: var(--space-16);
+    padding: var(--space-13) var(--space-15) var(--space-16);
     color: var(--heist-drawer-text);
     background: var(--cream);
     border: var(--bw-2) solid currentColor;
@@ -602,9 +616,9 @@
 
     &__cover-wrap {
       position: relative;
-      width: 4.5rem;
-      height: 4.5rem;
-      flex: 0 0 4.5rem;
+      width: 3rem;
+      height: 3rem;
+      flex: 0 0 3rem;
       display: grid;
       place-items: center;
       color: var(--heist-mobile-bg);
@@ -648,7 +662,7 @@
     }
 
     &__progress {
-      margin-top: var(--space-8);
+      margin-top: var(--space-3);
     }
 
     &__range {
