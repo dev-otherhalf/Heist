@@ -161,8 +161,6 @@
         "video": "shopify://files/videos/coffee (1).mp4",
         "annotation_value": "24724 1832 248",
         "background_color": "",
-        "background_image": "shopify://shop_images/bg.jpg",
-        "background_image_mobile": "shopify://shop_images/bg.jpg",
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 0,
@@ -305,7 +303,11 @@
           }
         }
       },
-      "block_order": ["product_bjHE3X", "product_zWXPXB", "product_43rK8n"],
+      "block_order": [
+        "product_bjHE3X",
+        "product_zWXPXB",
+        "product_43rK8n"
+      ],
       "name": "Join the Heist Society",
       "settings": {
         "heading": "Join the Heist Society™",
