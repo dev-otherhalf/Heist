@@ -266,6 +266,7 @@
                         assign mobile_cover_image = block.settings.audio_mobile_poster_image
                         assign desktop_cover_image = desktop_cover_image | default: mobile_cover_image
                         assign mobile_cover_image = mobile_cover_image | default: desktop_cover_image
+                        assign cover_alt = block.settings.audio_title | default: 'Drink Heist'
                       -%}
                       {%- if desktop_cover_image != blank -%}
                         <div
@@ -276,7 +277,7 @@
                           {% render 'responsive-image',
                             desktop_image: desktop_cover_image,
                             mobile_image: mobile_cover_image,
-                            alt: block.settings.audio_title,
+                            alt: cover_alt,
                             class: 'footer__audio-player-cover-picture',
                             image_class: 'footer__audio-player-cover-image',
                             sizes: '(max-width: 749px) 58px, 76px'

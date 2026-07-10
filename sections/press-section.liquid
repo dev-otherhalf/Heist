@@ -4,6 +4,7 @@
 {%- liquid
   assign press_selection = section.settings.press_selection.value | default: section.settings.press_selection
   assign press_entries = press_selection.press_entries.value | default: press_selection.press_entries
+  assign fallback_alt = 'Drink Heist'
 -%}
 
 <section
@@ -39,6 +40,7 @@
             widths: '750, 1100, 1500, 2000, 2560',
             sizes: '100vw',
             loading: 'lazy',
+            alt: fallback_alt,
             class: 'press-section__background-image'
         }}
       {% else %}
@@ -49,6 +51,7 @@
             widths: '750, 1100, 1500',
             sizes: '100vw',
             loading: 'lazy',
+            alt: fallback_alt,
             class: 'press-section__background-image'
         }}
       {% endif %}
@@ -82,7 +85,7 @@
                 {%- endif -%}
               {% endcapture %}
 
-              {%- assign entry_alt = headline_markup | strip_html | strip_newlines | strip | escape -%}
+              {%- assign entry_alt = headline_markup | strip_html | strip_newlines | strip | default: fallback_alt | escape -%}
 
               <article class="press-section__slide swiper-slide">
                 <div class="press-section__slide-grid">

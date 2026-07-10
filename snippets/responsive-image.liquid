@@ -21,6 +21,9 @@
   if alt_text == blank
     assign alt_text = desktop | split: '/' | last | split: '.' | first | replace: '-', ' ' | replace: '_', ' '
   endif
+  if alt_text == blank
+    assign alt_text = 'Drink Heist'
+  endif
 %}
 {%- assign sizes_attr = sizes | default: '100vw' -%}
 {%- assign classes = class | default: '' -%}
