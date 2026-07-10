@@ -54,6 +54,8 @@
     @include breakpoints.respond-to(lg) {
       margin-inline: 0;
       width: 100%;
+      justify-content: end;
+      display: flex;
     }
   }
 
@@ -68,7 +70,8 @@
     @include breakpoints.respond-to(lg) {
       justify-content: flex-end;
       min-width: auto;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      max-width: 37.5625rem;
     }
   }
 
@@ -81,12 +84,12 @@
     align-items: center;
     display: inline-flex;
     justify-content: center;
-    max-width: 8rem;
+    max-width: 8100rem;
     flex: 0 0 8rem;
 
     @include breakpoints.respond-to(lg) {
-      max-width: 8.5rem;
-      flex: 0 0 8.5rem;
+      max-width: 100%;
+      flex: 1;
     }
   }
 
@@ -202,7 +205,7 @@
     gap: 0.563rem;
 
     @include breakpoints.respond-to(lg) {
-      gap: var(--space-16);
+      gap: var(--space-15);
       top: var(--space-56);
     }
   }
@@ -438,10 +441,9 @@
     color: var(--ink);
     cursor: pointer;
     margin: 0;
-    opacity: 0.68;
+    opacity: 1;
     padding: var(--space-8) var(--space-12);
     position: relative;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
     transform: translateY(0.125rem);
     transition:
       color 340ms ease,
@@ -453,7 +455,6 @@
     &.is-active {
       color: var(--cream);
       opacity: 1;
-      text-shadow: 0 0 0.35rem rgba(255, 247, 230, 0.18);
       transform: translateY(0);
     }
   }

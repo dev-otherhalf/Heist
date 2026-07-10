@@ -81,7 +81,8 @@
   transition:
     flex-basis var(--dur) var(--ease),
     width var(--dur) var(--ease),
-    opacity var(--dur) var(--ease);
+    opacity var(--dur) var(--ease),
+    flex var(--dur) var(--ease);
 }
 
 .btn--split {
@@ -96,13 +97,14 @@
 }
 
 .btn--split:hover {
-  gap: var(--space-16);
+  gap: var(--space-8);
 }
 
 .btn--split:hover .btn__lines {
   flex-basis: clamp(2rem, 10vw, 8rem);
   width: clamp(2rem, 10vw, 8rem);
   opacity: 1;
+  flex: 1;
 }
 
 .btn--split-static {

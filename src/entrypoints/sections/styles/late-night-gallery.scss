@@ -38,7 +38,7 @@
 .late-night-gallery {
   position: relative;
   padding-inline: var(--space-20);
-  @include respond-to(lg) {
+  @include respond-to(xxl) {
     padding-inline: var(--space-56);
   }
   // padding-block: var(--late-night-gallery-padding-top-mobile) var(--late-night-gallery-padding-bottom-mobile);
@@ -50,8 +50,8 @@
   // }
 
   &__heading {
-    color: var(--neutral-white, #fff);
     // max-width: 55rem;
+    color: var(--cream);
     margin-block-end: var(--space-32);
 
     @include respond-to(md) {
@@ -70,6 +70,8 @@
       @include respond-down(md) {
         font-size: var(--fs-h7);
         line-height: var(--lh-h7);
+        padding-right: var(--space-10);
+        color: var(--cream);
       }
     }
   }
@@ -95,7 +97,6 @@
 
     @include respond-to(md) {
       align-items: center;
-      min-height: 30rem;
       overflow-x: clip;
       margin-top: var(--space-80);
       margin-bottom: var(--space-89);
@@ -125,7 +126,12 @@
   &__item--full {
     width: min(20rem, 22.222vw);
     aspect-ratio: 320 / 552;
-
+    &:nth-child(1) {
+      aspect-ratio: 320 / 547;
+      @include respond-to(md) {
+        aspect-ratio: 320 / 538;
+      }
+    }
     @include respond-to(md) {
       width: calc(
         (100% - (var(--late-night-gallery-gap) * 4)) * 320 /
@@ -194,6 +200,7 @@
 
     &__item--mobile-half {
       aspect-ratio: 160 / 160;
+      margin-top: -1.125rem;
     }
 
     &__item--hide-mobile {

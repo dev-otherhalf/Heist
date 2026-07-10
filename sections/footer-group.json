@@ -91,6 +91,7 @@
         "newsletter_text_color": "#161414",
         "heading_text": "Join the Heist.",
         "barcode_image": "shopify://shop_images/barcode.png",
+        "barcode_image_mobile": "shopify://shop_images/Frame_67.svg",
         "audio_bg_color": "#ddd6c7",
         "audio_text_color": "#161414",
         "teddy_icon_image": "shopify://shop_images/058eb4fb2657c034a1d51530efb36eb562d7a8cb.png",

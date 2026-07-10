@@ -14,6 +14,8 @@ class HeistFMPlayer {
     this.duration = root.querySelector("[data-heist-duration]");
     this.playIcon = root.querySelector("[data-heist-play-icon]");
     this.playButton = root.querySelector('[data-heist-action="toggle"]');
+    this.shuffleButton = root.querySelector('[data-heist-action="shuffle"]');
+    this.loopButton = root.querySelector('[data-heist-action="loop"]');
     this.currentIndex = 0;
     this.isSeeking = false;
     this.isShuffle = false;
@@ -56,16 +58,8 @@ class HeistFMPlayer {
       if (action === "next") this.nextTrack(true);
       if (action === "previous") this.previousTrack(true);
 
-      if (action === "shuffle") {
-        this.isShuffle = !this.isShuffle;
-        button.classList.toggle("is-active", this.isShuffle);
-      }
-
-      if (action === "loop") {
-        this.isLoop = !this.isLoop;
-        this.audio.loop = this.isLoop;
-        button.classList.toggle("is-active", this.isLoop);
-      }
+      if (action === "shuffle") this.setShuffle(!this.isShuffle);
+      if (action === "loop") this.setLoop(!this.isLoop);
     });
 
     this.progress.addEventListener("pointerdown", (event) => {
@@ -150,6 +144,28 @@ class HeistFMPlayer {
 
     this.resetProgress();
     if (shouldPlay) this.play();
+  }
+
+  setShuffle(isActive) {
+    this.isShuffle = isActive;
+    this.updateModeButton(this.shuffleButton, isActive);
+
+    if (isActive && this.isLoop) this.setLoop(false);
+  }
+
+  setLoop(isActive) {
+    this.isLoop = isActive;
+    this.audio.loop = isActive;
+    this.updateModeButton(this.loopButton, isActive);
+
+    if (isActive && this.isShuffle) this.setShuffle(false);
+  }
+
+  updateModeButton(button, isActive) {
+    if (!button) return;
+
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   }
 
   togglePlay() {
