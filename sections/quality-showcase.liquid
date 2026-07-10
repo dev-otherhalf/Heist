@@ -4,6 +4,7 @@
 {%- liquid
   assign feature_blocks = section.blocks | where: 'type', 'feature_point'
   assign annotation_value = section.settings.annotation_value
+  assign fallback_alt = 'Drink Heist'
 -%}
 
 <section
@@ -36,6 +37,7 @@
             widths: '750, 1100, 1500, 2000, 2560',
             sizes: '100vw',
             loading: 'lazy',
+            alt: fallback_alt,
             class: 'quality-showcase__background-image'
         }}
       {% else %}
@@ -46,6 +48,7 @@
             widths: '750, 1100, 1500',
             sizes: '100vw',
             loading: 'lazy',
+            alt: fallback_alt,
             class: 'quality-showcase__background-image'
         }}
       {% endif %}
@@ -93,7 +96,7 @@
                 class: 'quality-showcase__video js-autoplay-video'
             }}
           {% elsif section.settings.video_fallback_image != blank %}
-            {% assign fallback_alt = section.settings.heading | strip_html %}
+            {% assign poster_alt = section.settings.heading | strip_html | strip | default: fallback_alt %}
             {{
               section.settings.video_fallback_image
               | image_url: width: 1600
@@ -101,7 +104,7 @@
                 widths: '640, 960, 1280, 1600',
                 sizes: '(min-width: 990px) 40rem, 100vw',
                 loading: 'lazy',
-                alt: fallback_alt,
+                alt: poster_alt,
                 class: 'quality-showcase__poster'
             }}
           {% endif %}

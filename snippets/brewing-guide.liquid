@@ -22,6 +22,7 @@ a shared id: card `data-brewing-open="ID"` ↔ modal `data-brewing-drawer="ID"`.
 
 {%- liquid
 assign brewing_uid = uid | default: section.id | default: 'brewing'
+assign fallback_alt = 'Drink Heist'
 -%}
 
 <div class="brewing-guide" style="
@@ -36,13 +37,15 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
       {% for recipe in brewing_obj.recipes.value %}
       {% assign drawer_id = brewing_uid | append: '-' | append: forloop.index0 %}
 
+      {% assign card_alt = recipe.card_text.value | default: fallback_alt %}
+
       {%- capture card_inner -%}
       <span class="brewing-guide__card-media">
         {% if recipe.card_image.value != blank %}
         {{
         recipe.card_image.value
         | image_url: width: 800
-        | image_tag: loading: 'lazy', class: 'brewing-guide__card-image', alt: recipe.card_text.value
+        | image_tag: loading: 'lazy', class: 'brewing-guide__card-image', alt: card_alt
         }}
         {% endif %}
         {% if recipe.card_video.value != blank %}
@@ -70,7 +73,7 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
         {{
         recipe.card_icon.value
         | image_url: width: 80
-        | image_tag: loading: 'lazy', class: 'brewing-guide__card-icon', alt: ''
+        | image_tag: loading: 'lazy', class: 'brewing-guide__card-icon', alt: fallback_alt
         }}
         {% endif %}
       </span>
@@ -186,6 +189,7 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
           <div class="brewing-guide__banner">
             {% assign banner_desktop_image = recipe.banner_image.value | default: recipe.mobile_banner_image.value %}
             {% assign banner_mobile_image = recipe.mobile_banner_image.value | default: banner_desktop_image %}
+            {% assign banner_alt = recipe.banner_title.value | default: fallback_alt %}
             {% if banner_desktop_image != blank %}
             {{
               banner_desktop_image
@@ -193,7 +197,7 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
               | image_tag:
                 loading: 'lazy',
                 class: 'brewing-guide__banner-image brewing-guide__banner-image--desktop',
-                alt: recipe.banner_title.value
+                alt: banner_alt
             }}
             {% endif %}
             {% if banner_mobile_image != blank %}
@@ -203,7 +207,7 @@ assign brewing_uid = uid | default: section.id | default: 'brewing'
               | image_tag:
                 loading: 'lazy',
                 class: 'brewing-guide__banner-image brewing-guide__banner-image--mobile',
-                alt: recipe.banner_title.value
+                alt: banner_alt
             }}
             {% endif %}
             <div class="brewing-guide__banner-copy">
