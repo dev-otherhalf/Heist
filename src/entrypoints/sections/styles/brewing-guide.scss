@@ -130,6 +130,7 @@ body:has(.brewing-guide__modal.is-open) {
     padding-block-end: var(--space-16);
     padding-inline: var(--space-22) var(--space-12);
     background: var(--cream);
+    position: relative;
 
     @include respond-down(md) {
       padding-block-start: var(--space-12);
@@ -239,6 +240,8 @@ body:has(.brewing-guide__modal.is-open) {
       min-height: 0;
       padding-inline: var(--space-19);
       max-height: 100dvh;
+      border-left: 0;
+      border-block: var(--bw-2) solid var(--ink);
     }
   }
 
@@ -299,8 +302,8 @@ body:has(.brewing-guide__modal.is-open) {
     color: inherit;
 
     @include respond-down(md) {
-      inset-block-start: var(--space-20);
-      inset-inline-end: var(--space-20);
+      inset-block-start: var(--space-15);
+      inset-inline-end: var(--space-15);
     }
   }
 
@@ -320,7 +323,7 @@ body:has(.brewing-guide__modal.is-open) {
     display: flex;
     align-items: start;
     gap: var(--space-24);
-    margin-bottom: var(--space-24);
+    margin-bottom: var(--space-26);
 
     @include respond-to(md) {
       margin-bottom: var(--space-20);
@@ -339,7 +342,7 @@ body:has(.brewing-guide__modal.is-open) {
   &__recipe-title {
     color: var(--ink);
     @include respond-down(md) {
-      &.t-t7 {
+      &.t-h6 {
         font-size: var(--fs-h7);
         line-height: var(--lh-h7);
         letter-spacing: var(--ls-h7);
@@ -353,12 +356,12 @@ body:has(.brewing-guide__modal.is-open) {
     padding-block: var(--space-27) 0;
 
     @include respond-down(md) {
-      padding-block: var(--space-24) 0;
+      padding-block: var(--space-21) 0;
     }
 
     > div {
       display: flex;
-      gap: var(--space-9);
+      gap: var(--space-10);
     }
 
     dt {
@@ -383,15 +386,7 @@ body:has(.brewing-guide__modal.is-open) {
       flex-direction: column;
       gap: var(--space-16);
       align-items: flex-start;
-    }
-  }
-
-  &__servings-label {
-    &.t-n1 {
-      @include respond-down(md) {
-        font-size: var(--fs-t4);
-        line-height: var(--lh-t4);
-      }
+      padding-block: var(--space-24);
     }
   }
 
@@ -452,15 +447,6 @@ body:has(.brewing-guide__modal.is-open) {
     }
   }
 
-  &__ingredients-label {
-    &.t-n1 {
-      @include respond-down(md) {
-        font-size: var(--fs-t4);
-        line-height: var(--lh-t4);
-      }
-    }
-  }
-
   &__ingredient {
     display: flex;
     align-items: baseline;
@@ -505,7 +491,7 @@ body:has(.brewing-guide__modal.is-open) {
 
     @include respond-down(md) {
       margin-inline: calc(var(--space-19) * -1);
-      padding: var(--space-34) var(--space-22);
+      padding: var(--space-24) var(--space-18) var(--space-32) var(--space-22);
     }
   }
 
@@ -531,7 +517,7 @@ body:has(.brewing-guide__modal.is-open) {
     gap: var(--space-8);
 
     @include respond-down(md) {
-      max-width: 174px;
+      max-width: 149px;
     }
   }
 
@@ -583,9 +569,10 @@ body:has(.brewing-guide__modal.is-open) {
       background-size: contain;
     }
     @include respond-down(md) {
-      width: fit-content;
+      width: 100%;
       padding-inline: var(--space-11);
       margin-top: var(--space-3);
+      min-height: var(--space-40);
     }
   }
 
@@ -604,19 +591,15 @@ body:has(.brewing-guide__modal.is-open) {
 
   &__how-label {
     flex-shrink: 0;
-
-    &.t-n1 {
-      @include respond-down(md) {
-        font-size: var(--fs-t4);
-        line-height: var(--lh-t4);
-      }
-    }
   }
 
   &__how-list {
     display: grid;
     gap: var(--space-7);
     padding-inline-start: var(--space-23);
-    padding-inline-end: var(--space-16);
+    padding-inline-end: 0;
+    @include respond-to(md) {
+      padding-inline-end: var(--space-16);
+    }
   }
 }
