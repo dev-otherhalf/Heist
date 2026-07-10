@@ -2,7 +2,7 @@
 @use "/src/styles/settings/breakpoints" as *;
 
 .press-section {
-  background-color: var(--press-section-bg, var(--cream));
+  background-color: transparent;
   color: var(--ink);
   overflow: clip;
   padding-block: var(--press-section-padding-top-mobile)
@@ -10,6 +10,7 @@
   position: relative;
 
   @include respond-to(lg) {
+    background-color: var(--press-section-bg, var(--cream));
     padding-block: var(--press-section-padding-top-desktop)
       var(--press-section-padding-bottom-desktop);
   }
@@ -21,6 +22,10 @@
     position: absolute;
     width: 100%;
     z-index: 0;
+    display: none;
+    @include respond-to(lg) {
+      display: block;
+    }
   }
 
   > .page-width {

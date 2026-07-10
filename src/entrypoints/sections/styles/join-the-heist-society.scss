@@ -136,13 +136,6 @@
   }
 
   &__panel-overlay {
-    background:
-      linear-gradient(
-        180deg,
-        rgba(245, 239, 229, 0.82) 0%,
-        rgba(245, 239, 229, 0.9) 100%
-      ),
-      var(--join-the-heist-society-panel-bg, rgba(244, 237, 225, 0.82));
     z-index: 1;
   }
 
