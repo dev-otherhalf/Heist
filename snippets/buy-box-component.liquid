@@ -71,8 +71,10 @@
       <p class="buy-box-tile__roast t-t3">{{ roast }}</p>
     {% endif %}
     <div class="buy-box-tile__price-row">
-      <span class="buy-box-tile__price t-n1-med" data-tile-price>{{ seed_price | money }}</span>
-      <span class="buy-box-tile__unit t-n1">/bag</span>
+      <span class="buy-box-tile__price-row-inner">
+        <span class="buy-box-tile__price t-n1-med" data-tile-price>{{ seed_price | money }}</span>
+        <span class="buy-box-tile__unit t-n1-med">/bag</span>
+      </span>
       <span
         class="buy-box-tile__compare"
         data-tile-compare

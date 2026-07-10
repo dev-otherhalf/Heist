@@ -1,0 +1,106 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+body.product{
+    .heist-sticky-cta{
+        display: none;
+    }
+}
+
+.page-wrapper{
+    .shopify-section{
+        .product-information{
+            .product-information{
+                &__grid{
+                    display: flex;
+                }
+                &__media{
+                    @include respond-to(lg){
+                        flex: 0 0 53.889%;
+                        max-width: 53.889%;
+                        margin: 0;
+                        padding: 0 0 var(--space-96);
+                        min-width: auto;
+                        width: 100%;   
+                    }
+                    slideshow-container{
+                        border-bottom: var(--bw-2) solid var(--ink);
+                    }
+                    .slideshow-controls{
+                        &__thumbnails{
+                            gap: var(--space-14);
+                            padding: var(--space-14) var(--space-23) var(--space-13) var(--space-15);
+                        }
+                        &__thumbnail{
+                            width: var(--space-80);
+                            outline: none;
+                            border: var(--bw-2) solid var(--ink);
+                            aspect-ratio: 1;
+                            position: relative;
+                            overflow: visible;
+                            &[aria-selected="true"]:after{
+                                position: absolute;
+                                bottom: -0.4375rem;
+                                left: -0.13rem;
+                                width: calc(100% + 0.25rem);
+                                height: var(--space-5);
+                                background: var(--red);
+                                content: "";
+                            }
+                        }
+                    }
+                    .product-media{
+                        position: relative;
+                        margin: 0;
+                        padding:0px 0 90.722%;
+                        overflow: hidden;
+                        display: block;
+                        width: 100%;
+                        aspect-ratio: unset;
+                        @include respond-to(lg){
+                            padding:0px 0 90.722%;
+                        }
+                        img{
+                            position: absolute;
+                            top:0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+                }
+            }
+            .product-details{
+                flex: 1;
+                max-width: 100%;
+                margin: 0;
+                width: 100%;
+                min-width: auto;
+                padding: var(--space-32) var(--space-20) 0;
+                @include respond-to(lg){
+                    padding: var(--space-40) var(--space-56) var(--space-107) var(--space-64);   
+                    border-left: var(--bw-2) solid var(--ink);
+                }
+                .product-info-details{
+                    border-bottom: var(--bw-1) solid var(--ink);
+                    padding-bottom: var(--space-16);
+                    margin-bottom: var(--space-16);
+                    @include respond-to(md){
+                    padding-bottom: var(--space-16);
+                    margin-bottom: var(--space-16);
+                    }
+                    &__title{
+                        margin-bottom: var(--space-16);
+                        @include respond-to(md){
+                            margin-bottom: var(--space-16);
+                        }
+                    }
+                    &__description{
+                        max-width: 33rem;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{% liquid
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+%}
+
+{% if product != blank %}
+  <div class="product-info-details" {{ block.shopify_attributes }}>
+    <h1 class="product-info-details__title t-h5">
+      {{ product.title | escape }}
+    </h1>
+
+    {% if product.description != blank %}
+      <div class="product-info-details__description t-t4">
+        {{ product.description }}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product info details",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Product info details",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
