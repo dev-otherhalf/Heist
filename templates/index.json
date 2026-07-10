@@ -303,11 +303,7 @@
           }
         }
       },
-      "block_order": [
-        "product_bjHE3X",
-        "product_zWXPXB",
-        "product_43rK8n"
-      ],
+      "block_order": ["product_bjHE3X", "product_zWXPXB", "product_43rK8n"],
       "name": "Join the Heist Society",
       "settings": {
         "heading": "Join the Heist Society™",
