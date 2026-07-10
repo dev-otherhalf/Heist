@@ -280,19 +280,20 @@
 
   &__button {
     width: 100%;
-    padding: var(--space-3) var(--space-10);
+    padding: var(--space-3) var(--space-24);
     min-height: var(--space-48);
   }
 
   &__note.t-n1 {
     margin-block-start: auto;
-    padding-block-start: var(--space-24);
     text-align: center;
     text-transform: uppercase;
     line-height: 1.4;
     margin-bottom: var(--space-64);
+    padding-block-start: var(--space-20);
     p {
-      margin-bottom: var(--space-8);
+      margin-bottom: var(--space-5);
+      margin-top: 0;
       &:nth-last-child(1) {
         margin-bottom: 0;
       }

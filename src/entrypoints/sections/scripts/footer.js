@@ -17,6 +17,8 @@ class AudioPlayer {
     this.currentTime = root.querySelector("[data-audio-current-time]");
     this.duration = root.querySelector("[data-audio-duration]");
     this.playIcon = root.querySelector("[data-audio-play-icon]");
+    this.shuffleButton = root.querySelector('[data-audio-action="shuffle"]');
+    this.loopButton = root.querySelector('[data-audio-action="loop"]');
     this.currentIndex = 0;
     this.isSeeking = false;
     this.isShuffle = false;
@@ -110,26 +112,8 @@ class AudioPlayer {
       if (action === "next") this.nextTrack(true);
       if (action === "previous") this.previousTrack(true);
 
-      if (action === "shuffle") {
-        this.isShuffle = !this.isShuffle;
-        button.classList.toggle(
-          "footer__audio-player-control--active",
-          this.isShuffle,
-        );
-        button.setAttribute("aria-pressed", String(this.isShuffle));
-        this.setStatus(this.isShuffle ? "Shuffle on." : "Shuffle off.");
-      }
-
-      if (action === "loop") {
-        this.isLoop = !this.isLoop;
-        this.audio.loop = this.isLoop;
-        button.classList.toggle(
-          "footer__audio-player-control--active",
-          this.isLoop,
-        );
-        button.setAttribute("aria-pressed", String(this.isLoop));
-        this.setStatus(this.isLoop ? "Loop on." : "Loop off.");
-      }
+      if (action === "shuffle") this.setShuffle(!this.isShuffle);
+      if (action === "loop") this.setLoop(!this.isLoop);
     });
 
     this.progress.addEventListener("input", () => {
@@ -253,6 +237,28 @@ class AudioPlayer {
 
     if (hasUrl) link.href = url;
     else link.removeAttribute("href");
+  }
+
+  setShuffle(isActive) {
+    this.isShuffle = isActive;
+    this.updateModeButton(this.shuffleButton, isActive);
+
+    if (isActive && this.isLoop) this.setLoop(false);
+  }
+
+  setLoop(isActive) {
+    this.isLoop = isActive;
+    this.audio.loop = isActive;
+    this.updateModeButton(this.loopButton, isActive);
+
+    if (isActive && this.isShuffle) this.setShuffle(false);
+  }
+
+  updateModeButton(button, isActive) {
+    if (!button) return;
+
+    button.classList.toggle("footer__audio-player-control--active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   }
 
   togglePlay() {
