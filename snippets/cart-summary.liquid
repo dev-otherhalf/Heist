@@ -3,7 +3,13 @@
 
   @param {string} [accelerated_checkout_buttons_layout] - { 'vertical' } Forced layout of the additional checkout buttons, instead of relying on platform's layout.
   @param {string} [section_id] - The section ID for cart discount component.
+  @param {string} [context] - Pass `'drawer'` for the cart drawer layout: leader-dotted shipping and savings rows, and the total folded into the checkout button.
 {%- enddoc -%}
+
+{%- assign is_drawer = false -%}
+{%- if context == 'drawer' -%}
+  {%- assign is_drawer = true -%}
+{%- endif -%}
 
 {% render 'text-component-shimmer-styles' %}
 
@@ -226,41 +232,136 @@
     endif
   -%}
 
-  <div class="cart-totals__container{% if settings.show_installments %} cart-totals__container--has-installments{% endif %}">
-    <span
-      class="cart-totals__item cart-totals__total"
-      role="status"
-    >
-      <span class="cart-totals__total-label cart-primary-typography">{{ 'content.cart_estimated_total' | t }}</span>
-      <text-component
-        ref="cartTotal"
-        value="{{ total_price | strip_html }}"
-        class="cart-totals__total-value cart-secondary-typography"
-        {% comment %} Used by payment_terms web component {% endcomment %}
-        data-testid="cart-total-value"
-        data-cart-subtotal
-      >
-        {{ total_price }}
-      </text-component>
-    </span>
-    {% if settings.show_installments %}
-      <span class="cart-totals__item cart-totals__installments">
-        {% form 'cart', cart %}
-          {{ form | payment_terms }}
-        {% endform %}
-      </span>
-    {% endif %}
-    <div class="cart-totals__item cart-totals__tax-note cart-primary-typography">
-      {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
+  {%- if is_drawer -%}
+    {% liquid
+      # Everything the customer avoided paying: compare-at markdowns, line
+      # discounts and cart-level discounts all fall out of gross minus total.
+      #
+      # Each line's gross is the same "before" price its own strikethrough shows
+      # (see cart-products.liquid) — for a prepaid line that spans all three
+      # billed deliveries, not one, or the saving would come out far too small.
+      assign gross_price = 0
+      for item in cart.items
+        assign current_plan_name = item.selling_plan_allocation.selling_plan.name | downcase
+        assign deliveries = 1
+        if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
+          assign deliveries = 3
+        endif
+
+        assign regular_price = item.variant.compare_at_price | default: 0
+        if item.variant.price > regular_price
+          assign regular_price = item.variant.price
+        endif
+
+        assign line_gross = regular_price | times: item.quantity | times: deliveries
+        if item.original_line_price > line_gross
+          assign line_gross = item.original_line_price
+        endif
+
+        assign gross_price = gross_price | plus: line_gross
+      endfor
+      assign savings = gross_price | minus: cart.total_price
+
+      # Mirrors the free shipping rule in `cart-progress.liquid`.
+      assign has_subscription = false
+      for item in cart.items
+        if item.selling_plan_allocation != blank
+          assign has_subscription = true
+          break
+        endif
+      endfor
+
+      assign shipping_threshold = settings.cart_free_shipping_threshold | default: 0 | times: 100
+      assign ships_free = false
+      if settings.cart_subscription_free_shipping and has_subscription
+        assign ships_free = true
+      elsif settings.cart_progress_type == 'shipping' and shipping_threshold > 0 and cart.total_price >= shipping_threshold
+        assign ships_free = true
+      endif
+    %}
+
+    <div class="cart-summary-rows">
+      {%- if settings.cart_show_shipping_row -%}
+        <div class="cart-summary-rows__row t-n1">
+          <span class="cart-summary-rows__label">{{ settings.cart_shipping_row_label | default: 'Shipping' }}</span>
+          <span
+            class="cart-summary-rows__leader"
+            aria-hidden="true"
+          ></span>
+          <span class="cart-summary-rows__value">
+            {%- if ships_free -%}
+              {{ settings.cart_shipping_free_label | default: 'Free' }}
+            {%- else -%}
+              {{ settings.cart_shipping_calculated_label | default: 'Calculated at checkout' }}
+            {%- endif -%}
+          </span>
+        </div>
+      {%- endif -%}
+
+      {%- if settings.cart_show_savings_row and savings > 0 -%}
+        <div class="cart-summary-rows__row t-n1">
+          <span class="cart-summary-rows__label">
+            {{- settings.cart_savings_row_label | default: 'Total savings' -}}
+          </span>
+          <span
+            class="cart-summary-rows__leader"
+            aria-hidden="true"
+          ></span>
+          <span class="cart-summary-rows__value">{{ savings | money }}</span>
+        </div>
+      {%- endif -%}
     </div>
-  </div>
+
+    {%- comment -%}
+      Hidden but present: the payment_terms web component and any add-on app
+      still look for `[data-cart-subtotal]`.
+    {%- endcomment -%}
+    <text-component
+      ref="cartTotal"
+      value="{{ total_price | strip_html }}"
+      class="visually-hidden"
+      data-testid="cart-total-value"
+      data-cart-subtotal
+    >
+      {{ total_price }}
+    </text-component>
+  {%- else -%}
+    <div class="cart-totals__container{% if settings.show_installments %} cart-totals__container--has-installments{% endif %}">
+      <span
+        class="cart-totals__item cart-totals__total"
+        role="status"
+      >
+        <span class="cart-totals__total-label cart-primary-typography">{{ 'content.cart_estimated_total' | t }}</span>
+        <text-component
+          ref="cartTotal"
+          value="{{ total_price | strip_html }}"
+          class="cart-totals__total-value cart-secondary-typography"
+          {% comment %} Used by payment_terms web component {% endcomment %}
+          data-testid="cart-total-value"
+          data-cart-subtotal
+        >
+          {{ total_price }}
+        </text-component>
+      </span>
+      {% if settings.show_installments %}
+        <span class="cart-totals__item cart-totals__installments">
+          {% form 'cart', cart %}
+            {{ form | payment_terms }}
+          {% endform %}
+        </span>
+      {% endif %}
+      <div class="cart-totals__item cart-totals__tax-note cart-primary-typography">
+        {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
+      </div>
+    </div>
+  {%- endif -%}
 </div>
 
 <div class="cart__ctas">
   <button
     type="submit"
     id="checkout"
-    class="cart__checkout-button button"
+    class="cart__checkout-button button btn"
     name="checkout"
     {% if cart == empty %}
       disabled
@@ -268,9 +369,19 @@
     form="cart-form"
   >
     <span class="button-text">
-      {{ 'content.checkout' | t }}
+      {%- if is_drawer -%}
+        {{ settings.cart_checkout_label | default: 'Continue to checkout' }} – {{ total_price }}
+      {%- else -%}
+        {{ 'content.checkout' | t }}
+      {%- endif -%}
     </span>
   </button>
+
+  {%- if is_drawer -%}
+    <div class="cart-summary-rows__tax-note t-n2">
+      {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
+    </div>
+  {%- endif -%}
 
   {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
     <div

@@ -17,6 +17,7 @@
 
 import Swiper from "swiper";
 import { FreeMode, Mousewheel } from "swiper/modules";
+import { initCustomScrollbar } from "../../../scripts/custom-scrollbar";
 
 // The drawer is a class-toggled overlay (not a native <dialog>/showModal) —
 // showModal auto-focuses inside the drawer, which makes the browser scroll the
@@ -151,66 +152,7 @@ function initDrawerScrollbar(drawer) {
   track.appendChild(thumb);
   drawer.appendChild(track);
 
-  const MIN_THUMB = 24;
-
-  function update() {
-    const { scrollHeight, clientHeight, scrollTop } = inner;
-    const scrollable = scrollHeight - clientHeight;
-    if (scrollable <= 1) {
-      track.classList.remove("is-active");
-      return;
-    }
-    track.classList.add("is-active");
-    const trackH = track.clientHeight;
-    const thumbH = Math.max((clientHeight / scrollHeight) * trackH, MIN_THUMB);
-    const maxThumbTop = trackH - thumbH;
-    const top = maxThumbTop > 0 ? (scrollTop / scrollable) * maxThumbTop : 0;
-    thumb.style.height = `${thumbH}px`;
-    thumb.style.transform = `translateY(${top}px)`;
-  }
-
-  inner.addEventListener("scroll", update, { passive: true });
-  if (typeof ResizeObserver !== "undefined") {
-    new ResizeObserver(update).observe(inner);
-  }
-
-  let dragStartY = 0;
-  let dragStartScroll = 0;
-  function onMove(event) {
-    const scrollable = inner.scrollHeight - inner.clientHeight;
-    const maxThumbTop = track.clientHeight - thumb.offsetHeight;
-    if (maxThumbTop <= 0) return;
-    const delta = ((event.clientY - dragStartY) / maxThumbTop) * scrollable;
-    inner.scrollTop = dragStartScroll + delta;
-  }
-  function onUp() {
-    document.removeEventListener("pointermove", onMove);
-    document.removeEventListener("pointerup", onUp);
-    thumb.classList.remove("is-dragging");
-  }
-  thumb.addEventListener("pointerdown", (event) => {
-    event.preventDefault();
-    dragStartY = event.clientY;
-    dragStartScroll = inner.scrollTop;
-    thumb.classList.add("is-dragging");
-    document.addEventListener("pointermove", onMove);
-    document.addEventListener("pointerup", onUp);
-  });
-
-  track.addEventListener("pointerdown", (event) => {
-    if (event.target === thumb) return;
-    const scrollable = inner.scrollHeight - inner.clientHeight;
-    const maxThumbTop = track.clientHeight - thumb.offsetHeight;
-    if (maxThumbTop <= 0) return;
-    const clickY = event.clientY - track.getBoundingClientRect().top;
-    const targetTop = Math.max(
-      0,
-      Math.min(clickY - thumb.offsetHeight / 2, maxThumbTop),
-    );
-    inner.scrollTop = (targetTop / maxThumbTop) * scrollable;
-  });
-
-  update();
+  initCustomScrollbar({ scroller: inner, track, thumb });
 }
 
 function registerDrawer(modal) {

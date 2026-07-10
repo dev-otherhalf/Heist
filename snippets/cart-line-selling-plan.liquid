@@ -1,0 +1,204 @@
+{% doc %}
+  Cart Line Selling Plan
+
+  Renders the delivery-plan control for a single cart line. Two states:
+
+  - One-time line → a "Subscribe & save 15%" button. Clicking it applies the
+    plan named by `cart_subscribe_target_plan`, and the line re-renders as the
+    dropdown below. The saving is calculated from that plan's allocation price.
+  - Subscription line → a dropdown of "One time purchase" plus every non-prepaid
+    plan available to the variant.
+
+  Prepaid plans (Heist Society) are never offered as a new choice here — upgrading
+  to those happens on the product page.
+
+  A line that is *already* prepaid keeps its plan selected, but a prepaid plan is
+  named for how it bills ("3 months prepaid"), not how it ships. Shopify exposes
+  no delivery interval to Liquid, so the dropdown shows the `cart_prepaid_option_label`
+  setting ("Ships every 4 weeks") and the billing term moves to a tag next to the
+  variant. Any sibling plan whose name duplicates that label is dropped from the
+  list, since it would render as a second, identical-looking option.
+
+  When the switcher can't be offered — disabled in theme settings, or the line's
+  only plans are prepaid — the line's current plan is shown as static text
+  instead, so a subscription line never renders without its frequency. Renders
+  nothing at all for a one-time line with no plans to switch to.
+
+  @param {object} item - The cart line item.
+  @param {number} line - The 1-based line index of the item in the cart.
+  @param {string} [part] - Which piece to render. `'badge'` emits only the prepaid
+
+  tag, so it can be placed on the variant row; anything else (the default) emits only the button or dropdown.
+
+  @example
+  {% render 'cart-line-selling-plan', item: item, line: forloop.index, part: 'badge' %}
+  {% render 'cart-line-selling-plan', item: item, line: forloop.index %}
+{% enddoc %}
+
+{% liquid
+  assign allocations = item.variant.selling_plan_allocations
+  assign current_plan = item.selling_plan_allocation.selling_plan
+  assign selected_id = current_plan.id | default: ''
+
+  assign current_is_prepaid = false
+  if current_plan != blank
+    assign current_plan_name = current_plan.name | downcase
+    if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
+      assign current_is_prepaid = true
+    endif
+  endif
+
+  assign prepaid_option_label = settings.cart_prepaid_option_label | default: current_plan.name
+  assign prepaid_badge_label = settings.cart_prepaid_badge_label | default: current_plan.name
+  assign prepaid_option_key = prepaid_option_label | downcase | strip
+
+  # The plan the "Subscribe & save" button applies: the preferred one by name,
+  # else the first non-prepaid plan on the variant.
+  assign preferred_plan_key = settings.cart_subscribe_target_plan | downcase | strip
+  assign has_options = false
+  assign target_plan_id = ''
+  assign target_plan_price = 0
+  assign target_is_preferred = false
+
+  for allocation in allocations
+    assign plan_name = allocation.selling_plan.name | downcase
+    unless plan_name contains 'prepaid' or plan_name contains 'prepay'
+      assign has_options = true
+      unless target_is_preferred
+        if target_plan_id == blank
+          assign target_plan_id = allocation.selling_plan.id
+          assign target_plan_price = allocation.per_delivery_price
+        endif
+        if preferred_plan_key != blank and plan_name contains preferred_plan_key
+          assign target_plan_id = allocation.selling_plan.id
+          assign target_plan_price = allocation.per_delivery_price
+          assign target_is_preferred = true
+        endif
+      endunless
+    endunless
+  endfor
+%}
+
+{%- if part == 'badge' -%}
+  {%- if current_is_prepaid -%}
+    <p class="cart-line-plan__badge t-n1">{{ prepaid_badge_label }}</p>
+  {%- endif -%}
+
+{%- elsif settings.cart_line_selling_plan == false or has_options == false -%}
+  {%- if current_plan != blank -%}
+    <p class="cart-line-plan__static t-n1">
+      {%- if current_is_prepaid -%}
+        {{ prepaid_option_label }}
+      {%- else -%}
+        {{ current_plan.name }}
+      {%- endif -%}
+    </p>
+  {%- endif -%}
+
+{%- elsif current_plan == blank -%}
+  {% liquid
+    assign variant_price = item.variant.price
+    assign discount_label = ''
+    if variant_price > 0 and target_plan_price > 0 and target_plan_price < variant_price
+      assign discount_label = variant_price | minus: target_plan_price | times: 100 | divided_by: variant_price | append: '%'
+    endif
+    assign cta_label = settings.cart_subscribe_cta_label | default: 'Subscribe & save [discount]'
+    assign cta_label = cta_label | replace: '[discount]', discount_label | strip
+  %}
+
+  <cart-line-selling-plan
+    class="cart-line-plan cart-line-plan--cta"
+    data-line="{{ line }}"
+    data-key="{{ item.key }}"
+    data-quantity="{{ item.quantity }}"
+  >
+    <button
+      type="button"
+      class="cart-line-plan__cta t-n1-med"
+      data-selling-plan="{{ target_plan_id }}"
+    >
+      {{- cta_label -}}
+    </button>
+  </cart-line-selling-plan>
+
+{%- else -%}
+  {%- assign select_id = 'cart-line-plan-' | append: item.key -%}
+
+  <cart-line-selling-plan
+    class="cart-line-plan"
+    data-line="{{ line }}"
+    data-key="{{ item.key }}"
+    data-quantity="{{ item.quantity }}"
+  >
+    <label
+      class="visually-hidden"
+      for="{{ select_id }}"
+    >
+      {{ item.product.title }} — delivery frequency
+    </label>
+
+    <select
+      id="{{ select_id }}"
+      class="cart-line-plan__select t-n1"
+      data-selected="{{ selected_id }}"
+    >
+      {%- unless item.product.requires_selling_plan -%}
+        <option value="">
+          {{- settings.cart_one_time_label | default: 'One time purchase' -}}
+        </option>
+      {%- endunless -%}
+
+      {%- for allocation in allocations -%}
+        {% liquid
+          assign plan = allocation.selling_plan
+          assign plan_name = plan.name | downcase
+
+          assign is_prepaid = false
+          if plan_name contains 'prepaid' or plan_name contains 'prepay'
+            assign is_prepaid = true
+          endif
+
+          assign is_selected = false
+          if plan.id == current_plan.id
+            assign is_selected = true
+          endif
+
+          # The selected prepaid plan is relabelled to its shipping cadence, so a
+          # sibling plan carrying that same name would look like a duplicate.
+          assign is_duplicate = false
+          if current_is_prepaid and is_prepaid == false
+            assign trimmed_plan_name = plan_name | strip
+            if trimmed_plan_name == prepaid_option_key
+              assign is_duplicate = true
+            endif
+          endif
+        %}
+        {%- if is_duplicate -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- if is_prepaid == false or is_selected -%}
+          <option
+            value="{{ plan.id }}"
+            {% if is_selected %}
+              selected
+            {% endif %}
+          >
+            {%- if is_selected and current_is_prepaid -%}
+              {{ prepaid_option_label }}
+            {%- else -%}
+              {{ plan.name }}
+            {%- endif -%}
+          </option>
+        {%- endif -%}
+      {%- endfor -%}
+    </select>
+
+    <span
+      class="cart-line-plan__chevron svg-wrapper"
+      aria-hidden="true"
+    >
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    </span>
+  </cart-line-selling-plan>
+{%- endif -%}

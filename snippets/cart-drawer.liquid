@@ -22,28 +22,35 @@
     fetchpriority="low"
   ></script>
 
-  {% capture empty_cart_drawer_content %}
-    <div
-      class="cart-drawer__content"
-      aria-label="{{ 'accessibility.cart' | t }}"
-    >
-      <h2
-        class="theme-drawer__title h4"
-        id="cart-drawer-heading"
-      >
-        {{ 'content.your_cart_is_empty' | t }}
-      </h2>
+  {% render 'vite-tag' with 'sections/styles/cart-drawer.scss' %}
 
-      <div class="cart-drawer__items">
-        {% render 'cart-products', force_empty: true, context: 'drawer' %}
-      </div>
-    </div>
-    {% endcapture %}
+  {% comment %}
+    Loaded here, not beside the <cart-drawer-scrollbar> markup: an empty cart
+    doesn't render that element, and a <script> the morph inserts later never
+    executes — the element would stay un-upgraded until a reload.
+  {% endcomment %}
+  {% render 'vite-tag' with 'sections/scripts/cart-drawer-scrollbar.js' %}
+
+  {% capture empty_cart_drawer_content %}
+    {% render 'cart-drawer-empty' %}
+  {% endcapture %}
 
   <theme-drawer
     id="cart-drawer"
     data-skip-node-update
   >
+    {% comment %}
+      Below 990px the drawer opens as a modal dialog and the native ::backdrop
+      already dims the page and closes on click. Above it the drawer is
+      non-modal (it squeezes the page), so it gets this scrim instead. Escape
+      and the close button remain the accessible paths — the scrim is decorative.
+    {% endcomment %}
+    <div
+      class="cart-drawer__overlay"
+      on:click="#cart-drawer/close"
+      aria-hidden="true"
+    ></div>
+
     <dialog
       ref="panel"
       class="theme-drawer__dialog color-custom-drawer"
@@ -63,62 +70,66 @@
           class="cart-drawer__inner{% if cart.empty? %} cart-drawer--empty{% endif %}"
           data-hydration-key="cart-drawer-inner"
         >
-          {%- if cart.empty? -%}
-            <div class="theme-drawer__header">
-              <button
-                on:click="#cart-drawer/close"
-                class="theme-drawer__close-button cart-drawer__close-button--empty"
-                type="button"
-                aria-label="{{ 'actions.close' | t }}"
-              >
-                <span class="svg-wrapper">
-                  {{- 'icon-close.svg' | inline_asset_content -}}
-                </span>
-              </button>
-            </div>
-          {%- else -%}
-            {% capture cart_badge_html %}
-              <span
-                class="theme-drawer__badge{% if cart.item_count == 0 %} visually-hidden{% endif %}"
-                aria-hidden="true"
-                {% if cart.item_count <= 99 %}
-                  data-maintain-ratio
-                {% endif %}
-              >
-                {{- cart.item_count -}}
-              </span>
-              {% if cart.item_count > 0 %}
-                <span class="visually-hidden">
-                  {{ 'accessibility.cart_count' | t }}: {{ cart.item_count }}
-                </span>
-              {% endif %}
-            {% endcapture %}
-            {% assign cart_drawer_title = 'content.cart_title' | t %}
-            {% render 'theme-drawer-header',
-              title: cart_drawer_title,
-              drawer_id: 'cart-drawer',
-              heading_id: 'cart-drawer-heading',
-              title_append: cart_badge_html
-            %}
-          {%- endif -%}
+          {% render 'cart-promo-bar' %}
+
+          {% assign cart_drawer_title = 'content.cart_title'
+            | t
+            | append: ' ('
+            | append: cart.item_count
+            | append: ')'
+          %}
+          {% render 'theme-drawer-header',
+            title: cart_drawer_title,
+            drawer_id: 'cart-drawer',
+            heading_id: 'cart-drawer-heading'
+          %}
 
           {% capture cart_items_children %}
             {%- if cart.empty? -%}
               {{ empty_cart_drawer_content }}
             {%- else -%}
-              <scroll-hint
-                class="cart-drawer__content"
-                aria-label="{{ 'accessibility.cart' | t }}"
-                style="--header-height: 60px;"
-              >
-                <scroll-hint class="cart-drawer__items">
-                  {% render 'cart-products', context: 'drawer' %}
-                </scroll-hint>
+              {% comment %}
+                The scroll area is the drawer's viewport: the summary sits
+                outside it as a footer, so the overlay scrollbar can span the
+                scrollable region exactly and stop at the summary's top edge.
+              {% endcomment %}
+              <div class="cart-drawer__scroll-area">
+                {% comment %}
+                  The native scrollbar is hidden and replaced by
+                  <cart-drawer-scrollbar>, matching the brewing guide's drawer.
+                  `tabindex="0"` keeps the region keyboard-scrollable now that
+                  the native bar is gone.
+                {% endcomment %}
+                <div
+                  class="cart-drawer__content"
+                  role="region"
+                  aria-label="{{ 'accessibility.cart' | t }}"
+                  tabindex="0"
+                  style="--header-height: 60px;"
+                >
+                  {% comment %}
+                    Inside the scroll container, not pinned under the header: the
+                    progress bar scrolls away with the lines it describes.
+                  {% endcomment %}
+                  {% render 'cart-progress' %}
 
-                <div class="cart-drawer__summary">
-                  {% render 'cart-summary', section_id: 'cart-drawer-section' %}
+                  <div class="cart-drawer__items">
+                    {% render 'cart-products', context: 'drawer' %}
+                    {% render 'cart-upgrade-banner' %}
+                  </div>
                 </div>
-              </scroll-hint>
+
+                <cart-drawer-scrollbar
+                  class="cart-drawer__scrollbar"
+                  aria-hidden="true"
+                >
+                  <span class="cart-drawer__scrollbar-thumb"></span>
+                </cart-drawer-scrollbar>
+              </div>
+
+              <div class="cart-drawer__summary">
+                {% render 'cart-summary', section_id: 'cart-drawer-section', context: 'drawer' %}
+              </div>
             {%- endif -%}
           {% endcapture %}
           {% render 'cart-items-component',
@@ -207,8 +218,6 @@
     padding: var(--cart-drawer-summary-padding);
     margin-top: auto;
     background-color: var(--color-background);
-    /* stylelint-disable-next-line color-named */
-    mask-image: linear-gradient(to bottom, transparent, black var(--cart-drawer-summary-padding));
 
     @media screen and (min-width: 750px) {
       --cart-drawer-summary-padding: var(--padding-2xl);
@@ -217,7 +226,6 @@
 
   .theme-drawer__dialog[cart-summary-sticky='false'] .cart-drawer__summary {
     position: static;
-    mask-image: none;
   }
 
   .theme-drawer__dialog[cart-summary-sticky='false'] .cart-drawer__items {
@@ -240,27 +248,6 @@
     @media screen and (min-width: 750px) {
       margin-block-start: var(--margin-3xs);
     }
-  }
-
-  .cart-drawer--empty .cart-drawer__content {
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    min-height: auto;
-  }
-
-  .cart-drawer--empty .cart-drawer__items {
-    padding-inline: 0;
-  }
-
-  cart-drawer-component:not(:has(.cart-form)) .cart-drawer__content {
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-  }
-
-  cart-drawer-component:not(:has(.cart-form)) .cart-drawer__items {
-    padding-inline: 0;
   }
 
   @media screen and (prefers-reduced-motion: no-preference) {

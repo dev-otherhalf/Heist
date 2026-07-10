@@ -29,13 +29,13 @@
   </h2>
 
   <button
-    class="theme-drawer__close-button"
+    class="theme-drawer__close-button cart-drawer__close-button"
     on:click="#{{ drawer_id }}/close"
     type="button"
     aria-label="{{ 'actions.close' | t }}"
   >
     <span class="svg-wrapper">
-      {{- 'icon-close.svg' | inline_asset_content -}}
+      {% render 'icon-close' %}
     </span>
   </button>
 </div>

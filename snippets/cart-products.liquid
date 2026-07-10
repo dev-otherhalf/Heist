@@ -25,11 +25,10 @@
   {%- endcapture -%}
 {%- endif -%}
 
-<script
-  src="{{ 'component-cart-items.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
+{% comment %}
+  component-cart-items.js is loaded by cart-items-component.liquid — the drawer's
+  empty state renders that element without this snippet.
+{% endcomment %}
 <script
   src="{{ 'component-cart-quantity-selector.js' | asset_url }}"
   type="module"
@@ -40,6 +39,15 @@
   type="module"
   fetchpriority="low"
 ></script>
+{% comment %}
+  Also loaded by cart-drawer.liquid, which renders the empty state without this
+  snippet. Duplicate tags de-duplicate in the browser.
+{% endcomment %}
+{% render 'vite-tag' with 'sections/styles/cart-drawer.scss' %}
+
+{% if settings.cart_line_selling_plan %}
+  {% render 'vite-tag' with 'sections/scripts/cart-line-selling-plan.js' %}
+{% endif %}
 
 {% render 'text-component-shimmer-styles' %}
 
@@ -207,6 +215,14 @@
                         mode: 'trigger'
                       %}
                     </div>
+
+                    {%- assign product_subtitle = item.product.metafields.custom.product_subtitle.value
+                      | default: item.product.metafields.custom.product_subtitle
+                    -%}
+                    {%- if product_subtitle != blank -%}
+                      <p class="cart-items__subtitle t-t3">{{ product_subtitle }}</p>
+                    {%- endif -%}
+
                     {% if item.product.vendor and block_settings.vendor %}
                       <p>
                         {{ item.product.vendor }}
@@ -276,10 +292,6 @@
                         </dl>
                       {%- endif -%}
 
-                      {%- if item.selling_plan_allocation -%}
-                        <p>{{ item.selling_plan_allocation.selling_plan.name }}</p>
-                      {%- endif -%}
-
                       {%- if item.line_level_discount_allocations.size > 0 -%}
                         <ul
                           class="list-unstyled"
@@ -291,6 +303,8 @@
                         </ul>
                       {%- endif -%}
                     {%- endif -%}
+
+                    {% render 'cart-line-selling-plan', item: item, line: forloop.index, part: 'badge' %}
                   </div>
 
                   <div class="cart-items__unit-price-wrapper">
@@ -348,6 +362,8 @@
                       can_update_quantity: can_update_quantity
                     %}
 
+                    {% render 'cart-line-selling-plan', item: item, line: forloop.index %}
+
                     <button
                       class="button cart-items__remove"
                       type="button"
@@ -397,6 +413,39 @@
                   headers="productTotal"
                 >
                   <text-component value="{{ price | strip_html }}">{{ price }}</text-component>
+
+                  {%- if context == 'drawer' -%}
+                    {%- liquid
+                      # A prepaid plan bills several deliveries in one charge, so its
+                      # line price covers all of them. The "before" price has to span
+                      # the same deliveries or the strikethrough never outruns it.
+                      # Shopify hands Liquid the plan's name but not its billing cycle,
+                      # so the 3 in "3 months prepaid" can't be read off the plan.
+                      assign current_plan_name = item.selling_plan_allocation.selling_plan.name | downcase
+                      assign deliveries = 1
+                      if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
+                        assign deliveries = 3
+                      endif
+
+                      assign regular_price = item.variant.compare_at_price | default: 0
+                      if item.variant.price > regular_price
+                        assign regular_price = item.variant.price
+                      endif
+
+                      # The strikethrough is whichever "before" price is highest: the
+                      # variant's regular price across every billed delivery, or the
+                      # pre-discount line price.
+                      assign compare_at_line_price = regular_price | times: item.quantity | times: deliveries
+                      if item.original_line_price > compare_at_line_price
+                        assign compare_at_line_price = item.original_line_price
+                      endif
+                    -%}
+                    {%- if compare_at_line_price > item.final_line_price -%}
+                      <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
+                      <s class="cart-items__price-compare compare-at-price">{{ compare_at_line_price | money }}</s>
+                    {%- endif -%}
+                  {%- endif -%}
+
                   {%- if item.unit_price_measurement -%}
                     <div class="cart-items__price-unit cart-secondary-typography">
                       {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}
@@ -741,7 +790,8 @@
     opacity: 1;
     overflow: hidden;
     transform: translateY(0);
-    transition: opacity var(--drawer-animation-speed) var(--animation-easing),
+    transition:
+      opacity var(--drawer-animation-speed) var(--animation-easing),
       transform var(--drawer-animation-speed) var(--animation-easing);
 
     @starting-style {

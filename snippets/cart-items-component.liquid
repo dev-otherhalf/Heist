@@ -14,6 +14,17 @@
   {% render 'cart-items-component', children: cart_content, is_drawer: true, section_id: section.id %}
 {% enddoc %}
 
+{% comment %}
+  Loaded here rather than in cart-products.liquid: an empty cart drawer renders
+  this element without any products, and it still has to listen for cart updates
+  so the first added line appears without a reload.
+{% endcomment %}
+<script
+  src="{{ 'component-cart-items.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
 <cart-items-component
   class="cart-items-component"
   {% if is_drawer %}

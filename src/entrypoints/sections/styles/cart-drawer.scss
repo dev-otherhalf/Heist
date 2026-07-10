@@ -1,0 +1,801 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+$plan-control-height: 2.375rem; // 38px
+
+// -----------------------------------------------------------------------------
+// Promo bar
+// -----------------------------------------------------------------------------
+
+.cart-promo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--space-32);
+  padding: var(--space-6) var(--space-16);
+  background-color: var(--red);
+  color: var(--ink);
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  // Only the linked variant is interactive.
+  &:is(a):hover {
+    text-decoration: underline;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Drawer
+// -----------------------------------------------------------------------------
+
+.cart-drawer {
+  // --- Overlay ---------------------------------------------------------------
+  //
+  // Only for the non-modal (page-squeezing) drawer at >= lg; below that the
+  // dialog is modal and its native ::backdrop does the job. Sits one layer
+  // under the panel — `--drawer-stack-order` is set on <theme-drawer>, so it
+  // inherits.
+
+  &__overlay {
+    // The theme's shared --backdrop-opacity (0.15) is tuned for small modals
+    // and reads as almost nothing behind a full-height drawer.
+    --cart-drawer-overlay-opacity: 0.4;
+
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--layer-sticky) + var(--drawer-stack-order, 0) - 1);
+    display: none;
+    background: rgb(
+      var(--backdrop-color-rgb) / var(--cart-drawer-overlay-opacity)
+    );
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity var(--animation-speed) var(--animation-timing-fade-out);
+
+    @include respond-to(lg) {
+      display: block;
+    }
+
+    @media screen and (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    theme-drawer[open] & {
+      opacity: 1;
+      transition-timing-function: var(--animation-timing-fade-in);
+    }
+
+    // A closed drawer's scrim must not swallow clicks on the page behind it.
+    theme-drawer:not([open]) & {
+      pointer-events: none;
+    }
+  }
+
+  // --- Chrome ----------------------------------------------------------------
+
+  &__inner {
+    background-color: var(--bone);
+
+    .theme-drawer__header {
+      border-block-end: var(--bw-2) solid var(--taupe);
+      background-color: var(--bone);
+    }
+
+    .theme-drawer__title {
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: var(--fs-s3);
+      font-weight: var(--fw-bold);
+      line-height: var(--lh-s3);
+      text-transform: uppercase;
+    }
+  }
+
+  // The scrollable viewport, and the positioning context for the overlay
+  // scrollbar. Bounded above by the header and below by the summary, so the
+  // track never runs behind either.
+  &__inner &__scroll-area {
+    position: relative;
+    flex: 1;
+    display: flex;
+    min-height: 0;
+  }
+
+  &__inner &__content {
+    flex: 1;
+    // Overrides the base `height: calc(100% - var(--header-height))`: the scroll
+    // area already bounds it, and a percentage height would ignore the summary.
+    height: auto;
+    min-height: 0;
+    background-color: var(--bone);
+
+    // Native bar hidden; <cart-drawer-scrollbar> draws the visible one.
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  // --- Overlay scrollbar -----------------------------------------------------
+  //
+  // Mirrors `.brewing-guide__scrollbar`: an ink track that only appears while
+  // there is something to scroll, with a red thumb.
+
+  &__scrollbar {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 4;
+    display: block;
+    width: var(--space-6);
+    background: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--animation-speed) ease;
+
+    &.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @include respond-down(md) {
+      width: var(--space-4);
+    }
+  }
+
+  &__scrollbar-thumb {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: var(--space-2);
+    display: block;
+    width: var(--space-4);
+    height: 0;
+    background: var(--red);
+    cursor: grab;
+    will-change: transform;
+
+    &.is-dragging {
+      cursor: grabbing;
+    }
+
+    @include respond-down(md) {
+      inset-inline-end: 0;
+    }
+  }
+
+  // The progress bar lives inside the scroll container so it scrolls away with
+  // the lines. That only works if the container is the thing that scrolls —
+  // Horizon makes the item list its own scroller, which would pin the bar above
+  // it. Hand the overflow back to the content.
+  &__inner &__items {
+    overflow: visible;
+  }
+
+  // A footer of the drawer, not of the scrolling content — it keeps its height
+  // no matter how long the cart gets.
+  &__inner &__summary {
+    flex-shrink: 0;
+    border-block-start: var(--bw-2) solid var(--ink);
+    background-color: var(--bone);
+    mask-image: none;
+
+    .cart__ctas {
+      gap: var(--space-16);
+    }
+
+    .cart__checkout-button {
+      height: var(--space-56);
+    }
+  }
+
+  // --- Line items ------------------------------------------------------------
+
+  &__items {
+    // No --space-* token matches these Figma values.
+    --cart-line-media-width: 7.625rem; // 122px
+    --cart-line-media-height: 8.5rem; // 136px
+    --cart-line-quantity-width: 8.875rem; // 142px
+    --cart-line-plan-width: 15rem; // 240px
+    --cart-line-control-height: var(--space-38); // 38px
+
+    padding-block-start: var(--theme-drawer-padding);
+
+    .cart-items__table-row {
+      position: relative;
+      grid-template-areas: none;
+      grid-template-columns: var(--cart-line-media-width) minmax(0, 1fr) auto;
+      align-items: start;
+      column-gap: var(--space-20);
+      row-gap: var(--space-12);
+    }
+
+    .cart-items__details,
+    .cart-items__quantity {
+      display: contents;
+    }
+
+    .cart-items__media {
+      grid-area: 1 / 1 / -1 / 2;
+    }
+
+    .cart-items__media-container {
+      height: var(--cart-line-media-height);
+      aspect-ratio: auto;
+      border: var(--bw-2) solid var(--ink);
+      background-color: var(--cream);
+    }
+
+    .cart-items__product-info {
+      grid-area: 1 / 2 / 2 / 3;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      padding-block-start: var(--space-8);
+    }
+
+    .cart-items__title {
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: var(--fs-s3);
+      font-weight: var(--fw-bold);
+      line-height: var(--lh-s3);
+      text-transform: uppercase;
+    }
+
+    // Outranks the base `.cart-items__details *` font-size, which the `t-t3`
+    // utility only ties on specificity.
+    .cart-items__subtitle {
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: var(--fs-t3);
+      line-height: var(--lh-t3);
+      letter-spacing: var(--ls-t3);
+    }
+
+    // Bottom of the title block, so it sits on the subtitle's line rather than
+    // the product title's — the trash icon holds the title line instead.
+    .cart-items__price {
+      grid-area: 1 / 3 / 2 / 4;
+      justify-self: end;
+      align-self: end;
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      width: auto;
+      min-width: 0;
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: var(--fs-n1);
+      line-height: var(--lh-n1);
+    }
+
+    .cart-items__price-compare {
+      color: var(--ink);
+      text-decoration-color: var(--red);
+      text-decoration-thickness: var(--bw-2);
+    }
+
+    // Variant on the left, prepaid tag on the right.
+    .cart-items__variants-wrapper {
+      grid-area: 2 / 2 / 3 / -1;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-12);
+
+      // No variant, no properties, no tag — collapse the row rather than
+      // leaving its gap behind. `:empty` never matches: the markup carries
+      // whitespace.
+      &:not(:has(*)) {
+        display: none;
+      }
+    }
+
+    .cart-items__variants,
+    .cart-items__properties {
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: var(--fs-n1);
+      line-height: var(--lh-n1);
+      text-transform: uppercase;
+    }
+
+    // The line total carries its own strikethrough in the drawer.
+    .cart-items__unit-price-wrapper {
+      display: none;
+    }
+
+    .cart-items__quantity-controls {
+      grid-area: 3 / 2 / 4 / -1;
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      width: 100%;
+    }
+
+    .cart-items__error {
+      grid-area: 4 / 2 / 5 / -1;
+    }
+
+    // Held on the title's line, outside the grid so it never widens a column.
+    .cart-items__remove {
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-end: 0;
+      color: var(--ink);
+    }
+
+    .volume-pricing-info {
+      margin-inline-start: 0;
+    }
+
+    .quantity-selector-wrapper {
+      flex: 0 0 var(--cart-line-quantity-width);
+
+      // Outranks the base `.cart-items .quantity-selector` sizing at >= 750px.
+      .quantity-selector {
+        width: 100%;
+        height: var(--cart-line-control-height);
+        border: var(--bw-2) solid var(--taupe);
+        background-color: var(--bone);
+        color: var(--ink);
+      }
+    }
+
+    .cart-line-plan,
+    .cart-line-plan__static {
+      flex: 0 0 var(--cart-line-plan-width);
+      margin-inline-start: auto;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Progress bar
+// -----------------------------------------------------------------------------
+
+.cart-progress {
+  $self: &;
+
+  // A flex item of the scrolling content — never let it compress.
+  flex-shrink: 0;
+  padding: var(--space-16) var(--space-32);
+  border-block-end: var(--bw-2) solid var(--taupe);
+  background-color: var(--bone);
+  color: var(--ink);
+
+  @include respond-down(md) {
+    padding-inline: var(--space-16);
+  }
+
+  &__track {
+    height: var(--space-4);
+    background-color: var(--taupe);
+  }
+
+  &__fill {
+    display: block;
+    width: clamp(0%, var(--cart-progress, 0%), 100%);
+    height: 100%;
+    background-color: var(--red);
+    transition: width var(--animation-speed, 200ms)
+      var(--animation-easing, ease);
+
+    @media screen and (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  // --- Free shipping ---------------------------------------------------------
+
+  &--shipping {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  &__message {
+    color: var(--ink);
+    text-align: center;
+  }
+
+  // --- Bag tiers -------------------------------------------------------------
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(var(--cart-progress-tiers, 4), 1fr);
+    align-items: center;
+    justify-items: center;
+    gap: var(--space-8) 0;
+
+    &--markers {
+      position: relative;
+      padding-block: var(--space-8);
+
+      // The track lies behind the markers, centred on their row.
+      #{$self}__track {
+        position: absolute;
+        inset-inline: 0;
+        top: 50%;
+        translate: 0 -50%;
+      }
+    }
+  }
+
+  &__tier-marker {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-24);
+    height: var(--space-24);
+    border: var(--bw-2) solid var(--taupe);
+    border-radius: 50%;
+    background-color: var(--bone);
+    color: var(--ink);
+
+    &--reached {
+      border-color: var(--red);
+      background-color: var(--red);
+    }
+
+    .svg-wrapper {
+      display: flex;
+      width: var(--space-16);
+      height: var(--space-16);
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__tier-label,
+  &__tier-reward {
+    white-space: nowrap;
+
+    @include respond-down(md) {
+      font-size: var(--fs-n3);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Empty state
+// -----------------------------------------------------------------------------
+
+.cart-drawer-empty {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--bone);
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-32);
+    max-width: 29.375rem; // 470px
+    padding-inline: var(--space-32);
+    text-align: center;
+
+    @include respond-down(md) {
+      gap: var(--space-24);
+      padding-inline: var(--space-24);
+    }
+  }
+
+  &__eyebrow {
+    color: var(--ink);
+  }
+
+  &__heading {
+    margin-block-start: calc(var(--space-12) * -1);
+    color: var(--ink);
+    text-wrap: balance;
+
+    @include respond-down(md) {
+      font-size: var(--fs-h7);
+    }
+  }
+
+  &__button {
+    min-width: 14.5rem; // 232px
+    height: var(--space-56);
+    border: var(--bw-2) solid var(--ink);
+    border-radius: 0;
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+  }
+
+  &__image {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    width: min(40%, 14.4375rem); // 231px
+    pointer-events: none;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Heist Society upgrade banner
+//
+// Sits under the cart lines. The badge notches into the top-right corner, so it
+// only carries its bottom and left borders — the card's own border draws the
+// other two.
+// -----------------------------------------------------------------------------
+
+.cart-upgrade {
+  --cart-upgrade-image-width: 8rem; // 128px
+  --cart-upgrade-image-height: 9.5rem; // 152px
+  --cart-upgrade-cta-width: 18.5rem; // 296px
+
+  position: relative;
+  display: flex;
+  gap: var(--space-30);
+  margin-block-end: var(--space-38);
+  padding: var(--space-38) var(--space-30);
+  border: var(--bw-2) solid var(--ink);
+  background-color: var(--bone);
+  color: var(--ink);
+
+  &__badge {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-6) var(--space-16);
+    border-block-end: var(--bw-2) solid var(--ink);
+    border-inline-start: var(--bw-2) solid var(--ink);
+    background-color: var(--cream);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &__media {
+    flex: 0 0 var(--cart-upgrade-image-width);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-14);
+  }
+
+  &__media-item {
+    height: var(--cart-upgrade-image-height);
+    overflow: hidden;
+    border: var(--bw-2) solid var(--ink);
+
+    img,
+    video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-block-start: var(--space-8);
+  }
+
+  &__title {
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  &__subtitle {
+    margin-block-start: var(--space-8);
+    color: var(--ink);
+  }
+
+  &__perks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin-block-start: var(--space-24);
+    padding: 0;
+  }
+
+  &__perk {
+    display: flex;
+    align-items: start;
+    gap: var(--space-8);
+    text-transform: uppercase;
+  }
+
+  &__perk-icon {
+    flex-shrink: 0;
+    display: flex;
+    width: var(--space-16);
+    height: var(--space-16);
+    // Nudge the 16px disc onto the cap height of the first line of text.
+    margin-block-start: var(--space-1);
+  }
+
+  &__cta {
+    width: min(100%, var(--cart-upgrade-cta-width));
+    height: var(--space-40);
+    margin-block-start: var(--space-24);
+    padding-inline: var(--space-12);
+    border: none;
+    border-radius: 0;
+    background-color: var(--button-dark-bg);
+    color: var(--button-dark-fg);
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: progress;
+    }
+  }
+
+  @include respond-down(md) {
+    flex-direction: column;
+    padding: var(--space-24) var(--space-16);
+
+    &__media {
+      flex-direction: row;
+    }
+
+    &__media-item {
+      flex: 1;
+    }
+
+    &__cta {
+      width: 100%;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Line plan switcher (drawer and cart page)
+// -----------------------------------------------------------------------------
+
+.cart-line-plan {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+
+  &__static {
+    align-self: center;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+
+  // Right-hand end of the variant row, opposite the variant name.
+  &__badge {
+    color: var(--ink);
+    text-align: end;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &__select {
+    appearance: none;
+    width: 100%;
+    min-width: 0;
+    height: var(--cart-line-control-height, #{$plan-control-height});
+    padding-inline: var(--space-12) var(--space-34);
+    border: var(--bw-2) solid var(--taupe);
+    border-radius: 0;
+    background-color: var(--bone);
+    color: var(--ink);
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: progress;
+    }
+  }
+
+  // Replaces the dropdown entirely while the line is a one-time purchase.
+  &__cta {
+    width: 100%;
+    height: var(--cart-line-control-height, #{$plan-control-height});
+    padding-inline: var(--space-12);
+    border: none;
+    border-radius: 0;
+    background-color: var(--button-dark-bg);
+    color: var(--button-dark-fg);
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: progress;
+    }
+  }
+
+  &__chevron {
+    position: absolute;
+    inset-inline-end: var(--space-12);
+    display: flex;
+    width: var(--space-16);
+    height: var(--space-16);
+    color: var(--ink);
+    pointer-events: none;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Drawer summary rows
+// -----------------------------------------------------------------------------
+
+.cart-summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  width: 100%;
+  color: var(--ink);
+
+  &__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-8);
+  }
+
+  // Leader dots between the label and its value.
+  &__leader {
+    flex: 1;
+    height: 1em;
+    background-image: radial-gradient(
+      circle,
+      currentColor var(--space-1),
+      transparent var(--space-1)
+    );
+    background-position: 0 calc(1em - var(--space-4));
+    background-size: var(--space-6) var(--space-2);
+    background-repeat: repeat-x;
+  }
+
+  &__value {
+    white-space: nowrap;
+  }
+
+  &__tax-note {
+    color: var(--ink);
+    text-align: center;
+    text-transform: uppercase;
+
+    small {
+      font-size: inherit;
+    }
+  }
+}

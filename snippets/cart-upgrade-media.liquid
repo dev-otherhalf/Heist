@@ -1,0 +1,43 @@
+{% doc %}
+  Cart Drawer — upgrade banner media slot
+
+  Renders one tile of the upgrade banner's media column: an image or a video,
+  depending on the slot's media type setting. Videos carry `js-autoplay-video`,
+  so the site-wide observer in `src/scripts/viewport-video-autoplay.js` defers
+  the download and plays them only while they're on screen — it also picks up
+  nodes added later, which is what happens when the drawer morphs.
+
+  Renders nothing when the chosen media is empty.
+
+  @param {string} media_type - `'image'` or `'video'`.
+  @param {object} [image] - The image, used when `media_type` is `'image'`.
+  @param {object} [video] - The video, used when `media_type` is `'video'`.
+
+  @example
+  {% render 'cart-upgrade-media',
+    media_type: settings.cart_upgrade_media_1_type,
+    image: settings.cart_upgrade_image_1,
+    video: settings.cart_upgrade_video_1
+  %}
+{% enddoc %}
+
+{%- if media_type == 'video' and video != blank -%}
+  <div class="cart-upgrade__media-item">
+    {{-
+      video
+      | video_tag:
+        image_size: '256x',
+        autoplay: false,
+        preload: 'none',
+        loop: true,
+        muted: true,
+        controls: false,
+        playsinline: true,
+        class: 'cart-upgrade__media-video js-autoplay-video'
+    -}}
+  </div>
+{%- elsif media_type != 'video' and image != blank -%}
+  <div class="cart-upgrade__media-item">
+    {{ image | image_url: width: 256 | image_tag: loading: 'lazy', alt: '' }}
+  </div>
+{%- endif -%}

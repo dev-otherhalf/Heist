@@ -1,0 +1,19 @@
+{% doc %}
+  Cart Drawer — promo bar
+
+  The red announcement strip pinned above the cart drawer header. Copy and link
+  come from Theme settings → Cart → "Cart drawer — promo bar".
+{% enddoc %}
+
+{%- if settings.cart_promo_bar_enabled and settings.cart_promo_bar_text != blank -%}
+  {%- if settings.cart_promo_bar_link != blank -%}
+    <a
+      class="cart-promo-bar t-n2-med"
+      href="{{ settings.cart_promo_bar_link }}"
+    >
+      {{ settings.cart_promo_bar_text }}
+    </a>
+  {%- else -%}
+    <p class="cart-promo-bar t-n2-med">{{ settings.cart_promo_bar_text }}</p>
+  {%- endif -%}
+{%- endif -%}

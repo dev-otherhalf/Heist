@@ -1,0 +1,44 @@
+{% doc %}
+  Cart Drawer — empty state
+
+  The editorial empty cart: eyebrow, oversized headline, a single primary action,
+  and a decorative image anchored to the bottom-right corner. All copy comes from
+  Theme settings → Cart → "Cart drawer — empty state"; the link reuses the shared
+  `empty_cart_button_link` setting.
+
+  `data-cart-drawer-empty` is what `component-cart-items.js` looks for to detect
+  the empty → filled transition (view transition + section stylesheet injection).
+{% enddoc %}
+
+<div
+  class="cart-drawer-empty"
+  data-cart-drawer-empty
+>
+  <div class="cart-drawer-empty__content">
+    <p class="cart-drawer-empty__eyebrow t-n1">
+      {{ settings.cart_empty_eyebrow | default: 'Your cart is empty' }}
+    </p>
+
+    <p class="cart-drawer-empty__heading t-h5">
+      {{ settings.cart_empty_heading | default: 'Looks like the bags didn’t make it out.' }}
+    </p>
+
+    <a
+      class="cart-drawer-empty__button btn"
+      href="{{ settings.empty_cart_button_link | default: routes.all_products_collection_url }}"
+    >
+      <span class="button-text">
+        {{ settings.cart_empty_button_label | default: 'Shop decaf' }}
+      </span>
+    </a>
+  </div>
+
+  {%- if settings.cart_empty_image -%}
+    <div
+      class="cart-drawer-empty__image"
+      aria-hidden="true"
+    >
+      {{ settings.cart_empty_image | image_url: width: 462 | image_tag: loading: 'lazy', alt: '' }}
+    </div>
+  {%- endif -%}
+</div>

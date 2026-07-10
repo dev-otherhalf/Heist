@@ -1,0 +1,193 @@
+{% doc %}
+  Cart Progress
+
+  Renders the incentive bar at the top of the cart drawer. Two mutually exclusive
+  modes, chosen in Theme settings → Cart → "Progress bar":
+
+  - `shipping` — a single track that fills toward the free shipping threshold.
+    When "Subscriptions always ship free" is on and any line carries a selling
+    plan, the track is full and shows the subscriber message instead.
+  - `bags` — a milestone track with one marker per bag tier. Up to four tiers,
+    each with its own quantity, bag label and save label; a tier whose quantity
+    is 0 is dropped, so a shorter track is just a matter of zeroing the tail.
+
+  Renders nothing when the mode is `none`, when the cart is empty, or when the
+  chosen mode has no data to draw (no threshold / no tiers).
+{% enddoc %}
+
+{% liquid
+  assign progress_type = settings.cart_progress_type | default: 'none'
+
+  assign has_subscription = false
+  for item in cart.items
+    if item.selling_plan_allocation != blank
+      assign has_subscription = true
+      break
+    endif
+  endfor
+%}
+
+{%- if progress_type != 'none' and cart.item_count > 0 -%}
+  {%- if progress_type == 'shipping' -%}
+    {% liquid
+      assign threshold = settings.cart_free_shipping_threshold | default: 0 | times: 100
+      assign subscriber_free = false
+      if settings.cart_subscription_free_shipping and has_subscription
+        assign subscriber_free = true
+      endif
+
+      if subscriber_free
+        assign percent = 100
+        assign message = settings.cart_shipping_subscriber_text
+      elsif threshold > 0 and cart.total_price >= threshold
+        assign percent = 100
+        assign message = settings.cart_shipping_unlocked_text
+      elsif threshold > 0
+        assign percent = cart.total_price | times: 100.0 | divided_by: threshold
+        assign remaining = threshold | minus: cart.total_price | money
+        assign message = settings.cart_shipping_away_text | replace: '[amount]', remaining
+      endif
+    %}
+
+    {%- if subscriber_free or threshold > 0 -%}
+      <div class="cart-progress cart-progress--shipping">
+        <p class="cart-progress__message t-n1">{{ message }}</p>
+
+        <div
+          class="cart-progress__track"
+          role="progressbar"
+          aria-label="{{ message | strip_html | escape }}"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="{{ percent | round }}"
+          style="--cart-progress: {{ percent | round: 2 }}%;"
+        >
+          <span class="cart-progress__fill"></span>
+        </div>
+      </div>
+    {%- endif -%}
+
+  {%- elsif progress_type == 'bags' -%}
+    {% liquid
+      # Four fixed tiers, each `quantity | label | reward`. Liquid can't index
+      # settings by name, so they're flattened into one delimited string and
+      # split back out. A tier with no quantity is dropped.
+      assign tier_quantity_1 = settings.cart_bag_tier_1_quantity | default: 0
+      assign tier_quantity_2 = settings.cart_bag_tier_2_quantity | default: 0
+      assign tier_quantity_3 = settings.cart_bag_tier_3_quantity | default: 0
+      assign tier_quantity_4 = settings.cart_bag_tier_4_quantity | default: 0
+
+      assign tier_source = ''
+      if tier_quantity_1 > 0
+        assign tier_source = tier_source | append: tier_quantity_1 | append: '|' | append: settings.cart_bag_tier_1_label | append: '|' | append: settings.cart_bag_tier_1_reward | append: '§'
+      endif
+      if tier_quantity_2 > 0
+        assign tier_source = tier_source | append: tier_quantity_2 | append: '|' | append: settings.cart_bag_tier_2_label | append: '|' | append: settings.cart_bag_tier_2_reward | append: '§'
+      endif
+      if tier_quantity_3 > 0
+        assign tier_source = tier_source | append: tier_quantity_3 | append: '|' | append: settings.cart_bag_tier_3_label | append: '|' | append: settings.cart_bag_tier_3_reward | append: '§'
+      endif
+      if tier_quantity_4 > 0
+        assign tier_source = tier_source | append: tier_quantity_4 | append: '|' | append: settings.cart_bag_tier_4_label | append: '|' | append: settings.cart_bag_tier_4_reward | append: '§'
+      endif
+
+      assign tier_lines = tier_source | split: '§'
+      assign count = cart.item_count
+
+      # Collect the thresholds up front so we can index them while interpolating.
+      assign tier_quantities = ''
+      for line in tier_lines
+        assign quantity = line | split: '|' | first | strip
+        assign tier_quantities = tier_quantities | append: quantity | append: ','
+      endfor
+      assign tier_quantities = tier_quantities | split: ','
+      assign tier_count = tier_quantities.size
+      assign last_index = tier_count | minus: 1
+
+      assign reached_index = -1
+      for quantity in tier_quantities
+        assign tier_quantity = quantity | plus: 0
+        if count >= tier_quantity
+          assign reached_index = forloop.index0
+        endif
+      endfor
+
+      # Markers sit at the centre of equal-width columns, so the fill has to stop
+      # on the reached marker rather than at a naive quantity-to-total ratio.
+      assign percent = 0
+      if tier_count > 0
+        assign column = 100.0 | divided_by: tier_count
+        assign half_column = column | divided_by: 2
+
+        if reached_index == last_index
+          assign percent = 100
+        else
+          if reached_index < 0
+            assign from_position = 0
+            assign from_quantity = 0
+          else
+            assign from_position = reached_index | times: column | plus: half_column
+            assign from_quantity = tier_quantities[reached_index] | plus: 0
+          endif
+
+          assign next_index = reached_index | plus: 1
+          assign to_position = next_index | times: column | plus: half_column
+          assign to_quantity = tier_quantities[next_index] | plus: 0
+
+          assign span_quantity = to_quantity | minus: from_quantity
+          if span_quantity <= 0
+            assign percent = from_position
+          else
+            assign progressed = count | minus: from_quantity | times: 1.0 | divided_by: span_quantity
+            assign percent = to_position | minus: from_position | times: progressed | plus: from_position
+          endif
+        endif
+      endif
+    %}
+
+    {%- if tier_count > 0 -%}
+      <div
+        class="cart-progress cart-progress--bags"
+        style="--cart-progress: {{ percent | round: 2 }}%; --cart-progress-tiers: {{ tier_count }};"
+      >
+        <div class="cart-progress__row">
+          {%- for line in tier_lines -%}
+            {%- assign parts = line | split: '|' -%}
+            <span class="cart-progress__tier-label t-n1-med">{{ parts[1] | default: parts[0] | strip }}</span>
+          {%- endfor -%}
+        </div>
+
+        <div class="cart-progress__row cart-progress__row--markers">
+          <div
+            class="cart-progress__track"
+            role="progressbar"
+            aria-label="Bag savings progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="{{ percent | round }}"
+          >
+            <span class="cart-progress__fill"></span>
+          </div>
+
+          {%- for line in tier_lines -%}
+            <span
+              class="cart-progress__tier-marker{% if forloop.index0 <= reached_index %} cart-progress__tier-marker--reached{% endif %}"
+              aria-hidden="true"
+            >
+              {%- if forloop.index0 <= reached_index -%}
+                <span class="svg-wrapper">{{- 'icon-checkmark.svg' | inline_asset_content -}}</span>
+              {%- endif -%}
+            </span>
+          {%- endfor -%}
+        </div>
+
+        <div class="cart-progress__row">
+          {%- for line in tier_lines -%}
+            {%- assign parts = line | split: '|' -%}
+            <span class="cart-progress__tier-reward t-n1-med">{{ parts[2] | strip }}</span>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
