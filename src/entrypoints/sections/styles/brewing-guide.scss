@@ -21,7 +21,7 @@ body:has(.brewing-guide__modal.is-open) {
       margin-block-end: 0;
       padding-inline: var(--space-56);
 
-      @include respond-down(md) {
+      @include respond-down(xxl) {
         padding-inline: var(--space-20);
         font-size: var(--fs-h7);
         line-height: var(--lh-h7);

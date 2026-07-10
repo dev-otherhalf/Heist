@@ -283,29 +283,33 @@
         "product_bjHE3X": {
           "type": "product",
           "settings": {
-            "product": "tin-scoop",
-            "custom_name": "",
-            "custom_description": "(value $20)"
+            "custom_name": "Tin + Scoop",
+            "custom_description": "(value $20)",
+            "custom_image": "shopify://shop_images/tin_scoop.jpg"
           }
         },
         "product_zWXPXB": {
           "type": "product",
           "settings": {
-            "product": "smuggle-bear",
-            "custom_name": "",
-            "custom_description": "(value $50)"
+            "custom_name": "smuggle bear",
+            "custom_description": "(value $50)",
+            "custom_image": "shopify://shop_images/SmuggleBear.jpg"
           }
         },
         "product_43rK8n": {
           "type": "product",
           "settings": {
-            "product": "member-card",
-            "custom_name": "",
-            "custom_description": "(founder signed)"
+            "custom_name": "member card",
+            "custom_description": "(founder signed)",
+            "custom_image": "shopify://shop_images/MemberCard.jpg"
           }
         }
       },
-      "block_order": ["product_bjHE3X", "product_zWXPXB", "product_43rK8n"],
+      "block_order": [
+        "product_bjHE3X",
+        "product_zWXPXB",
+        "product_43rK8n"
+      ],
       "name": "Join the Heist Society",
       "settings": {
         "heading": "Join the Heist Society™",

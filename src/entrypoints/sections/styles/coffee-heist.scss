@@ -363,12 +363,12 @@ $coffee-heist-score-reserve: var(--space-50);
   // --- Evidence table ----------------------------------------------------
 
   &__evidence-scroll {
-    overflow-x: auto;
     padding: var(--space-20) 0 var(--space-27);
-    margin: -0.375rem 0-0.27rem var(--space-24) -0.1rem;
+    margin: -0.375rem -0.27rem -0.5rem -0.1rem;
 
     @include respond-to(lg) {
       margin: -1.25rem 0 var(--space-18);
+      overflow-x: auto;
     }
   }
 

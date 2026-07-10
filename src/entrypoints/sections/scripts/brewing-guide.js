@@ -249,7 +249,7 @@ function initSwiper(el) {
     grabCursor: true,
     mousewheel: { forceToAxis: true },
     breakpoints: {
-      750: {
+      1439: {
         slidesOffsetBefore: 56,
         slidesOffsetAfter: 56,
       },

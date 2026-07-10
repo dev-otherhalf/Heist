@@ -38,7 +38,7 @@
 .late-night-gallery {
   position: relative;
   padding-inline: var(--space-20);
-  @include respond-to(lg) {
+  @include respond-to(xxl) {
     padding-inline: var(--space-56);
   }
   // padding-block: var(--late-night-gallery-padding-top-mobile) var(--late-night-gallery-padding-bottom-mobile);
@@ -97,7 +97,6 @@
 
     @include respond-to(md) {
       align-items: center;
-      min-height: 30rem;
       overflow-x: clip;
       margin-top: var(--space-80);
       margin-bottom: var(--space-89);

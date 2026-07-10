@@ -187,6 +187,9 @@ body:has(.footer__audio) main {
     margin-block-start: var(--space-32);
     img {
       height: var(--space-32);
+      @include respond-to(md) {
+        height: var(--space-37);
+      }
       object-fit: contain;
       width: 100%;
     }
