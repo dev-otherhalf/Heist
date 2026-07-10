@@ -305,7 +305,11 @@
           }
         }
       },
-      "block_order": ["product_bjHE3X", "product_zWXPXB", "product_43rK8n"],
+      "block_order": [
+        "product_bjHE3X",
+        "product_zWXPXB",
+        "product_43rK8n"
+      ],
       "name": "Join the Heist Society",
       "settings": {
         "heading": "Join the Heist Society™",
@@ -315,7 +319,7 @@
         "kit_value": "(Value $70)",
         "button_label": "Join",
         "button_label_two": "Now",
-        "button_link": "",
+        "button_link": "#",
         "disclaimer": "30-day escape plan. Love it or your money back.",
         "left_media_type": "video",
         "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",

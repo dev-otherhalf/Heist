@@ -1,0 +1,106 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer_gGTepW": {
+      "type": "footer",
+      "blocks": {
+        "social_link_KfENmw": {
+          "type": "social-link",
+          "settings": {
+            "social_icon": "shopify://shop_images/48px-social-instagram.svg",
+            "social_link": "/"
+          }
+        },
+        "social_link_gKVPYc": {
+          "type": "social-link",
+          "settings": {
+            "social_icon": "shopify://shop_images/48px-social-tiktok.svg",
+            "social_link": "/"
+          }
+        },
+        "social_link_EyLDnP": {
+          "type": "social-link",
+          "settings": {
+            "social_icon": "shopify://shop_images/24px-youtube.svg",
+            "social_link": "/"
+          }
+        },
+        "audio_MmdL3c": {
+          "type": "audio",
+          "settings": {
+            "audio_file_url": "sample-6s.mp3",
+            "audio_poster_image": "shopify://shop_images/Rectangle_144433706.jpg",
+            "audio_title": "",
+            "audio_detail_text": "<p>Ready to steal the night again? Cue Heist music.</p>",
+            "apple_music_link": "/",
+            "spotify_music_link": "/"
+          }
+        },
+        "audio_FXBcyb": {
+          "type": "audio",
+          "settings": {
+            "audio_file_url": "sample-10s.mp3",
+            "audio_poster_image": "shopify://shop_images/DECAF.jpg",
+            "audio_title": "",
+            "audio_detail_text": "<p>Cue Heist music. 2</p>",
+            "apple_music_link": "/",
+            "spotify_music_link": "/"
+          }
+        },
+        "audio_DVU3R4": {
+          "type": "audio",
+          "settings": {
+            "audio_file_url": "sample-12s.mp3",
+            "audio_poster_image": "shopify://shop_images/Rectangle_144433639.jpg",
+            "audio_title": "",
+            "audio_detail_text": "<p>Cue Heist music. 3</p>",
+            "apple_music_link": "/",
+            "spotify_music_link": "/"
+          }
+        }
+      },
+      "block_order": [
+        "social_link_KfENmw",
+        "social_link_gKVPYc",
+        "social_link_EyLDnP",
+        "audio_MmdL3c",
+        "audio_FXBcyb",
+        "audio_DVU3R4"
+      ],
+      "name": "t:names.footer",
+      "settings": {
+        "background_color": "#ff3b27",
+        "information_color": "#161414",
+        "desktop_top_padding": 96,
+        "desktop_bottom_padding": 55,
+        "mobile_top_padding": 40,
+        "mobile_bottom_padding": 40,
+        "footer_logo": "shopify://shop_images/heist-logo-footer.svg",
+        "footer_menu": "footer",
+        "newsletter_bg_color": "#ddd6c7",
+        "newsletter_text_color": "#161414",
+        "heading_text": "Join the Heist.",
+        "barcode_image": "shopify://shop_images/barcode.png",
+        "barcode_image_mobile": "shopify://shop_images/Frame_67.svg",
+        "audio_bg_color": "#ddd6c7",
+        "audio_text_color": "#161414",
+        "teddy_icon_image": "shopify://shop_images/058eb4fb2657c034a1d51530efb36eb562d7a8cb.png",
+        "strip_bg_color": "#161414",
+        "strip_text_color": "#ddd6c7",
+        "copyright_text": "<p>Copyright © MCMLMMXXVI by Heist Coffee Co.</p>",
+        "policy_menu": "policy-menu"
+      }
+    }
+  },
+  "order": ["footer_gGTepW"]
+}
