@@ -100,7 +100,7 @@
     assign variant_price = item.variant.price
     assign discount_label = ''
     if variant_price > 0 and target_plan_price > 0 and target_plan_price < variant_price
-      assign discount_label = variant_price | minus: target_plan_price | times: 100 | divided_by: variant_price | append: '%'
+      assign discount_label = variant_price | minus: target_plan_price | times: 100.0 | divided_by: variant_price | round | append: '%'
     endif
     assign cta_label = settings.cart_subscribe_cta_label | default: 'Subscribe & save [discount]'
     assign cta_label = cta_label | replace: '[discount]', discount_label | strip

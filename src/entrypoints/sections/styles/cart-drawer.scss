@@ -46,9 +46,7 @@ $plan-control-height: 2.375rem; // 38px
     inset: 0;
     z-index: calc(var(--layer-sticky) + var(--drawer-stack-order, 0) - 1);
     display: none;
-    background: rgb(
-      var(--backdrop-color-rgb) / var(--cart-drawer-overlay-opacity)
-    );
+    background: rgb(0 0 0 / 0.8);
     opacity: 0;
     cursor: pointer;
     transition: opacity var(--animation-speed) var(--animation-timing-fade-out);
