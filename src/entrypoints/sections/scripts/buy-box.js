@@ -504,6 +504,19 @@ class BuyBox extends HTMLElement {
       const disp = this.#displayValue(selectedTotals.total, bags);
       priceEl.textContent = ` — ${this.formatMoney(disp)}${this.unit}`;
     }
+
+    // Compare (struck-through) price on the CTA — shown only when discounted.
+    const compareEl = this.querySelector(
+      '[data-buy-box-submit][data-show-price="true"] [data-submit-compare]',
+    );
+    if (compareEl) {
+      const pct = this.#discountPct(selectedTotals.total, selectedTotals.compare);
+      compareEl.hidden = pct <= 0;
+      if (pct > 0) {
+        const compareDisp = this.#displayValue(selectedTotals.compare, bags);
+        compareEl.textContent = this.formatMoney(compareDisp);
+      }
+    }
     this.#setDisabled(!hasBags);
   }
 

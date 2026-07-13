@@ -213,6 +213,7 @@
 <button type="button" class="buy-box__submit btn btn--block" data-buy-box-submit data-show-price="true">
   <span class="buy-box__submit-label">{{ s.cta_label | default: 'Add to cart' }}</span>
   <span class="buy-box__submit-price" data-submit-price></span>
+  <s class="buy-box__submit-compare" data-submit-compare hidden></s>
 </button>
 
 {% render 'buy-box-guarantee', block: block %}
