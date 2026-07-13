@@ -434,6 +434,10 @@
   }
 }
 
+body:has(.heist-mobile-menu[open]) {
+  overflow: hidden;
+}
+
 .heist-mobile-menu {
   @include respond-down(lg) {
     width: auto;

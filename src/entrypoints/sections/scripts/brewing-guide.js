@@ -23,6 +23,20 @@ import { initCustomScrollbar } from "../../../scripts/custom-scrollbar";
 // showModal auto-focuses inside the drawer, which makes the browser scroll the
 // Lenis wrapper to reveal that deep DOM node, jumping the page to the top.
 
+// Background scroll lock. lenis.stop() applies `.lenis-stopped { overflow:
+// hidden }`, which resets the scroll container to the top (the visible jump).
+// lenis' `isLocked` instead freezes it in place — it preventDefaults wheel/touch
+// where it is, with no overflow change and no jump, and only adds a harmless
+// `lenis-locked` class. Nested scroll (the drawer's own scroll area) still works
+// because lenis runs with `allowNestedScroll: true`.
+function lockPageScroll() {
+  if (window.lenis) window.lenis.isLocked = true;
+}
+
+function unlockPageScroll() {
+  if (window.lenis) window.lenis.isLocked = false;
+}
+
 function openDrawer(modal) {
   if (!(modal instanceof HTMLElement) || modal.classList.contains("is-open")) {
     return;
@@ -35,6 +49,8 @@ function openDrawer(modal) {
   modal.hidden = false;
   void modal.offsetWidth; // force reflow so the open transition runs
   modal.classList.add("is-open");
+
+  lockPageScroll();
 }
 
 function closeDrawer(modal) {
@@ -42,6 +58,9 @@ function closeDrawer(modal) {
     return;
   }
   modal.classList.remove("is-open");
+
+  // Release the scroll clamp and resume scrolling from the same position.
+  unlockPageScroll();
 
   const panel = modal.querySelector(".brewing-guide__drawer");
   const duration = panel ? getComputedStyle(panel).transitionDuration : "0s";
