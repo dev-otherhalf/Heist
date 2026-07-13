@@ -6,6 +6,13 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
+    {%- if settings.cart_type == 'drawer' and template.name == 'cart' and request.design_mode == false -%}
+      <script>
+        try { sessionStorage.setItem('heist:open-cart-drawer', '1'); } catch (e) {}
+        window.location.replace({{ routes.root_url | json }});
+      </script>
+    {%- endif -%}
+
     {%- if settings.favicon != blank -%}
       <link
         rel="icon"
