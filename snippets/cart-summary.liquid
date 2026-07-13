@@ -226,7 +226,7 @@
 
   {%- liquid
     if settings.currency_code_enabled_cart_total
-      assign total_price = cart.total_price | money_with_currency
+      assign total_price = cart.total_price | money_without_trailing_zeros
     else
       assign total_price = cart.total_price | money
     endif
@@ -370,7 +370,7 @@
   >
     <span class="button-text">
       {%- if is_drawer -%}
-        {{ settings.cart_checkout_label | default: 'Continue to checkout' }} – {{ total_price }}
+        {{ settings.cart_checkout_label | default: 'Continue to checkout' }} - {{ total_price }}
       {%- else -%}
         {{ 'content.checkout' | t }}
       {%- endif -%}

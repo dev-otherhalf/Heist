@@ -73,11 +73,16 @@ $plan-control-height: 2.375rem; // 38px
   // --- Chrome ----------------------------------------------------------------
 
   &__inner {
-    background-color: var(--bone);
+    background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13_089f24ef-991c-4d70-ba82-28b248b69f52.jpg?v=1783938817");
 
     .theme-drawer__header {
       border-block-end: var(--bw-2) solid var(--taupe);
-      background-color: var(--bone);
+      .theme-drawer__close-button {
+        background: none;
+        border: none;
+        outline: none;
+        box-shadow: none;
+      }
     }
 
     .theme-drawer__title {
@@ -106,7 +111,7 @@ $plan-control-height: 2.375rem; // 38px
     // area already bounds it, and a percentage height would ignore the summary.
     height: auto;
     min-height: 0;
-    background-color: var(--bone);
+    background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13_089f24ef-991c-4d70-ba82-28b248b69f52.jpg?v=1783938817");
 
     // Native bar hidden; <cart-drawer-scrollbar> draws the visible one.
     scrollbar-width: none;
@@ -210,6 +215,7 @@ $plan-control-height: 2.375rem; // 38px
       align-items: start;
       column-gap: var(--space-20);
       row-gap: var(--space-12);
+      border: none;
     }
 
     .cart-items__details,
@@ -478,7 +484,6 @@ $plan-control-height: 2.375rem; // 38px
   width: 100%;
   min-height: 0;
   overflow: hidden;
-  background-color: var(--bone);
 
   &__content {
     position: relative;

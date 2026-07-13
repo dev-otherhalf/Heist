@@ -253,7 +253,7 @@
                           {%- for option in item.options_with_values -%}
                             <div class="cart-items__variant">
                               <dt class="visually-hidden">{{ option.name }}:</dt>
-                              <dd>
+                              <dd class="t-n1">
                                 {{- option.value -}}
                                 {%- if forloop.last != true %},&nbsp;{% endif -%}
                               </dd>
@@ -412,7 +412,7 @@
                   role="cell"
                   headers="productTotal"
                 >
-                  <text-component value="{{ price | strip_html }}">{{ price }}</text-component>
+                  <text-component value="{{ price | strip_html }}" class="t-n1">{{ price }}</text-component>
 
                   {%- if context == 'drawer' -%}
                     {%- liquid
@@ -442,7 +442,7 @@
                     -%}
                     {%- if compare_at_line_price > item.final_line_price -%}
                       <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                      <s class="cart-items__price-compare compare-at-price">{{ compare_at_line_price | money }}</s>
+                      <s class="cart-items__price-compare compare-at-price t-n1">{{ compare_at_line_price | money }}</s>
                     {%- endif -%}
                   {%- endif -%}
 
