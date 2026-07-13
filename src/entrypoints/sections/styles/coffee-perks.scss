@@ -25,9 +25,25 @@
       var(--coffee-perks-padding-bottom-desktop);
   }
 
+  &__background {
+    inset: 0;
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  &__background-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
   > .page-width {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
 
   &__inner {
@@ -36,7 +52,7 @@
     gap: var(--space-24);
 
     @include respond-to(lg) {
-      gap: var(--space-30);
+      gap: var(--space-18);
     }
   }
 
@@ -61,10 +77,12 @@
     order: 3;
     display: flex;
     justify-content: center;
+    margin-top: var(--space-5);
 
     @include respond-to(lg) {
       order: 2;
       justify-content: flex-end;
+      margin-top: 0;
     }
   }
 
@@ -74,20 +92,17 @@
     border: 0;
     color: var(--ink);
     cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: var(--fs-link);
-    line-height: var(--lh-link);
-    font-weight: var(--fw-medium);
-    letter-spacing: 0;
-    padding: var(--space-4) 0;
+    padding: 0;
     text-align: center;
-    text-decoration: underline;
     text-transform: uppercase;
-    text-underline-offset: 0.15em;
     transition: opacity var(--dur) var(--ease);
+    text-decoration-thickness: 7.5%;
+    text-underline-offset: 14%;
 
-    &:hover {
-      opacity: 0.7;
+    @include respond-to(md) {
+      &:hover {
+        opacity: 0.7;
+      }
     }
 
     &:focus-visible {
@@ -99,9 +114,11 @@
   // --- Views (only one visible at a time) ----------------------------------
   &__views {
     order: 2;
+    margin-top: var(--space-8);
 
     @include respond-to(lg) {
       order: 3;
+      margin-top: var(--space-5);
     }
   }
 
@@ -122,7 +139,7 @@
 
   // --- Card ----------------------------------------------------------------
   &__card {
-    background-color: var(--coffee-perks-card-bg, var(--bone));
+    background-color: var(--coffee-perks-card-bg);
     border: var(--bw-2) solid var(--ink);
     box-sizing: border-box;
     display: flex;
@@ -130,14 +147,11 @@
     flex-shrink: 0;
     gap: var(--space-16);
     height: auto;
-    min-height: 25rem;
-    padding: var(--space-18);
-    width: 16.5rem; // 264px — mobile
+    padding: var(--space-19) var(--space-18) var(--space-27);
+    width: 16.5rem;
 
     @include respond-to(lg) {
-      min-height: 28.0625rem; // 449px
-      padding: var(--space-22);
-      width: 20rem; // 320px — desktop
+      padding: var(--space-21) var(--space-22) var(--space-35);
     }
   }
 
@@ -168,25 +182,25 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
+    padding-inline: var(--space-8);
+    @include respond-down(md) {
+      padding-inline: 0;
+    }
   }
 
   &__card-title {
-    font-family: var(--font-display);
-    font-weight: var(--fw-regular);
-    font-size: var(--fs-t1); // 32px — mobile
-    line-height: var(--lh-t1);
-    letter-spacing: var(--ls-t1);
-    margin: 0;
-
-    @include respond-to(lg) {
-      font-size: var(--fs-h7); // 40px — desktop
-      line-height: var(--lh-h7);
-      letter-spacing: var(--ls-h7);
+    color: var(--ink);
+    &.t-h7 {
+      @include respond-down(md) {
+        font-size: var(--fs-t1);
+        line-height: var(--lh-t1);
+        letter-spacing: var(--ls-t1);
+      }
     }
   }
 
   &__card-text {
-    margin: 0;
+    color: var(--ink);
   }
 
   // --- Empty state ---------------------------------------------------------

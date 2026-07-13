@@ -1,8 +1,3 @@
-// Coffee perks — a metaobject-driven card slider with a toggle that swaps the
-// whole section (heading, cards and link text) to the next view.
-// Each view owns its own Swiper (freeMode, slidesPerView: auto) so cards keep a
-// fixed width and slide when they overflow the viewport (mobile) while sitting
-// centred when they all fit (desktop).
 import Swiper from "swiper";
 import { FreeMode, Mousewheel, A11y } from "swiper/modules";
 
@@ -35,13 +30,24 @@ class CoffeePerks {
       this.swipers.push(
         new Swiper(el, {
           modules: [FreeMode, Mousewheel, A11y],
-          slidesPerView: "auto",
+          slidesPerView: 3,
           spaceBetween: 16,
           freeMode: true,
           grabCursor: true,
           centerInsufficientSlides: true,
           mousewheel: { forceToAxis: true },
           a11y: { enabled: true },
+          breakpoints: {
+            0: {
+              slidesPerView: "auto",
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1199: {
+              slidesPerView: 4,
+            },
+          },
         }),
       );
     });
