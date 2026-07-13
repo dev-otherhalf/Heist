@@ -10,9 +10,9 @@
     border: var(--bw-1) dashed var(--taupe);
   }
 
-  &__section-label {
+  &__section-label.t-n1 {
     text-transform: uppercase;
-    margin: 0 0 var(--space-12);
+    margin: 0 0 var(--space-24);
   }
 
   // --- Bags -----------------------------------------------------------------
@@ -36,23 +36,25 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-16);
-  padding: var(--space-16);
-  padding-top: var(--space-20);
+  gap: 0;
+  padding:var(--space-17) var(--space-17) var(--space-23);
   background: var(--bone);
   border: var(--bw-2) solid var(--ink);
 
-  &__badge {
+  &__badge.t-n2-med {
     position: absolute;
-    top: calc(var(--bw-2) * -1);
-    right: var(--space-16);
+    top: 0;
+    right: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 1.5rem;
-    padding: var(--space-6) var(--space-16);
+    padding: var(--space-6) var(--space-9);
     background: var(--red);
     border: var(--bw-2) solid var(--ink);
+    font-weight: 700;
+    border-top: 0;
+    border-right: 0;
     color: var(--ink);
     text-transform: uppercase;
     white-space: nowrap;
@@ -64,13 +66,16 @@
 
   &__image {
     align-self: center;
-    width: 8.25rem;
+    width: var(--space-122);
     max-width: 100%;
+    height: var(--space-102);
+    margin-bottom: var(--space-10);
 
     img {
       width: 100%;
-      height: auto;
+      height: 100%;
       display: block;
+      object-fit: contain;
     }
   }
 
@@ -80,6 +85,7 @@
     align-items: center;
     gap: var(--space-8);
     text-align: center;
+    margin-bottom: var(--space-20);
   }
 
   &__name {
@@ -96,10 +102,15 @@
     align-items: baseline;
     gap: var(--space-6);
   }
-
+  &__price-row-inner{
+    display: flex;
+  }
   &__price,
   &__unit {
     text-transform: uppercase;
+    &.t-n1-med{
+      font-weight: 700;
+    }
   }
 
   &__compare {
@@ -127,6 +138,7 @@
     flex-direction: column;
     gap: var(--space-8);
     text-align: center;
+    padding: var(--space-16) 0;
   }
 
   &__notes-label {
@@ -142,6 +154,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-12);
+    padding-top:var(--space-20);
   }
 }
 
@@ -159,6 +172,7 @@
   &__label {
     text-transform: uppercase;
     white-space: nowrap;
+    color: var(--ink);
   }
 
   &__control {
