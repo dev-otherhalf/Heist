@@ -696,8 +696,7 @@ class BuyBox extends HTMLElement {
     }
     this.#setBadge(root.querySelector(s.badge), pct, badgeOverride);
 
-    const saveEl = root.querySelector(s.save);
-    if (saveEl) {
+    root.querySelectorAll(s.save).forEach((saveEl) => {
       if (pct > 0) {
         // Unit lives in its own span so it can be styled apart from the amount.
         saveEl.textContent = `Save ${this.formatMoney(compareDisp - priceDisp)}`;
@@ -709,7 +708,7 @@ class BuyBox extends HTMLElement {
       } else {
         saveEl.hidden = true;
       }
-    }
+    });
   }
 
   #setText(root, selector, text) {
