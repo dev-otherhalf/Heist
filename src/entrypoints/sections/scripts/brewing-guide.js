@@ -28,11 +28,31 @@ import { FreeMode, Mousewheel } from "swiper/modules";
 // where it is, with no overflow change and no jump, and only adds a harmless
 // `lenis-locked` class. Nested scroll (the drawer's own scroll area) still works
 // because lenis runs with `allowNestedScroll: true`.
+let scrollLocked = false;
+
+// Re-assert isLocked for a few frames after locking. Opening the drawer mid-
+// scroll leaves an in-flight scroll settling, and lenis calls reset() when a
+// scroll animation completes — which clears isLocked (the instant lock/unlock
+// flicker). Re-setting it each frame overrides that until the scroll has settled.
+function reassertLock(frames) {
+  if (!scrollLocked || frames <= 0 || !window.lenis) return;
+  window.lenis.isLocked = true;
+  requestAnimationFrame(() => reassertLock(frames - 1));
+}
+
 function lockPageScroll() {
-  if (window.lenis) window.lenis.isLocked = true;
+  scrollLocked = true;
+  if (!window.lenis) return;
+  // reset() kills any in-flight inertia (snaps target to the current position
+  // and zeroes velocity) so a glide already underway stops dead instead of
+  // coasting past the lock. It clears isLocked, so lock AFTER resetting.
+  window.lenis.reset();
+  window.lenis.isLocked = true;
+  reassertLock(6);
 }
 
 function unlockPageScroll() {
+  scrollLocked = false;
   if (window.lenis) window.lenis.isLocked = false;
 }
 
