@@ -16,7 +16,8 @@
   assign heading_markup = heading_markup | remove: '<h5>' | remove: '</h5>'
   assign heading_markup = heading_markup | remove: '<h6>' | remove: '</h6>'
   assign heading_text = heading_markup | strip_html | strip
-  assign section_heading_alt = heading_text | escape
+  assign fallback_alt = 'Drink Heist'
+  assign section_heading_alt = heading_text | default: fallback_alt | escape
   assign has_left_video = false
 
   if left_media_type == 'video' and section.settings.left_video_desktop != blank
@@ -274,30 +275,12 @@
                     assign item_image = product.featured_image
                   endif
 
-                  assign item_alt = item_title | escape
+                  assign item_alt = item_title | default: item_image.alt | default: fallback_alt | escape
                 -%}
 
                 <div class="join-the-heist-society__product" {{- block.shopify_attributes -}}>
                   <div class="join-the-heist-society__product-frame">
-                    {%- if product != blank and cta_link == blank -%}
-                      {%- assign cta_link = product.url -%}
-                    {%- endif -%}
-
                     {%- if item_image != blank -%}
-                      {%- if product != blank -%}
-                        <a class="join-the-heist-society__product-link" href="{{- product.url -}}">
-                          {{-
-                            item_image
-                            | image_url: width: 480
-                            | image_tag:
-                              widths: '160, 240, 320, 480',
-                              sizes: '(min-width: 990px) 7rem, 5rem',
-                              loading: 'lazy',
-                              alt: item_alt,
-                              class: 'join-the-heist-society__product-image'
-                          -}}
-                        </a>
-                      {%- else -%}
                         {{-
                           item_image
                           | image_url: width: 480
@@ -308,26 +291,22 @@
                             alt: item_alt,
                             class: 'join-the-heist-society__product-image'
                         -}}
-                      {%- endif -%}
                     {%- else -%}
                       <div class="join-the-heist-society__product-placeholder" aria-hidden="true"></div>
                     {%- endif -%}
                   </div>
 
                   {%- if item_title != blank -%}
-                      {%- if product != blank -%}
-                        <a class="join-the-heist-society__product-title-link t-n1" href="{{- product.url -}}">
+                        <div class="join-the-heist-society__product-title-link t-n1">
                           {{- item_title | escape -}}
-                        </a>
-                      {%- endif -%}
+                        </div>
                   {%- endif -%}
 
                                     {%- if item_description != blank -%}
-                      {%- if product != blank -%}
+                      
                         <p class="join-the-heist-society__product-desc t-n3 hide-from-lg">
                           {{- item_description | escape -}}
                         </p>
-                      {%- endif -%}
                   {%- endif -%}
                 </div>
               {%- endfor -%}
@@ -539,11 +518,6 @@
       "type": "product",
       "name": "Product",
       "settings": [
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Product"
-        },
         {
           "type": "text",
           "id": "custom_name",

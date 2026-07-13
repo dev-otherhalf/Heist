@@ -34,7 +34,7 @@
         "body": "<p>Heist is a world-class decaf coffee built for people who refuse to choose between full flavor and a good night’s sleep.</p>",
         "button_label": "Drink decaf",
         "button_link": "",
-        "note": "<p>30-day escape plan<br/>Love it or your money back</p>",
+        "note": "<p>30-day escape plan</p><p>Love it or your money back</p>",
         "mobile_story_background": "shopify://shop_images/Homepage_-_Section_2.jpg",
         "copyright_text": "",
         "legal_logo": "shopify://shop_images/badge-heistglobal.svg",
@@ -161,8 +161,6 @@
         "video": "shopify://files/videos/coffee (1).mp4",
         "annotation_value": "24724 1832 248",
         "background_color": "",
-        "background_image": "shopify://shop_images/bg.jpg",
-        "background_image_mobile": "shopify://shop_images/bg.jpg",
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 0,
@@ -260,7 +258,7 @@
         "tabs_selection": "the-words-biggest-coffee-heist",
         "receipts_selection": "the-receipts-dont-lie",
         "desktop_top_padding": 121,
-        "desktop_bottom_padding": 114,
+        "desktop_bottom_padding": 106,
         "mobile_top_padding": 64,
         "mobile_bottom_padding": 64
       }
@@ -283,25 +281,25 @@
         "product_bjHE3X": {
           "type": "product",
           "settings": {
-            "product": "tin-scoop",
-            "custom_name": "",
-            "custom_description": "(value $20)"
+            "custom_name": "Tin + Scoop",
+            "custom_description": "(value $20)",
+            "custom_image": "shopify://shop_images/tin_scoop.jpg"
           }
         },
         "product_zWXPXB": {
           "type": "product",
           "settings": {
-            "product": "smuggle-bear",
-            "custom_name": "",
-            "custom_description": "(value $50)"
+            "custom_name": "smuggle bear",
+            "custom_description": "(value $50)",
+            "custom_image": "shopify://shop_images/SmuggleBear.jpg"
           }
         },
         "product_43rK8n": {
           "type": "product",
           "settings": {
-            "product": "member-card",
-            "custom_name": "",
-            "custom_description": "(founder signed)"
+            "custom_name": "member card",
+            "custom_description": "(founder signed)",
+            "custom_image": "shopify://shop_images/MemberCard.jpg"
           }
         }
       },
@@ -315,15 +313,16 @@
         "kit_value": "(Value $70)",
         "button_label": "Join",
         "button_label_two": "Now",
-        "button_link": "",
+        "button_link": "#",
         "disclaimer": "30-day escape plan. Love it or your money back.",
         "left_media_type": "video",
         "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
+        "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
         "video_desktop": "shopify://files/videos/Screen Recording 2026-07-04 at 1.48.04 PM.mp4",
         "video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 10.42.14 AM (1).mp4",
         "background_color": "#e8e0d2",
         "panel_color": "#f4ede1",
-        "padding_top_mobile": 64,
+        "padding_top_mobile": 0,
         "padding_bottom_mobile": 0,
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 0
@@ -344,65 +343,6 @@
         "padding_top_desktop": 120,
         "padding_bottom_desktop": 120
       }
-    },
-    "gallery_showcase_p3M8Eq": {
-      "type": "gallery-showcase",
-      "blocks": {
-        "card_djFWVE": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Rectangle_23.jpg"
-          }
-        },
-        "card_KCP9iM": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Rectangle_63.jpg"
-          }
-        },
-        "card_3WrCPH": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Rectangle_64.jpg"
-          }
-        },
-        "card_Lafamf": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Rectangle_65.jpg"
-          }
-        },
-        "card_wLgjXe": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Rectangle_23.jpg"
-          }
-        },
-        "card_3pHGym": {
-          "type": "card",
-          "settings": {
-            "video": "shopify://files/videos/interioryesplz_1769153020_3816254488500013143_5401634217.mp4"
-          }
-        }
-      },
-      "block_order": [
-        "card_djFWVE",
-        "card_KCP9iM",
-        "card_3WrCPH",
-        "card_Lafamf",
-        "card_wLgjXe",
-        "card_3pHGym"
-      ],
-      "name": "Gallery showcase",
-      "settings": {
-        "heading": "For those who are serious about coffee.",
-        "cta_label": "Follow @Heist",
-        "cta_link": "/",
-        "padding_top_mobile": 64,
-        "padding_bottom_mobile": 64,
-        "padding_top_desktop": 104,
-        "padding_bottom_desktop": 96
-      }
     }
   },
   "order": [
@@ -414,7 +354,6 @@
     "coffee_heist_6MMjQW",
     "late_night_gallery_BYEkCN",
     "join_the_heist_society_UgNmV4",
-    "press_section_WRAXwL",
-    "gallery_showcase_p3M8Eq"
+    "press_section_WRAXwL"
   ]
 }

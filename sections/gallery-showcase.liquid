@@ -1,6 +1,10 @@
 {%- render 'vite-tag', entry: 'sections/styles/gallery-showcase.scss' -%}
 {%- if section.blocks.size > 0 -%}
-  {%- render 'vite-tag', entry: 'sections/scripts/gallery-showcase.js' -%}
+  <script
+    src="{{ 'marquee.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
 {%- endif -%}
 
 {%- style -%}
@@ -12,7 +16,7 @@
   }
 {%- endstyle -%}
 
-<section class="gallery-showcase" data-gallery-showcase>
+<section class="gallery-showcase">
   {%- if section.settings.heading != blank or section.settings.cta_label != blank -%}
     <div class="gallery-showcase__header">
       {%- if section.settings.heading != blank -%}
@@ -35,40 +39,50 @@
   {%- endif -%}
 
   {%- if section.blocks.size > 0 -%}
-    <div class="gallery-showcase__row swiper" data-gallery-swiper>
-      <div class="swiper-wrapper">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'card' -%}
-            {%- if block.settings.video != blank or block.settings.image != blank -%}
-              <div class="swiper-slide gallery-showcase__card" {{ block.shopify_attributes }}>
-                {%- if block.settings.video != blank -%}
-                  {{
-                    block.settings.video
-                    | video_tag:
-                      image_size: '800x',
-                      loop: true,
-                      muted: true,
-                      autoplay: false,
-                      preload: 'none',
-                      controls: false,
-                      playsinline: true,
-                      class: 'gallery-showcase__media js-autoplay-video'
-                  }}
-                {%- else -%}
-                  {% render 'responsive-image',
-                    desktop_image: block.settings.image,
-                    mobile_image: block.settings.image,
-                    alt: block.settings.image.alt,
-                    class: 'gallery-showcase__media-wrapper',
-                    image_class: 'gallery-showcase__media',
-                    sizes: '(max-width: 749px) 50vw, 20vw'
-                  %}
+    <div class="gallery-showcase__row">
+      <marquee-component
+        class="gallery-showcase__marquee"
+        data-speed-factor="{{ section.settings.marquee_speed }}"
+      >
+        <div class="gallery-showcase__wrapper" ref="wrapper">
+          <div class="gallery-showcase__content" ref="content">
+            <div class="gallery-showcase__track" ref="marqueeItems[]">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'card' -%}
+                  {%- if block.settings.video != blank or block.settings.image != blank -%}
+                    <div class="gallery-showcase__card" {{ block.shopify_attributes }}>
+                      {%- if block.settings.video != blank -%}
+                        {{
+                          block.settings.video
+                          | video_tag:
+                            image_size: '800x',
+                            loop: true,
+                            muted: true,
+                            autoplay: false,
+                            preload: 'none',
+                            controls: false,
+                            playsinline: true,
+                            class: 'gallery-showcase__media js-autoplay-video'
+                        }}
+                      {%- else -%}
+                        {%- assign card_alt = block.settings.image.alt | default: 'Drink Heist' -%}
+                        {% render 'responsive-image',
+                          desktop_image: block.settings.image,
+                          mobile_image: block.settings.image,
+                          alt: card_alt,
+                          class: 'gallery-showcase__media-wrapper',
+                          image_class: 'gallery-showcase__media',
+                          sizes: '(max-width: 749px) 50vw, 20vw'
+                        %}
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
                 {%- endif -%}
-              </div>
-            {%- endif -%}
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </marquee-component>
     </div>
   {%- endif -%}
 </section>
@@ -78,9 +92,6 @@
   "name": "Gallery showcase",
   "tag": "section",
   "class": "shopify-section-gallery-showcase",
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  },
   "settings": [
     { "type": "header", "content": "Content" },
     {
@@ -100,6 +111,18 @@
       "type": "url",
       "id": "cta_link",
       "label": "Button link"
+    },
+    { "type": "header", "content": "Marquee" },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "Scroll duration",
+      "info": "Higher is slower.",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "default": 40
     },
     { "type": "header", "content": "Mobile padding" },
     {
@@ -151,13 +174,7 @@
     {
       "name": "Gallery showcase",
       "category": "Media",
-      "blocks": [
-        { "type": "card" },
-        { "type": "card" },
-        { "type": "card" },
-        { "type": "card" },
-        { "type": "card" }
-      ]
+      "blocks": [{ "type": "card" }, { "type": "card" }, { "type": "card" }, { "type": "card" }, { "type": "card" }]
     }
   ]
 }

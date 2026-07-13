@@ -19,6 +19,7 @@
   assign newsletter_text_color = section.settings.newsletter_text_color
   assign heading_text = section.settings.heading_text
   assign barcode_image = section.settings.barcode_image
+  assign barcode_image_mobile = section.settings.barcode_image_mobile
 
   assign audio_bg_color = section.settings.audio_bg_color
   assign audio_text_color = section.settings.audio_text_color
@@ -218,7 +219,7 @@
               <div class="footer__newsletter-barcode">
                 {% render 'responsive-image',
                   desktop_image: barcode_image,
-                  mobile_image: barcode_image,
+                  mobile_image: barcode_image_mobile,
                   alt: 'barcode',
                   class: 'footer__barcode-image',
                   sizes: '(max-width: 749px) 100vw, 100vw'
@@ -265,6 +266,7 @@
                         assign mobile_cover_image = block.settings.audio_mobile_poster_image
                         assign desktop_cover_image = desktop_cover_image | default: mobile_cover_image
                         assign mobile_cover_image = mobile_cover_image | default: desktop_cover_image
+                        assign cover_alt = block.settings.audio_title | default: 'Drink Heist'
                       -%}
                       {%- if desktop_cover_image != blank -%}
                         <div
@@ -275,7 +277,7 @@
                           {% render 'responsive-image',
                             desktop_image: desktop_cover_image,
                             mobile_image: mobile_cover_image,
-                            alt: block.settings.audio_title,
+                            alt: cover_alt,
                             class: 'footer__audio-player-cover-picture',
                             image_class: 'footer__audio-player-cover-image',
                             sizes: '(max-width: 749px) 58px, 76px'
@@ -431,10 +433,6 @@
                     </svg>
                   </button>
                 </div>
-
-                <p class="footer__audio-player-status t-n3" data-audio-status>
-                  {{- first_audio_block.settings.audio_detail_text | strip_html | escape -}}
-                </p>
               </div>
 
               {%- if teddy_icon_image != blank -%}
@@ -570,6 +568,11 @@
       "type": "image_picker",
       "id": "barcode_image",
       "label": "Add barcode image"
+    },
+    {
+      "type": "image_picker",
+      "id": "barcode_image_mobile",
+      "label": "Add barcode image Mobile"
     },
     {
       "type": "header",
