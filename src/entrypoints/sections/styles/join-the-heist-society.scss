@@ -2,7 +2,6 @@
 @use "/src/styles/settings/breakpoints" as *;
 
 .join-the-heist-society {
-  background-color: var(--join-the-heist-society-bg, var(--cream));
   overflow: clip;
   padding-block: var(--join-the-heist-society-padding-top-mobile)
     var(--join-the-heist-society-padding-bottom-mobile);
@@ -14,6 +13,7 @@
   @include respond-to(lg) {
     padding-block: var(--join-the-heist-society-padding-top-desktop)
       var(--join-the-heist-society-padding-bottom-desktop);
+    background-color: var(--join-the-heist-society-bg, var(--cream));
   }
 
   &__layout {
@@ -114,7 +114,7 @@
 
     &--mobile {
       display: block;
-
+      height: 30%;
       @include respond-to(lg) {
         display: none;
       }
@@ -393,8 +393,10 @@
       width: 100%;
       padding-block: unset;
       gap: var(--space-2);
-      &:hover {
-        gap: var(--space-8);
+      @include respond-to(lg) {
+        &:hover {
+          gap: var(--space-8);
+        }
       }
     }
   }
