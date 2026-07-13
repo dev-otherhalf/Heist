@@ -207,7 +207,7 @@
     </div>
 
     {%- if show_press_row -%}
-      <div class="coffee-standards__press">
+      <div class="coffee-standards__press page-width">
         {%- if press_label != blank -%}
           <p class="coffee-standards__press-label t-n1">{{ press_label }}</p>
         {%- endif -%}
@@ -219,18 +219,27 @@
           <div class="coffee-standards__marquee-wrapper" ref="wrapper">
             <div class="coffee-standards__marquee-content" ref="content">
               <div class="coffee-standards__marquee-track" ref="marqueeItems[]">
-                {%- for logo in press_logos -%}
-                  <div class="coffee-standards__press-logo">
-                    {{
-                      logo
-                      | image_url: width: 320
-                      | image_tag:
-                        widths: '160, 240, 320',
-                        sizes: '(min-width: 990px) 9rem, 7rem',
-                        loading: 'lazy',
-                        alt: logo.alt,
-                        class: 'coffee-standards__press-logo-image'
-                    }}
+                {%- for logo_entry in press_logos -%}
+                  {%- assign logo = logo_entry.press_logo.value | default: logo_entry.press_logo | default: logo_entry -%}
+                  {%- assign logo_height = logo_entry.press_logo_height.value | default: logo_entry.press_logo_height -%}
+                  <div
+                    class="coffee-standards__press-logo"
+                    {% if logo_height != blank %}
+                      style="--coffee-standards-press-logo-height: {{ logo_height }}px;"
+                    {% endif %}
+                  >
+                    {%- if logo != blank -%}
+                      {{
+                        logo
+                        | image_url: width: 320
+                        | image_tag:
+                          widths: '160, 240, 320',
+                          sizes: '(min-width: 990px) 9rem, 7rem',
+                          loading: 'lazy',
+                          alt: logo.alt,
+                          class: 'coffee-standards__press-logo-image'
+                      }}
+                    {%- endif -%}
                   </div>
                 {%- endfor -%}
               </div>
@@ -240,18 +249,27 @@
 
         {%- unless section.settings.enable_press_marquee_desktop -%}
           <div class="coffee-standards__press-static">
-            {%- for logo in press_logos -%}
-              <div class="coffee-standards__press-logo">
-                {{
-                  logo
-                  | image_url: width: 320
-                  | image_tag:
-                    widths: '160, 240, 320',
-                    sizes: '9rem',
-                    loading: 'lazy',
-                    alt: logo.alt,
-                    class: 'coffee-standards__press-logo-image'
-                }}
+            {%- for logo_entry in press_logos -%}
+              {%- assign logo = logo_entry.press_logo.value | default: logo_entry.press_logo | default: logo_entry -%}
+              {%- assign logo_height = logo_entry.press_logo_height.value | default: logo_entry.press_logo_height -%}
+              <div
+                class="coffee-standards__press-logo"
+                {% if logo_height != blank %}
+                  style="--coffee-standards-press-logo-height: {{ logo_height }}px;"
+                {% endif %}
+              >
+                {%- if logo != blank -%}
+                  {{
+                    logo
+                    | image_url: width: 320
+                    | image_tag:
+                      widths: '160, 240, 320',
+                      sizes: '9rem',
+                      loading: 'lazy',
+                      alt: logo.alt,
+                      class: 'coffee-standards__press-logo-image'
+                  }}
+                {%- endif -%}
               </div>
             {%- endfor -%}
           </div>
