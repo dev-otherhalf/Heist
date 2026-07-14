@@ -7,7 +7,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-4);
-  color: var(--cream);
+  // Stars (currentColor) and count text follow this; overridable via the var.
+  color: var(--star-summary-color, var(--cream));
   padding-bottom: var(--space-25);
 }
 

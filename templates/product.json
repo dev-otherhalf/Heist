@@ -68,6 +68,14 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "okendo_star_summary_6rYrxx": {
+              "type": "okendo-star-summary",
+              "name": "Review stars (Okendo)",
+              "settings": {
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
             "product_info_details_nFiQpA": {
               "type": "product-info-details",
               "name": "Product info details",
@@ -147,6 +155,7 @@
             }
           },
           "block_order": [
+            "okendo_star_summary_6rYrxx",
             "product_info_details_nFiQpA",
             "subscription_bPmTtM",
             "product_faqs_mQWJKi",
@@ -171,17 +180,6 @@
       "settings": {
         "heading": "Heist Design System",
         "lede": "Living style guide — click any chip to copy"
-      }
-    },
-    "full_briefing_nz7HDP": {
-      "type": "full-briefing",
-      "name": "Full briefing",
-      "settings": {
-        "briefing": "the-full-briefing",
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 48,
-        "padding_top_desktop": 0,
-        "padding_bottom_desktop": 0
       }
     }
   },
