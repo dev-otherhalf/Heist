@@ -22,6 +22,40 @@ import { FreeMode, Mousewheel } from "swiper/modules";
 // showModal auto-focuses inside the drawer, which makes the browser scroll the
 // Lenis wrapper to reveal that deep DOM node, jumping the page to the top.
 
+// Background scroll lock. lenis.stop() applies `.lenis-stopped { overflow:
+// hidden }`, which resets the scroll container to the top (the visible jump).
+// lenis' `isLocked` instead freezes it in place — it preventDefaults wheel/touch
+// where it is, with no overflow change and no jump, and only adds a harmless
+// `lenis-locked` class. Nested scroll (the drawer's own scroll area) still works
+// because lenis runs with `allowNestedScroll: true`.
+let scrollLocked = false;
+
+// Re-assert isLocked for a few frames after locking. Opening the drawer mid-
+// scroll leaves an in-flight scroll settling, and lenis calls reset() when a
+// scroll animation completes — which clears isLocked (the instant lock/unlock
+// flicker). Re-setting it each frame overrides that until the scroll has settled.
+function reassertLock(frames) {
+  if (!scrollLocked || frames <= 0 || !window.lenis) return;
+  window.lenis.isLocked = true;
+  requestAnimationFrame(() => reassertLock(frames - 1));
+}
+
+function lockPageScroll() {
+  scrollLocked = true;
+  if (!window.lenis) return;
+  // reset() kills any in-flight inertia (snaps target to the current position
+  // and zeroes velocity) so a glide already underway stops dead instead of
+  // coasting past the lock. It clears isLocked, so lock AFTER resetting.
+  window.lenis.reset();
+  window.lenis.isLocked = true;
+  reassertLock(6);
+}
+
+function unlockPageScroll() {
+  scrollLocked = false;
+  if (window.lenis) window.lenis.isLocked = false;
+}
+
 function openDrawer(modal) {
   if (!(modal instanceof HTMLElement) || modal.classList.contains("is-open")) {
     return;
@@ -34,6 +68,8 @@ function openDrawer(modal) {
   modal.hidden = false;
   void modal.offsetWidth; // force reflow so the open transition runs
   modal.classList.add("is-open");
+
+  lockPageScroll();
 }
 
 function closeDrawer(modal) {
@@ -41,6 +77,9 @@ function closeDrawer(modal) {
     return;
   }
   modal.classList.remove("is-open");
+
+  // Release the scroll clamp and resume scrolling from the same position.
+  unlockPageScroll();
 
   const panel = modal.querySelector(".brewing-guide__drawer");
   const duration = panel ? getComputedStyle(panel).transitionDuration : "0s";

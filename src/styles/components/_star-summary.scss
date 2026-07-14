@@ -1,0 +1,31 @@
+// =============================================================================
+// Star summary — five full / half / empty stars + "(N reviews)".
+// Paired with snippets/okendo-star-summary.liquid.
+// =============================================================================
+@use "../settings/breakpoints" as *;
+.star-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--cream);
+  padding-bottom: var(--space-25);
+}
+
+.star-summary__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+// All three icons share a 16×16 viewBox, so a fixed square keeps them aligned.
+.star-summary__stars svg {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.star-summary__count {
+  text-transform: uppercase;
+  white-space: nowrap;
+}

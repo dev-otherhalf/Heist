@@ -1,0 +1,51 @@
+{% comment %}
+  Okendo rating summary — five stars filled to the average rating (full / half /
+  empty), followed by "(N reviews)". Reads Okendo's `summaryData` metafield,
+  which looks like {"reviewCount"=>888, "reviewAverageValue"=>"5.0"}. Renders
+  nothing when the product has no reviews.
+
+  @param {product} product - The product whose reviews to summarize.
+{% endcomment %}
+
+{%- liquid
+  assign summary = product.metafields.okendo.summaryData.value | default: product.metafields.okendo.summaryData
+  assign review_count = summary.reviewCount | default: 0
+  assign rating = summary.reviewAverageValue | default: 0.0 | times: 1.0
+  assign rating_halves = rating | times: 2 | round
+
+  assign review_word = 'reviews'
+  if review_count == 1
+    assign review_word = 'review'
+  endif
+-%}
+
+{%- if review_count > 0 -%}
+  <div
+    class="star-summary"
+    aria-label="{{ rating }} out of 5 stars ({{ review_count }} {{ review_word }})"
+  >
+    <span class="star-summary__stars" aria-hidden="true">
+      {%- for i in (1..5) -%}
+        {%- liquid
+          assign full_at = i | times: 2
+          assign half_at = full_at | minus: 1
+          assign star_type = 'empty'
+          if full_at <= rating_halves
+            assign star_type = 'full'
+          elsif half_at == rating_halves
+            assign star_type = 'half'
+          endif
+        -%}
+        {%- if star_type == 'full' -%}
+          {% render 'icon-star-full' %}
+        {%- elsif star_type == 'half' -%}
+          {% render 'icon-star-half' %}
+        {%- else -%}
+          {% render 'icon-star-empty' %}
+        {%- endif -%}
+      {%- endfor -%}
+    </span>
+
+    <span class="star-summary__count t-n2">({{ review_count }} {{ review_word }})</span>
+  </div>
+{%- endif -%}
