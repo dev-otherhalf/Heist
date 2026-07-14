@@ -522,7 +522,9 @@ class BuyBox extends HTMLElement {
     );
     if (priceEl) {
       const disp = this.#displayValue(selectedTotals.total, bags);
-      priceEl.textContent = ` — ${this.formatMoney(disp)}${this.unit}`;
+      // One-time isn't a recurring plan, so it shows no /mo (or /bag) unit.
+      const unit = this.state.tier === "one_time" ? "" : this.unit;
+      priceEl.textContent = ` — ${this.formatMoney(disp)}${unit}`;
     }
 
     // Compare (struck-through) price on the CTA — shown only when discounted.
