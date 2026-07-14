@@ -3,7 +3,17 @@
 
 {% liquid
   assign tabs_obj = section.settings.tabs_selection
+  if product != blank and product.metafields.custom.homepage_coffee_heist_tabs_selections != blank
+    assign tabs_obj = product.metafields.custom.homepage_coffee_heist_tabs_selections.value
+  endif
   assign receipts_obj = section.settings.receipts_selection
+  if product != blank and product.metafields.custom.homepage_coffee_heist_receipts_selections != blank
+    assign receipts_obj = product.metafields.custom.homepage_coffee_heist_receipts_selections.value
+  endif
+  assign brewing_obj = section.settings.breiwng_guide_selection | default: section.settings.brewing_guide_selection
+  if product != blank and product.metafields.custom.homepage_brewing_guide_selections != blank
+    assign brewing_obj = product.metafields.custom.homepage_brewing_guide_selections.value
+  endif
   assign fallback_alt = 'Drink Heist'
 %}
 
@@ -403,6 +413,9 @@
       </div>
     </div>
   {% endif %}
+  {% render 'brewing-guide',
+    brewing_obj: brewing_obj
+  %}
 </div>
 
 {% schema %}
@@ -437,6 +450,17 @@
       "label": "Receipts content",
       "metaobject_type": "homepage_coffee_heist_receipts_selections_oh",
       "info": "HOMEPAGE - COFFEE HEIST RECEIPTS - SELECTIONS - OH. Leave blank to hide this block."
+    },
+        {
+      "type": "header",
+      "content": "Brewing Guide"
+    },
+    {
+      "type": "metaobject",
+      "id": "breiwng_guide_selection",
+      "label": "Brewing Guide content",
+      "metaobject_type": "homepage_brewing_guide_selections_oh",
+      "info": "HOMEPAGE - BREWING GUIDE - SELECTIONS - OH. Leave blank to hide this block."
     },
     {
       "type": "header",

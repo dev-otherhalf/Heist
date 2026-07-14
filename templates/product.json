@@ -176,7 +176,10 @@
                   "blocks": {}
                 }
               },
-              "block_order": ["text_xrnftG", "price_tVjtKg"]
+              "block_order": [
+                "text_xrnftG",
+                "price_tVjtKg"
+              ]
             },
             "divider_VJhene": {
               "type": "_divider",
@@ -309,7 +312,9 @@
           ]
         }
       },
-      "block_order": ["disclosures_g9mWze"],
+      "block_order": [
+        "disclosures_g9mWze"
+      ],
       "settings": {
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
@@ -322,144 +327,121 @@
         "padding-block-end": 0
       }
     },
-    "product_recommendations_qggXJq": {
-      "type": "product-recommendations",
+    "coffee_standards_b4EGbK": {
+      "type": "coffee-standards",
+      "name": "Coffee standards",
+      "settings": {
+        "content_selection": "great-coffee-shouldnt-come-with-consequences-heist-is-water-processed-which-means-no-chemicals-and-no-shortcuts-nothing-stripped-but-the-caffeine",
+        "badge_marquee_speed": 25,
+        "show_press_row": true,
+        "enable_press_marquee_desktop": false,
+        "press_marquee_speed": 25,
+        "background_color": "",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 120,
+        "padding_bottom_desktop": 88
+      }
+    },
+    "coffee_perks_MBCN8J": {
+      "type": "coffee-perks",
+      "name": "Coffee perks",
+      "settings": {
+        "views": [
+          "the-perks-of-coffee-without-a-curfew",
+          "when-people-drink-heist"
+        ],
+        "background_image_mobile": "shopify://shop_images/full-briefing-bg-mobile.jpg",
+        "background_image_desktop": "shopify://shop_images/Rectangle_12_6d7c3e1a-be24-4377-ac89-faf380f0390c.jpg",
+        "card_background_color": "#eeeade",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 120,
+        "padding_bottom_desktop": 120
+      }
+    },
+    "join_the_heist_society_hCNcQa": {
+      "type": "join-the-heist-society",
       "blocks": {
-        "text_cbcgyb": {
-          "type": "text",
-          "name": "t:names.header",
+        "product_GWyXew": {
+          "type": "product",
           "settings": {
-            "text": "<h3>You may also like </h3>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h4",
-            "font": "var(--font-primary--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "custom_name": "Tin + Scoop",
+            "custom_description": "(value $20)",
+            "custom_image": "shopify://shop_images/tin_scoop.jpg"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "product_8PBii8": {
+          "type": "product",
           "settings": {
-            "product_card_gap": 8,
-            "background_color": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 8,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_DNizbJ": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_M7MJkb": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_gLWgA6": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "text_color": "",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_DNizbJ",
-            "product_title_M7MJkb",
-            "price_gLWgA6"
-          ]
+            "custom_name": "smuggle bear",
+            "custom_description": "(value $50)",
+            "custom_image": "shopify://shop_images/SmuggleBear.jpg"
+          }
+        },
+        "product_CkwP3g": {
+          "type": "product",
+          "settings": {
+            "custom_name": "member card",
+            "custom_description": "(founder signed)",
+            "custom_image": "shopify://shop_images/MemberCard.jpg"
+          }
         }
       },
-      "block_order": ["text_cbcgyb"],
-      "name": "t:names.product_recommendations",
+      "block_order": [
+        "product_GWyXew",
+        "product_8PBii8",
+        "product_CkwP3g"
+      ],
+      "name": "Join the Heist Society",
       "settings": {
-        "product": "{{ closest.product }}",
-        "recommendation_type": "related",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "columns_gap": 12,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 28,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "heading": "Join the Heist Society™",
+        "subheading": "3 months prepaid today, then monthly. Pause or cancel anytime after.",
+        "features": "Lowest price. Locked forever.\nFree shipping forever, no thresholds.\nLimited-edition Smuggle Bear every 6 months.\nSmuggle Bear welcome kit (value $70).",
+        "kit_heading": "Smuggle Bear Welcome Kit",
+        "kit_value": "(Value $70)",
+        "button_label": "Join",
+        "button_label_two": "Now",
+        "button_link": "#",
+        "disclaimer": "30-day escape plan. Love it or your money back.",
+        "left_media_type": "video",
+        "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
+        "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
+        "video_desktop": "shopify://files/videos/Screen Recording 2026-07-04 at 1.48.04 PM.mp4",
+        "video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 10.42.14 AM (1).mp4",
+        "background_color": "#e8e0d2",
+        "panel_color": "#f4ede1",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 69,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0
+      }
+    },
+    "coffee_heist_f6Ntka": {
+      "type": "coffee-heist",
+      "name": "Coffee Heist Comparison",
+      "settings": {
+        "background_color": "",
+        "tabs_selection": "",
+        "receipts_selection": "",
+        "breiwng_guide_selection": "",
+        "desktop_top_padding": 120,
+        "desktop_bottom_padding": 120,
+        "mobile_top_padding": 64,
+        "mobile_bottom_padding": 64
+      }
+    },
+    "full_briefing_nz7HDP": {
+      "type": "full-briefing",
+      "name": "Full briefing",
+      "settings": {
+        "briefing": "the-full-briefing",
+        "background_image_desktop": "shopify://shop_images/full-briefing-bg.jpg",
+        "background_image_mobile": "shopify://shop_images/full-briefing-bg-mobile.jpg",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0
       }
     },
     "okendo_reviews_yqzgF8": {

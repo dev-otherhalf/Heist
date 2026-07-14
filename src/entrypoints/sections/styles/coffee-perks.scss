@@ -1,0 +1,219 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.coffee-perks {
+  color: var(--ink);
+  overflow: clip;
+  padding-block: var(--coffee-perks-padding-top-mobile)
+    var(--coffee-perks-padding-bottom-mobile);
+  position: relative;
+
+  // subtle film grain to echo the Figma noise-bg effect
+  &::before {
+    content: "";
+    inset: 0;
+    mix-blend-mode: multiply;
+    opacity: 0.05;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @include respond-to(lg) {
+    padding-block: var(--coffee-perks-padding-top-desktop)
+      var(--coffee-perks-padding-bottom-desktop);
+  }
+
+  &__background {
+    inset: 0;
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  &__background-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  > .page-width {
+    position: relative;
+    z-index: 2;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+
+    @include respond-to(lg) {
+      gap: var(--space-18);
+    }
+  }
+
+  // --- Heading -------------------------------------------------------------
+  &__head {
+    order: 1;
+    text-align: center;
+  }
+
+  &__heading {
+    text-wrap: balance;
+
+    @include respond-down(lg) {
+      font-size: var(--fs-h5);
+      line-height: var(--lh-h5);
+      letter-spacing: var(--ls-h5);
+    }
+  }
+
+  // --- Toggle link ---------------------------------------------------------
+  &__bar {
+    order: 3;
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-5);
+
+    @include respond-to(lg) {
+      order: 2;
+      justify-content: flex-end;
+      margin-top: 0;
+    }
+  }
+
+  &__toggle {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 0;
+    text-align: center;
+    text-transform: uppercase;
+    transition: opacity var(--dur) var(--ease);
+    text-decoration-thickness: 7.5%;
+    text-underline-offset: 14%;
+
+    @include respond-to(md) {
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    &:focus-visible {
+      outline: var(--bw-2) solid var(--ink);
+      outline-offset: var(--focus-offset);
+    }
+  }
+
+  // --- Views (only one visible at a time) ----------------------------------
+  &__views {
+    order: 2;
+    margin-top: var(--space-8);
+
+    @include respond-to(lg) {
+      order: 3;
+      margin-top: var(--space-5);
+    }
+  }
+
+  &__view[hidden] {
+    display: none;
+  }
+
+  &__slider {
+    overflow: visible;
+    position: relative;
+    width: 100%;
+  }
+
+  &__track {
+    box-sizing: content-box;
+    display: flex;
+  }
+
+  // --- Card ----------------------------------------------------------------
+  &__card {
+    background-color: var(--coffee-perks-card-bg);
+    border: var(--bw-2) solid var(--ink);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: var(--space-16);
+    height: auto;
+    padding: var(--space-19) var(--space-18) var(--space-27);
+    width: 16.5rem;
+
+    @include respond-to(lg) {
+      padding: var(--space-21) var(--space-22) var(--space-35);
+    }
+  }
+
+  &__card-media {
+    aspect-ratio: 1 / 1;
+    border: var(--bw-2) solid var(--ink);
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  &__card-image,
+  &__card-placeholder {
+    display: block;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  &__card-placeholder {
+    background: rgba(22, 20, 20, 0.08);
+  }
+
+  &__card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding-inline: var(--space-8);
+    @include respond-down(md) {
+      padding-inline: 0;
+    }
+  }
+
+  &__card-title {
+    color: var(--ink);
+    &.t-h7 {
+      @include respond-down(md) {
+        font-size: var(--fs-t1);
+        line-height: var(--lh-t1);
+        letter-spacing: var(--ls-t1);
+      }
+    }
+  }
+
+  &__card-text {
+    color: var(--ink);
+  }
+
+  // --- Empty state ---------------------------------------------------------
+  &__empty {
+    border: var(--bw-2) solid var(--ink);
+    display: grid;
+    gap: var(--space-12);
+    padding: var(--space-24);
+    text-align: center;
+  }
+
+  &__empty-title,
+  &__empty-text {
+    margin: 0;
+  }
+}

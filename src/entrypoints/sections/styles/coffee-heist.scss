@@ -8,7 +8,6 @@
 
 @use "../../../styles/settings/tokens";
 @use "../../../styles/settings/breakpoints" as *;
-@use "../../../styles/components/typography";
 
 .coffee-heist-section {
   position: relative;
@@ -24,6 +23,23 @@
     gap: var(--space-104);
   }
 
+  &:has(.brewing-guide) {
+    gap: var(--space-40);
+
+    .brewing-guide__heading {
+      @include respond-down(lg) {
+        font-size: var(--fs-h5);
+        line-height: var(--lh-h5);
+        letter-spacing: var(--ls-h5);
+        font-weight: var(--fw-regular);
+      }
+    }
+
+    @include respond-to(md) {
+      gap: var(--space-74);
+    }
+  }
+
   // Tab-driven gradient backdrop — spans the whole section (behind the
   // receipts carousel and the tabs block), crossfading with the active tab.
   // Class stays BEM-owned by .coffee-heist even though it lives at section
@@ -35,8 +51,28 @@
   }
 
   &[data-active-tab="1"] {
+    &:has(.coffee-heist-receipts__heading.t-h4) {
+      .coffee-heist-receipts__heading.t-h4 {
+        color: var(--ink);
+      }
+    }
+
+    &:has(.brewing-guide__heading.t-h4) {
+      .brewing-guide__heading.t-h4 {
+        color: var(--ink);
+      }
+    }
+  }
+
+  &:has(.coffee-heist-receipts__heading.t-h4) {
     .coffee-heist-receipts__heading.t-h4 {
-      color: var(--ink);
+      color: var(--cream);
+    }
+  }
+
+  &:has(.brewing-guide__heading.t-h4) {
+    .brewing-guide__heading.t-h4 {
+      color: var(--cream);
     }
   }
 }
