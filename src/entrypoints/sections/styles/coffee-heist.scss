@@ -8,7 +8,6 @@
 
 @use "../../../styles/settings/tokens";
 @use "../../../styles/settings/breakpoints" as *;
-@use "../../../styles/components/typography";
 
 .coffee-heist-section {
   position: relative;
@@ -26,6 +25,16 @@
 
   &:has(.brewing-guide) {
     gap: var(--space-40);
+
+    .brewing-guide__heading {
+      @include respond-down(lg) {
+        font-size: var(--fs-h5);
+        line-height: var(--lh-h5);
+        letter-spacing: var(--ls-h5);
+        font-weight: var(--fw-regular);
+      }
+    }
+
     @include respond-to(md) {
       gap: var(--space-74);
     }
