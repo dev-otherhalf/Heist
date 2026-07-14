@@ -15,6 +15,8 @@ body:has(.brewing-guide__modal.is-open) {
 }
 
 .brewing-guide {
+  z-index: 1;
+  position: relative;
   &__heading {
     &.t-h4 {
       color: var(--ink);
