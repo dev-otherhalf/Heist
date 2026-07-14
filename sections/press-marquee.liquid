@@ -35,6 +35,7 @@
             <div class="press-marquee__track" ref="marqueeItems[]">
               {% for block in logo_blocks %}
                 {% if block.settings.image != blank %}
+                  {% assign logo_alt = block.settings.image.alt | default: 'Drink Heist' %}
                   <div
                     class="press-marquee__logo"
                     {{ block.shopify_attributes }}
@@ -47,7 +48,7 @@
                         widths: '150, 225, 300',
                         sizes: '(min-width: 990px) 9rem, 6rem',
                         loading: 'lazy',
-                        alt: block.settings.image.alt | default: 'Logo',
+                        alt: logo_alt,
                         class: 'press-marquee__logo-image'
                     }}
                   </div>
@@ -62,6 +63,7 @@
         <div class="press-marquee__static">
           {% for block in logo_blocks %}
             {% if block.settings.image != blank %}
+              {% assign logo_alt = block.settings.image.alt | default: 'Drink Heist' %}
               <div
                 class="press-marquee__logo"
                 {{ block.shopify_attributes }}
@@ -73,7 +75,7 @@
                     widths: '150, 225, 300',
                     sizes: '9rem',
                     loading: 'lazy',
-                    alt: block.settings.image.alt | default: 'Logo',
+                    alt: logo_alt,
                     class: 'press-marquee__logo-image'
                 }}
               </div>

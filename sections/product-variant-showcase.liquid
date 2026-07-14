@@ -4,6 +4,7 @@
 {%- liquid
   assign metafield_namespace = 'custom'
   assign metafield_key = 'homepage_comparison_chart_selections_oh'
+  assign fallback_alt = 'Drink Heist'
 -%}
 
 <section
@@ -41,7 +42,7 @@
             >
               {% for block in badge_blocks %}
                 {% if block.settings.image != blank %}
-                  {% assign badge_alt = block.settings.image.alt | default: 'Badge' %}
+                  {% assign badge_alt = block.settings.image.alt | default: fallback_alt %}
                   <div
                     class="product-variant-showcase__badge"
                     {{ block.shopify_attributes }}
@@ -114,6 +115,8 @@
                 endif
               endfor
             endif
+
+            assign active_image_alt = active_comparison_title | default: fallback_alt
           -%}
           <article
             class="product-variant-showcase__product"
@@ -174,7 +177,7 @@
                         <img
                           class="product-variant-showcase__visual-image"
                           src="{{ active_desktop_image | image_url: width: 1280 }}"
-                          alt="{{ active_comparison_title | escape }}"
+                          alt="{{ active_image_alt | escape }}"
                           loading="lazy"
                           data-variant-desktop-image
                         >
@@ -219,9 +222,10 @@
                           endcapture
 
                           assign button_detail_video = button_item.video.value | default: button_item.video
+                          assign button_image_alt = button_title | default: fallback_alt
                         -%}
                         {% capture button_description %}{% if button_item.description != blank %}{{ button_item.description | metafield_tag }}{% endif %}{% endcapture %}
-                        {% capture button_detail_media %}{% if button_detail_video != blank %}{{ button_detail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'product-variant-showcase__detail-video' }}{% elsif button_detail_image != blank %}{{ button_detail_image | image_url: width: 1280 | image_tag: widths: '640, 960, 1280', sizes: '(min-width: 990px) 25rem, 100vw', loading: 'lazy', alt: button_title, class: 'product-variant-showcase__detail-image' }}{% endif %}{% endcapture %}
+                        {% capture button_detail_media %}{% if button_detail_video != blank %}{{ button_detail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'product-variant-showcase__detail-video' }}{% elsif button_detail_image != blank %}{{ button_detail_image | image_url: width: 1280 | image_tag: widths: '640, 960, 1280', sizes: '(min-width: 990px) 25rem, 100vw', loading: 'lazy', alt: button_image_alt, class: 'product-variant-showcase__detail-image' }}{% endif %}{% endcapture %}
 
                         <button
                           class="product-variant-showcase__toggle-button t-s4{% if variant_button.id == active_variant_id %} is-active{% endif %}"
@@ -288,7 +292,7 @@
                           widths: '640, 960, 1280',
                           sizes: '(min-width: 990px) 25rem, 100vw',
                           loading: 'lazy',
-                          alt: active_comparison_title,
+                          alt: active_image_alt,
                           class: 'product-variant-showcase__detail-image'
                       }}
                     {% endif %}
@@ -331,9 +335,10 @@
                             render 'format-price', price: variant_button.price
                           endcapture
 
+                          assign button_image_alt = button_title | default: fallback_alt
                         -%}
                         {% capture button_description %}{% if button_item.description != blank %}{{ button_item.description | metafield_tag }}{% endif %}{% endcapture %}
-                        {% capture button_detail_media %}{% if button_detail_video != blank %}{{ button_detail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'product-variant-showcase__detail-video' }}{% elsif button_detail_image != blank %}{{ button_detail_image | image_url: width: 1280 | image_tag: widths: '640, 960, 1280', sizes: '(min-width: 990px) 25rem, 100vw', loading: 'lazy', alt: button_title, class: 'product-variant-showcase__detail-image' }}{% endif %}{% endcapture %}
+                        {% capture button_detail_media %}{% if button_detail_video != blank %}{{ button_detail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'product-variant-showcase__detail-video' }}{% elsif button_detail_image != blank %}{{ button_detail_image | image_url: width: 1280 | image_tag: widths: '640, 960, 1280', sizes: '(min-width: 990px) 25rem, 100vw', loading: 'lazy', alt: button_image_alt, class: 'product-variant-showcase__detail-image' }}{% endif %}{% endcapture %}
 
                         <button
                           class="product-variant-showcase__toggle-button t-s4{% if variant_button.id == active_variant_id %} is-active{% endif %}"

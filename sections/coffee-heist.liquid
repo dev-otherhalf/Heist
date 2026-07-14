@@ -3,7 +3,18 @@
 
 {% liquid
   assign tabs_obj = section.settings.tabs_selection
+  if product != blank and product.metafields.custom.homepage_coffee_heist_tabs_selections != blank
+    assign tabs_obj = product.metafields.custom.homepage_coffee_heist_tabs_selections.value
+  endif
   assign receipts_obj = section.settings.receipts_selection
+  if product != blank and product.metafields.custom.homepage_coffee_heist_receipts_selections != blank
+    assign receipts_obj = product.metafields.custom.homepage_coffee_heist_receipts_selections.value
+  endif
+  assign brewing_obj = section.settings.breiwng_guide_selection | default: section.settings.brewing_guide_selection
+  if product != blank and product.metafields.custom.homepage_brewing_guide_selections != blank
+    assign brewing_obj = product.metafields.custom.homepage_brewing_guide_selections.value
+  endif
+  assign fallback_alt = 'Drink Heist'
 %}
 
 {%- style -%}
@@ -52,7 +63,7 @@
               | image_url: width: 1000
               | image_tag:
                 loading: 'lazy',
-                alt: '',
+                alt: fallback_alt,
                 class: 'coffee-heist__bg-mobile-image'
             }}
           {% endif %}
@@ -125,10 +136,11 @@
                         <div class="coffee-heist__bar-row{% if row.is_featured.value %} coffee-heist__bar-row--featured{% endif %}">
                           <div class="coffee-heist__bar-label t-n1-med">
                             {% if row.roaster_image.value != blank %}
+                              {% assign roaster_alt = row.roaster_name.value | default: fallback_alt %}
                               {{
                                 row.roaster_image.value
                                 | image_url: width: 240
-                                | image_tag: loading: 'lazy', alt: row.roaster_name.value, class: 'coffee-heist__bar-brand-image'
+                                | image_tag: loading: 'lazy', alt: roaster_alt, class: 'coffee-heist__bar-brand-image'
                               }}
                             {% else %}
                               <span class="coffee-heist__bar-brand">{{ row.roaster_name.value }}</span>
@@ -312,7 +324,7 @@
                   {{
                     review.brand_badge_image.value
                     | image_url: width: 200
-                    | image_tag: loading: 'lazy', alt: ''
+                    | image_tag: loading: 'lazy', alt: fallback_alt
                   }}
                 {% endif %}
                 {% if review.verified_buyer.value %}
@@ -387,10 +399,11 @@
             {% elsif review.media_image.value != blank %}
               <div class="swiper-slide coffee-heist-receipts__card coffee-heist-receipts__card--media">
                 <div class="coffee-heist-receipts__card--media_inner">
+                {% assign media_alt = review.reviewer_name.value | default: fallback_alt %}
                 {{
                   review.media_image.value
                   | image_url: width: 800
-                  | image_tag: loading: 'lazy', alt: review.reviewer_name.value
+                  | image_tag: loading: 'lazy', alt: media_alt
                 }}
                 </div>
               </div>
@@ -400,6 +413,9 @@
       </div>
     </div>
   {% endif %}
+  {% render 'brewing-guide',
+    brewing_obj: brewing_obj
+  %}
 </div>
 
 {% schema %}
@@ -434,6 +450,17 @@
       "label": "Receipts content",
       "metaobject_type": "homepage_coffee_heist_receipts_selections_oh",
       "info": "HOMEPAGE - COFFEE HEIST RECEIPTS - SELECTIONS - OH. Leave blank to hide this block."
+    },
+        {
+      "type": "header",
+      "content": "Brewing Guide"
+    },
+    {
+      "type": "metaobject",
+      "id": "breiwng_guide_selection",
+      "label": "Brewing Guide content",
+      "metaobject_type": "homepage_brewing_guide_selections_oh",
+      "info": "HOMEPAGE - BREWING GUIDE - SELECTIONS - OH. Leave blank to hide this block."
     },
     {
       "type": "header",

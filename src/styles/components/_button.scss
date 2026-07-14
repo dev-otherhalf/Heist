@@ -1,4 +1,5 @@
 @use "./typography";
+@use "../settings/breakpoints";
 
 // =============================================================================
 // Button — .btn + variants / sizes / states
@@ -100,11 +101,15 @@
   gap: var(--space-8);
 }
 
-.btn--split:hover .btn__lines {
-  flex-basis: clamp(2rem, 10vw, 8rem);
-  width: clamp(2rem, 10vw, 8rem);
-  opacity: 1;
-  flex: 1;
+// The expanding lines are a desktop-only affordance — on touch the hover state
+// sticks after tap, leaving the button stretched open.
+@include breakpoints.respond-to(lg) {
+  .btn--split:hover .btn__lines {
+    flex-basis: clamp(2rem, 10vw, 8rem);
+    width: clamp(2rem, 10vw, 8rem);
+    opacity: 1;
+    flex: 1;
+  }
 }
 
 .btn--split-static {

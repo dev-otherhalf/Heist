@@ -80,7 +80,8 @@ html.lenis body {
   }
 
   &.lenis-stopped {
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: clip;
   }
 }
 

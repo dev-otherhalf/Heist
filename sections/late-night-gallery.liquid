@@ -72,10 +72,11 @@
             {% endif %}
           </video>
         {% elsif item.image.value != blank %}
+          {% assign item_alt = item.image.value.alt | default: 'Drink Heist' %}
           {{
             item.image.value
             | image_url: width: 1200
-            | image_tag: loading: 'lazy', class: 'late-night-gallery__media', alt: item.image.value.alt
+            | image_tag: loading: 'lazy', class: 'late-night-gallery__media', alt: item_alt
           }}
         {% endif %}
       {%- endcapture -%}

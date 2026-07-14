@@ -65,10 +65,11 @@
                             class: 'gallery-showcase__media js-autoplay-video'
                         }}
                       {%- else -%}
+                        {%- assign card_alt = block.settings.image.alt | default: 'Drink Heist' -%}
                         {% render 'responsive-image',
                           desktop_image: block.settings.image,
                           mobile_image: block.settings.image,
-                          alt: block.settings.image.alt,
+                          alt: card_alt,
                           class: 'gallery-showcase__media-wrapper',
                           image_class: 'gallery-showcase__media',
                           sizes: '(max-width: 749px) 50vw, 20vw'
@@ -91,9 +92,6 @@
   "name": "Gallery showcase",
   "tag": "section",
   "class": "shopify-section-gallery-showcase",
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  },
   "settings": [
     { "type": "header", "content": "Content" },
     {

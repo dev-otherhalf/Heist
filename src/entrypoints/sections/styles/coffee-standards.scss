@@ -1,0 +1,449 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+// =============================================================================
+// Coffee standards — quality showcase (heading, badges, feature columns around a
+// centred video) plus a press marquee row. All copy comes from a metaobject.
+// The badge row is static on desktop and a marquee on mobile; the press row is
+// the reverse, with the desktop marquee behind a section setting.
+// =============================================================================
+
+.coffee-standards {
+  background-color: var(--coffee-standards-bg, transparent);
+  color: var(--ink);
+  overflow: clip;
+  padding-block: var(--coffee-standards-padding-top-mobile)
+    var(--coffee-standards-padding-bottom-mobile);
+  position: relative;
+
+  @include respond-to(lg) {
+    padding-block: var(--coffee-standards-padding-top-desktop)
+      var(--coffee-standards-padding-bottom-desktop);
+  }
+
+  &__background {
+    inset: 0;
+    position: absolute;
+    z-index: 0;
+  }
+
+  &__background-image {
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  &__sr {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  &__empty {
+    padding: var(--space-56) var(--space-20);
+    text-align: center;
+  }
+
+  &__inner {
+    margin-inline: auto;
+    padding-inline: var(--space-20);
+    position: relative;
+    width: 100%;
+    z-index: 2;
+
+    @include respond-to(lg) {
+      padding-inline: var(--space-32);
+    }
+
+    @include respond-to(xl) {
+      padding-inline: var(--space-56);
+    }
+  }
+
+  // --- Heading ---------------------------------------------------------------
+  &__heading {
+    color: var(--cream);
+    hanging-punctuation: first last;
+    margin: 0;
+    text-wrap: pretty;
+
+    // 40px display — between --fs-h6 (48px) and --fs-t2 (28px), so no token fits.
+    @include respond-down(lg) {
+      font-size: var(--space-40);
+      line-height: var(--lh-h4);
+      letter-spacing: var(--ls-h4);
+      margin-right: calc(var(--space-9) * -1);
+    }
+    br {
+      display: none;
+      @include respond-to(xxl) {
+        display: block;
+      }
+    }
+  }
+
+  // --- Badges ----------------------------------------------------------------
+  &__badges {
+    align-items: center;
+    display: none;
+    flex-wrap: wrap;
+    gap: var(--space-16);
+    margin-top: 0;
+    max-width: 37.563rem;
+
+    @include respond-to(lg) {
+      display: flex;
+      margin-bottom: var(--space-8);
+    }
+  }
+
+  &__badge {
+    flex: 0 0 auto;
+    max-width: 8.5rem;
+    width: 100%;
+    &--marquee {
+      width: 8rem;
+    }
+  }
+
+  &__badge-image {
+    display: block;
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  &__badge-marquee {
+    --coffee-standards-marquee-gap: var(--space-8);
+
+    display: block;
+    margin-inline: 0;
+    margin-top: 0;
+    overflow: visible;
+    background: transparent;
+    @include respond-to(lg) {
+      display: none;
+      margin-top: var(--space-24);
+    }
+  }
+
+  // --- Shared marquee scaffolding -------------------------------------------
+  &__marquee-wrapper {
+    display: flex;
+    gap: var(--coffee-standards-marquee-gap);
+    width: fit-content;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: coffee-standards-scroll var(--marquee-speed, 25s) linear
+        infinite;
+    }
+    @include respond-down(lg) {
+      margin-bottom: var(--space-38);
+    }
+  }
+
+  &__marquee-content,
+  &__marquee-track {
+    align-items: center;
+    display: flex;
+    gap: var(--coffee-standards-marquee-gap);
+    min-width: max-content;
+  }
+
+  // --- Content grid ----------------------------------------------------------
+  &__content {
+    display: grid;
+    gap: 2.5rem 1.063rem;
+    grid-template-areas:
+      "media media"
+      "left right";
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    // margin-top: var(--space-35);
+
+    @include respond-to(lg) {
+      align-items: center;
+      gap: 3rem;
+      grid-template-areas: "left media right";
+      // grid-template-columns: minmax(0, 1.02337fr) minmax(0, 1.0441fr) minmax(
+      //     0,
+      //     1.0356fr
+      //   );
+      grid-template-columns: minmax(0, 1.02337fr) minmax(0, 1.0991fr) minmax(
+          0,
+          1.02337fr
+        );
+      // margin-top: var(--space-40);
+    }
+
+    @include respond-to(xl) {
+      gap: 5rem;
+    }
+  }
+
+  &__column {
+    display: grid;
+    gap: var(--space-16);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    @include respond-to(lg) {
+      gap: var(--space-24);
+      margin-bottom: var(--space-16);
+    }
+
+    &--left {
+      grid-area: left;
+    }
+
+    &--right {
+      grid-area: right;
+    }
+  }
+
+  &__feature {
+    display: flex;
+    align-items: center;
+    hanging-punctuation: first last;
+    margin: 0;
+    text-wrap: balance;
+
+    @include respond-down(lg) {
+      font-size: var(--fs-t2);
+      line-height: var(--lh-t2);
+      letter-spacing: var(--ls-t2);
+      margin-right: -0.2rem;
+    }
+
+    @include respond-to(lg) {
+      font-family: var(--font-display);
+      font-size: var(--fs-h6);
+      line-height: var(--lh-h6);
+      letter-spacing: var(--ls-h6);
+      font-weight: var(--fw-regular);
+    }
+
+    & + & {
+      border-top: var(--bw-2) solid var(--ink);
+      padding-top: var(--space-16);
+
+      @include respond-to(lg) {
+        padding-top: var(--space-24);
+      }
+    }
+  }
+
+  // --- Media -----------------------------------------------------------------
+  &__media {
+    grid-area: media;
+    overflow: visible;
+
+    @include respond-down(lg) {
+      width: 88.3%;
+      margin: 0 auto;
+    }
+  }
+
+  &__media-inner {
+    overflow: visible;
+    position: relative;
+    width: 100%;
+    padding-top: 141.59%;
+
+    @include respond-down(lg) {
+      padding-top: 116.3%;
+    }
+  }
+
+  &__video,
+  &__poster {
+    display: block;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  &__frame {
+    border: var(--bw-2) solid var(--red);
+    pointer-events: none;
+    position: absolute;
+    margin-inline: 0;
+    left: var(--space-11);
+    top: var(--space-30);
+    bottom: var(--space-24);
+    right: var(--space-7);
+
+    @include respond-down(lg) {
+      left: -1.3rem;
+      top: 0;
+      bottom: 0;
+      right: -1.2rem;
+    }
+  }
+
+  // --- Rolling annotation ----------------------------------------------------
+  &__annotation {
+    background-color: var(--red);
+    color: var(--ink);
+    line-height: 1;
+    padding: 0.625rem 0.688rem 0.563rem;
+    position: absolute;
+    right: calc(var(--space-20) * -1);
+    top: 0;
+    transform: translateY(-100%);
+
+    @include respond-to(lg) {
+      padding: 0.625rem var(--space-12) 0.563rem;
+      right: var(--space-7);
+      top: var(--space-30);
+    }
+  }
+
+  &__digits {
+    display: inline-flex;
+  }
+
+  &__digit-group + &__digit-group {
+    margin-left: var(--space-8);
+  }
+
+  &__digit-group {
+    display: inline-flex;
+  }
+
+  &__digit {
+    clip-path: inset(0);
+    display: inline-block;
+    height: 1em;
+    line-height: 1;
+    overflow: hidden;
+    vertical-align: top;
+    width: 0.62em;
+  }
+
+  &__digit-strip {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    transform: translateY(0);
+    transition: transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1);
+    will-change: transform;
+
+    span {
+      display: block;
+      height: 1em;
+      line-height: 1;
+      text-align: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__digit-strip {
+      transition: none;
+    }
+  }
+
+  // --- Press row -------------------------------------------------------------
+  &__press {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+    margin-top: 6.04rem;
+    position: relative;
+    z-index: 2;
+    padding-block: var(--space-26) var(--space-31);
+
+    @include respond-down(lg) {
+      padding: 0;
+      margin-top: 3rem;
+    }
+
+    @include respond-to(lg) {
+      align-items: center;
+      flex-direction: row;
+      justify-content: center;
+      gap: var(--space-65);
+    }
+  }
+
+  &__press-label {
+    flex: 0 0 auto;
+    text-transform: uppercase;
+    padding-inline: var(--space-20);
+
+    @include respond-to(lg) {
+      padding-inline: 0;
+      max-width: var(--space-68);
+    }
+  }
+
+  &__press-marquee {
+    --coffee-standards-marquee-gap: var(--space-32);
+
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    background: transparent;
+    &--mobile-only {
+      @include respond-to(lg) {
+        display: none;
+      }
+    }
+  }
+
+  &__press-static {
+    display: none;
+
+    @include respond-to(lg) {
+      align-items: center;
+      display: flex;
+      gap: var(--space-61);
+      flex: 1;
+      margin-top: var(--space-2);
+    }
+  }
+
+  &__press-logo {
+    align-items: center;
+    display: inline-flex;
+    flex: auto;
+
+    img {
+      display: block;
+      height: auto;
+      max-height: var(--coffee-standards-press-logo-height);
+      min-height: var(--coffee-standards-press-logo-height);
+      object-fit: contain;
+      width: auto;
+    }
+  }
+
+  &__press-logo-image {
+    display: block;
+    height: auto;
+    max-height: var(--coffee-standards-press-logo-height);
+    min-height: var(--coffee-standards-press-logo-height);
+    object-fit: contain;
+    width: auto;
+  }
+}
+
+// The wrapper holds the content plus one aria-hidden clone separated by a gap,
+// so a full content-width scroll is half the wrapper plus half that gap.
+@keyframes coffee-standards-scroll {
+  to {
+    transform: translate3d(
+      calc(-50% - (var(--coffee-standards-marquee-gap) / 2)),
+      0,
+      0
+    );
+  }
+}

@@ -16,7 +16,8 @@
   assign heading_markup = heading_markup | remove: '<h5>' | remove: '</h5>'
   assign heading_markup = heading_markup | remove: '<h6>' | remove: '</h6>'
   assign heading_text = heading_markup | strip_html | strip
-  assign section_heading_alt = heading_text | escape
+  assign fallback_alt = 'Drink Heist'
+  assign section_heading_alt = heading_text | default: fallback_alt | escape
   assign has_left_video = false
 
   if left_media_type == 'video' and section.settings.left_video_desktop != blank
@@ -274,7 +275,7 @@
                     assign item_image = product.featured_image
                   endif
 
-                  assign item_alt = item_title | escape
+                  assign item_alt = item_title | default: item_image.alt | default: fallback_alt | escape
                 -%}
 
                 <div class="join-the-heist-society__product" {{- block.shopify_attributes -}}>

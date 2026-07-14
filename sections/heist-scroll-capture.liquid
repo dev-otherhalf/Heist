@@ -11,6 +11,8 @@
   assign desktop_legal_logo = section.settings.legal_logo
   assign mobile_legal_logo = section.settings.mobile_legal_logo | default: desktop_legal_logo
   assign mobile_story_background = section.settings.mobile_story_background
+  assign fallback_alt = 'Drink Heist'
+  assign glass_alt = section.settings.glass_alt | default: fallback_alt
   assign hand_count = 0
 
   for index in (1..4)
@@ -43,7 +45,7 @@
               sizes: '100vw',
               loading: 'eager',
               fetchpriority: 'high',
-              alt: ''
+              alt: fallback_alt
           }}
         </picture>
       {%- endif -%}
@@ -71,7 +73,7 @@
                 sizes: '(max-width: 749px) 84vw, 62vw',
                 loading: 'eager',
                 class: 'heist-capture__brand-logo-image',
-                alt: ''
+                alt: fallback_alt
             }}
           </picture>
         {%- else -%}
@@ -97,7 +99,7 @@
               sizes: '(max-width: 749px) 74vw, 34vw',
               loading: 'eager',
               class: 'heist-capture__glass',
-              alt: section.settings.glass_alt
+              alt: glass_alt
           }}
         </picture>
       {%- else -%}
@@ -131,7 +133,7 @@
                     sizes: '(max-width: 749px) 92vw, 50vw',
                     loading: 'lazy',
                     class: 'heist-capture__hand-image',
-                    alt: ''
+                    alt: fallback_alt
                 }}
               </picture>
             </figure>
@@ -169,7 +171,7 @@
                   sizes: '(max-width: 749px) 30vw, 12vw',
                   loading: 'lazy',
                   class: 'heist-capture__legal-logo-image',
-                  alt: ''
+                  alt: fallback_alt
               }}
             </picture>
           {%- endif -%}
@@ -231,7 +233,7 @@
       {{
         mobile_story_background
         | image_url: width: 1200
-        | image_tag: widths: '480, 750, 1000, 1200', sizes: '100vw', loading: 'lazy', alt: ''
+        | image_tag: widths: '480, 750, 1000, 1200', sizes: '100vw', loading: 'lazy', alt: fallback_alt
       }}
     </div>
   {%- endif -%}
