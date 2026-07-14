@@ -401,6 +401,18 @@ if (header) {
     });
   });
 
+  const mobileMenu = header.querySelector("details.heist-mobile-menu");
+
+  if (mobileMenu) {
+    mobileMenu.addEventListener("toggle", () => {
+      if (mobileMenu.open) {
+        window.lenis?.stop();
+      } else {
+        window.lenis?.start();
+      }
+    });
+  }
+
   document.addEventListener("shopify:cart:lines-update", (event) => {
     event.promise
       ?.then(({ cart, detail }) => {

@@ -101,24 +101,25 @@ body:has(.brewing-guide__modal.is-open) {
     transition: opacity 0.3s ease;
   }
 
-  // Hover: reveal the video and swap the label text.
-  &__card:hover &__card-video,
-  &__card:focus-visible &__card-video {
-    opacity: 1;
-  }
-
   &__card-text-hover {
     display: none;
   }
 
-  &__card:hover &__card-text-default,
-  &__card:focus-visible &__card-text-default {
-    display: none;
-  }
+  @include respond-to(md) {
+    &__card:hover &__card-video,
+    &__card:focus-visible &__card-video {
+      opacity: 1;
+    }
 
-  &__card:hover &__card-text-hover,
-  &__card:focus-visible &__card-text-hover {
-    display: inline;
+    &__card:hover &__card-text-default,
+    &__card:focus-visible &__card-text-default {
+      display: none;
+    }
+
+    &__card:hover &__card-text-hover,
+    &__card:focus-visible &__card-text-hover {
+      display: inline;
+    }
   }
 
   &__card-footer {
