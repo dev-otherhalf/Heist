@@ -12,6 +12,24 @@
       var(--product-variant-showcase-padding-bottom-desktop);
   }
 
+  &__reviews {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .star-summary {
+      width: 100%;
+      justify-content: center;
+      color: var(--ink);
+      padding-bottom: var(--space-16);
+      svg path {
+        fill: var(--ink);
+      }
+    }
+    @include breakpoints.respond-to(lg) {
+      display: none;
+    }
+  }
+
   &__inner {
     margin-inline: auto;
   }
