@@ -5,6 +5,14 @@ body.product{
     .heist-sticky-cta{
         display: none;
     }
+    .heist-header--inner{
+        @include respond-down(md){
+        border-bottom: none;
+        &.is-pinned{
+            border-bottom: var(--bw-2) solid var(--ink);
+        }
+        }
+    }
 }
 
 .page-wrapper{
@@ -13,9 +21,22 @@ body.product{
             .product-information{
                 &__grid{
                     display: flex;
+                    flex-direction: column;
+                    @include respond-to(lg){
+                    flex-direction: row;
+                    }
                 }
                 &__media{
+                    padding: 0;
                     @include respond-to(lg){
+                        flex: 0 0 45%;
+                        max-width: 45%;
+                        margin: 0;
+                        padding: 0 0 var(--space-96);
+                        min-width: auto;
+                        width: 100%;
+                    }
+                    @include respond-to(xxl){
                         flex: 0 0 53.889%;
                         max-width: 53.889%;
                         margin: 0;
@@ -25,6 +46,24 @@ body.product{
                     }
                     slideshow-container{
                         border-bottom: var(--bw-2) solid var(--ink);
+                        background: none;
+                        @include respond-down(lg){
+                            border: none;
+                        }
+                        slideshow-slides{
+                            @include respond-down(lg){
+                                gap: var(--space-12);
+                            }
+                            .product-media-container{
+                                @include respond-down(md){
+                                width: 81.067%;
+                                border: var(--bw-2) solid var(--ink);
+                                }
+                            }
+                        }
+                    }
+                    .media-gallery__mobile-controls{
+                        display: none;
                     }
                     .slideshow-controls{
                         &__thumbnails{
@@ -52,7 +91,7 @@ body.product{
                     .product-media{
                         position: relative;
                         margin: 0;
-                        padding:0px 0 90.722%;
+                        padding:0px 0 100%;
                         overflow: hidden;
                         display: block;
                         width: 100%;
@@ -78,9 +117,18 @@ body.product{
                 width: 100%;
                 min-width: auto;
                 padding: var(--space-32) var(--space-20) 0;
+                overflow: hidden;
                 @include respond-to(lg){
+                    padding: var(--space-40) var(--space-20) var(--space-107) var(--space-20);   
+                    border-left: var(--bw-2) solid var(--ink);
+                    flex: 0 0 55%;
+                    max-width: 55%;
+                }
+                @include respond-to(xxl){
                     padding: var(--space-40) var(--space-56) var(--space-107) var(--space-64);   
                     border-left: var(--bw-2) solid var(--ink);
+                    flex: 0 0 46.111%;
+                    max-width: 46.111%;
                 }
                 .product-info-details{
                     border-bottom: var(--bw-1) solid var(--ink);
@@ -91,7 +139,13 @@ body.product{
                     margin-bottom: var(--space-16);
                     }
                     &__title{
-                        margin-bottom: var(--space-16);
+                        margin-bottom: var(--space-12);
+                        @include respond-down(md){
+                            font-size: var(--fs-h7);
+                            line-height: var(--lh-h7);
+                            letter-spacing: var(--ls-h7);
+                            font-weight: var(--fw-regular);
+                        }
                         @include respond-to(md){
                             margin-bottom: var(--space-16);
                         }

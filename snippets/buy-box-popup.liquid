@@ -20,15 +20,26 @@
       data-popup-close
       aria-label="{{ 'actions.close' | t | default: 'Close' }}"
     >
-      <span class="svg-wrapper">{{- 'icon-close.svg' | inline_asset_content -}}</span>
+      <span class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <g clip-path="url(#clip0_5268_23788)">
+            <path d="M19.0713 4.9292L4.92915 19.0713" stroke="#282828" stroke-width="4" stroke-linecap="square"/>
+            <path d="M19.0708 19.0713L4.92871 4.9292" stroke="#282828" stroke-width="4" stroke-linecap="square"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_5268_23788">
+              <rect width="24" height="24" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </span>
     </button>
 
     <h2 class="buy-box-popup__title t-h6">{{ s.popup_title | default: 'Want to Upgrade to the Heist Society™ and Save 25%?' }}</h2>
 
     {% if s.popup_subtitle != blank %}
       <div class="buy-box-popup__subtitle-row">
-        <p class="buy-box-popup__subtitle t-t4">{{ s.popup_subtitle }}</p>
-        {% render 'buy-box-tooltip', content: s.popup_tooltip, label: s.popup_subtitle %}
+        <p class="buy-box-popup__subtitle t-t2">{{ s.popup_subtitle }}{% render 'buy-box-tooltip', content: s.popup_tooltip, label: s.popup_subtitle %}</p>
       </div>
     {% endif %}
 

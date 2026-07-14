@@ -19,7 +19,8 @@
     class="buy-box__guarantee t-n1"
     {% if detail == 'sub' %}data-sub-detail{% elsif detail == 'onetime' %}data-onetime-detail hidden{% endif %}
   >
-    <span class="buy-box__guarantee-text">{{ s.guarantee_text }}</span>
+    <span class="buy-box__guarantee-text">{{ s.guarantee_text }}
     {% render 'buy-box-tooltip', content: s.guarantee_tooltip, label: s.guarantee_text %}
+    </span>
   </div>
 {% endif %}

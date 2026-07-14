@@ -22,7 +22,7 @@
             "large_first_image": false,
             "icons_style": "none",
             "slideshow_controls_style": "thumbnails",
-            "slideshow_mobile_controls_style": "thumbnails",
+            "slideshow_mobile_controls_style": "dots",
             "thumbnail_position": "bottom",
             "thumbnail_width": 72,
             "thumbnail_radius": 0,
@@ -62,8 +62,8 @@
             "border_opacity": 100,
             "border_color": "",
             "border_radius": 0,
-            "padding-block-start": 24,
-            "padding-block-end": 24,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -89,7 +89,7 @@
                 "heist_summary_subtitle": "Heist Society™ price locked for life · Pause, skip, or cancel anytime",
                 "heist_badge": "",
                 "heist_prepaid_divisor": 3,
-                "perk_list": "Lowest price. Locked forever.\nFree shipping forever, No thresholds.\nLimited-edition Smuggle Bear every 6 months.\nSmuggle Bear Welcome Kit (value $70).",
+                "perk_list": "Lowest price. Locked forever.\nFree shipping forever, No thresholds\nLimited-edition Smuggle Bear every 6 months.\nSmuggle Bear Welcome Kit (value $70).",
                 "kit_label": "Welcome kit arrives with first order.",
                 "kit_image_1": "shopify://shop_images/tin_scoop.jpg",
                 "kit_caption_1": "tin + scoop",
@@ -128,7 +128,7 @@
               "settings": {
                 "heading": "",
                 "open_first": false,
-                "padding-block-start": 24,
+                "padding-block-start": 0,
                 "padding-block-end": 0
               },
               "blocks": {}
@@ -138,8 +138,10 @@
               "name": "Product Videos",
               "settings": {
                 "heading": "Hear from members of the Heist Society™",
-                "padding-block-start": 24,
-                "padding-block-end": 0
+                "padding-block-start": 32,
+                "padding-block-end": 0,
+                "padding-block-start-mobile": 24,
+                "padding-block-end-mobile": 0
               },
               "blocks": {}
             }

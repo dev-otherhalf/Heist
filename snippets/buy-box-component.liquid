@@ -118,7 +118,11 @@
             aria-label="Decrease quantity for {{ label | escape }}"
             {% if qty == 0 %}disabled{% endif %}
           >
-            <span class="svg-wrapper">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+            <span class="svg-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M14.6668 8H1.3335" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
           </button>
           <span class="buy-box-stepper__value t-n1" data-stepper-value>{{ qty }}</span>
           <input type="hidden" data-stepper-input value="{{ qty }}">
@@ -129,7 +133,19 @@
             aria-label="Increase quantity for {{ label | escape }}"
             {% unless variant.available %}disabled{% endunless %}
           >
-            <span class="svg-wrapper">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+            <span class="svg-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <g clip-path="url(#clip0_6315_1913)">
+                  <path d="M8 1.3335V14.6668" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+                  <path d="M14.6668 8H1.3335" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_6315_1913">
+                    <rect width="16" height="16" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </span>
           </button>
         </div>
       </div>
