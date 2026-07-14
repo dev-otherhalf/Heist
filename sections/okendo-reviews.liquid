@@ -1,0 +1,133 @@
+{% comment %}
+  Okendo Reviews — standalone section that renders the Okendo product reviews
+  widget with configurable top/bottom padding for mobile and desktop.
+{% endcomment %}
+
+{%- liquid
+  # summaryData may be a metafield object (use .value) or already the parsed
+  # hash ({"reviewCount"=>1, ...}) — fall back to the raw metafield either way.
+  assign okendo_summary = product.metafields.okendo.summaryData.value | default: product.metafields.okendo.summaryData
+  assign review_count = okendo_summary.reviewCount | default: 0
+-%}
+
+<section
+  class="okendo-reviews-section"
+  id="shopify-section-{{- section.id -}}"
+  style="
+    --okendo-reviews-padding-top-mobile: {{- section.settings.padding_top_mobile -}}px;
+    --okendo-reviews-padding-bottom-mobile: {{- section.settings.padding_bottom_mobile -}}px;
+    --okendo-reviews-padding-top-desktop: {{- section.settings.padding_top_desktop -}}px;
+    --okendo-reviews-padding-bottom-desktop: {{- section.settings.padding_bottom_desktop -}}px;
+  "
+>
+  <div class="page-width">
+    {%- if review_count > 0 -%}
+      <div class="okendo-reviews-section__header">
+        <h2 class="okendo-reviews-section__heading t-h4">
+          {{- section.settings.heading | default: 'Word On The Street' -}}
+        </h2>
+
+        {%- if section.settings.barcode_image != blank -%}
+          <span class="okendo-reviews-section__barcode" aria-hidden="true">
+            {{-
+              section.settings.barcode_image
+              | image_url: width: 480
+              | image_tag: loading: 'lazy', alt: '', widths: '240, 360, 480'
+            -}}
+          </span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {% render 'okendo-reviews-widget', product: product %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .okendo-reviews-section {
+    padding-block-start: var(--okendo-reviews-padding-top-mobile);
+    padding-block-end: var(--okendo-reviews-padding-bottom-mobile);
+  }
+
+  .okendo-reviews-section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-xl, 1.5rem);
+    margin-block-end: var(--margin-xl, 2rem);
+  }
+
+  .okendo-reviews-section__heading {
+    margin: 0;
+  }
+
+  .okendo-reviews-section__barcode img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+
+  @media screen and (min-width: 990px) {
+    .okendo-reviews-section {
+      padding-block-start: var(--okendo-reviews-padding-top-desktop);
+      padding-block-end: var(--okendo-reviews-padding-bottom-desktop);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Okendo Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Word On The Street",
+      "info": "Shown above the reviews only when the product has reviews."
+    },
+    {
+      "type": "image_picker",
+      "id": "barcode_image",
+      "label": "Heading graphic (barcode)"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "default": 24
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "default": 48
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Okendo Reviews"
+    }
+  ]
+}
+{% endschema %}

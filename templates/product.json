@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */ {
+ */
+{
   "sections": {
     "main": {
       "type": "product-information",
@@ -117,6 +118,7 @@
                 "border_opacity": 100,
                 "border_color": "",
                 "border_radius": 0,
+                "link": "",
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 0,
@@ -459,7 +461,19 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "okendo_reviews_yqzgF8": {
+      "type": "okendo-reviews",
+      "name": "Okendo Reviews",
+      "settings": {
+        "heading": "Word On The Street",
+        "barcode_image": "shopify://shop_images/Frame_1.svg",
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 48
+      }
     }
   },
-  "order": ["main", "product_recommendations_qggXJq"]
+  "order": ["main", "product_recommendations_qggXJq", "okendo_reviews_yqzgF8"]
 }
