@@ -8,7 +8,11 @@
   # hash ({"reviewCount"=>1, ...}) — fall back to the raw metafield either way.
   assign okendo_summary = product.metafields.okendo.summaryData.value | default: product.metafields.okendo.summaryData
   assign review_count = okendo_summary.reviewCount | default: 0
+  assign desktop_background = section.settings.background_image_desktop
+  assign mobile_background = section.settings.background_image_mobile | default: desktop_background
 -%}
+
+{%- render 'vite-tag', entry: 'sections/styles/okendo-reviews.scss' -%}
 
 <section
   class="okendo-reviews-section"
@@ -20,6 +24,40 @@
     --okendo-reviews-padding-bottom-desktop: {{- section.settings.padding_bottom_desktop -}}px;
   "
 >
+  {%- if desktop_background != blank or mobile_background != blank -%}
+    <picture class="okendo-reviews-section__background" aria-hidden="true">
+      {%- if mobile_background != blank -%}
+        <source
+          media="(max-width: 989px)"
+          srcset="{{ mobile_background | image_url: width: 1500 }}"
+        >
+      {%- endif -%}
+      {%- if desktop_background != blank -%}
+        {{
+          desktop_background
+          | image_url: width: 2560
+          | image_tag:
+            widths: '750, 1100, 1500, 2000, 2560',
+            sizes: '100vw',
+            loading: 'lazy',
+            class: 'okendo-reviews-section__background-image',
+            alt: ''
+        }}
+      {%- else -%}
+        {{
+          mobile_background
+          | image_url: width: 1500
+          | image_tag:
+            widths: '750, 1100, 1500',
+            sizes: '100vw',
+            loading: 'lazy',
+            class: 'okendo-reviews-section__background-image',
+            alt: ''
+        }}
+      {%- endif -%}
+    </picture>
+  {%- endif -%}
+
   <div class="page-width">
     {%- if review_count > 0 -%}
       <div class="okendo-reviews-section__header">
@@ -45,8 +83,29 @@
 
 {% stylesheet %}
   .okendo-reviews-section {
+    position: relative;
     padding-block-start: var(--okendo-reviews-padding-top-mobile);
     padding-block-end: var(--okendo-reviews-padding-bottom-mobile);
+    overflow: hidden;
+  }
+
+  .okendo-reviews-section > .page-width {
+    position: relative;
+    z-index: 1;
+  }
+
+  .okendo-reviews-section__background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .okendo-reviews-section__background-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .okendo-reviews-section__header {
@@ -79,6 +138,20 @@
 {
   "name": "Okendo Reviews",
   "settings": [
+    {
+      "type": "header",
+      "content": "Background images"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_desktop",
+      "label": "Desktop background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Mobile background image"
+    },
     {
       "type": "text",
       "id": "heading",
