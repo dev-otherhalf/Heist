@@ -146,10 +146,10 @@
               "name": "Product Videos",
               "settings": {
                 "heading": "Hear from members of the Heist Society™",
-                "padding-block-start": 32,
+                "padding-block-start": 30,
                 "padding-block-end": 0,
-                "padding-block-start-mobile": 24,
-                "padding-block-end-mobile": 0
+                "padding-block-start-mobile": 15,
+                "padding-block-end-mobile": 32
               },
               "blocks": {}
             }
