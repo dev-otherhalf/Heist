@@ -62,243 +62,114 @@
             "border_opacity": 100,
             "border_color": "",
             "border_radius": 0,
-            "padding-block-start": 24,
-            "padding-block-end": 24,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {
-            "group_icgrde": {
-              "type": "group",
-              "name": "Header",
+            "okendo_star_summary_6rYrxx": {
+              "type": "okendo-star-summary",
+              "name": "Review stars (Okendo)",
               "settings": {
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "background_media": "none",
-                "background_color": "",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0,
-                "link": "",
-                "open_in_new_tab": false,
-                "placeholder": "",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "alignment": "left"
               },
-              "blocks": {
-                "text_xrnftG": {
-                  "type": "text",
-                  "name": "Product title",
-                  "settings": {
-                    "text": "<h1>{{ closest.product.title }}</h1>",
-                    "width": "100%",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "h3",
-                    "font": "var(--font-primary--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "text_color": "",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "price_tVjtKg": {
-                  "type": "price",
-                  "settings": {
-                    "show_sale_price_first": true,
-                    "show_installments": false,
-                    "show_tax_info": false,
-                    "type_preset": "paragraph",
-                    "width": "100%",
-                    "alignment": "left",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "text_color": "",
-                    "padding-block-start": 4,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": ["text_xrnftG", "price_tVjtKg"]
+              "blocks": {}
             },
-            "divider_VJhene": {
-              "type": "_divider",
-              "name": "t:names.divider",
+            "product_info_details_nFiQpA": {
+              "type": "product-info-details",
+              "name": "Product info details",
+              "settings": {},
+              "blocks": {}
+            },
+            "subscription_bPmTtM": {
+              "type": "subscription",
+              "name": "Subscription",
               "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "divider_color": "{{ settings.color_palette.color2 }}",
-                "width_percent": 100,
+                "layout_variation": "variation_1",
+                "one_time_enabled": true,
+                "default_tier": "heist",
+                "bags_label": "Select your bags: take more, save more.",
+                "default_bag_quantity": 1,
+                "heist_title": "Heist Society™ Subscription",
+                "heist_subtitle": "3 month commitment, prepaid. Then ships every 4 weeks.",
+                "heist_upgrade_title": "Upgrade & Join the Heist Society™",
+                "heist_summary_subtitle": "Heist Society™ price locked for life · Pause, skip, or cancel anytime",
+                "heist_badge": "",
+                "heist_prepaid_divisor": 3,
+                "perk_list": "Lowest price. Locked forever.\nFree shipping forever, No thresholds\nLimited-edition Smuggle Bear every 6 months.\nSmuggle Bear Welcome Kit (value $70).",
+                "kit_label": "Welcome kit arrives with first order.",
+                "kit_image_1": "shopify://shop_images/tin_scoop.jpg",
+                "kit_caption_1": "tin + scoop",
+                "kit_image_2": "shopify://shop_images/SmuggleBear.jpg",
+                "kit_caption_2": "smuggle bear",
+                "kit_image_3": "shopify://shop_images/MemberCard.jpg",
+                "kit_caption_3": "member card",
+                "standard_title": "Subscribe & Save",
+                "subscribe_bar_label": "Subscribe & Save up to 25%",
+                "standard_subtitle": "Ships every 4 weeks · Pause, skip, or cancel anytime · Free shipping",
+                "standard_badge": "",
+                "standard_perk_list": "Free shipping on every order.\nPause, skip or cancel anytime.",
+                "default_frequency_label": "2 weeks",
+                "one_time_title": "One time purchase",
+                "cta_label": "Add to cart",
+                "subscribe_cta_label": "Start the heist",
+                "cta_heist_label": "Join the Heist Society™",
+                "cta_one_time_label": "Buy now",
+                "guarantee_text": "30-day satisfaction guarantee • Refill ships in 30 days",
+                "guarantee_tooltip": "By default you will receive a refill every 30 days of your selected quantity. Skip, pause, or cancel anytime.\n\nBy subscribing and/or joining Heist Society, you get discounted pricing and benefits and gifts available only to your chosen subscription level.",
+                "enable_sticky_bar": true,
+                "sticky_label": "Order Summary:",
+                "sticky_cta_label": "Finalize your order",
+                "sticky_saving_label": "Your saving",
+                "popup_title": "Want to Upgrade to the Heist Society™ and Save 25%?",
+                "popup_subtitle": "3 months prepaid today, then monthly. Cancel anytime after.",
+                "popup_tooltip": "By default you will receive a refill every 30 days of your selected quantity. Skip, pause, or cancel anytime.\n\nBy subscribing and/or joining Heist Society, you get discounted pricing and benefits and gifts available only to your chosen subscription level.",
+                "popup_cta_label": "Join the Heist Society™",
+                "popup_footer": "30-day escape plan • Love it or your money back"
+              },
+              "blocks": {}
+            },
+            "product_faqs_mQWJKi": {
+              "type": "product-faqs",
+              "name": "Product FAQs",
+              "settings": {
+                "heading": "",
+                "open_first": false,
                 "padding-block-start": 0,
                 "padding-block-end": 0
               },
               "blocks": {}
             },
-            "variant_picker_R3rGDr": {
-              "type": "variant-picker",
+            "product_videos_UQHjp8": {
+              "type": "product-videos",
+              "name": "Product Videos",
               "settings": {
-                "variant_style": "buttons",
-                "show_swatches": false,
-                "option_label_text_color": "",
-                "variant_style_class": "default",
-                "custom_variant_background": "{{ settings.color_palette.background }}",
-                "custom_variant_text": "{{ settings.color_palette.foreground }}",
-                "custom_variant_border": "{{ settings.color_palette.foreground }}",
-                "selected_variant_style_class": "default",
-                "custom_selected_variant_background": "{{ settings.color_palette.foreground }}",
-                "custom_selected_variant_text": "{{ settings.color_palette.background }}",
-                "custom_selected_variant_border": "{{ settings.color_palette.foreground }}",
-                "alignment": "left",
-                "padding-block-start": 0,
+                "heading": "Hear from members of the Heist Society™",
+                "padding-block-start": 32,
                 "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "buy_buttons_eYQEYi": {
-              "type": "buy-buttons",
-              "settings": {
-                "stacking": true,
-                "text_color": "",
-                "show_pickup_availability": false,
-                "gift_card_form": true,
-                "recipient_button_style": "default",
-                "recipient_button_background": "{{ settings.color_palette.background }}",
-                "recipient_button_text": "{{ settings.color_palette.foreground }}",
-                "recipient_button_border": "{{ settings.color_palette.foreground }}",
-                "selected_recipient_button_style": "default",
-                "selected_recipient_button_background": "{{ settings.color_palette.foreground }}",
-                "selected_recipient_button_text": "{{ settings.color_palette.background }}",
-                "selected_recipient_button_border": "{{ settings.color_palette.foreground }}",
-                "input_style": "default",
-                "input_background_color": "{{ settings.color_palette.background }}",
-                "input_text_color": "{{ settings.color_palette.foreground }}",
-                "input_border_color": "{{ settings.color_palette.foreground }}",
-                "border_width": 1,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "quantity": {
-                  "type": "quantity",
-                  "static": true,
-                  "settings": {
-                    "input_style": "default",
-                    "input_background_color": "{{ settings.color_palette.background }}",
-                    "input_text_color": "{{ settings.color_palette.foreground }}",
-                    "input_border_color": "{{ settings.color_palette.foreground }}",
-                    "border_width": 1,
-                    "border_radius": 0
-                  },
-                  "blocks": {}
-                },
-                "add-to-cart": {
-                  "type": "add-to-cart",
-                  "static": true,
-                  "settings": {
-                    "style_class": "button",
-                    "custom_button_background": "{{ settings.color_palette.foreground }}",
-                    "custom_button_text": "{{ settings.color_palette.background }}",
-                    "custom_button_border": "{{ settings.color_palette.background }}"
-                  },
-                  "blocks": {}
-                },
-                "accelerated-checkout": {
-                  "type": "accelerated-checkout",
-                  "static": true,
-                  "settings": {},
-                  "blocks": {}
-                }
-              },
-              "block_order": []
-            },
-            "text_aEtTtq": {
-              "type": "text",
-              "name": "Product description",
-              "settings": {
-                "text": "{{ closest.product.description }}",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-primary--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-block-start-mobile": 24,
+                "padding-block-end-mobile": 0
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "group_icgrde",
-            "divider_VJhene",
-            "variant_picker_R3rGDr",
-            "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "okendo_star_summary_6rYrxx",
+            "product_info_details_nFiQpA",
+            "subscription_bPmTtM",
+            "product_faqs_mQWJKi",
+            "product_videos_UQHjp8"
           ]
         }
       },
-      "block_order": ["disclosures_g9mWze"],
       "settings": {
-        "content_width": "content-center-aligned",
+        "content_width": "content-full-width",
         "desktop_media_position": "left",
         "equal_columns": false,
         "limit_details_width": false,
         "gap": 48,
-        "enable_sticky_add_to_cart": true,
-        "background_color": "{{ settings.color_palette.background }}",
+        "background_color": "rgba(0,0,0,0)",
         "padding-block-start": 0,
         "padding-block-end": 0
       }
@@ -417,9 +288,9 @@
         "mobile_bottom_padding": 64
       }
     },
-    "design_tokens_LnMchk": {
-      "type": "design-tokens",
-      "name": "Design tokens",
+    "full_briefing_nz7HDP": {
+      "type": "full-briefing",
+      "name": "Full briefing",
       "settings": {
         "briefing": "the-full-briefing",
         "background_image_desktop": "shopify://shop_images/full-briefing-bg.jpg",
