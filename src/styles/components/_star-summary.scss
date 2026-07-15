@@ -6,15 +6,19 @@
 .star-summary {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-4);
-  color: var(--cream);
-  padding-bottom: var(--space-25);
+  gap: var(--space-3);
+  // Stars (currentColor) and count text follow this; overridable via the var.
+  color: var(--star-summary-color, var(--cream));
+  padding-bottom: var(--space-12);
 }
 
 .star-summary__stars {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-1);
+  @include respond-down(md) {
+    gap: var(--space-2);
+  }
 }
 
 // All three icons share a 16×16 viewBox, so a fixed square keeps them aligned.
@@ -23,6 +27,10 @@
   width: 1rem;
   height: 1rem;
   flex: none;
+  @include respond-down(md) {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
 }
 
 .star-summary__count {

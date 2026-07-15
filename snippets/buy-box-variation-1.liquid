@@ -36,7 +36,7 @@
         <span class="buy-box-v1row__pricing">
           <span class="buy-box-tier__price-row">
             <span class="buy-box-tier__price t-s3" data-tier-price></span>
-            <span class="buy-box-tier__unit t-n1">/bag</span>
+            <span class="buy-box-tier__unit t-n1-med">/bag</span>
             <s class="buy-box-tier__compare t-s3" data-tier-compare hidden></s>
           </span>
           <span class="buy-box-tier__badge t-n2-med" data-tier-badge hidden></span>
@@ -71,17 +71,23 @@
     <div class="buy-box-sub buy-box-sub--onetime" data-onetime-box>
       <button type="button" class="buy-box-v1row" data-select-tier="one_time">
         <span class="buy-box-tier__toggle" data-v1-toggle="one_time" aria-hidden="true"></span>
-        <span class="buy-box-v1row__label t-n1-med">{{ s.one_time_title | default: 'One time purchase' }}</span>
-        <span class="buy-box-tier__save t-n1" data-onetime-save data-onetime-detail hidden></span>
+        <span class="buy-box-tier__title-onetime">
+          <span class="buy-box-v1row__label t-n1-med">{{ s.one_time_title | default: 'One time purchase' }}</span>
+          <span class="buy-box-tier__save t-n1" data-onetime-save data-onetime-detail hidden></span>
+        </span>
       </button>
 
       <div class="buy-box-onetime__pricing" data-onetime-detail hidden>
         <span class="buy-box-tier__price-row">
-          <span class="buy-box-tier__price t-s3" data-onetime-price></span>
-          <span class="buy-box-tier__unit t-n1">/bag</span>
+          <span class="buy-box-tier__price-row-inner">
+            <span class="buy-box-tier__price t-s3" data-onetime-price></span>
+            <span class="buy-box-tier__unit t-n1">/bag</span>
+          </span>
           <s class="buy-box-tier__compare t-s3" data-onetime-compare hidden></s>
         </span>
       </div>
+
+      <span class="buy-box-tier__save t-n1 hide-from-md" data-onetime-save data-onetime-detail hidden></span>
 
       <button type="button" class="buy-box__submit btn btn--block" data-buy-box-submit data-onetime-detail hidden>
         <span class="buy-box__submit-label" data-cta-label>{{ s.cta_one_time_label | default: 'Buy now' }}</span>

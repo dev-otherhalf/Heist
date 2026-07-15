@@ -1,7 +1,6 @@
 const DURATION = 300;
 const EASING = "ease";
 
-
 const running = new WeakMap();
 
 function prefersReducedMotion() {
@@ -70,11 +69,9 @@ function registerFaqs(group) {
     const panel = faq.querySelector(".full-briefing__a");
     if (!summary || !panel) continue;
 
-
     faq.removeAttribute("name");
 
     if (faq.open) faq.classList.add("is-open");
-
 
     summary.addEventListener("click", (event) => {
       event.preventDefault();

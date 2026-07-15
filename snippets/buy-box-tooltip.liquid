@@ -30,7 +30,19 @@
       data-tooltip-close
       aria-label="{{ 'Close' }}"
     >
-      <span class="svg-wrapper">{{- 'icon-close.svg' | inline_asset_content -}}</span>
+      <span class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <g clip-path="url(#clip0_5268_24232)">
+            <path d="M12.7139 3.28589L3.28578 12.714" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+            <path d="M12.7142 12.714L3.28613 3.28589" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_5268_24232">
+              <rect width="16" height="16" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </span>
     </button>
     <div class="buy-box__tooltip-body t-t4">{{ content | escape | newline_to_br }}</div>
   </dialog>

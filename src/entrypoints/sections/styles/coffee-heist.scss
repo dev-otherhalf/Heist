@@ -1,14 +1,5 @@
-// =============================================================================
-// Coffee Heist comparison section
-// Self-contained bundle (own Vite entry, not part of theme.scss's cascade),
-// so tokens + typography are pulled in directly — mirrors footer.scss.
-// BEM: .coffee-heist-section (outer wrapper) and .coffee-heist (tabs block,
-// all &__* elements below belong to it) nested per Sass convention.
-// =============================================================================
-
 @use "../../../styles/settings/tokens";
 @use "../../../styles/settings/breakpoints" as *;
-@use "../../../styles/components/typography";
 
 .coffee-heist-section {
   position: relative;
@@ -26,15 +17,21 @@
 
   &:has(.brewing-guide) {
     gap: var(--space-40);
+
+    .brewing-guide__heading {
+      @include respond-down(lg) {
+        font-size: var(--fs-h5);
+        line-height: var(--lh-h5);
+        letter-spacing: var(--ls-h5);
+        font-weight: var(--fw-regular);
+      }
+    }
+
     @include respond-to(md) {
       gap: var(--space-74);
     }
   }
 
-  // Tab-driven gradient backdrop — spans the whole section (behind the
-  // receipts carousel and the tabs block), crossfading with the active tab.
-  // Class stays BEM-owned by .coffee-heist even though it lives at section
-  // level in the DOM.
   .coffee-heist__bgs {
     position: absolute;
     inset: 0;
@@ -132,12 +129,14 @@ $coffee-heist-score-reserve: var(--space-50);
     color: var(--cream);
     margin-block-end: var(--space-24);
     text-wrap: balance;
+
     @include respond-down(md) {
       font-size: var(--fs-h5);
       line-height: var(--lh-h5);
       letter-spacing: var(--ls-h5);
       font-weight: var(--fw-regular);
     }
+
     @include respond-to(md) {
       margin-block-end: var(--space-23);
     }
@@ -158,6 +157,7 @@ $coffee-heist-score-reserve: var(--space-50);
     margin-top: var(--space-55);
     gap: var(--space-8);
     margin-bottom: -0.125rem;
+
     @include respond-to(md) {
       gap: var(--space-12);
     }
@@ -177,6 +177,7 @@ $coffee-heist-score-reserve: var(--space-50);
     display: flex;
     align-items: center;
     justify-content: center;
+
     @include respond-to(md) {
       min-width: 15.5rem;
       max-width: 100%;
@@ -187,6 +188,7 @@ $coffee-heist-score-reserve: var(--space-50);
 
     &[aria-selected="true"] {
       background: var(--bone);
+
       @include respond-to(md) {
         border-bottom: none;
         padding-bottom: var(--space-2);
@@ -217,10 +219,12 @@ $coffee-heist-score-reserve: var(--space-50);
   &__chart {
     padding-top: var(--space-7);
     overflow: hidden;
+
     @include respond-to(md) {
       padding-top: var(--space-17);
     }
   }
+
   &__bar-row {
     display: grid;
     grid-template-columns: #{$coffee-heist-axis-spacer} 1fr;
@@ -233,12 +237,15 @@ $coffee-heist-score-reserve: var(--space-50);
       gap: 0;
       padding: var(--space-8) 0;
     }
+
     &:nth-last-child(2) {
       padding-bottom: var(--space-15);
+
       @include respond-to(md) {
         padding-bottom: var(--space-22);
       }
     }
+
     &--featured {
       .coffee-heist__bar-brand {
         font-weight: var(--fw-bold, 700);
@@ -264,6 +271,7 @@ $coffee-heist-score-reserve: var(--space-50);
       font-weight: var(--fw-bold);
       font-size: var(--fs-n2);
       line-height: var(--lh-n2);
+
       .t-n1 {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
@@ -282,16 +290,19 @@ $coffee-heist-score-reserve: var(--space-50);
     max-height: var(--space-14);
     width: auto;
     object-fit: contain;
+
     @include respond-to(md) {
       max-height: 1.572em;
     }
   }
+
   &__bar-placeholder.t-n1 {
     @include respond-down(md) {
       font-size: var(--fs-n2);
       line-height: var(--lh-n2);
     }
   }
+
   &__bar-track {
     position: relative;
     height: var(--space-32);
@@ -322,6 +333,7 @@ $coffee-heist-score-reserve: var(--space-50);
     transform: translate(var(--space-8), -50%);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+
     &.t-n1 {
       @include respond-down(md) {
         font-size: var(--fs-n2);
@@ -349,6 +361,7 @@ $coffee-heist-score-reserve: var(--space-50);
     padding-block-start: var(--space-7);
     border-block-start: var(--bw-2) solid var(--ink);
     position: relative;
+
     &:before {
       content: "";
       position: absolute;
@@ -357,13 +370,16 @@ $coffee-heist-score-reserve: var(--space-50);
       width: var(--space-2);
       background: var(--ink);
     }
+
     @include respond-down(md) {
       padding-inline-end: 0;
       padding-block-start: var(--space-12);
+
       .t-n1 {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
+
       span:nth-child(even) {
         display: none;
       }
@@ -373,11 +389,13 @@ $coffee-heist-score-reserve: var(--space-50);
   &__source.t-n2 {
     margin-block-start: var(--space-44);
     text-transform: uppercase;
+
     @include respond-down(md) {
       margin-block-start: var(--space-22);
       font-size: var(--fs-n3);
       line-height: 0.9625rem;
     }
+
     p {
       margin: 0;
     }
@@ -403,22 +421,26 @@ $coffee-heist-score-reserve: var(--space-50);
     width: 100%;
     min-width: 100%;
     border-collapse: collapse;
+
     .t-n1 {
       @include respond-down(lg) {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
     }
+
     th {
       padding: 0 0 var(--space-8);
       border-block-end: var(--bw-2) solid var(--ink);
       text-align: start;
       font-weight: var(--fw-regular);
+
       @include respond-down(lg) {
         font-size: var(--fs-t2);
         line-height: var(--lh-t2);
         letter-spacing: var(--ls-t2);
       }
+
       &.coffee-heist__evidence-col {
         @include respond-down(lg) {
           font-family: var(--font-mono);
@@ -429,12 +451,15 @@ $coffee-heist-score-reserve: var(--space-50);
           text-transform: uppercase;
         }
       }
+
       @include respond-to(lg) {
         padding: 0 0 var(--space-17);
       }
+
       &.coffee-heist__evidence-heist-col {
         border: var(--bw-2) solid var(--ink);
         position: relative;
+
         &:before {
           position: absolute;
           background: var(--red);
@@ -445,46 +470,56 @@ $coffee-heist-score-reserve: var(--space-50);
           left: -0.125rem;
           border: var(--bw-2) solid var(--ink);
           border-bottom: none;
+
           @include respond-down(lg) {
             top: -0.875rem;
             height: var(--space-14);
           }
         }
       }
+
       &:nth-child(1) {
         @include respond-down(lg) {
           width: var(--space-110);
         }
       }
     }
+
     td {
       padding: var(--space-12) 0 var(--space-17);
       border-block-end: var(--bw-2) solid var(--ink);
       text-align: start;
+
       &:nth-child(1) {
         @include respond-down(lg) {
           width: var(--space-122);
         }
       }
+
       @include respond-to(lg) {
         padding: var(--space-15) 0 var(--space-15);
       }
+
       &.coffee-heist__evidence-heist-col {
         border: var(--bw-2) solid var(--ink);
         position: relative;
       }
+
       .td_icon_svg {
         width: var(--space-24);
         height: var(--space-24);
         margin: 0 auto;
         display: block;
+
         @include respond-to(lg) {
           width: var(--space-32);
           height: var(--space-32);
         }
+
         svg {
           width: var(--space-24);
           height: var(--space-24);
+
           @include respond-to(lg) {
             width: var(--space-32);
             height: var(--space-32);
@@ -498,10 +533,12 @@ $coffee-heist-score-reserve: var(--space-50);
       text-align: center;
     }
   }
+
   tbody {
     tr:nth-last-child(1) {
       .coffee-heist__evidence-heist-col {
         position: relative;
+
         &:before {
           position: absolute;
           background: var(--red);
@@ -516,26 +553,32 @@ $coffee-heist-score-reserve: var(--space-50);
       }
     }
   }
+
   &__evidence-heist-col {
     background: var(--red);
     font-weight: var(--fw-medium);
     width: var(--space-126);
+
     @include respond-to(lg) {
       width: 12.4rem;
     }
   }
+
   &__evidence-heist-empty-col {
     min-width: var(--space-98);
     max-width: var(--space-98);
     width: var(--space-98);
+
     @include respond-down(lg) {
       display: none;
     }
   }
+
   &__evidence-col {
     min-width: var(--space-90);
     max-width: var(--space-90);
     width: var(--space-90);
+
     @include respond-to(lg) {
       min-width: 20.75rem;
       max-width: 20.75rem;
@@ -555,17 +598,13 @@ $coffee-heist-score-reserve: var(--space-50);
     object-fit: contain;
     vertical-align: middle;
     margin-bottom: var(--space-9);
+
     @include respond-to(lg) {
       height: var(--space-23);
       margin-bottom: var(--space-8);
     }
   }
 }
-
-// --- Receipts carousel ------------------------------------------------
-// Deliberately not wrapped in a page-width/max-width container — the card
-// row bleeds full-width and the last card is left partially cut off by the
-// viewport edge, matching the Figma reference.
 
 .coffee-heist-receipts {
   position: relative;
@@ -576,11 +615,13 @@ $coffee-heist-score-reserve: var(--space-50);
     color: var(--cream);
     padding-inline-start: var(--space-20);
     margin-block-end: var(--space-32);
+
     @include respond-down(md) {
       font-size: var(--fs-h7);
       line-height: var(--lh-h7);
       letter-spacing: var(--ls-h7);
     }
+
     @include respond-to(xxl) {
       padding-inline-start: var(--space-56);
       padding-inline-end: var(--space-56);
@@ -588,8 +629,6 @@ $coffee-heist-score-reserve: var(--space-50);
     }
   }
 
-  // Swiper container: full-bleed with a left/right inset so the first card
-  // aligns to the heading and the last card can sit cut off at the edge.
   &__carousel {
     padding-inline: var(--space-16);
     padding-block-end: var(--space-8);
@@ -599,7 +638,6 @@ $coffee-heist-score-reserve: var(--space-50);
     }
   }
 
-  // --- Swiper structural CSS (self-contained; core swiper.css not imported)
   .swiper {
     margin-inline: auto;
     position: relative;
@@ -639,9 +677,11 @@ $coffee-heist-score-reserve: var(--space-50);
     border: var(--bw-2) solid var(--ink);
     border-radius: 0;
     overflow: clip;
+
     @include respond-to(md) {
       max-width: 20rem;
     }
+
     &--info {
       background: var(--bone);
       color: var(--ink);
@@ -656,6 +696,7 @@ $coffee-heist-score-reserve: var(--space-50);
       background: var(--bone);
       max-width: 18rem;
       width: 100%;
+
       &_inner {
         width: 100%;
         margin: 0;
@@ -663,14 +704,17 @@ $coffee-heist-score-reserve: var(--space-50);
         display: block;
         position: relative;
         height: 100%;
+
         @include respond-to(md) {
           padding-bottom: 178.9%;
         }
       }
+
       @include respond-to(md) {
         padding: var(--space-11);
         max-width: 20rem;
       }
+
       img,
       video {
         width: 100%;
@@ -690,24 +734,30 @@ $coffee-heist-score-reserve: var(--space-50);
     padding-block-end: var(--space-10);
     border-block-end: 0.09375rem solid var(--ink);
     margin-bottom: var(--space-20);
+
     @include respond-to(md) {
       padding-block-end: var(--space-22);
       margin-bottom: var(--space-18);
     }
+
     div {
       display: flex;
       gap: var(--space-4);
+
       dt {
         width: var(--space-80);
+
         @include respond-down(md) {
           width: var(--space-68);
           font-size: var(--fs-n2);
           line-height: var(--lh-n2);
         }
       }
+
       dd {
         margin: 0;
         padding: 0;
+
         @include respond-down(md) {
           font-size: var(--fs-n2);
           line-height: var(--lh-n2);
@@ -715,18 +765,23 @@ $coffee-heist-score-reserve: var(--space-50);
       }
     }
   }
+
   &__stars {
     gap: var(--space-4);
+
     @include respond-down(md) {
       gap: var(--space-1);
     }
   }
+
   &__quote.t-t1 {
     flex-grow: 1;
     margin-top: var(--space-20);
+
     @include respond-to(md) {
       margin-top: var(--space-18);
     }
+
     @include respond-down(md) {
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
@@ -739,6 +794,7 @@ $coffee-heist-score-reserve: var(--space-50);
     align-items: center;
     justify-content: space-between;
     gap: var(--space-8);
+
     img {
       width: var(--space-88);
       height: var(--space-74);
@@ -755,13 +811,16 @@ $coffee-heist-score-reserve: var(--space-50);
     align-items: flex-start;
     gap: var(--space-16);
     flex-direction: column;
+
     div {
       gap: var(--space-4);
       align-items: center;
+
       @include respond-down(md) {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
+
       span {
         opacity: 0.8;
       }
@@ -785,8 +844,6 @@ $coffee-heist-score-reserve: var(--space-50);
     }
   }
 
-  // Video autoplays muted → show the muted icon by default; swap to the
-  // unmuted icon once the user turns sound on (.is-unmuted set in JS).
   &__sound-icon--unmuted {
     display: none;
   }
@@ -799,6 +856,3 @@ $coffee-heist-score-reserve: var(--space-50);
     display: block;
   }
 }
-
-// Brewing-guide styles were removed for now (see sections/coffee-heist.liquid);
-// re-add here alongside its metaobject setting when that block comes back.

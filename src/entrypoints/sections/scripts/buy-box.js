@@ -42,6 +42,20 @@ function loadStandardEvents() {
   return eventsModulePromise;
 }
 
+// Background scroll lock (same as the brewing-guide drawer). lenis' `isLocked`
+// freezes the page in place — preventDefaults wheel/touch with no overflow
+// change and no jump — while the tooltip modal is open.
+function lockPageScroll() {
+  if (window.lenis) {
+    window.lenis.reset();
+    window.lenis.isLocked = true;
+  }
+}
+
+function unlockPageScroll() {
+  if (window.lenis) window.lenis.isLocked = false;
+}
+
 // Theme.routes.cart_add_url already carries the `.js` suffix (see scripts.liquid).
 const CART_ADD_URL = () =>
   (window.Theme && window.Theme.routes && window.Theme.routes.cart_add_url) ||
@@ -195,10 +209,12 @@ class BuyBox extends HTMLElement {
       const open = () => {
         if (typeof tip.showModal === "function") tip.showModal();
         else tip.setAttribute("open", "");
+        lockPageScroll();
       };
       const close = () => {
         if (typeof tip.close === "function" && tip.open) tip.close();
         else tip.removeAttribute("open");
+        unlockPageScroll();
       };
       tip.parentElement
         ?.querySelector("[data-tooltip-trigger]")
@@ -209,6 +225,8 @@ class BuyBox extends HTMLElement {
       tip.addEventListener("click", (event) => {
         if (event.target === tip) close(); // backdrop
       });
+      // Esc (native dialog) also closes it — release the lock then too.
+      tip.addEventListener("close", unlockPageScroll);
     });
   }
 
@@ -231,6 +249,7 @@ class BuyBox extends HTMLElement {
     }
     if (typeof this.popup.showModal === "function") this.popup.showModal();
     else this.popup.setAttribute("open", "");
+    lockPageScroll();
   }
 
   #closePopup() {
@@ -240,6 +259,7 @@ class BuyBox extends HTMLElement {
     } else {
       this.popup.removeAttribute("open");
     }
+    unlockPageScroll();
   }
 
   // --------------------------------------------------------------- mutation
@@ -502,7 +522,25 @@ class BuyBox extends HTMLElement {
     );
     if (priceEl) {
       const disp = this.#displayValue(selectedTotals.total, bags);
-      priceEl.textContent = ` — ${this.formatMoney(disp)}${this.unit}`;
+      // One-time isn't a recurring plan, so it shows no /mo (or /bag) unit.
+      const unit = this.state.tier === "one_time" ? "" : this.unit;
+      priceEl.textContent = ` — ${this.formatMoney(disp)}${unit}`;
+    }
+
+    // Compare (struck-through) price on the CTA — shown only when discounted.
+    const compareEl = this.querySelector(
+      '[data-buy-box-submit][data-show-price="true"] [data-submit-compare]',
+    );
+    if (compareEl) {
+      const pct = this.#discountPct(
+        selectedTotals.total,
+        selectedTotals.compare,
+      );
+      compareEl.hidden = pct <= 0;
+      if (pct > 0) {
+        const compareDisp = this.#displayValue(selectedTotals.compare, bags);
+        compareEl.textContent = this.formatMoney(compareDisp);
+      }
     }
     this.#setDisabled(!hasBags);
   }
@@ -663,8 +701,7 @@ class BuyBox extends HTMLElement {
     }
     this.#setBadge(root.querySelector(s.badge), pct, badgeOverride);
 
-    const saveEl = root.querySelector(s.save);
-    if (saveEl) {
+    root.querySelectorAll(s.save).forEach((saveEl) => {
       if (pct > 0) {
         // Unit lives in its own span so it can be styled apart from the amount.
         saveEl.textContent = `Save ${this.formatMoney(compareDisp - priceDisp)}`;
@@ -676,7 +713,7 @@ class BuyBox extends HTMLElement {
       } else {
         saveEl.hidden = true;
       }
-    }
+    });
   }
 
   #setText(root, selector, text) {

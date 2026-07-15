@@ -8,7 +8,6 @@
 
 @use "../../../styles/settings/tokens";
 @use "../../../styles/settings/breakpoints" as *;
-@use "../../../styles/components/typography";
 
 body:has(.brewing-guide__modal.is-open) {
   overflow: hidden;

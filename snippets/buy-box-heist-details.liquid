@@ -21,7 +21,7 @@
     {% for perk in perks %}
       {% assign perk_text = perk | strip_html | strip %}
       {% if perk_text != blank %}
-        <span class="buy-box-perk t-n2">
+        <span class="buy-box-perk t-n1">
           <span class="buy-box-perk__icon svg-wrapper">{% render 'icon-red-checkbox' %}</span>
           {{ perk_text }}
         </span>

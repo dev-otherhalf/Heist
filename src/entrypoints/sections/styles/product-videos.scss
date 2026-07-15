@@ -5,28 +5,38 @@
   max-width: 100%;
   min-width: 0;
   width: 100%;
+  padding-top: var(--padding-top-desktop);
+  padding-bottom: var(--padding-bottom-desktop);
+  @include respond-down(md) {
+    padding-top: var(--padding-top-mobile);
+    padding-bottom: var(--padding-bottom-mobile);
+  }
 
-  &__heading {
+  &__heading.t-n1 {
     color: var(--ink);
-    margin-bottom: 0.875rem;
+    margin-bottom: var(--space-18);
+    @include respond-down(md) {
+      margin-bottom: var(--space-11);
+      line-height: 2;
+    }
   }
 
   &__row {
     max-width: 100%;
     min-width: 0;
-    overflow: hidden;
+    overflow: visible;
     width: 100%;
-  }
-
-  &__slide.swiper-slide {
-    max-width: var(--space-127);
+    &.swiper {
+      overflow: visible;
+    }
   }
 
   &__card {
-    aspect-ratio: 3 / 4;
-    height: auto;
+    height: 100%;
     overflow: hidden;
     position: relative;
+    padding-bottom: 149.87%;
+    border: var(--bw-2) solid var(--ink);
   }
 
   &__media {

@@ -1,4 +1,3 @@
-
 import Swiper from "swiper";
 import "swiper/css";
 
@@ -11,7 +10,7 @@ function initProductVideos(root) {
   root.dataset.productVideosSwiperReady = "true";
 
   root.productVideosSwiperInstance = new Swiper(container, {
-    slidesPerView: 1.8,
+    slidesPerView: 2.4964,
     spaceBetween: 12,
     grabCursor: true,
     watchOverflow: true,
@@ -28,7 +27,7 @@ function initProductVideos(root) {
       },
       990: {
         slidesPerView: 4,
-        spaceBetween: 16,
+        spaceBetween: 12,
       },
     },
   });

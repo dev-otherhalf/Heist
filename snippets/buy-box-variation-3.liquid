@@ -32,7 +32,7 @@
   endfor
 %}
 
-<fieldset class="buy-box-plans" data-buy-box-plans>
+<fieldset class="buy-box-plans buy-box-plans--v3" data-buy-box-plans>
   <legend class="buy-box__section-label t-n1">{{ s.frequency_label | default: 'Select your frequency:' }}</legend>
 
   {%- comment -%} ---------- Tier 1 · Heist Society ---------- {%- endcomment -%}
@@ -48,16 +48,18 @@
 
     <span class="buy-box-tier__body">
       <span class="buy-box-tier__row">
-        <span class="buy-box-tier__title t-n1-med">{{ s.heist_title | default: 'Heist Society™ Subscription' }}</span>
+        <span class="buy-box-tier__title t-s4">{{ s.heist_title | default: 'Heist Society™ Subscription' }}</span>
         <span class="buy-box-tier__badge t-n2-med" data-tier-badge data-badge="{{ s.heist_badge | escape }}" hidden></span>
       </span>
-
+      <span  class="buy-box-tier__body_inner">
       <span class="buy-box-tier__price-row">
-        <span class="buy-box-tier__price t-s3" data-tier-price></span>
-        <span class="buy-box-tier__unit t-n1">/mo</span>
-        <s class="buy-box-tier__compare t-s3" data-tier-compare hidden></s>
+        <span class="buy-box-tier__price-row_inner">
+            <span class="buy-box-tier__price t-s4" data-tier-price></span>
+            <span class="buy-box-tier__unit t-n1">/mo</span>
+        </span>
+        <s class="buy-box-tier__compare t-s4" data-tier-compare hidden></s>
       </span>
-
+      <span class="buy-box-tier__body_left">
       {% if s.heist_subtitle != blank %}
         <span class="buy-box-tier__subtitle t-t4">{{ s.heist_subtitle }}</span>
       {% endif %}
@@ -84,7 +86,7 @@
       {% if has_kit %}
         <span class="buy-box-kit">
           {% if s.kit_label != blank %}
-            <span class="buy-box-kit__label t-n1">{{ s.kit_label }}</span>
+            <span class="buy-box-kit__label t-n2">{{ s.kit_label }}</span>
           {% endif %}
           <span class="buy-box-kit__items">
             {% for i in (1..3) %}
@@ -96,13 +98,15 @@
                   <span class="buy-box-kit__thumb">
                     {{ kit_img | image_url: width: 240 | image_tag: loading: 'lazy', alt: s[cap_key] | default: '', sizes: '120px', widths: '120, 240' }}
                   </span>
-                  <span class="buy-box-kit__caption t-n1">{{ s[cap_key] }}</span>
+                  <span class="buy-box-kit__caption t-n2">{{ s[cap_key] }}</span>
                 </span>
               {% endif %}
             {% endfor %}
           </span>
         </span>
       {% endif %}
+      </span>  
+      </span>
     </span>
   </label>
 
@@ -119,22 +123,24 @@
 
     <span class="buy-box-tier__body">
       <span class="buy-box-tier__row">
-        <span class="buy-box-tier__title t-n1-med">{{ s.standard_title | default: 'Subscribe & Save' }}</span>
+        <span class="buy-box-tier__title t-s4">{{ s.standard_title | default: 'Subscribe & Save' }}</span>
         <span class="buy-box-tier__badge t-n2-med" data-tier-badge data-badge="{{ s.standard_badge | escape }}" hidden></span>
       </span>
-
+      <span class="buy-box-tier__body_inner">
       <span class="buy-box-tier__price-row">
-        <span class="buy-box-tier__price t-s3" data-tier-price></span>
-        <span class="buy-box-tier__unit t-n1">/mo</span>
+        <span class="buy-box-tier__price-row_inner">
+          <span class="buy-box-tier__price t-s3" data-tier-price></span>
+          <span class="buy-box-tier__unit t-n1">/mo</span>
+        </span>
         <s class="buy-box-tier__compare t-s3" data-tier-compare hidden></s>
-      </span>
-
+        </span>
+        <span class="buy-box-tier__body_left">
       {% if has_frequency_plans %}
         <span class="buy-box-frequency">
           <label class="visually-hidden" for="buy-box-frequency-{{ block.id }}">Delivery frequency</label>
           <select
             id="buy-box-frequency-{{ block.id }}"
-            class="buy-box-frequency__select t-n1"
+            class="buy-box-frequency__select t-n2"
             data-buy-box-frequency
           >
             {% assign default_freq = s.default_frequency_label | default: '2 weeks' | downcase %}
@@ -181,6 +187,8 @@
           {% endfor %}
         </span>
       {% endif %}
+      </span>
+      </span>  
     </span>
   </label>
 
@@ -213,6 +221,7 @@
 <button type="button" class="buy-box__submit btn btn--block" data-buy-box-submit data-show-price="true">
   <span class="buy-box__submit-label">{{ s.cta_label | default: 'Add to cart' }}</span>
   <span class="buy-box__submit-price" data-submit-price></span>
+  <s class="buy-box__submit-compare" data-submit-compare hidden></s>
 </button>
 
 {% render 'buy-box-guarantee', block: block %}

@@ -25,7 +25,10 @@
   <div
     class="product-videos"
     style="
-      padding-block: {{ block.settings.padding-block-start }}px {{ block.settings.padding-block-end }}px;
+      --padding-top-desktop: {{ block.settings.padding-block-start }}px;
+      --padding-bottom-desktop:{{ block.settings.padding-block-end }}px;
+      --padding-top-mobile: {{ block.settings.padding-block-start-mobile }}px;
+      --padding-bottom-mobile:{{ block.settings.padding-block-end-mobile }}px;
     "
     data-product-videos
     {{ block.shopify_attributes }}
@@ -93,6 +96,30 @@
     {
       "type": "range",
       "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Padding Mobile"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
       "label": "Bottom",
       "min": 0,
       "max": 100,

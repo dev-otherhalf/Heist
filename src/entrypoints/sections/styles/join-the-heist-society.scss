@@ -115,6 +115,7 @@
     &--mobile {
       display: block;
       height: 30%;
+
       @include respond-to(lg) {
         display: none;
       }
@@ -177,6 +178,7 @@
   &__kit-value {
     &.t-n2 {
       text-transform: uppercase;
+
       @include respond-down(md) {
         line-height: var(--lh-n2);
       }
@@ -245,7 +247,7 @@
 
       @include respond-down(md) {
         line-height: 1.25rem;
-        max-width: 12.6rem;
+        max-width: 14.6rem;
         margin: 0 auto;
       }
     }
@@ -393,6 +395,7 @@
       width: 100%;
       padding-block: unset;
       gap: var(--space-2);
+
       @include respond-to(lg) {
         &:hover {
           gap: var(--space-8);
