@@ -5,20 +5,20 @@
   max-width: 100%;
   min-width: 0;
   width: 100%;
-  padding-top:var(--padding-top-desktop);
-  padding-bottom:var(--padding-bottom-desktop);
-  @include respond-down(md){
-    padding-top:var(--padding-top-mobile);
-  padding-bottom:var(--padding-bottom-mobile);
+  padding-top: var(--padding-top-desktop);
+  padding-bottom: var(--padding-bottom-desktop);
+  @include respond-down(md) {
+    padding-top: var(--padding-top-mobile);
+    padding-bottom: var(--padding-bottom-mobile);
   }
 
   &__heading.t-n1 {
     color: var(--ink);
-    margin-bottom: var(--space-16);
-    @include respond-down(md){
-      margin-bottom: var(--space-9);
+    margin-bottom: var(--space-18);
+    @include respond-down(md) {
+      margin-bottom: var(--space-11);
       line-height: 2;
-    } 
+    }
   }
 
   &__row {
@@ -26,13 +26,16 @@
     min-width: 0;
     overflow: visible;
     width: 100%;
+    &.swiper {
+      overflow: visible;
+    }
   }
 
   &__card {
     height: 100%;
     overflow: hidden;
     position: relative;
-    padding-bottom: 151.97%;
+    padding-bottom: 149.87%;
     border: var(--bw-2) solid var(--ink);
   }
 

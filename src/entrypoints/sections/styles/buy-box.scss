@@ -8,15 +8,16 @@
   color: var(--ink);
 
   &--variation_3 {
-    margin-bottom: var(--space-19);
-    @include respond-down(md){
+    margin-bottom: var(--space-18);
+    @include respond-down(md) {
       margin-bottom: var(--space-28);
     }
     #{$self}__submit {
-      margin-bottom: var(--space-32);
-      @include respond-down(md){
+      margin-bottom: var(--space-30);
+      @include respond-down(md) {
         padding: 0 var(--space-5);
-        margin-bottom: var(--space-20);
+        margin-bottom: var(--space-26);
+        height: var(--space-56);
       }
 
       &-compare {
@@ -24,13 +25,16 @@
         opacity: 0.4;
       }
     }
-    .buy-box__guarantee.t-n1{
-      @include respond-down(md){
+    .buy-box__guarantee.t-n1 {
+      @include respond-down(md) {
         max-width: 14rem;
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
         margin: 0 auto;
       }
+    }
+    .buy-box__bags {
+      margin-bottom: var(--space-22);
     }
   }
 
@@ -41,9 +45,9 @@
 
   &__section-label.t-n1 {
     text-transform: uppercase;
-    margin: 0 0 var(--space-24);
-    @include respond-down(md){
-      margin: 0 0 var(--space-20);
+    margin: 0 0 var(--space-27);
+    @include respond-down(md) {
+      margin: 0 0 var(--space-26);
     }
   }
 
@@ -56,7 +60,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-16);
-    @include respond-between(lg,xl) {
+    @include respond-between(lg, xl) {
       gap: var(--space-10);
     }
     @include respond-down(md) {
@@ -72,11 +76,11 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0;
-  padding: var(--space-24) var(--space-16) var(--space-20);
-  @include respond-to(md){
-  padding: var(--space-17) var(--space-17) var(--space-23);
-  flex-direction: column;
-  flex-wrap: nowrap;
+  padding: var(--space-23) var(--space-14) var(--space-19);
+  @include respond-to(md) {
+    padding: var(--space-15) var(--space-15) var(--space-22);
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
   background: var(--bone);
   border: var(--bw-2) solid var(--ink);
@@ -88,8 +92,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 1.5rem;
-    padding: var(--space-6) var(--space-9);
+    height: 1.4rem;
+    padding: var(--space-3) var(--space-8);
     background: var(--red);
     border: var(--bw-2) solid var(--ink);
     font-weight: 700;
@@ -109,11 +113,14 @@
     width: var(--space-122);
     max-width: 100%;
     height: var(--space-102);
-    margin-bottom: var(--space-10);
-    @include respond-down(md){
-      flex: 0 0 32.5%;
-      max-width: 32.5%;
-      margin-bottom: var(--space-12);
+    margin-bottom: var(--space-9);
+    @include respond-down(md) {
+      max-width: 35%;
+      margin-bottom: var(--space-13);
+      flex: 0 0 35%;
+      padding-left: var(--space-11);
+      align-self: flex-start;
+      margin-top: -0.5rem;
     }
 
     img {
@@ -131,20 +138,25 @@
     gap: var(--space-8);
     text-align: center;
     margin-bottom: var(--space-20);
-    @include respond-down(md){
+    @include respond-down(md) {
       flex: 1;
       padding-left: var(--space-21);
       align-items: flex-start;
       text-align: left;
-      margin-bottom: var(--space-12);
+      margin-bottom: var(--space-13);
+      gap: var(--space-7);
     }
   }
 
   &__name {
     text-transform: uppercase;
     margin: 0;
-    @include respond-down(md){
-      max-width: 10rem;
+    @include respond-down(md) {
+      max-width: 9rem;
+      &.t-s3 {
+        font-size: var(--fs-s4);
+        line-height: var(--lh-s4);
+      }
     }
   }
 
@@ -156,9 +168,10 @@
     display: flex;
     align-items: baseline;
     gap: var(--space-6);
-     @include respond-down(md){
-        gap: var(--space-8);
-     }
+    margin-top: -0.25rem;
+    @include respond-down(md) {
+      gap: var(--space-8);
+    }
   }
   &__price-row-inner {
     display: flex;
@@ -168,7 +181,7 @@
     text-transform: uppercase;
     &.t-n1-med {
       font-weight: 700;
-      @include respond-down(md){
+      @include respond-down(md) {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
@@ -176,7 +189,6 @@
   }
 
   &__compare {
-    
     &[hidden] {
       display: none;
     }
@@ -185,7 +197,7 @@
       text-decoration: line-through;
       text-decoration-color: var(--red);
       text-decoration-thickness: 1.5px;
-      @include respond-down(md){
+      @include respond-down(md) {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
@@ -205,18 +217,18 @@
     flex-direction: column;
     gap: var(--space-8);
     text-align: center;
-    padding: var(--space-16) 0;
+    padding: var(--space-14) 0;
     width: 100%;
-    @include respond-down(md){
-      padding: var(--space-12) 0;
+    @include respond-down(md) {
+      padding: var(--space-11) 0 var(--space-14);
     }
   }
 
   &__notes-label {
     text-transform: uppercase;
     margin: 0;
-    @include respond-down(md){
-      &.t-n1{
+    @include respond-down(md) {
+      &.t-n1 {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
       }
@@ -225,10 +237,10 @@
 
   &__notes-body {
     margin: 0;
-    @include respond-down(md){
-      &.t-t4{
-        font-size: var(--fs-n2);
-        line-height: var(--lh-n2);
+    @include respond-down(md) {
+      &.t-t4 {
+        font-size: var(--fs-n1);
+        line-height: var(--lh-n1);
       }
     }
   }
@@ -237,13 +249,15 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-12);
-    padding-top: var(--space-20);
+    padding-top: var(--space-19);
+    padding-right: var(--space-7);
     width: 100%;
-    @include respond-down(md){
+    @include respond-down(md) {
       padding-top: var(--space-12);
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--space-16);
+      padding-right: 0;
     }
   }
 }
@@ -254,13 +268,13 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-16);
-  @include respond-down(md){
+  @include respond-down(md) {
     flex-direction: column;
     text-align: left;
     align-items: flex-start;
     gap: var(--space-8);
     &:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
+      grid-column: 1 / -1;
     }
   }
   &[data-unavailable="true"] {
@@ -271,11 +285,11 @@
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--ink);
-    @include respond-down(md){
-      &.t-n1{
+    @include respond-down(md) {
+      &.t-n1 {
         font-size: var(--fs-n2);
         line-height: var(--lh-n2);
-        }
+      }
     }
   }
 
@@ -288,7 +302,7 @@
     padding: var(--space-9) var(--space-12);
     background: var(--bone);
     border: var(--bw-2) solid var(--taupe);
-    @include respond-down(md){
+    @include respond-down(md) {
       width: 100%;
     }
   }
@@ -329,7 +343,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
-  margin: 0 0 var(--space-24);
+  margin: 0 0 var(--space-23);
   padding: 0;
   border: 0;
 
@@ -338,59 +352,69 @@
   }
   &--v2 {
     gap: var(--space-24);
-    @include respond-down(md){
+    margin: 0 0 var(--space-22);
+    @include respond-down(md) {
       gap: var(--space-20);
+      margin: 0 0 var(--space-25);
     }
-    .buy-box-sub__pricing{
-      
-      .buy-box-tier__save{
-        @include respond-down(md){
+    .buy-box-sub__pricing {
+      .buy-box-tier__save {
+        @include respond-down(md) {
           display: none;
         }
       }
     }
-    .buy-box-sub--single{
-      @include respond-down(md){
+    .buy-box-sub--single {
+      @include respond-down(md) {
         padding-bottom: var(--space-15);
       }
     }
-    .buy-box-sub__note.t-t4{
-        @include respond-down(md){
-          font-size: var(--fs-n1);
-          line-height: var(--lh-n1);
-          max-width: 16rem;
-        }  
+    .buy-box-sub__note.t-t4 {
+      @include respond-down(md) {
+        font-size: var(--fs-n1);
+        line-height: var(--lh-n1);
+        max-width: 16rem;
+      }
     }
-    @include respond-down(md){
-      .buy-box-tier__save.t-n1{
+    @include respond-down(md) {
+      .buy-box-tier__save.t-n1 {
         font-weight: 700;
-        padding:var(--space-12) var(--space-24) 0;
+        padding: var(--space-12) var(--space-24) 0;
         font-size: var(--fs-n2-med);
         line-height: var(--lh-n2-med);
-        .buy-box-tier__save-unit{
+        .buy-box-tier__save-unit {
           font-weight: var(--fw-medium);
         }
       }
     }
-    .buy-box__guarantee{
-      @include respond-down(md){
+    .buy-box__guarantee {
+      @include respond-down(md) {
         display: none;
-      } 
+      }
     }
   }
 
   &--v3 {
+    &.buy-box-plans {
+      @include respond-down(md) {
+        gap: var(--space-19);
+        margin: 0 0 var(--space-20);
+      }
+    }
+    .buy-box__section-label.t-n1 {
+      @include respond-down(md) {
+        margin: 0 0 var(--space-22);
+      }
+    }
     .buy-box-tier {
       align-items: flex-start;
-      padding: var(--space-24) var(--space-16) var(--space-24) var(--space-24);
+      padding: var(--space-22) var(--space-13) var(--space-21) var(--space-22);
       gap: var(--space-12);
       border: var(--bw-2) solid var(--taupe);
-      @include respond-down(md){
-        padding: var(--space-24) var(--space-13) var(--space-24) var(--space-22);
+      @include respond-down(md) {
+        padding: var(--space-22) var(--space-13) var(--space-22) var(--space-20);
         gap: var(--space-16);
       }
-
-      
 
       input[type="radio"] {
         display: none;
@@ -402,9 +426,9 @@
 
       &__body {
         width: 100%;
-        gap: var(--space-16);
-        .buy-box-tier__title.t-s4{
-          @include respond-down(md){
+        gap: var(--space-13);
+        .buy-box-tier__title.t-s4 {
+          @include respond-down(md) {
             font-size: var(--fs-s3);
             line-height: var(--lh-s3);
             max-width: 12rem;
@@ -414,7 +438,7 @@
           font-weight: 700;
           min-width: var(--space-72);
           padding: 0;
-          @include respond-down(md){
+          @include respond-down(md) {
             position: absolute;
             top: -0.125rem;
             right: -0.125rem;
@@ -425,8 +449,8 @@
           display: grid;
           grid-template-columns: minmax(0, 1fr) var(--space-100);
           align-items: flex-start;
-          gap: var(--space-21);
-          @include respond-down(md){
+          gap: var(--space-17);
+          @include respond-down(md) {
             grid-template-columns: 1fr;
             gap: var(--space-16);
           }
@@ -437,12 +461,13 @@
             justify-content: flex-end;
             align-items: flex-end;
             gap: var(--space-10);
-            @include respond-down(md){
+            margin-top: var(--space-3);
+            @include respond-down(md) {
               order: 0;
               flex-direction: row;
               justify-content: flex-start;
               gap: var(--space-12);
-              .buy-box-tier__unit.t-n1{
+              .buy-box-tier__unit.t-n1 {
                 font-size: var(--fs-n2);
                 line-height: var(--lh-n2);
               }
@@ -458,11 +483,14 @@
             font-size: var(--fs-n1-med);
             margin-bottom: var(--space-16);
             display: block;
+            @include respond-down(md) {
+              margin-bottom: var(--space-22);
+            }
           }
 
           .buy-box-tier__perks {
             gap: var(--space-8);
-            @include respond-down(md){
+            @include respond-down(md) {
               margin-bottom: 0;
             }
           }
@@ -470,21 +498,23 @@
           .buy-box-kit {
             margin-top: var(--space-24);
             gap: var(--space-16);
-            @include respond-down(md){
+            @include respond-down(md) {
               margin-left: -2.5rem;
               max-width: 109.375%;
+              margin-top: var(--space-20);
+              gap: var(--space-15);
             }
 
             &__items {
               gap: var(--space-16);
               max-width: 21.5rem;
-              @include respond-down(md){
+              @include respond-down(md) {
                 gap: var(--space-8);
               }
 
               .buy-box-kit__item {
-                gap: var(--space-8);
-                @include respond-down(md){
+                gap: var(--space-4);
+                @include respond-down(md) {
                   gap: var(--space-16);
                 }
                 .buy-box-kit__thumb {
@@ -492,8 +522,8 @@
                   position: relative;
                   padding-bottom: 73.08%;
                   border: var(--bw-2) solid var(--taupe);
-                  @include respond-down(md){
-                    padding-bottom: 104.55%;
+                  @include respond-down(md) {
+                    padding-bottom: 103.15%;
                   }
                   img {
                     position: absolute;
@@ -507,7 +537,7 @@
 
                 .buy-box-kit__caption {
                   text-align: center;
-                  @include respond-down(md){
+                  @include respond-down(md) {
                     text-align: left;
                     font-size: var(--fs-n3);
                     line-height: var(--lh-n3);
@@ -523,7 +553,7 @@
         border: var(--bw-2) solid var(--ink);
         .buy-box-tier__body_inner {
           .buy-box-kit__items {
-            .buy-box-kit__item{
+            .buy-box-kit__item {
               .buy-box-kit__thumb {
                 border: var(--bw-2) solid var(--ink);
               }
@@ -531,29 +561,38 @@
           }
         }
       }
-      &.buy-box-tier--compact{
+      &.buy-box-tier--compact {
         gap: var(--space-16);
-        @include respond-down(md){
-          &[data-selected=true]{
-          align-items: flex-start;
-          .buy-box-tier__title.t-n1-med{
+        padding: var(--space-19) var(--space-13) var(--space-21) var(--space-22);
+        @include respond-down(md) {
+          padding: var(--space-23) var(--space-13) var(--space-23)
+            var(--space-22);
+          &[data-selected="true"] {
+            align-items: flex-start;
+            .buy-box-tier__title.t-n1-med {
               margin-top: var(--space-4);
             }
           }
         }
-        .buy-box-tier__row{
-          @include respond-down(md){
+        .buy-box-tier__row {
+          @include respond-down(md) {
             flex-direction: column;
             align-items: flex-start;
           }
           .buy-box-tier__price-row {
-            @include respond-down(md){
+            @include respond-down(md) {
               margin: 0;
-              gap:var(--space-10);
+              gap: var(--space-10);
             }
           }
         }
       }
+      .buy-box-perk {
+        gap: var(--space-7);
+      }
+    }
+    .buy-box-plans {
+      margin: 0 0 var(--space-27);
     }
   }
 }
@@ -658,8 +697,12 @@
 
   &__subtitle {
     margin: 0;
-    @include respond-down(md){
-      &.t-t4{
+    &.t-t4 {
+      font-size: var(--fs-n1);
+      line-height: var(--lh-n1);
+    }
+    @include respond-down(md) {
+      &.t-t4 {
         font-size: var(--fs-n1);
         line-height: var(--lh-n1);
       }
@@ -670,7 +713,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-9);
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-2);
   }
 }
 
@@ -679,6 +722,10 @@
   align-items: center;
   gap: var(--space-8);
   text-transform: uppercase;
+  &.t-n1 {
+    font-size: var(--fs-n2);
+    line-height: var(--lh-n2);
+  }
 
   &__icon,
   &__icon svg {
@@ -694,7 +741,7 @@
   display: inline-flex;
   align-items: center;
   width: 100%;
-  margin-bottom: var(--space-16);
+  margin-bottom: var(--space-15);
 
   &__select {
     appearance: none;
@@ -707,8 +754,8 @@
     color: var(--ink);
     text-transform: uppercase;
     cursor: pointer;
-    @include respond-down(md){
-      max-width: 96.8754%;
+    @include respond-down(md) {
+      max-width: 95.2754%;
     }
   }
 
@@ -778,17 +825,20 @@
   &__item {
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
+    gap: var(--space-14);
     flex: 1;
     min-width: 0;
+    @include respond-down(md) {
+      gap: var(--space-15);
+    }
   }
 
   &__thumb {
     border: var(--bw-2) solid var(--taupe);
     aspect-ratio: 5 / 4;
     overflow: hidden;
-    @include respond-down(md){
-      aspect-ratio: 5/5.6471;
+    @include respond-down(md) {
+      aspect-ratio: 5/5.5471;
     }
 
     img {
@@ -801,8 +851,8 @@
 
   &__caption {
     text-transform: uppercase;
-    &.t-n1{
-      @include respond-down(md){
+    &.t-n1 {
+      @include respond-down(md) {
         font-size: var(--fs-n3);
         line-height: var(--lh-n3);
       }
@@ -932,7 +982,7 @@
 .buy-box-plans {
   &--v1 {
     gap: var(--space-16);
-    @include respond-down(md){
+    @include respond-down(md) {
       gap: var(--space-20);
     }
 
@@ -951,7 +1001,7 @@
 .buy-box {
   &--variation_2 {
     .buy-box__bags {
-      margin-bottom: var(--space-26);
+      margin-bottom: var(--space-24);
     }
   }
 }
@@ -961,33 +1011,37 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding-bottom: var(--space-24);
+  padding-bottom: var(--space-21);
   background: var(--bone);
   border: var(--bw-2) solid var(--ink);
-  @include respond-down(md){
+  @include respond-down(md) {
     padding-bottom: var(--space-22);
   }
 
   &__bar {
-    padding: var(--space-2) var(--space-16);
+    padding: var(--space-1) var(--space-16) var(--space-2);
     background: var(--ink);
     color: var(--cream);
     text-align: center;
     text-transform: uppercase;
     border-bottom: var(--bw-2) solid var(--ink);
-    min-height: var(--space-32);
+    min-height: var(--space-33);
     display: flex;
     align-items: center;
     justify-content: center;
+    @include respond-down(md) {
+      min-height: var(--space-32);
+      padding: 0 var(--space-16) var(--space-6);
+    }
   }
 
   > .buy-box__guarantee {
     margin-top: 0;
-    @include respond-between(lg,xl){
+    @include respond-between(lg, xl) {
       max-width: 17rem;
       margin: 0 auto;
     }
-    @include respond-down(md){
+    @include respond-down(md) {
       max-width: 16rem;
       margin: 0 auto;
       font-size: var(--fs-n2);
@@ -1005,11 +1059,11 @@
     margin: 0;
   }
   .buy-box__submit {
-    width: calc(100% - var(--space-48));
-    margin: 0 auto var(--space-20);
-    @include respond-down(md){
-      width: calc(100% - var(--space-40));
-      margin: 0 auto var(--space-18);
+    width: calc(100% - var(--space-43));
+    margin: 0 auto var(--space-18);
+    @include respond-down(md) {
+      width: calc(100% - var(--space-34));
+      margin: 0 auto var(--space-16);
     }
   }
 }
@@ -1021,15 +1075,15 @@
   gap: var(--space-16);
   align-items: start;
   width: 100%;
-  padding: var(--space-21) var(--space-24) var(--space-24);
+  padding: var(--space-19) var(--space-22) var(--space-24);
   background: none;
   border: 0;
   color: var(--ink);
   font: inherit;
   cursor: pointer;
   text-align: left;
-  @include respond-down(md){
-    padding: var(--space-24) var(--space-20) var(--space-15) var(--space-16);
+  @include respond-down(md) {
+    padding: var(--space-20) var(--space-16) var(--space-16) var(--space-14);
     gap: var(--space-12);
   }
   &--summary {
@@ -1039,12 +1093,12 @@
   &__main {
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
+    gap: var(--space-13);
     min-width: 0;
     position: relative;
-    @include respond-down(md){
-      padding-bottom: var(--space-28);
-      gap: var(--space-11);
+    @include respond-down(md) {
+      padding-bottom: var(--space-26);
+      gap: var(--space-7);
     }
   }
 
@@ -1057,14 +1111,16 @@
     .buy-box-tier__save {
       margin-left: 0;
       font-weight: 700;
-      @include respond-down(md){
+      margin-top: var(--space-2);
+      @include respond-down(md) {
         font-size: var(--fs-n2-med);
         line-height: var(--lh-n2-med);
+        margin-top: 0;
       }
       &-unit {
         font-weight: var(--fw-medium);
       }
-      @include respond-down(md){
+      @include respond-down(md) {
         position: absolute;
         left: 0;
         bottom: 0;
@@ -1072,29 +1128,30 @@
     }
     .buy-box-tier__price-row {
       gap: var(--space-4);
-      .t-s3{
-        @include respond-down(md){
-            font-size: var(--fs-nav2);
-            line-height: var(--lh-nav2);
+      .t-s3 {
+        @include respond-down(md) {
+          font-size: var(--fs-nav2);
+          line-height: var(--lh-nav2);
         }
       }
-      .t-n1-med{
-        @include respond-down(md){
-            font-size: var(--fs-n2-med);
-            line-height: var(--lh-n2-med);
+      .t-n1-med {
+        @include respond-down(md) {
+          font-size: var(--fs-n2-med);
+          line-height: var(--lh-n2-med);
         }
       }
       .buy-box-tier__compare {
         margin-left: var(--space-6);
-        @include respond-down(md){
+        @include respond-down(md) {
           margin-left: var(--space-8);
         }
       }
     }
     .buy-box-tier__badge {
-      margin-left: auto;
       padding: var(--space-6);
-      min-width: var(--space-72);
+      min-width: var(--space-74);
+      margin-left: auto;
+      min-height: var(--space-26);
     }
   }
 
@@ -1119,11 +1176,11 @@
   position: relative;
   border: var(--bw-2) solid var(--ink);
   background: var(--bone);
-  width: calc(100% - var(--space-48));
+  width: calc(100% - var(--space-43));
   margin: 0 auto var(--space-24);
-  @include respond-down(md){
-    width: calc(100% - var(--space-32));
-    margin: 0 auto var(--space-26);
+  @include respond-down(md) {
+    width: calc(100% - var(--space-25));
+    margin: 0 auto var(--space-24);
   }
 
   &[data-selected="true"] {
@@ -1133,30 +1190,31 @@
   }
 
   &__badge {
+    z-index: 1;
+    padding: var(--space-2);
+    min-width: var(--space-76);
+    min-height: var(--space-22);
+    border-top: none;
+    border-right: none;
+    font-weight: 700;
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 1;
-    border-right: none;
-    border-top: none;
-    padding: var(--space-6);
-    min-width: var(--space-72);
-    min-height: var(--space-24);
-    font-weight: 700;
+    height: auto;
   }
 
   .buy-box-v1row {
-    padding: var(--space-16) var(--space-20) var(--space-12);
+    padding: var(--space-16) var(--space-19) var(--space-11);
     [data-checked="true"]::after {
       inset: 0;
       background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/toggle.svg?v=1783923562)
         no-repeat center;
     }
-    @include respond-down(md){
+    @include respond-down(md) {
       padding: var(--space-20) var(--space-12) var(--space-16);
     }
-    .buy-box-tier__title{
-      @include respond-down(md){
+    .buy-box-tier__title {
+      @include respond-down(md) {
         max-width: 11rem;
       }
     }
@@ -1165,31 +1223,34 @@
   &__body {
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
-    padding: 0 var(--space-24) var(--space-20)
-      calc(1.5rem + var(--space-16) + var(--space-24));
-      @include respond-down(md){
-        padding:0 var(--space-12) var(--space-22);
+    gap: var(--space-18);
+    padding: 0 var(--space-24) var(--space-25)
+      calc(1.5rem + var(--space-16) + var(--space-18));
+    @include respond-down(md) {
+      padding: 0 var(--space-12) var(--space-22);
+      gap: var(--space-16);
+    }
+    .buy-box-tier__subtitle {
+      @include respond-down(md) {
+        padding: var(--space-7) 10px var(--space-11) 0;
+        border-top: var(--bw-1) solid var(--ink);
+        border-bottom: var(--bw-1) solid var(--ink);
+        line-height: 1.2;
       }
-      .buy-box-tier__subtitle{
-        @include respond-down(md){
-          padding:var(--space-8) 0;
-          border-top: var(--bw-1) solid var(--ink);
-          border-bottom: var(--bw-1) solid var(--ink);
+    }
+    .buy-box-tier__perks {
+      @include respond-down(md) {
+        gap: var(--space-8);
+        margin: 0 0 -0.1rem 0;
+        text-wrap: pretty;
+      }
+      .buy-box-perk.t-n1 {
+        @include respond-down(md) {
+          font-size: var(--fs-n2);
+          line-height: var(--lh-n2);
         }
       }
-      .buy-box-tier__perks{
-        @include respond-down(md){
-          gap:var(--space-8);
-          margin:0;
-        }
-        .buy-box-perk.t-n1{
-          @include respond-down(md){
-            font-size: var(--fs-n2);
-            line-height: var(--lh-n2);
-          }
-        }
-      }
+    }
   }
 }
 
@@ -1202,18 +1263,18 @@
 
     &:has(.buy-box-tier__toggle[data-checked="false"]) {
       border: var(--bw-2) solid transparent;
-      .buy-box-tier__save{
+      .buy-box-tier__save {
         display: none;
       }
     }
-    .buy-box-tier__save{
-        font-weight: 700;
-        @include respond-down(md){
-          padding: 0 var(--space-64) var(--space-24);
-        }
-        .buy-box-tier__save-unit{
-          font-weight: var(--fw-medium);
-        }
+    .buy-box-tier__save {
+      font-weight: 700;
+      @include respond-down(md) {
+        padding: 0 var(--space-64) var(--space-24);
+      }
+      .buy-box-tier__save-unit {
+        font-weight: var(--fw-medium);
+      }
     }
 
     .buy-box__guarantee {
@@ -1223,11 +1284,11 @@
     .buy-box-v1row {
       align-items: center;
       padding-bottom: var(--space-12);
-      @include respond-down(md){
-        padding: var(--space-24);
+      @include respond-down(md) {
+        padding: var(--space-19) var(--space-21);
         gap: var(--space-16);
       }
-      .buy-box-v1row__label{
+      .buy-box-v1row__label {
         font-weight: var(--fw-medium);
       }
       &:has(.buy-box-tier__toggle[data-checked="false"]) {
@@ -1238,14 +1299,14 @@
         }
       }
       &:has(.buy-box-tier__toggle[data-checked="true"]) {
-        @include respond-down(md){
+        @include respond-down(md) {
           padding-bottom: var(--space-9);
         }
       }
 
       .buy-box-tier__save {
         font-weight: 700;
-        @include respond-down(md){
+        @include respond-down(md) {
           display: none;
         }
 
@@ -1269,7 +1330,7 @@
 .buy-box-onetime {
   &__pricing {
     padding: 0 var(--space-64) var(--space-24);
-    @include respond-down(md){
+    @include respond-down(md) {
       padding-bottom: var(--space-16);
     }
     .buy-box-tier__price-row {
@@ -1282,24 +1343,23 @@
       }
     }
   }
-  
 }
 
 // --- Variation 2: single subscribe box --------------------------------------
 .buy-box-sub {
   &--single {
     gap: 0;
-    padding: 0 0 var(--space-24);
+    padding: 0 0 var(--space-22);
 
     .buy-box-sub__bar {
-      margin-bottom: var(--space-21);
+      margin-bottom: var(--space-20);
     }
 
     .buy-box-sub__pricing {
-      padding: 0 var(--space-24);
-      margin-bottom: var(--space-16);
+      padding: 0 var(--space-22);
+      margin-bottom: var(--space-14);
       justify-content: space-between;
-      @include respond-down(md){
+      @include respond-down(md) {
         margin-bottom: var(--space-13);
       }
       .buy-box-tier__price-row {
@@ -1309,21 +1369,21 @@
           display: flex;
           gap: var(--space-4);
           align-items: flex-end;
-          @include respond-down(md){
-            .buy-box-tier__price.t-s3{
+          @include respond-down(md) {
+            .buy-box-tier__price.t-s3 {
               font-size: var(--fs-s4);
               line-height: var(--lh-s4);
             }
-             .buy-box-tier__unit.t-n1{
+            .buy-box-tier__unit.t-n1 {
               font-size: var(--fs-n2-med);
               line-height: var(--lh-n2-med);
             }
           }
         }
-        .buy-box-tier__compare.t-s3{
-          @include respond-down(md){
-              font-size: var(--fs-s4);
-              line-height: var(--lh-s4);
+        .buy-box-tier__compare.t-s3 {
+          @include respond-down(md) {
+            font-size: var(--fs-s4);
+            line-height: var(--lh-s4);
           }
         }
       }
@@ -1338,7 +1398,9 @@
     }
 
     .buy-box-sub__note {
-      padding: 0 var(--space-24);
+      padding: 0 var(--space-22);
+      font-size: var(--fs-n1);
+      line-height: var(--lh-n1);
     }
   }
 }
@@ -1351,8 +1413,8 @@
   background: var(--bone);
   border: var(--bw-2) solid var(--ink);
   color: var(--ink);
-  @include respond-down(md){
-    width: 100%; 
+  @include respond-down(md) {
+    width: 100%;
     max-height: 100vh;
   }
   &::backdrop {
@@ -1363,10 +1425,11 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--space-24);
+    gap: var(--space-26);
     padding: var(--space-40) var(--space-48) var(--space-38);
-    @include respond-down(md){
-      padding:var(--space-32) var(--space-43);
+    @include respond-down(md) {
+      padding: var(--space-32) var(--space-41);
+      gap: var(--space-13);
     }
   }
 
@@ -1380,34 +1443,35 @@
     border: 0;
     cursor: pointer;
     color: var(--ink);
-    @include respond-down(md){
+    @include respond-down(md) {
       top: var(--space-20);
       right: var(--space-20);
     }
+    .svg-wrapper,
     svg {
       width: var(--space-24);
       height: var(--space-24);
-      @include respond-down(md){
+      @include respond-down(md) {
         width: var(--space-20);
         height: var(--space-20);
-        path{
+        path {
           stroke-width: var(--space-2);
         }
       }
     }
   }
 
-  &__title.t-h6 {
+  &__title.t-h5 {
     margin: 0 auto;
     max-width: 40rem;
     text-align: center;
     text-wrap: balance;
-    @include respond-down(md){
+    @include respond-down(md) {
       font-size: var(--fs-h7);
       line-height: var(--lh-h7);
       letter-spacing: var(--ls-h7);
       text-wrap: auto;
-      br{
+      br {
         display: none;
       }
     }
@@ -1415,8 +1479,8 @@
 
   &__subtitle {
     margin: 0;
-    &.t-t2{
-      @include respond-down(md){
+    &.t-t2 {
+      @include respond-down(md) {
         font-size: var(--fs-t3);
         line-height: var(--lh-t3);
         letter-spacing: var(--ls-t3);
@@ -1430,19 +1494,25 @@
     gap: var(--space-12);
     text-align: center;
     justify-content: center;
+    @include respond-down(md) {
+      margin-bottom: var(--space-10);
+    }
     .buy-box__tooltip-trigger {
       width: var(--space-20);
       height: var(--space-20);
-      @include respond-down(md){
+      margin-left: var(--space-12);
+      margin-right: var(--space-18);
+      margin-top: -0.5625rem;
+      @include respond-down(md) {
         width: var(--space-14);
         height: var(--space-14);
-        margin-left: var(--space-5);
+        margin: -0.125rem -1.125rem 0 0px;
       }
       .svg-wrapper,
       svg {
         width: var(--space-20);
         height: var(--space-20);
-        @include respond-down(md){
+        @include respond-down(md) {
           width: var(--space-14);
           height: var(--space-14);
         }
@@ -1454,12 +1524,12 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-40);
-    margin-top: var(--space-16);
+    margin-top: var(--space-12);
     margin-bottom: var(--space-16);
-    @include respond-down(md){
+    @include respond-down(md) {
       margin-top: 0;
       gap: var(--space-24);
-      margin-bottom: 0;
+      margin-bottom: var(--space-13);
     }
 
     // Two-column perk list in the popup.
@@ -1478,9 +1548,11 @@
         column-count: auto;
         grid-auto-flow: row;
         gap: var(--space-8);
-        max-width: 15.375rem;
+        max-width: 14.575rem;
       }
-      .buy-box-perk.t-n1{
+      .buy-box-perk.t-n1 {
+        font-size: var(--fs-n1);
+        line-height: var(--lh-n1);
         @include respond-down(md) {
           font-size: var(--fs-n2);
           line-height: var(--lh-n2);
@@ -1490,6 +1562,9 @@
     .buy-box-kit {
       align-items: center;
       justify-content: center;
+      @include respond-down(md) {
+        padding-right: var(--space-9);
+      }
       .buy-box-kit__items {
         width: 100%;
         max-width: 40.5rem;
@@ -1503,7 +1578,7 @@
           aspect-ratio: unset;
           padding-bottom: 70%;
           @include respond-down(md) {
-            padding-bottom: 110.3%;
+            padding-bottom: 105.1%;
           }
           img {
             position: absolute;
@@ -1516,20 +1591,28 @@
   }
   .buy-box__submit {
     margin-bottom: var(--space-8);
-    @include respond-down(md){
-      margin-bottom: 0;
+    @include respond-down(md) {
+      margin-bottom: var(--space-5);
       padding: 0 var(--space-10);
-      font-size: var(--fs-n1-med);
+      font-size: var(--fs-s4);
+      height: auto;
+      min-height: 55px;
+      .buy-box__submit-price {
+        display: none;
+      }
     }
   }
   &__footer {
     margin: 0;
     text-align: center;
     text-transform: uppercase;
-    &.t-n1{
-      @include respond-down(md){
-        font-size: var(--fs-n2);
-        line-height: var(--lh-n2);
+    &.t-n1 {
+      margin-top: -0.4375rem;
+      margin-bottom: var(--space-4);
+      @include respond-down(md) {
+        margin: 0 auto;
+        max-width: 13.2rem;
+        line-height: 1.8;
       }
     }
   }

@@ -532,7 +532,10 @@ class BuyBox extends HTMLElement {
       '[data-buy-box-submit][data-show-price="true"] [data-submit-compare]',
     );
     if (compareEl) {
-      const pct = this.#discountPct(selectedTotals.total, selectedTotals.compare);
+      const pct = this.#discountPct(
+        selectedTotals.total,
+        selectedTotals.compare,
+      );
       compareEl.hidden = pct <= 0;
       if (pct > 0) {
         const compareDisp = this.#displayValue(selectedTotals.compare, bags);

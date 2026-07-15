@@ -28,7 +28,7 @@
     gap: 1rem;
     justify-content: space-between;
     list-style: none;
-    padding-block: var(--space-16);
+    padding-block: var(--space-14) var(--space-18);
     user-select: none;
 
     &::-webkit-details-marker {
@@ -53,7 +53,7 @@
     height: var(--space-16);
     position: relative;
     width: var(--space-16);
-    @include respond-down(md){
+    @include respond-down(md) {
       height: var(--space-14);
       width: var(--space-14);
     }
@@ -87,24 +87,25 @@
     padding-right: 1.75rem;
     animation: product-faqs-reveal 0.28s ease both;
 
-     *:first-child {
+    *:first-child {
       margin-top: 0;
     }
     *:last-child {
       margin-bottom: 0;
     }
-    ul{
-      padding:0;
+    ul {
+      padding: 0;
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap:var(--space-8);
-      li{
+      gap: var(--space-8);
+      li {
         position: relative;
         padding-left: var(--space-24);
-        &::before{
+        &::before {
           content: "";
-          background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/16px-circle-checkmark.svg?v=1783924575) no-repeat center;
+          background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/16px-circle-checkmark.svg?v=1783924575)
+            no-repeat center;
           width: var(--space-16);
           height: var(--space-16);
           position: absolute;
