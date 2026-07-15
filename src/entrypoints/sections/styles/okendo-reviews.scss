@@ -1,285 +1,277 @@
 @use "../../../styles/settings/tokens";
 @use "../../../styles/settings/breakpoints" as *;
 
-
-
 .okendo-reviews-section {
-    &__header {
-        max-width: 1200px;
-        margin-inline: auto;
+  &__header {
+    max-width: 1200px;
+    margin-inline: auto;
 
-        @include respond-down(md) {
-            flex-wrap: wrap;
-            text-align: center;
-        }
-
+    @include respond-down(md) {
+      flex-wrap: wrap;
+      text-align: center;
     }
+  }
 
-    &__heading {
-        @include respond-down(md) {
-            &.t-h4 {
-                font-size: var(--fs-h5);
-                width: 100%;
-            }
-        }
-    }
-
-    &__barcode {
+  &__heading {
+    @include respond-down(md) {
+      &.t-h4 {
+        font-size: var(--fs-h5);
         width: 100%;
-        max-width: 286px;
+      }
+    }
+  }
+
+  &__barcode {
+    width: 100%;
+    max-width: 286px;
+
+    @include respond-down(md) {
+      max-width: 100%;
+      gap: var(--space-35);
+
+      img {
+        height: 50px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .oke-w {
+    padding-bottom: 0 !important;
+
+    .oke-w-header {
+      .oke-w-header-content {
+        flex-wrap: wrap;
+        gap: var(--space-24);
+
+        @include respond-to(md) {
+          flex-wrap: nowrap !important;
+          align-items: center !important;
+        }
+      }
+
+      border: var(--bw-2) solid var(--ink);
+      padding: var(--space-20) var(--space-32);
+      align-items: center;
+      background: var(--bone);
+
+      @include respond-down(md) {
+        padding: var(--space-25) var(--space-16) var(--space-32);
+      }
+
+      .oke-w-header-content-block {
+        margin-bottom: 0;
+        justify-content: center;
+
+        .oke-w-header-content-module {
+          justify-content: flex-start;
+
+          .oke-w-ratingAverageModule-rating-average {
+            font-family: var(--font-display);
+            font-size: var(--fs-h5);
+            line-height: var(--lh-h5);
+            letter-spacing: var(--ls-h5);
+            font-weight: var(--fw-regular);
+          }
+
+          .oke-w-ratingAverageModule-count {
+            font-family: var(--font-mono);
+            font-size: var(--fs-n1);
+            line-height: var(--lh-n1);
+            font-weight: var(--fw-medium);
+            text-transform: uppercase;
+            text-align: left;
+          }
+        }
+
+        .oke-media {
+          border: var(--bw-2) solid var(--ink);
+        }
 
         @include respond-down(md) {
-            max-width: 100%;
-            gap: var(--space-35);
-
-            img {
-                height: 50px;
-                object-fit: cover;
-            }
+          width: 100% !important;
         }
+      }
     }
 
-    .oke-w {
-        padding-bottom: 0 !important;
+    .oke-w-reviews-main {
+      border-top: unset !important;
 
-        .oke-w-header {
-            .oke-w-header-content {
-                flex-wrap: wrap;
-                gap: var(--space-24);
+      .oke-w-reviews-list {
+        margin-bottom: 0;
 
-                @include respond-to(md) {
-                    flex-wrap: nowrap !important;
-                    align-items: center !important;
-                }
+        .oke-w-reviews-list-item {
+          padding: var(--space-8) 0 !important;
+          border-bottom: unset !important;
+
+          .oke-w-review {
+            border: var(--bw-2) solid var(--ink);
+            background: var(--bone);
+            flex-direction: row-reverse !important;
+            padding-inline: var(--space-24);
+
+            .oke-w-review-side {
+              padding: var(--space-24) 0 !important;
+              margin: 0 !important;
+              border-right: unset;
+              flex-basis: auto !important;
+              padding-inline: var(--space-24);
+              border-bottom: 0 !important;
+              border-top: var(--bw-2) solid var(--ink);
+
+              @include respond-to(md) {
+                border-left: var(--bw-2) solid var(--ink) !important;
+                flex-basis: 23rem !important;
+                padding: var(--space-32) !important;
+                border-top: 0;
+              }
             }
 
-            border: var(--bw-2) solid var(--ink);
-            padding: var(--space-20) var(--space-32);
-            align-items: center;
-            background: var(--bone);
+            .oke-w-review-main {
+              padding: var(--space-24) 0 !important;
+
+              .oke-reviewContent-title {
+                display: none;
+              }
+
+              .oke-reviewContent-date {
+                display: none;
+              }
+
+              @include respond-to(md) {
+                padding: var(--space-32) !important;
+              }
+            }
 
             @include respond-down(md) {
-                padding: var(--space-25) var(--space-16) var(--space-32);
+              flex-direction: column-reverse !important;
             }
 
-            .oke-w-header-content-block {
-                margin-bottom: 0;
-                justify-content: center;
-
-                .oke-w-header-content-module {
-                    justify-content: flex-start;
-
-                    .oke-w-ratingAverageModule-rating-average {
-                        font-family: var(--font-display);
-                        font-size: var(--fs-h5);
-                        line-height: var(--lh-h5);
-                        letter-spacing: var(--ls-h5);
-                        font-weight: var(--fw-regular);
-                    }
-
-                    .oke-w-ratingAverageModule-count {
-                        font-family: var(--font-mono);
-                        font-size: var(--fs-n1);
-                        line-height: var(--lh-n1);
-                        font-weight: var(--fw-medium);
-                        text-transform: uppercase;
-                        text-align: left;
-                    }
-                }
-
-                .oke-media {
-                    border: var(--bw-2) solid var(--ink);
-                }
-
-                @include respond-down(md) {
-                    width: 100% !important;
-                }
-
+            @include respond-to(md) {
+              padding-inline: 0;
             }
-
+          }
         }
-
-        .oke-w-reviews-main {
-            border-top: unset !important;
-
-            .oke-w-reviews-list {
-                margin-bottom: 0;
-
-                .oke-w-reviews-list-item {
-                    padding: var(--space-8) 0 !important;
-                    border-bottom: unset !important;
-
-                    .oke-w-review {
-                        border: var(--bw-2) solid var(--ink);
-                        background: var(--bone);
-                        flex-direction: row-reverse !important;
-                        padding-inline: var(--space-24);
-
-                        .oke-w-review-side {
-                            padding: var(--space-24) 0 !important;
-                            margin: 0 !important;
-                            border-right: unset;
-                            flex-basis: auto !important;
-                            padding-inline: var(--space-24);
-                            border-bottom: 0 !important;
-                            border-top: var(--bw-2) solid var(--ink);
-
-                            @include respond-to(md) {
-                                border-left: var(--bw-2) solid var(--ink) !important;
-                                flex-basis: 23rem !important;
-                                padding: var(--space-32) !important;
-                                border-top: 0;
-                            }
-                        }
-
-                        .oke-w-review-main {
-                            padding: var(--space-24) 0 !important;
-
-                            .oke-reviewContent-title {
-                                display: none;
-                            }
-
-                            .oke-reviewContent-date {
-                                display: none;
-                            }
-
-                            @include respond-to(md) {
-                                padding: var(--space-32) !important;
-                            }
-                        }
-
-                        @include respond-down(md) {
-                            flex-direction: column-reverse !important;
-                        }
-
-                        @include respond-to(md) {
-                            padding-inline: 0;
-                        }
-
-                    }
-                }
-            }
-        }
-
-
-        .oke-w-review-footer {
-            display: none !important;
-        }
-
-        .oke-reviewContent-body {
-            p {
-                line-height: var(--lh-t4);
-            }
-        }
-
-        .oke-w-review-media {
-            margin-top: var(--space-16) !important;
-        }
-
-        .oke-w-reviews-head {
-            margin-top: var(--space-40);
-            gap: var(--space-10);
-
-            button {
-                @include respond-down(md) {
-                    width: 100%;
-                }
-            }
-
-            .oke-w-reviews-writeReview {
-                @include respond-down(md) {
-                    width: 100%;
-
-                    a {
-                        width: 100%;
-                    }
-                }
-            }
-        }
-
-        .oke-w-reviews-controls {
-            .oke-w-reviews-count {
-                opacity: 0;
-                display: none;
-            }
-
-            .oke-w-reviews-sort {
-                margin-left: auto;
-                width: fit-content;
-
-                .oke-sortSelect {
-                    display: flex;
-
-                    .oke-sortSelect-label {
-                        font-size: 14px;
-                        font-style: normal;
-                        font-weight: 400;
-                        line-height: 112%;
-                        text-transform: uppercase;
-                    }
-
-                    .oke-sortSelect-sort {
-                        font-size: 14px;
-                        font-style: normal;
-                        font-weight: 400;
-                        line-height: 112%;
-                        text-transform: uppercase;
-                        flex: 1;
-                    }
-                }
-
-                @include respond-down(md) {
-                    width: 100%;
-                    background: #F4F0E6;
-                    padding: 18px 24px;
-                    border: 2px solid #161414;
-                }
-            }
-        }
-
-        .oke-button {
-            font-family: var(--font-ui);
-            font-size: 20px;
-            font-weight: var(--fw-bold);
-            line-height: 1;
-            text-transform: uppercase;
-            box-shadow: none !important;
-        }
-
-        .oke-w-reviewer {
-            .oke-w-reviewer-identity {
-                .oke-w-reviewer-name {
-                    font-family: var(--font-mono);
-                    font-size: var(--fs-n1);
-                    line-height: var(--lh-n1);
-                    font-weight: var(--fw-medium);
-                    text-transform: uppercase;
-                }
-            }
-
-            .oke-w-reviewer-verified {
-                font-family: var(--font-mono);
-                font-size: var(--fs-n1);
-                line-height: var(--lh-n1);
-                font-weight: var(--fw-medium);
-                text-transform: uppercase;
-                margin-top: var(--space-16);
-            }
-
-        }
-
-        .oke-w-review-recommendation {
-            .oke-w-reviewerRecommendation-text {
-                font-family: var(--font-micro);
-                font-size: var(--fs-n1);
-                line-height: var(--lh-n1);
-                font-weight: var(--fw-medium);
-                margin-top: var(--space-16);
-            }
-        }
-
-        .oke-alert-inner {
-            border: unset !important;
-        }
+      }
     }
+
+    .oke-w-review-footer {
+      display: none !important;
+    }
+
+    .oke-reviewContent-body {
+      p {
+        line-height: var(--lh-t4);
+      }
+    }
+
+    .oke-w-review-media {
+      margin-top: var(--space-16) !important;
+    }
+
+    .oke-w-reviews-head {
+      margin-top: var(--space-40);
+      gap: var(--space-10);
+
+      button {
+        @include respond-down(md) {
+          width: 100%;
+        }
+      }
+
+      .oke-w-reviews-writeReview {
+        @include respond-down(md) {
+          width: 100%;
+
+          a {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .oke-w-reviews-controls {
+      .oke-w-reviews-count {
+        opacity: 0;
+        display: none;
+      }
+
+      .oke-w-reviews-sort {
+        margin-left: auto;
+        width: fit-content;
+
+        .oke-sortSelect {
+          display: flex;
+
+          .oke-sortSelect-label {
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 112%;
+            text-transform: uppercase;
+          }
+
+          .oke-sortSelect-sort {
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 112%;
+            text-transform: uppercase;
+            flex: 1;
+          }
+        }
+
+        @include respond-down(md) {
+          width: 100%;
+          background: #f4f0e6;
+          padding: 18px 24px;
+          border: 2px solid #161414;
+        }
+      }
+    }
+
+    .oke-button {
+      font-family: var(--font-ui);
+      font-size: 20px;
+      font-weight: var(--fw-bold);
+      line-height: 1;
+      text-transform: uppercase;
+      box-shadow: none !important;
+    }
+
+    .oke-w-reviewer {
+      .oke-w-reviewer-identity {
+        .oke-w-reviewer-name {
+          font-family: var(--font-mono);
+          font-size: var(--fs-n1);
+          line-height: var(--lh-n1);
+          font-weight: var(--fw-medium);
+          text-transform: uppercase;
+        }
+      }
+
+      .oke-w-reviewer-verified {
+        font-family: var(--font-mono);
+        font-size: var(--fs-n1);
+        line-height: var(--lh-n1);
+        font-weight: var(--fw-medium);
+        text-transform: uppercase;
+        margin-top: var(--space-16);
+      }
+    }
+
+    .oke-w-review-recommendation {
+      .oke-w-reviewerRecommendation-text {
+        font-family: var(--font-micro);
+        font-size: var(--fs-n1);
+        line-height: var(--lh-n1);
+        font-weight: var(--fw-medium);
+        margin-top: var(--space-16);
+      }
+    }
+
+    .oke-alert-inner {
+      border: unset !important;
+    }
+  }
 }

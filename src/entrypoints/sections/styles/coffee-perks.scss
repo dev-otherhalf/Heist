@@ -147,7 +147,7 @@
     flex-shrink: 0;
     gap: var(--space-16);
     height: auto;
-    padding: var(--space-19) var(--space-18) var(--space-27);
+    padding: var(--space-18) var(--space-18) var(--space-26);
     width: 16.5rem;
 
     @include respond-to(lg) {
@@ -183,6 +183,7 @@
     flex-direction: column;
     gap: var(--space-16);
     padding-inline: var(--space-8);
+
     @include respond-down(md) {
       padding-inline: 0;
     }
@@ -190,6 +191,7 @@
 
   &__card-title {
     color: var(--ink);
+
     &.t-h7 {
       @include respond-down(md) {
         font-size: var(--fs-t1);

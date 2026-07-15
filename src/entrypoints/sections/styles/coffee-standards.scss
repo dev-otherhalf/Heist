@@ -1,13 +1,6 @@
 @use "/src/styles/settings/tokens" as *;
 @use "/src/styles/settings/breakpoints" as *;
 
-// =============================================================================
-// Coffee standards — quality showcase (heading, badges, feature columns around a
-// centred video) plus a press marquee row. All copy comes from a metaobject.
-// The badge row is static on desktop and a marquee on mobile; the press row is
-// the reverse, with the desktop marquee behind a section setting.
-// =============================================================================
-
 .coffee-standards {
   background-color: var(--coffee-standards-bg, transparent);
   color: var(--ink);
@@ -79,8 +72,10 @@
       letter-spacing: var(--ls-h4);
       margin-right: calc(var(--space-9) * -1);
     }
+
     br {
       display: none;
+
       @include respond-to(xxl) {
         display: block;
       }
@@ -106,6 +101,7 @@
     flex: 0 0 auto;
     max-width: 8.5rem;
     width: 100%;
+
     &--marquee {
       width: 8rem;
     }
@@ -126,6 +122,7 @@
     margin-top: 0;
     overflow: visible;
     background: transparent;
+
     @include respond-to(lg) {
       display: none;
       margin-top: var(--space-24);
@@ -142,8 +139,9 @@
       animation: coffee-standards-scroll var(--marquee-speed, 25s) linear
         infinite;
     }
+
     @include respond-down(lg) {
-      margin-bottom: var(--space-38);
+      margin-bottom: 0;
     }
   }
 
@@ -158,26 +156,20 @@
   // --- Content grid ----------------------------------------------------------
   &__content {
     display: grid;
-    gap: 2.5rem 1.063rem;
+    gap: 2.5rem 0.8rem;
     grid-template-areas:
       "media media"
       "left right";
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    // margin-top: var(--space-35);
 
     @include respond-to(lg) {
       align-items: center;
       gap: 3rem;
       grid-template-areas: "left media right";
-      // grid-template-columns: minmax(0, 1.02337fr) minmax(0, 1.0441fr) minmax(
-      //     0,
-      //     1.0356fr
-      //   );
       grid-template-columns: minmax(0, 1.02337fr) minmax(0, 1.0991fr) minmax(
           0,
           1.02337fr
         );
-      // margin-top: var(--space-40);
     }
 
     @include respond-to(xl) {
@@ -187,7 +179,7 @@
 
   &__column {
     display: grid;
-    gap: var(--space-16);
+    gap: var(--space-14);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -268,6 +260,10 @@
     object-fit: cover;
     position: absolute;
     width: 100%;
+
+    @include respond-down(md) {
+      object-fit: contain;
+    }
   }
 
   &__frame {
@@ -392,6 +388,7 @@
     min-width: 0;
     overflow: hidden;
     background: transparent;
+
     &--mobile-only {
       @include respond-to(lg) {
         display: none;
@@ -436,8 +433,6 @@
   }
 }
 
-// The wrapper holds the content plus one aria-hidden clone separated by a gap,
-// so a full content-width scroll is half the wrapper plus half that gap.
 @keyframes coffee-standards-scroll {
   to {
     transform: translate3d(

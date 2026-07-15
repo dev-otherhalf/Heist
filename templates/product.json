@@ -176,10 +176,7 @@
                   "blocks": {}
                 }
               },
-              "block_order": [
-                "text_xrnftG",
-                "price_tVjtKg"
-              ]
+              "block_order": ["text_xrnftG", "price_tVjtKg"]
             },
             "divider_VJhene": {
               "type": "_divider",
@@ -312,9 +309,7 @@
           ]
         }
       },
-      "block_order": [
-        "disclosures_g9mWze"
-      ],
+      "block_order": ["disclosures_g9mWze"],
       "settings": {
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
@@ -388,11 +383,7 @@
           }
         }
       },
-      "block_order": [
-        "product_GWyXew",
-        "product_8PBii8",
-        "product_CkwP3g"
-      ],
+      "block_order": ["product_GWyXew", "product_8PBii8", "product_CkwP3g"],
       "name": "Join the Heist Society",
       "settings": {
         "heading": "Join the Heist Society™",
@@ -403,7 +394,7 @@
         "button_label": "Join",
         "button_label_two": "Now",
         "button_link": "#",
-        "disclaimer": "30-day escape plan. Love it or your money back.",
+        "disclaimer": "30-day escape plan. <br>Love it or your money back.",
         "left_media_type": "video",
         "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
         "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
@@ -411,10 +402,24 @@
         "video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 10.42.14 AM (1).mp4",
         "background_color": "#e8e0d2",
         "panel_color": "#f4ede1",
-        "padding_top_mobile": 64,
+        "padding_top_mobile": 0,
         "padding_bottom_mobile": 69,
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 0
+      }
+    },
+    "okendo_reviews_yqzgF8": {
+      "type": "okendo-reviews",
+      "name": "Okendo Reviews",
+      "settings": {
+        "background_image_desktop": "shopify://shop_images/full-briefing-bg.jpg",
+        "background_image_mobile": "shopify://shop_images/full-briefing-bg-mobile.jpg",
+        "heading": "Word On The Street",
+        "barcode_image": "shopify://shop_images/Frame_1.svg",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 120,
+        "padding_bottom_desktop": 120
       }
     },
     "coffee_heist_f6Ntka": {
@@ -443,19 +448,15 @@
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 0
       }
-    },
-    "okendo_reviews_yqzgF8": {
-      "type": "okendo-reviews",
-      "name": "Okendo Reviews",
-      "settings": {
-        "heading": "Word On The Street",
-        "barcode_image": "shopify://shop_images/Frame_1.svg",
-        "padding_top_mobile": 24,
-        "padding_bottom_mobile": 24,
-        "padding_top_desktop": 48,
-        "padding_bottom_desktop": 48
-      }
     }
   },
-  "order": ["main", "product_recommendations_qggXJq", "okendo_reviews_yqzgF8"]
+  "order": [
+    "main",
+    "coffee_standards_b4EGbK",
+    "coffee_perks_MBCN8J",
+    "join_the_heist_society_hCNcQa",
+    "okendo_reviews_yqzgF8",
+    "coffee_heist_f6Ntka",
+    "full_briefing_nz7HDP"
+  ]
 }
