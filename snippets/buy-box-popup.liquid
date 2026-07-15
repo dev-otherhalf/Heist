@@ -1,0 +1,59 @@
+{% comment %}
+  Variation 2 upgrade popup. Rendered once (hidden) and opened by the JS when
+  the shopper clicks the standalone CTA.
+
+  @param {block} block - the Subscription block (settings)
+
+  "Join the Heist Society" adds the Heist plan; closing the dialog proceeds with
+  the standard subscription (the shopper already opted in by clicking the CTA).
+{% endcomment %}
+
+{% liquid
+  assign s = block.settings
+%}
+
+<dialog class="buy-box-popup color-custom-popover" data-buy-box-popup aria-label="{{ s.popup_title | escape }}">
+  <div class="buy-box-popup__inner">
+    <button
+      type="button"
+      class="buy-box-popup__close"
+      data-popup-close
+      aria-label="{{ 'actions.close' | t | default: 'Close' }}"
+    >
+      <span class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <g clip-path="url(#clip0_5268_23788)">
+            <path d="M19.0713 4.9292L4.92915 19.0713" stroke="#282828" stroke-width="4" stroke-linecap="square"/>
+            <path d="M19.0708 19.0713L4.92871 4.9292" stroke="#282828" stroke-width="4" stroke-linecap="square"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_5268_23788">
+              <rect width="24" height="24" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </span>
+    </button>
+
+    <h2 class="buy-box-popup__title t-h5">{{ s.popup_title | default: 'Want to Upgrade to the Heist Society™ and Save 25%?' }}</h2>
+
+    {% if s.popup_subtitle != blank %}
+      <div class="buy-box-popup__subtitle-row">
+        <p class="buy-box-popup__subtitle t-t2">{{ s.popup_subtitle }}{% render 'buy-box-tooltip', content: s.popup_tooltip, label: s.popup_subtitle %}</p>
+      </div>
+    {% endif %}
+
+    <div class="buy-box-popup__details">
+      {% render 'buy-box-heist-details', block: block, show_kit: true %}
+    </div>
+
+    <button type="button" class="buy-box__submit btn btn--block" data-popup-join>
+      <span class="buy-box__submit-label">{{ s.popup_cta_label | default: 'Join the Heist Society™' }}</span>
+      <span class="buy-box__submit-price" data-popup-price hidden></span>
+    </button>
+
+    {% if s.popup_footer != blank %}
+      <p class="buy-box-popup__footer t-n1">{{ s.popup_footer }}</p>
+    {% endif %}
+  </div>
+</dialog>

@@ -131,7 +131,7 @@
 }
 
 .heist-desktop-header {
-  min-height: 5.2rem;
+  min-height: 4.4rem;
   padding: 0 var(--space-56);
   display: grid;
   grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
@@ -142,6 +142,7 @@
   }
   .heist-header--home & {
     grid-template-columns: minmax(7.5rem, 1fr) auto minmax(7.5rem, 1fr);
+    min-height: 5.2rem;
   }
 
   &__shop,
@@ -336,12 +337,15 @@
   display: none;
 
   @include respond-down(lg) {
-    min-height: 4.825rem;
-    padding: var(--space-12) var(--space-20);
+    min-height: 4.025rem;
+    padding: var(--space-2) var(--space-20);
     display: grid;
     grid-template-columns: var(--space-48) 1fr var(--space-48);
     align-items: center;
-
+    .heist-header--home & {
+      min-height: 4.825rem;
+      padding: var(--space-12) var(--space-20);
+    }
     &__center {
       min-width: 0;
       display: flex;

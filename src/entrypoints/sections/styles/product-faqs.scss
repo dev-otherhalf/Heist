@@ -1,0 +1,149 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.product-faqs {
+  --faq-line: #{color-mix(in srgb, var(--ink) 18%, transparent)};
+
+  width: 100%;
+
+  &__heading {
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    opacity: 0.7;
+  }
+
+  &__list {
+    border-top: var(--bw-2) solid var(--ink);
+  }
+
+  &__item {
+    border-bottom: var(--bw-2) solid var(--ink);
+  }
+
+  &__summary {
+    align-items: center;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    list-style: none;
+    padding-block: var(--space-14) var(--space-18);
+    user-select: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &::marker {
+      content: "";
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+  }
+
+  &__question {
+    flex: 1 1 auto;
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    height: var(--space-16);
+    position: relative;
+    width: var(--space-16);
+    @include respond-down(md) {
+      height: var(--space-14);
+      width: var(--space-14);
+    }
+    &::before,
+    &::after {
+      background: var(--ink);
+      content: "";
+      inset: 0;
+      margin: auto;
+      position: absolute;
+      transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+    }
+
+    &::before {
+      height: var(--space-2);
+      width: 100%;
+    }
+
+    &::after {
+      height: 100%;
+      width: var(--space-2);
+    }
+  }
+
+  &__answer {
+    color: var(--ink);
+    overflow: hidden;
+    padding-bottom: var(--space-26);
+    padding-right: 1.75rem;
+    animation: product-faqs-reveal 0.28s ease both;
+
+    *:first-child {
+      margin-top: 0;
+    }
+    *:last-child {
+      margin-bottom: 0;
+    }
+    ul {
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      li {
+        position: relative;
+        padding-left: var(--space-24);
+        &::before {
+          content: "";
+          background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/16px-circle-checkmark.svg?v=1783924575)
+            no-repeat center;
+          width: var(--space-16);
+          height: var(--space-16);
+          position: absolute;
+          left: 0;
+          top: var(--space-3);
+        }
+      }
+    }
+
+    a {
+      color: var(--ink);
+      text-decoration: underline;
+    }
+  }
+
+  &__item[open] &__icon::after {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+@keyframes product-faqs-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-faqs__answer {
+    animation: none;
+  }
+  .product-faqs__icon::before,
+  .product-faqs__icon::after {
+    transition: none;
+  }
+}

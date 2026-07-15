@@ -1,0 +1,60 @@
+{% comment %}
+  Okendo star summary block — renders the five-star rating + "(N reviews)" for
+  the closest product. Uses snippets/okendo-star-summary.liquid. Renders nothing
+  when the product has no reviews.
+{% endcomment %}
+
+{% liquid
+  assign product = closest.product
+
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+%}
+
+<div
+  class="okendo-star-summary-block align-{{ block.settings.alignment }}"
+  style="--star-summary-color: var(--ink);"
+  {{ block.shopify_attributes }}
+>
+  {% render 'okendo-star-summary', product: product %}
+</div>
+
+{% stylesheet %}
+  .okendo-star-summary-block {
+    display: flex;
+  }
+
+  .okendo-star-summary-block.align-center {
+    justify-content: center;
+  }
+
+  .okendo-star-summary-block.align-right {
+    justify-content: flex-end;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Review stars (Okendo)",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the Okendo star rating and review count for this product. Nothing renders until the product has reviews."
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "default": "left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Review stars (Okendo)",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

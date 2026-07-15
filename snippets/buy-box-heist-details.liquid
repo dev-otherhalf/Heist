@@ -1,0 +1,58 @@
+{% comment %}
+  Shared Heist Society detail block: the perk checklist + welcome-kit thumbnails.
+  Used by the V1 nested upgrade card, the V2 popup, and the V3 Heist tier so the
+  copy/images come from one place (block settings).
+
+  @param {block} block - the Subscription block
+  @param {boolean} show_kit - render the welcome-kit thumbnails (default true)
+{% endcomment %}
+
+{% liquid
+  assign s = block.settings
+  assign show_kit_row = show_kit
+  if show_kit == nil
+    assign show_kit_row = true
+  endif
+  assign perks = s.perk_list | strip | newline_to_br | split: '<br />'
+%}
+
+{% if perks.size > 0 %}
+  <span class="buy-box-tier__perks">
+    {% for perk in perks %}
+      {% assign perk_text = perk | strip_html | strip %}
+      {% if perk_text != blank %}
+        <span class="buy-box-perk t-n1">
+          <span class="buy-box-perk__icon svg-wrapper">{% render 'icon-red-checkbox' %}</span>
+          {{ perk_text }}
+        </span>
+      {% endif %}
+    {% endfor %}
+  </span>
+{% endif %}
+
+{% if show_kit_row %}
+  {% assign has_kit = false %}
+  {% if s.kit_image_1 != blank or s.kit_image_2 != blank or s.kit_image_3 != blank %}
+    {% assign has_kit = true %}
+  {% endif %}
+  {% if has_kit %}
+    <span class="buy-box-kit">
+      <span class="buy-box-kit__items">
+        {% for i in (1..3) %}
+          {% assign img_key = 'kit_image_' | append: i %}
+          {% assign cap_key = 'kit_caption_' | append: i %}
+          {% assign kit_img = s[img_key] %}
+          {% if kit_img != blank %}
+            {% assign kit_alt = s[cap_key] | default: '' | escape %}
+            <span class="buy-box-kit__item">
+              <span class="buy-box-kit__thumb">
+                {{ kit_img | image_url: width: 240 | image_tag: loading: 'lazy', alt: kit_alt, sizes: '120px', widths: '120, 240' }}
+              </span>
+              <span class="buy-box-kit__caption t-n1">{{ s[cap_key] }}</span>
+            </span>
+          {% endif %}
+        {% endfor %}
+      </span>
+    </span>
+  {% endif %}
+{% endif %}

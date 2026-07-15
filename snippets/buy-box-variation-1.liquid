@@ -1,0 +1,99 @@
+{% comment %}
+  Variation 1 — Subscribe & Save vs One-time, with a nested Heist Society
+  upgrade inside the subscription. Three mutually exclusive states, all driven
+  by assets/buy-box.js (#renderV1):
+
+    - standard : subscribe box expanded, summary shows the 4-week price,
+                 upgrade card unselected, CTA "Start the heist".
+    - heist    : subscribe box expanded, summary shows the prepaid price +
+                 "price locked for life" subtitle, upgrade card selected,
+                 CTA "Join the Heist Society™".
+    - one_time : subscribe box collapses to its summary row, the one-time box
+                 expands with its price + "Buy now".
+
+  Per-bag pricing (data-price-mode="per_bag" on <buy-box>). Rows are clickable
+  (data-select-tier); the toggle fill state is set by JS (data-checked), not by
+  :checked, because the top toggle stays filled for both sub states.
+
+  @param {block} block - the Subscription block (settings)
+  @param {product} product - the stitched parent product
+{% endcomment %}
+
+{% liquid
+  assign s = block.settings
+  assign one_time_enabled = s.one_time_enabled
+%}
+
+<div class="buy-box-plans buy-box-plans--v1" data-buy-box-plans>
+  {%- comment -%} ---------- Subscription box ---------- {%- endcomment -%}
+  <div class="buy-box-sub" data-sub-box>
+    <p class="buy-box-sub__bar t-n1-med">{{ s.subscribe_bar_label | default: 'Subscribe & Save up to 25%' }}</p>
+
+    {%- comment -%} Summary row — reflects the active sub plan (standard or heist) {%- endcomment -%}
+    <button type="button" class="buy-box-v1row buy-box-v1row--summary" data-select-tier="standard" data-v1-summary>
+      <span class="buy-box-tier__toggle" data-v1-toggle="sub" aria-hidden="true"></span>
+      <span class="buy-box-v1row__main">
+        <span class="buy-box-v1row__pricing">
+          <span class="buy-box-tier__price-row">
+            <span class="buy-box-tier__price t-s3" data-tier-price></span>
+            <span class="buy-box-tier__unit t-n1-med">/bag</span>
+            <s class="buy-box-tier__compare t-s3" data-tier-compare hidden></s>
+          </span>
+          <span class="buy-box-tier__badge t-n2-med" data-tier-badge hidden></span>
+          <span class="buy-box-tier__save t-n1" data-tier-save hidden></span>
+        </span>
+        <span class="buy-box-tier__subtitle t-t4" data-v1-subtitle></span>
+      </span>
+    </button>
+
+    {%- comment -%} Nested Heist upgrade (hidden when one-time selected) {%- endcomment -%}
+    <div class="buy-box-upgrade" data-sub-detail data-upgrade-card>
+      <span class="buy-box-tier__badge buy-box-upgrade__badge t-n2-med" data-upgrade-badge hidden></span>
+      <button type="button" class="buy-box-v1row" data-select-tier="heist">
+        <span class="buy-box-tier__toggle" data-v1-toggle="heist" aria-hidden="true"></span>
+        <span class="buy-box-tier__title t-t2">{{ s.heist_upgrade_title | default: 'Upgrade & Join the Heist Society™' }}</span>
+      </button>
+      <div class="buy-box-upgrade__body">
+        <p class="buy-box-tier__subtitle t-t4">{{ s.popup_subtitle | default: '3 months prepaid today, then monthly. Cancel anytime after.' }}</p>
+        {% render 'buy-box-heist-details', block: block, show_kit: true %}
+      </div>
+    </div>
+
+    <button type="button" class="buy-box__submit btn btn--block" data-buy-box-submit data-sub-detail>
+      <span class="buy-box__submit-label" data-cta-label>{{ s.subscribe_cta_label | default: 'Start the heist' }}</span>
+    </button>
+
+    {% render 'buy-box-guarantee', block: block, detail: 'sub' %}
+  </div>
+
+  {%- comment -%} ---------- One-time box ---------- {%- endcomment -%}
+  {% if one_time_enabled %}
+    <div class="buy-box-sub buy-box-sub--onetime" data-onetime-box>
+      <button type="button" class="buy-box-v1row" data-select-tier="one_time">
+        <span class="buy-box-tier__toggle" data-v1-toggle="one_time" aria-hidden="true"></span>
+        <span class="buy-box-tier__title-onetime">
+          <span class="buy-box-v1row__label t-n1-med">{{ s.one_time_title | default: 'One time purchase' }}</span>
+          <span class="buy-box-tier__save t-n1" data-onetime-save data-onetime-detail hidden></span>
+        </span>
+      </button>
+
+      <div class="buy-box-onetime__pricing" data-onetime-detail hidden>
+        <span class="buy-box-tier__price-row">
+          <span class="buy-box-tier__price-row-inner">
+            <span class="buy-box-tier__price t-s3" data-onetime-price></span>
+            <span class="buy-box-tier__unit t-n1">/bag</span>
+          </span>
+          <s class="buy-box-tier__compare t-s3" data-onetime-compare hidden></s>
+        </span>
+      </div>
+
+      <span class="buy-box-tier__save t-n1 hide-from-md" data-onetime-save data-onetime-detail hidden></span>
+
+      <button type="button" class="buy-box__submit btn btn--block" data-buy-box-submit data-onetime-detail hidden>
+        <span class="buy-box__submit-label" data-cta-label>{{ s.cta_one_time_label | default: 'Buy now' }}</span>
+      </button>
+
+      {% render 'buy-box-guarantee', block: block, detail: 'onetime' %}
+    </div>
+  {% endif %}
+</div>

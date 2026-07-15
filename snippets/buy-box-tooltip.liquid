@@ -1,0 +1,49 @@
+{% comment %}
+  Reusable info tooltip: an ⓘ trigger + a centered <dialog> toggled by
+  assets/buy-box.js (open/close, backdrop, Esc).
+
+  Place it inside a wrapper that has NO other [data-tooltip-trigger] — the JS
+  pairs each dialog with the trigger in its parent element.
+
+  @param {string} content - tooltip body (blank line = new paragraph)
+  @param {string} label - accessible dialog label (defaults to the content)
+{% endcomment %}
+
+{% liquid
+  assign tip_label = label | default: content
+%}
+
+{% if content != blank %}
+  <button
+    type="button"
+    class="buy-box__tooltip-trigger"
+    data-tooltip-trigger
+    aria-label="{{ 'More information' }}"
+  >
+    <span class="svg-wrapper">{% render 'icon-tooltip' %}</span>
+  </button>
+
+  <dialog class="buy-box__tooltip color-custom-popover" data-tooltip aria-label="{{ tip_label | escape }}">
+    <button
+      type="button"
+      class="buy-box__tooltip-close"
+      data-tooltip-close
+      aria-label="{{ 'Close' }}"
+    >
+      <span class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <g clip-path="url(#clip0_5268_24232)">
+            <path d="M12.7139 3.28589L3.28578 12.714" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+            <path d="M12.7142 12.714L3.28613 3.28589" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_5268_24232">
+              <rect width="16" height="16" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </span>
+    </button>
+    <div class="buy-box__tooltip-body t-t4">{{ content | escape | newline_to_br }}</div>
+  </dialog>
+{% endif %}

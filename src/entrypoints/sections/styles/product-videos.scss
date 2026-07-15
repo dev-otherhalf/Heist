@@ -1,0 +1,49 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.product-videos {
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+  padding-top: var(--padding-top-desktop);
+  padding-bottom: var(--padding-bottom-desktop);
+  @include respond-down(md) {
+    padding-top: var(--padding-top-mobile);
+    padding-bottom: var(--padding-bottom-mobile);
+  }
+
+  &__heading.t-n1 {
+    color: var(--ink);
+    margin-bottom: var(--space-18);
+    @include respond-down(md) {
+      margin-bottom: var(--space-11);
+      line-height: 2;
+    }
+  }
+
+  &__row {
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+    width: 100%;
+    &.swiper {
+      overflow: visible;
+    }
+  }
+
+  &__card {
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 149.87%;
+    border: var(--bw-2) solid var(--ink);
+  }
+
+  &__media {
+    block-size: 100%;
+    inline-size: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+  }
+}
