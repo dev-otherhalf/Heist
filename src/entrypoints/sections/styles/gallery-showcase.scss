@@ -4,6 +4,9 @@
 .gallery-showcase {
   padding-block: var(--gallery-showcase-padding-top-mobile)
     var(--gallery-showcase-padding-bottom-mobile);
+  position: relative;
+  z-index: 1;
+  background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Frame_1410127467.jpg?v=1783670598");
 
   @include respond-to(lg) {
     padding-block: var(--gallery-showcase-padding-top-desktop)

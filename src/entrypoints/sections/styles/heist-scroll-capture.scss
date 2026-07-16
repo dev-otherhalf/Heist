@@ -276,6 +276,9 @@
     margin-bottom: var(--space-32);
     font-weight: var(--fw-regular);
     letter-spacing: -0.04rem;
+    br {
+      display: none;
+    }
   }
 
   &__button {
@@ -522,7 +525,7 @@
     &__button {
       display: grid;
       min-height: var(--space-48);
-      margin-block-start: var(--space-48);
+      margin-block-start: 0;
       padding: var(--space-12) var(--space-20);
       place-items: center;
       border: var(--bw-2) solid var(--ink);

@@ -82,9 +82,10 @@ class ProductVariantShowcase {
     const notes = card.querySelector("[data-variant-notes]");
     const mobileImage = card.querySelector("[data-variant-mobile-image]");
     const desktopImage = card.querySelector("[data-variant-desktop-image]");
-    const detailDescription = card.querySelector(
+    const detailContent = card.querySelector(
       "[data-variant-detail-description]",
     );
+    const detailDescription = card.querySelector("[data-variant-detail-copy]");
     const detailMedia = card.querySelector("[data-variant-detail-media]");
     const ctas = card.querySelectorAll("[data-variant-cta]");
     const prices = card.querySelectorAll("[data-variant-price]");
@@ -109,9 +110,11 @@ class ProductVariantShowcase {
     }
 
     if (detailDescription) {
-      this.updateOptionalHtml(
-        detailDescription,
-        button.dataset.variantDescriptionHtml || "",
+      const description = button.dataset.variantDescriptionHtml || "";
+      this.updateOptionalHtml(detailDescription, description);
+      detailContent?.classList.toggle(
+        "hidden",
+        !description && detailContent.dataset.variantHasReviews !== "true",
       );
     }
 
@@ -155,18 +158,30 @@ class ProductVariantShowcase {
       const activeButton = toggle.querySelector(
         "[data-variant-trigger].is-active",
       );
+      const deselectedButton = [
+        ...toggle.querySelectorAll("[data-variant-trigger]"),
+      ].find((button) => button !== activeButton);
 
-      if (!indicator || !activeButton) return;
+      indicator?.classList.toggle("hidden", !deselectedButton);
+
+      if (!indicator || !deselectedButton) return;
+
+      toggle.querySelectorAll("[data-variant-trigger]").forEach((button) => {
+        button.classList.toggle("is-indicated", button === deselectedButton);
+      });
 
       const toggleStyles = window.getComputedStyle(toggle);
       const paddingInlineStart = Number.parseFloat(
         toggleStyles.paddingInlineStart || toggleStyles.paddingLeft || "0",
       );
-      const offset = Math.max(0, activeButton.offsetLeft - paddingInlineStart);
+      const offset = Math.max(
+        0,
+        deselectedButton.offsetLeft - paddingInlineStart,
+      );
 
       toggle.style.setProperty(
         "--toggle-indicator-width",
-        `${activeButton.offsetWidth}px`,
+        `${deselectedButton.offsetWidth}px`,
       );
       toggle.style.setProperty("--toggle-indicator-offset", `${offset}px`);
 

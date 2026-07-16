@@ -146,6 +146,9 @@ $coffee-heist-score-reserve: var(--space-50);
     text-align: center;
     color: var(--bone);
     opacity: 1;
+    @include respond-down(md) {
+      max-width: 21rem;
+    }
   }
 
   // --- Tabs ----------------------------------------------------------------
@@ -588,7 +591,6 @@ $coffee-heist-score-reserve: var(--space-50);
 
   &__evidence-heist-sub {
     display: block;
-    font-weight: var(--fw-regular);
   }
 
   &__evidence-heist-logo {
@@ -706,7 +708,7 @@ $coffee-heist-score-reserve: var(--space-50);
         height: 100%;
 
         @include respond-to(md) {
-          padding-bottom: 178.9%;
+          padding-bottom: 156.2%;
         }
       }
 
@@ -733,11 +735,9 @@ $coffee-heist-score-reserve: var(--space-50);
     gap: var(--space-17);
     padding-block-end: var(--space-10);
     border-block-end: 0.09375rem solid var(--ink);
-    margin-bottom: var(--space-20);
 
     @include respond-to(md) {
       padding-block-end: var(--space-22);
-      margin-bottom: var(--space-18);
     }
 
     div {

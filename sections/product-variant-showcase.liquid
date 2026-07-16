@@ -276,25 +276,32 @@
                 </div>
 
                 <div class="product-variant-showcase__detail-card">
-                  <div
-                    class="product-variant-showcase__detail-content t-t1{% if active_detail_description_source == blank %} hidden{% endif %}"
-                    data-variant-detail-description
-                  >
-                    {%- liquid
-                      assign review_product = product
-                      assign bundle_reference = product.metafields.custom.bundle_product.value
-                      if bundle_reference != blank and bundle_reference.handle != blank
-                        assign bundle_full = all_products[bundle_reference.handle]
-                        if bundle_full != blank
-                          assign review_product = bundle_full
-                        endif
+                  {%- liquid
+                    assign review_product = product
+                    assign bundle_reference = product.metafields.custom.bundle_product.value
+                    if bundle_reference != blank and bundle_reference.handle != blank
+                      assign bundle_full = all_products[bundle_reference.handle]
+                      if bundle_full != blank
+                        assign review_product = bundle_full
                       endif
-                    -%}
-                    
-                    {% render 'okendo-star-summary', product: review_product %}
-                    {% if active_detail_description_source != blank %}
-                      {{ active_detail_description_source | metafield_tag }}
-                    {% endif %}
+                    endif
+
+                    assign review_summary = review_product.metafields.okendo.summaryData.value | default: review_product.metafields.okendo.summaryData
+                    assign review_count = review_summary.reviewCount | default: 0
+                  -%}
+                  <div
+                    class="product-variant-showcase__detail-content t-t1{% if active_detail_description_source == blank and review_count == 0 %} hidden{% endif %}"
+                    data-variant-detail-description
+                    data-variant-has-reviews="{% if review_count > 0 %}true{% else %}false{% endif %}"
+                  >
+                    <div class="product-variant-showcase__detail-review">
+                      {% render 'okendo-star-summary', product: review_product %}
+                    </div>
+                    <div data-variant-detail-copy{% if active_detail_description_source == blank %} class="hidden"{% endif %}>
+                      {% if active_detail_description_source != blank %}
+                        {{ active_detail_description_source | metafield_tag }}
+                      {% endif %}
+                    </div>
                   </div>
 
                   <div

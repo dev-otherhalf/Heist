@@ -40,6 +40,10 @@
 
   &__heading {
     margin: 0;
+    @include respond-down(md) {
+      max-width: 21rem;
+      margin: 0 auto;
+    }
 
     p {
       margin: 0;
