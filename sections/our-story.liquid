@@ -1,0 +1,1000 @@
+{%- render 'vite-tag', entry: 'sections/styles/our-story.scss' -%}
+
+{%- liquid
+  assign has_viewport_video = false
+  for block in section.blocks
+    if block.type == 'media' or block.type == 'media_with_content'
+      if block.settings.media_type == 'video' and block.settings.video != blank
+        assign has_viewport_video = true
+        break
+      endif
+    endif
+  endfor
+-%}
+
+{%- if has_viewport_video -%}
+  {%- render 'vite-tag', entry: 'sections/styles/viewport-video.scss' -%}
+  {%- render 'vite-tag', entry: 'sections/scripts/viewport-video.js' -%}
+{%- endif -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --our-story-bg: {{ section.settings.background_color }};
+    --our-story-ink: {{ section.settings.text_color }};
+    --our-story-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --our-story-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --our-story-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --our-story-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --our-story-gap-mobile: {{ section.settings.block_gap_mobile }}px;
+    --our-story-gap-desktop: {{ section.settings.block_gap_desktop }}px;
+  }
+{%- endstyle -%}
+
+<section class="our-story-section">
+  {%- if section.settings.background_image_desktop != blank or section.settings.background_image_mobile != blank -%}
+    <picture class="our-story__background">
+      {%- if section.settings.background_image_mobile != blank -%}
+        <source
+          media="(max-width: 989px)"
+          srcset="{{ section.settings.background_image_mobile | image_url: width: 1500 }}"
+        >
+      {%- endif -%}
+      {%- if section.settings.background_image_desktop != blank -%}
+        {{
+          section.settings.background_image_desktop
+          | image_url: width: 2560
+          | image_tag:
+            widths: '750, 1100, 1500, 2000, 2560',
+            sizes: '100vw',
+            loading: 'lazy',
+            class: 'our-story__background-image'
+        }}
+      {%- else -%}
+        {{
+          section.settings.background_image_mobile
+          | image_url: width: 1500
+          | image_tag:
+            widths: '750, 1100, 1500',
+            sizes: '100vw',
+            loading: 'lazy',
+            class: 'our-story__background-image'
+        }}
+      {%- endif -%}
+    </picture>
+  {%- endif -%}
+
+  <div class="our-story">
+    <div class="our-story__blocks">
+      {%- liquid
+        assign masthead_title_mobile = section.settings.breaking_news_mobile | default: section.settings.breaking_news
+        assign masthead_date_mobile = section.settings.date_mobile | default: section.settings.date
+      -%}
+      {%- if section.settings.breaking_news != blank or section.settings.date != blank -%}
+        <div class="our-story__masthead">
+          <div class="our-story__masthead-row">
+            {%- if section.settings.breaking_news != blank -%}
+              <p class="our-story__masthead-title our-story__masthead-title--desktop t-n1">{{ section.settings.breaking_news }}</p>
+            {%- endif -%}
+            {%- if masthead_title_mobile != blank -%}
+              <p class="our-story__masthead-title our-story__masthead-title--mobile t-n1">{{ masthead_title_mobile }}</p>
+            {%- endif -%}
+
+            {%- if section.settings.date != blank -%}
+              <p class="our-story__masthead-date our-story__masthead-date--desktop t-n1">{{ section.settings.date }}</p>
+            {%- endif -%}
+            {%- if masthead_date_mobile != blank -%}
+              <p class="our-story__masthead-date our-story__masthead-date--mobile t-n1">{{ masthead_date_mobile }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign block_heading_tag = block.settings.heading_tag | default: 'h2'
+          assign block_heading_text = block.settings.heading | default: block.settings.quote
+          assign block_heading_id = 'our-story-heading-' | append: section.id | append: '-' | append: block.id
+          assign block_labelledby = ''
+          if block_heading_text != blank
+            assign block_labelledby = block_heading_id
+          endif
+          assign media_alt = block.settings.media_alt | default: block.settings.heading | default: 'Drink Heist'
+          assign media_video_mobile = block.settings.video_mobile | default: block.settings.video
+          assign media_image_primary = block.settings.image | default: block.settings.image_mobile
+        -%}
+
+        <article
+          class="our-story__block our-story__block--{{ block.type }}{% if block.settings.media_position != blank %} our-story__block--media-{{ block.settings.media_position }}{% endif %}"
+          {% if block_labelledby != blank %}
+            aria-labelledby="{{ block_labelledby }}"
+          {% endif %}
+          style="
+            --our-story-block-padding-top-mobile: {{ block.settings.padding_top_mobile | default: 0 }}px;
+            --our-story-block-padding-bottom-mobile: {{ block.settings.padding_bottom_mobile | default: 0 }}px;
+            --our-story-block-padding-top-desktop: {{ block.settings.padding_top_desktop | default: 0 }}px;
+            --our-story-block-padding-bottom-desktop: {{ block.settings.padding_bottom_desktop | default: 0 }}px;
+          "
+          {{ block.shopify_attributes }}
+        >
+          {%- case block.type -%}
+            {%- when 'title' -%}
+              <div
+                class="our-story__title-block our-story__title-block--{{ block.settings.text_align | default: 'center' }} our-story__title-block--mobile-{{ block.settings.text_align_mobile | default: 'center' }}"
+                style="
+                  --our-story-title-rule-gap-mobile: {{ block.settings.rule_spacing_mobile | default: 32 }}px;
+                  --our-story-title-rule-gap-desktop: {{ block.settings.rule_spacing_desktop | default: 48 }}px;
+                "
+              >
+                {%- if block.settings.show_rules_top -%}
+                  <div class="our-story__title-rules our-story__title-rules--top" aria-hidden="true">
+                    <span class="our-story__title-rule"></span>
+                    <span class="our-story__title-rule"></span>
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.kicker != blank -%}
+                  <p class="our-story__kicker t-n2">{{ block.settings.kicker }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.heading != blank -%}
+                  {%- case block_heading_tag -%}
+                    {%- when 'h1' -%}
+                      <h1 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h1>
+                    {%- when 'h3' -%}
+                      <h3 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h3>
+                    {%- when 'h4' -%}
+                      <h4 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h4>
+                    {%- when 'h5' -%}
+                      <h5 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h5>
+                    {%- when 'h6' -%}
+                      <h6 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h6>
+                    {%- else -%}
+                      <h2 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h2>
+                  {%- endcase -%}
+                {%- endif -%}
+
+                {%- if block.settings.show_rules_bottom -%}
+                  <div class="our-story__title-rules our-story__title-rules--bottom" aria-hidden="true">
+                    <span class="our-story__title-rule"></span>
+                    <span class="our-story__title-rule"></span>
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'subheading' -%}
+              <div class="our-story__subheading-block our-story__subheading-block--{{ block.settings.text_align | default: 'center' }}">
+                {%- if block.settings.kicker != blank -%}
+                  <p class="our-story__kicker t-n2">{{ block.settings.kicker }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.heading != blank -%}
+                  <h3 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--subheading t-h7">{{ block.settings.heading }}</h3>
+                {%- endif -%}
+
+                {%- if block.settings.body != blank -%}
+                  <div class="our-story__body our-story__body--subheading t-t4">{{ block.settings.body }}</div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'media' -%}
+              <figure class="our-story__figure our-story__figure--standalone">
+                {%- if block.settings.media_type == 'video' and media_video_mobile != blank -%}
+                  <div class="viewport-video__frame" data-viewport-video>
+                    {%- if block.settings.video != blank -%}
+                      <div class="viewport-video__media viewport-video__media--desktop">
+                        {{
+                          block.settings.video
+                          | video_tag:
+                            image_size: '1600x',
+                            loop: true,
+                            muted: true,
+                            controls: false,
+                            playsinline: true,
+                            autoplay: false,
+                            preload: 'none',
+                            class: 'viewport-video__video js-autoplay-video',
+                            aria-label: media_alt
+                        }}
+                      </div>
+                    {%- endif -%}
+
+                    {%- if media_video_mobile != blank -%}
+                      <div class="viewport-video__media viewport-video__media--mobile">
+                        {{
+                          media_video_mobile
+                          | video_tag:
+                            image_size: '960x',
+                            loop: true,
+                            muted: true,
+                            controls: false,
+                            playsinline: true,
+                            autoplay: false,
+                            preload: 'none',
+                            class: 'viewport-video__video js-autoplay-video',
+                            aria-label: media_alt
+                        }}
+                      </div>
+                    {%- endif -%}
+
+                    <button
+                      type="button"
+                      class="viewport-video__sound-toggle"
+                      data-sound-toggle
+                      aria-pressed="false"
+                      aria-label="Unmute video"
+                    >
+                      <span class="viewport-video__sound-icon" data-sound-icon-muted>
+                        {%- render 'icon-sound-muted' -%}
+                      </span>
+                      <span class="viewport-video__sound-icon" data-sound-icon-unmuted hidden>
+                        {%- render 'icon-sound-unmuted' -%}
+                      </span>
+                    </button>
+                  </div>
+                {%- elsif media_image_primary != blank -%}
+                  <div class="our-story__media-shell">
+                    <picture>
+                      {%- if block.settings.image_mobile != blank -%}
+                        <source
+                          media="(max-width: 989px)"
+                          srcset="{{ block.settings.image_mobile | image_url: width: 1000 }}"
+                        >
+                      {%- endif -%}
+                      {{
+                        media_image_primary
+                        | image_url: width: 1800
+                        | image_tag:
+                          widths: '600, 900, 1200, 1500, 1800',
+                          sizes: '(min-width: 990px) 78rem, calc(100vw - 2.5rem)',
+                          loading: 'lazy',
+                          alt: media_alt,
+                          class: 'our-story__image'
+                      }}
+                    </picture>
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.caption != blank -%}
+                  <figcaption class="our-story__caption t-n2">{{ block.settings.caption }}</figcaption>
+                {%- endif -%}
+              </figure>
+
+            {%- when 'media_with_content' -%}
+              {%- capture media_content_figure -%}
+                <figure class="our-story__figure our-story__figure--paired">
+                  {%- if block.settings.media_type == 'video' and media_video_mobile != blank -%}
+                    <div class="viewport-video__frame" data-viewport-video>
+                      {%- if block.settings.video != blank -%}
+                        <div class="viewport-video__media viewport-video__media--desktop">
+                          {{
+                            block.settings.video
+                            | video_tag:
+                              image_size: '1400x',
+                              loop: true,
+                              muted: true,
+                              controls: false,
+                              playsinline: true,
+                              autoplay: false,
+                              preload: 'none',
+                              class: 'viewport-video__video js-autoplay-video',
+                              aria-label: media_alt
+                          }}
+                        </div>
+                      {%- endif -%}
+
+                      {%- if media_video_mobile != blank -%}
+                        <div class="viewport-video__media viewport-video__media--mobile">
+                          {{
+                            media_video_mobile
+                            | video_tag:
+                              image_size: '960x',
+                              loop: true,
+                              muted: true,
+                              controls: false,
+                              playsinline: true,
+                              autoplay: false,
+                              preload: 'none',
+                              class: 'viewport-video__video js-autoplay-video',
+                              aria-label: media_alt
+                          }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- elsif media_image_primary != blank -%}
+                    <div class="our-story__media-shell">
+                      <picture>
+                        {%- if block.settings.image_mobile != blank -%}
+                          <source
+                            media="(max-width: 989px)"
+                            srcset="{{ block.settings.image_mobile | image_url: width: 900 }}"
+                          >
+                        {%- endif -%}
+                        {{
+                          media_image_primary
+                          | image_url: width: 1600
+                          | image_tag:
+                            widths: '500, 800, 1200, 1600',
+                            sizes: '(min-width: 990px) 46vw, calc(100vw - 2.5rem)',
+                            loading: 'lazy',
+                            alt: media_alt,
+                            class: 'our-story__image'
+                        }}
+                      </picture>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.caption != blank -%}
+                    <figcaption class="our-story__caption t-n2">{{ block.settings.caption }}</figcaption>
+                  {%- endif -%}
+                </figure>
+              {%- endcapture -%}
+
+              {%- capture media_content_head -%}
+                {%- if block.settings.kicker != blank -%}
+                  <p class="our-story__kicker t-n2">{{ block.settings.kicker }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.heading != blank -%}
+                  <h3 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--content t-h7">{{ block.settings.heading }}</h3>
+                {%- endif -%}
+              {%- endcapture -%}
+
+              {%- capture media_content_foot -%}
+                {%- if block.settings.body != blank -%}
+                  <div class="our-story__body t-t4">{{ block.settings.body }}</div>
+                {%- endif -%}
+
+                {%- if block.settings.button_label != blank -%}
+                  <a
+                    class="our-story__link t-n1"
+                    {% if block.settings.button_link != blank %}
+                      href="{{ block.settings.button_link }}"
+                    {% else %}
+                      role="link"
+                      aria-disabled="true"
+                    {% endif %}
+                  >
+                    {{ block.settings.button_label }}
+                  </a>
+                {%- endif -%}
+              {%- endcapture -%}
+
+              {%- if block.settings.media_inline -%}
+                {%- comment -%} Mobile only: media stacks between heading and description. Desktop keeps the side-by-side layout. {%- endcomment -%}
+                <div class="our-story__media-content our-story__media-content--inline">
+                  <div class="our-story__media-content-copy our-story__media-content-head">{{ media_content_head }}</div>
+                  {{ media_content_figure }}
+                  <div class="our-story__media-content-copy our-story__media-content-foot">{{ media_content_foot }}</div>
+                </div>
+              {%- else -%}
+                <div class="our-story__media-content">
+                  <div class="our-story__media-content-copy">
+                    {{ media_content_head }}
+                    {{ media_content_foot }}
+                  </div>
+                  {{ media_content_figure }}
+                </div>
+              {%- endif -%}
+
+            {%- when 'quote' -%}
+              <blockquote class="our-story__quote">
+                {%- if block.settings.quote != blank -%}
+                  <p id="{{ block_heading_id }}" class="our-story__quote-text t-h4">{{ block.settings.quote }}</p>
+                {%- endif -%}
+                {%- if block.settings.caption != blank -%}
+                  <footer class="our-story__quote-credit t-n1">{{ block.settings.caption }}</footer>
+                {%- endif -%}
+              </blockquote>
+          {%- endcase -%}
+        </article>
+      {%- endfor -%}
+
+      {%- if section.settings.cta_label != blank -%}
+        {%- assign cta_words = section.settings.cta_label | split: ' ' -%}
+        {%- assign cta_total = cta_words.size -%}
+        {%- assign cta_half = cta_total | plus: 1 | divided_by: 2 -%}
+
+        {%- capture cta_first_half -%}
+          {%- for word in cta_words limit: cta_half -%}
+            {{ word }}{% unless forloop.last %} {% endunless %}
+          {%- endfor -%}
+        {%- endcapture -%}
+
+        {%- capture cta_second_half -%}
+          {%- for word in cta_words offset: cta_half -%}
+            {{ word }}{% unless forloop.last %} {% endunless %}
+          {%- endfor -%}
+        {%- endcapture -%}
+
+        <div class="our-story__cta">
+          <span class="our-story__cta-rules" aria-hidden="true">
+            <span class="our-story__cta-line"></span>
+            <span class="our-story__cta-line"></span>
+          </span>
+
+          <a
+            class="btn btn--split our-story__cta-button"
+            {% if section.settings.cta_link != blank %}
+              href="{{ section.settings.cta_link }}"
+            {% else %}
+              role="link" aria-disabled="true"
+            {% endif %}
+          >
+            <span class="btn__text">{{ cta_first_half | strip | escape }}</span>
+            {%- if cta_second_half != blank -%}
+              <span class="btn__lines" aria-hidden="true"></span>
+              <span class="btn__text">{{ cta_second_half | strip | escape }}</span>
+            {%- endif -%}
+          </a>
+
+          <span class="our-story__cta-rules" aria-hidden="true">
+            <span class="our-story__cta-line"></span>
+            <span class="our-story__cta-line"></span>
+          </span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Our story",
+  "tag": "section",
+  "class": "shopify-section-our-story",
+  "settings": [
+    {
+      "type": "text",
+      "id": "breaking_news",
+      "label": "Breaking news title",
+      "default": "Breaking news: our story"
+    },
+    {
+      "type": "text",
+      "id": "breaking_news_mobile",
+      "label": "Breaking news title (mobile)",
+      "info": "Falls back to the desktop title."
+    },
+    {
+      "type": "text",
+      "id": "date",
+      "label": "Date",
+      "default": "Friday, June 5, 2026"
+    },
+    {
+      "type": "text",
+      "id": "date_mobile",
+      "label": "Date (mobile)",
+      "info": "Falls back to the desktop date."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Pull the heist"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#e4ddcf"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1e1a17"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_desktop",
+      "label": "Desktop background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Mobile background image"
+    },
+    {
+      "type": "header",
+      "content": "Block spacing"
+    },
+    {
+      "type": "number",
+      "id": "block_gap_mobile",
+      "label": "Gap between blocks on mobile",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "block_gap_desktop",
+      "label": "Gap between blocks on desktop",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "default": 24
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "default": 56
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "The World's Biggest Coffee Heist"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Heading tag",
+          "default": "h2",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" },
+            { "value": "h5", "label": "H5" },
+            { "value": "h6", "label": "H6" }
+          ],
+          "info": "Use H1 sparingly."
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text align",
+          "default": "center",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_align_mobile",
+          "label": "Text align (mobile)",
+          "default": "center",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rules_top",
+          "label": "Show top double rule",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rules_bottom",
+          "label": "Show bottom double rule",
+          "default": true
+        },
+        {
+          "type": "number",
+          "id": "rule_spacing_mobile",
+          "label": "Rule spacing mobile",
+          "info": "Space between the rules and the heading (top and bottom).",
+          "default": 32
+        },
+        {
+          "type": "number",
+          "id": "rule_spacing_desktop",
+          "label": "Rule spacing desktop",
+          "info": "Space between the rules and the heading (top and bottom).",
+          "default": 48
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "number",
+          "id": "padding_top_mobile",
+          "label": "Top padding mobile",
+          "default": 24
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_mobile",
+          "label": "Bottom padding mobile",
+          "default": 24
+        },
+        {
+          "type": "number",
+          "id": "padding_top_desktop",
+          "label": "Top padding desktop",
+          "default": 32
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_desktop",
+          "label": "Bottom padding desktop",
+          "default": 32
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "richtext",
+          "id": "heading",
+          "label": "Subheading",
+          "default": "<p>In what experts are calling an unprecedented breach of coffee convention, Heist has successfully stolen the caffeine from world-class beans.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Description",
+          "default": "<p>Add supporting copy for the subheading block here.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text align",
+          "default": "center",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "number",
+          "id": "padding_top_mobile",
+          "label": "Top padding mobile",
+          "default": 16
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_mobile",
+          "label": "Bottom padding mobile",
+          "default": 16
+        },
+        {
+          "type": "number",
+          "id": "padding_top_desktop",
+          "label": "Top padding desktop",
+          "default": 20
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_desktop",
+          "label": "Bottom padding desktop",
+          "default": 20
+        }
+      ]
+    },
+    {
+      "type": "media",
+      "name": "Media",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "default": "image",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (desktop)",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (mobile)",
+          "info": "Falls back to the desktop image.",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (desktop)",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "video",
+          "id": "video_mobile",
+          "label": "Video (mobile)",
+          "info": "Falls back to the desktop video.",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "text",
+          "id": "media_alt",
+          "label": "Image alt or video label",
+          "info": "Used for accessibility."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "number",
+          "id": "padding_top_mobile",
+          "label": "Top padding mobile",
+          "default": 16
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_mobile",
+          "label": "Bottom padding mobile",
+          "default": 16
+        },
+        {
+          "type": "number",
+          "id": "padding_top_desktop",
+          "label": "Top padding desktop",
+          "default": 24
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_desktop",
+          "label": "Bottom padding desktop",
+          "default": 24
+        }
+      ]
+    },
+    {
+      "type": "media_with_content",
+      "name": "Media with content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "<p>Why Decaf's Been Bad For 50 Years.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Description",
+          "default": "<p>Combine a heading, description, and a single piece of media. Choose whether the media sits on the left or right.</p>"
+        },
+        {
+          "type": "select",
+          "id": "media_position",
+          "label": "Media position",
+          "default": "left",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "media_inline",
+          "label": "Show media between heading and description on mobile",
+          "info": "Mobile only: the media stacks between the heading and description. Desktop keeps the side-by-side layout.",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "default": "image",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (desktop)",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (mobile)",
+          "info": "Falls back to the desktop image.",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (desktop)",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "video",
+          "id": "video_mobile",
+          "label": "Video (mobile)",
+          "info": "Falls back to the desktop video.",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "text",
+          "id": "media_alt",
+          "label": "Image alt or video label",
+          "info": "Used for accessibility."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Link label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Link URL"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "number",
+          "id": "padding_top_mobile",
+          "label": "Top padding mobile",
+          "default": 24
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_mobile",
+          "label": "Bottom padding mobile",
+          "default": 24
+        },
+        {
+          "type": "number",
+          "id": "padding_top_desktop",
+          "label": "Top padding desktop",
+          "default": 32
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_desktop",
+          "label": "Bottom padding desktop",
+          "default": 32
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "We stole the caffeine. Not the flavor. Not the joy. That's The Heist."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Attribution"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "number",
+          "id": "padding_top_mobile",
+          "label": "Top padding mobile",
+          "default": 24
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_mobile",
+          "label": "Bottom padding mobile",
+          "default": 24
+        },
+        {
+          "type": "number",
+          "id": "padding_top_desktop",
+          "label": "Top padding desktop",
+          "default": 40
+        },
+        {
+          "type": "number",
+          "id": "padding_bottom_desktop",
+          "label": "Bottom padding desktop",
+          "default": 40
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our story",
+      "category": "t:categories.storytelling",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "subheading"
+        },
+        {
+          "type": "media"
+        },
+        {
+          "type": "media_with_content"
+        },
+        {
+          "type": "quote"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
