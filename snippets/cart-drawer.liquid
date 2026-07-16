@@ -70,9 +70,9 @@
           class="cart-drawer__inner{% if cart.empty? %} cart-drawer--empty{% endif %}"
           data-hydration-key="cart-drawer-inner"
         >
-          {%- if cart.empty? -%}
-            {% render 'cart-promo-bar' %}
-          {%- endif -%}
+          
+          {% render 'cart-promo-bar' %}
+          
 
           {% assign cart_drawer_title = 'content.cart_title'
             | t

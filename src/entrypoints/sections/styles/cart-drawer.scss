@@ -28,7 +28,9 @@ $plan-control-height: 2.375rem; // 38px
 // -----------------------------------------------------------------------------
 // Drawer
 // -----------------------------------------------------------------------------
-
+.theme-drawer__dialog {
+  border-left: none;
+}
 .cart-drawer {
   // --- Overlay ---------------------------------------------------------------
   //
@@ -77,11 +79,37 @@ $plan-control-height: 2.375rem; // 38px
 
     .theme-drawer__header {
       border-block-end: var(--bw-2) solid var(--taupe);
+      padding: var(--space-24) var(--space-24) var(--space-22) var(--space-32);
+      @include respond-down(md) {
+        padding: var(--space-20) var(--space-19) var(--space-18) var(--space-20);
+      }
       .theme-drawer__close-button {
         background: none;
         border: none;
         outline: none;
         box-shadow: none;
+        width: var(--space-24);
+        height: var(--space-24);
+        padding: 0;
+        .svg-wrapper,
+        svg {
+          width: var(--space-24);
+          height: var(--space-24);
+        }
+        @include respond-down(md) {
+          width: var(--space-32);
+          height: var(--space-32);
+          .svg-wrapper,
+          svg {
+            width: var(--space-32);
+            height: var(--space-32);
+          }
+        }
+      }
+    }
+    &.cart-drawer--empty {
+      .theme-drawer__header {
+        border-block-end: var(--bw-2) solid var(--ink);
       }
     }
 
@@ -92,6 +120,10 @@ $plan-control-height: 2.375rem; // 38px
       font-weight: var(--fw-bold);
       line-height: var(--lh-s3);
       text-transform: uppercase;
+      @include respond-down(md) {
+        font-size: var(--fs-s2);
+        line-height: var(--lh-s2);
+      }
     }
   }
 
@@ -186,9 +218,14 @@ $plan-control-height: 2.375rem; // 38px
     border-block-start: var(--bw-2) solid var(--ink);
     background-color: var(--bone);
     mask-image: none;
-
+    padding: var(--space-19) var(--space-40) var(--space-20) var(--space-32);
+    .cart-totals {
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
     .cart__ctas {
-      gap: var(--space-16);
+      gap: var(--space-15);
     }
 
     .cart__checkout-button {
@@ -206,16 +243,24 @@ $plan-control-height: 2.375rem; // 38px
     --cart-line-plan-width: 15rem; // 240px
     --cart-line-control-height: var(--space-38); // 38px
 
-    padding-block-start: var(--theme-drawer-padding);
-
+    padding: var(--space-32);
+    @include respond-down(md) {
+      padding: var(--space-32) var(--space-20);
+    }
     .cart-items__table-row {
       position: relative;
       grid-template-areas: none;
       grid-template-columns: var(--cart-line-media-width) minmax(0, 1fr) auto;
       align-items: start;
       column-gap: var(--space-20);
-      row-gap: var(--space-12);
+      row-gap: 0;
       border: none;
+      margin: 0;
+      padding: 0 0 var(--space-38);
+      @include respond-down(md) {
+        grid-template-columns: 4.525rem 1fr;
+        column-gap: var(--space-16);
+      }
     }
 
     .cart-items__details,
@@ -232,14 +277,30 @@ $plan-control-height: 2.375rem; // 38px
       aspect-ratio: auto;
       border: var(--bw-2) solid var(--ink);
       background-color: var(--cream);
+      @include respond-down(md) {
+        position: relative;
+        padding-bottom: 105%;
+        height: auto;
+        img.cart-items__media-image {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
     }
 
     .cart-items__product-info {
       grid-area: 1 / 2 / 2 / 3;
       display: flex;
       flex-direction: column;
-      gap: var(--space-6);
-      padding-block-start: var(--space-8);
+      gap: var(--space-5);
+      padding-block-start: var(--space-5);
+      @include respond-down(md) {
+        padding-block-start: 0;
+      }
     }
 
     .cart-items__title {
@@ -249,6 +310,9 @@ $plan-control-height: 2.375rem; // 38px
       font-weight: var(--fw-bold);
       line-height: var(--lh-s3);
       text-transform: uppercase;
+      @include respond-down(md) {
+        margin-top: -0.125rem;
+      }
     }
 
     // Outranks the base `.cart-items__details *` font-size, which the `t-t3`
@@ -276,6 +340,10 @@ $plan-control-height: 2.375rem; // 38px
       font-family: var(--font-mono);
       font-size: var(--fs-n1);
       line-height: var(--lh-n1);
+      * {
+        position: relative;
+        top: -0.125rem;
+      }
     }
 
     .cart-items__price-compare {
@@ -291,6 +359,10 @@ $plan-control-height: 2.375rem; // 38px
       align-items: baseline;
       justify-content: space-between;
       gap: var(--space-12);
+      margin-top: var(--space-10);
+      @include respond-down(md) {
+        margin-top: var(--space-9);
+      }
 
       // No variant, no properties, no tag — collapse the row rather than
       // leaving its gap behind. `:empty` never matches: the markup carries
@@ -320,6 +392,33 @@ $plan-control-height: 2.375rem; // 38px
       align-items: center;
       gap: var(--space-12);
       width: 100%;
+      margin-top: var(--space-14);
+      @include respond-down(md) {
+        flex-wrap: wrap;
+        gap: var(--space-8);
+      }
+      .quantity-selector {
+        padding: 0 var(--space-14);
+      }
+      .button {
+        width: var(--space-16);
+        height: var(--space-16);
+        .svg-wrapper,
+        svg {
+          width: var(--space-16);
+          height: var(--space-16);
+        }
+        &.cart-items__remove {
+          width: var(--space-20);
+          height: var(--space-20);
+          top: var(--space-6);
+          .svg-wrapper,
+          svg {
+            width: var(--space-20);
+            height: var(--space-20);
+          }
+        }
+      }
     }
 
     .cart-items__error {
@@ -368,13 +467,13 @@ $plan-control-height: 2.375rem; // 38px
 
   // A flex item of the scrolling content — never let it compress.
   flex-shrink: 0;
-  padding: var(--space-16) var(--space-32);
+  padding: var(--space-20) var(--space-32) var(--space-17);
   border-block-end: var(--bw-2) solid var(--taupe);
   background-color: var(--bone);
   color: var(--ink);
 
   @include respond-down(md) {
-    padding-inline: var(--space-16);
+    padding: var(--space-24) 1.15625rem var(--space-18) var(--space-20);
   }
 
   &__track {
@@ -415,11 +514,18 @@ $plan-control-height: 2.375rem; // 38px
     grid-template-columns: repeat(var(--cart-progress-tiers, 4), 1fr);
     align-items: center;
     justify-items: center;
-    gap: var(--space-8) 0;
-
+    gap: var(--space-8) var(--space-25);
+    @include respond-down(md) {
+      grid-template-columns: 67fr 67fr 67fr 78fr;
+      gap: var(--space-8) var(--space-18);
+      padding-right: var(--space-3);
+    }
     &--markers {
       position: relative;
       padding-block: var(--space-8);
+      @include respond-down(md) {
+        padding-block: var(--space-8) var(--space-7);
+      }
 
       // The track lies behind the markers, centred on their row.
       #{$self}__track {
@@ -443,6 +549,7 @@ $plan-control-height: 2.375rem; // 38px
     border-radius: 50%;
     background-color: var(--bone);
     color: var(--ink);
+    margin: var(--space-2) 0 0 0;
 
     &--reached {
       border-color: var(--red);
@@ -466,7 +573,7 @@ $plan-control-height: 2.375rem; // 38px
     white-space: nowrap;
 
     @include respond-down(md) {
-      font-size: var(--fs-n3);
+      font-size: var(--fs-n2);
     }
   }
 }
@@ -491,28 +598,35 @@ $plan-control-height: 2.375rem; // 38px
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-32);
+    gap: 0;
     max-width: 29.375rem; // 470px
     padding-inline: var(--space-32);
     text-align: center;
+    margin-bottom: 12.025rem;
 
     @include respond-down(md) {
-      gap: var(--space-24);
-      padding-inline: var(--space-24);
+      gap: 0;
+      padding-inline: var(--space-32);
+      margin-bottom: 9.925rem;
     }
   }
 
   &__eyebrow {
     color: var(--ink);
+    padding-bottom: var(--space-36);
+    @include respond-down(md) {
+      padding-bottom: var(--space-32);
+    }
   }
 
   &__heading {
     margin-block-start: calc(var(--space-12) * -1);
     color: var(--ink);
     text-wrap: balance;
+    padding-bottom: var(--space-23);
 
     @include respond-down(md) {
-      font-size: var(--fs-h7);
+      padding-bottom: var(--space-24);
     }
   }
 
@@ -523,6 +637,9 @@ $plan-control-height: 2.375rem; // 38px
     border-radius: 0;
     background-color: var(--button-bg);
     color: var(--button-fg);
+    @include respond-down(md) {
+      min-width: 17.5rem;
+    }
   }
 
   &__image {
@@ -531,7 +648,11 @@ $plan-control-height: 2.375rem; // 38px
     inset-inline-end: 0;
     width: min(40%, 14.4375rem); // 231px
     pointer-events: none;
-
+    @include respond-down(md) {
+      width: 14.1875rem;
+      inset-block-end: -0.5625rem;
+      inset-inline-end: -1.375rem;
+    }
     img {
       display: block;
       width: 100%;
@@ -557,8 +678,9 @@ $plan-control-height: 2.375rem; // 38px
   position: relative;
   display: flex;
   gap: var(--space-30);
-  margin-block-end: var(--space-38);
-  padding: var(--space-38) var(--space-30);
+  margin-block-end: 0;
+  margin-block-start: var(--space-32);
+  padding: var(--space-38) var(--space-30) var(--space-39);
   border: var(--bw-2) solid var(--ink);
   background-color: var(--bone);
   color: var(--ink);
@@ -570,12 +692,14 @@ $plan-control-height: 2.375rem; // 38px
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-6) var(--space-16);
+    padding: 0 var(--space-4) var(--space-4);
     border-block-end: var(--bw-2) solid var(--ink);
     border-inline-start: var(--bw-2) solid var(--ink);
     background-color: var(--cream);
     text-transform: uppercase;
     white-space: nowrap;
+    min-height: var(--space-25);
+    min-width: var(--space-98);
   }
 
   &__media {
@@ -615,14 +739,18 @@ $plan-control-height: 2.375rem; // 38px
   &__subtitle {
     margin-block-start: var(--space-8);
     color: var(--ink);
+    font-size: var(--fs-n1);
+    line-height: var(--lh-n1);
   }
 
   &__perks {
-    display: flex;
-    flex-direction: column;
     gap: var(--space-8);
-    margin-block-start: var(--space-24);
+    text-wrap: pretty;
+    flex-direction: column;
+    max-width: 19rem;
+    margin-block-start: var(--space-23);
     padding: 0;
+    display: flex;
   }
 
   &__perk {
@@ -644,7 +772,7 @@ $plan-control-height: 2.375rem; // 38px
   &__cta {
     width: min(100%, var(--cart-upgrade-cta-width));
     height: var(--space-40);
-    margin-block-start: var(--space-24);
+    margin-block-start: var(--space-21);
     padding-inline: var(--space-12);
     border: none;
     border-radius: 0;
@@ -653,6 +781,7 @@ $plan-control-height: 2.375rem; // 38px
     text-align: center;
     text-transform: uppercase;
     cursor: pointer;
+    padding-bottom: var(--space-5);
 
     &:disabled {
       opacity: 0.5;
@@ -704,17 +833,21 @@ $plan-control-height: 2.375rem; // 38px
 
   &__select {
     appearance: none;
+    -webkit-appearance: none;
     width: 100%;
     min-width: 0;
     height: var(--cart-line-control-height, #{$plan-control-height});
-    padding-inline: var(--space-12) var(--space-34);
+    padding-inline: var(--space-14) var(--space-34);
     border: var(--bw-2) solid var(--taupe);
     border-radius: 0;
-    background-color: var(--bone);
+    background: var(--bone)
+      url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/16px-chevron-down.svg?v=1784117937)
+      no-repeat center right var(--space-10);
     color: var(--ink);
     text-transform: uppercase;
     text-overflow: ellipsis;
     cursor: pointer;
+    outline: none;
 
     &:disabled {
       opacity: 0.5;
@@ -770,7 +903,7 @@ $plan-control-height: 2.375rem; // 38px
 
   &__row {
     display: flex;
-    align-items: baseline;
+    align-items: flex-end;
     gap: var(--space-8);
   }
 
@@ -783,7 +916,7 @@ $plan-control-height: 2.375rem; // 38px
       currentColor var(--space-1),
       transparent var(--space-1)
     );
-    background-position: 0 calc(1em - var(--space-4));
+    background-position: 0 calc(1em - var(--space-3));
     background-size: var(--space-6) var(--space-2);
     background-repeat: repeat-x;
   }
