@@ -161,8 +161,9 @@
       "media media"
       "left right";
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-
+    margin-top:var(--space-32);
     @include respond-to(lg) {
+      margin-top:0;
       align-items: center;
       gap: 3rem;
       grid-template-areas: "left media right";

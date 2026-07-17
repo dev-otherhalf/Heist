@@ -53,6 +53,8 @@
     pointer-events: none;
     visibility: hidden;
     transform: translateY(-100%);
+    position: fixed;
+    inset: 0 0 auto;
   }
 
   @include respond-down(lg) {

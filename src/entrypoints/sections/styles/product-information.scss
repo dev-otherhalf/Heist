@@ -18,6 +18,8 @@ body.product {
 .page-wrapper {
   .shopify-section {
     .product-information {
+      position: relative;
+      z-index: 11;
       .product-information {
         &__grid {
           display: flex;

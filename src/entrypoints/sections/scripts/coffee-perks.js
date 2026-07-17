@@ -32,7 +32,7 @@ class CoffeePerks {
           modules: [FreeMode, Mousewheel, A11y],
           slidesPerView: 3,
           spaceBetween: 16,
-          freeMode: true,
+          freeMode: false,
           grabCursor: true,
           centerInsufficientSlides: true,
           mousewheel: { forceToAxis: true },
