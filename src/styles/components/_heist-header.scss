@@ -53,6 +53,8 @@
     pointer-events: none;
     visibility: hidden;
     transform: translateY(-100%);
+    position: fixed;
+    inset: 0 0 auto;
   }
 
   @include respond-down(lg) {
@@ -85,7 +87,7 @@
   gap: var(--space-7);
   color: var(--announcement-inner-text);
   background: var(--announcement-inner-bg);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-semibold);
   text-align: center;
   text-transform: uppercase;
   @include respond-down(md) {

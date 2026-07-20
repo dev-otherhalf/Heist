@@ -1,0 +1,405 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {
+            "text_color": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": ["heading", "page-content"],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "our_story_jWY7ML": {
+      "type": "our-story",
+      "blocks": {
+        "title_khFB69": {
+          "type": "title",
+          "settings": {
+            "kicker": "",
+            "heading": "The World's Biggest Coffee Heist",
+            "heading_tag": "h1",
+            "text_align": "center",
+            "text_align_mobile": "inherit",
+            "show_rules_top": true,
+            "show_rules_bottom": true,
+            "rule_spacing_mobile": 16,
+            "rule_spacing_desktop": 48,
+            "padding_top_mobile": 0,
+            "padding_bottom_mobile": 0,
+            "padding_top_desktop": 0,
+            "padding_bottom_desktop": 0
+          }
+        },
+        "subheading_dtinNE": {
+          "type": "subheading",
+          "settings": {
+            "kicker": "",
+            "heading": "<p>In what experts are calling an unprecedented breach of coffee convention, <br/>Heist has successfully stolen the caffeine from world-class beans.</p>",
+            "body": "",
+            "text_align": "center",
+            "padding_top_mobile": 16,
+            "padding_bottom_mobile": 32,
+            "padding_top_desktop": 40,
+            "padding_bottom_desktop": 40
+          }
+        },
+        "media_EnNJNV": {
+          "type": "media",
+          "settings": {
+            "media_type": "video",
+            "image": "shopify://shop_images/Rectangle_144433678.jpg",
+            "video": "shopify://files/videos/ezgif-32b066c49c70d90e (1).mp4",
+            "media_alt": "",
+            "caption": "",
+            "padding_top_mobile": 0,
+            "padding_bottom_mobile": 0,
+            "padding_top_desktop": 0,
+            "padding_bottom_desktop": 0
+          }
+        },
+        "title_hTrRgK": {
+          "type": "title",
+          "settings": {
+            "kicker": "",
+            "heading": "The First Cup Was a Date Night",
+            "heading_tag": "h2",
+            "text_align": "center",
+            "text_align_mobile": "inherit",
+            "show_rules_top": false,
+            "show_rules_bottom": false,
+            "rule_spacing_mobile": 32,
+            "rule_spacing_desktop": 48,
+            "padding_top_mobile": 32,
+            "padding_bottom_mobile": 32,
+            "padding_top_desktop": 56,
+            "padding_bottom_desktop": 56
+          }
+        },
+        "media_r69Ncp": {
+          "type": "media",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Frame_1410127383.jpg",
+            "image_mobile": "shopify://shop_images/Frame_1410127407.jpg",
+            "video": "shopify://files/videos/ezgif-32b066c49c70d90e (1).mp4",
+            "media_alt": "",
+            "caption": "",
+            "padding_top_mobile": 0,
+            "padding_bottom_mobile": 0,
+            "padding_top_desktop": 0,
+            "padding_bottom_desktop": 0
+          }
+        },
+        "media_with_content_yDJEV7": {
+          "type": "media_with_content",
+          "settings": {
+            "kicker": "",
+            "heading": "<p>15 years ago, Stephen and Sarah Bruner<br/>were at dinner. Two glasses of wine in, a <br/>shared dessert on the way. One of them<br/> wanted coffee. The other didn’t want to <br/>still be awake at 2 a.m.</p>",
+            "body": "<p>The compromise was a pathetic decaf americano. That scene repeated itself in 47 cities across 15 years. Bad decaf was always the option. They thought they could do better. So they did.</p>",
+            "media_position": "right",
+            "media_inline": false,
+            "media_type": "image",
+            "image": "shopify://shop_images/Frame_1410127384_1d26e3fa-c711-417a-88c7-366b962e8016.jpg",
+            "image_mobile": "shopify://shop_images/Frame_1410127409.jpg",
+            "media_alt": "Founders sharing coffee",
+            "caption": "",
+            "button_label": "",
+            "button_link": "",
+            "padding_top_mobile": 32,
+            "padding_bottom_mobile": 32,
+            "padding_top_desktop": 84,
+            "padding_bottom_desktop": 84
+          }
+        },
+        "title_ja64dV": {
+          "type": "title",
+          "settings": {
+            "kicker": "",
+            "heading": "They called the best in the business.",
+            "heading_tag": "h2",
+            "text_align": "center",
+            "text_align_mobile": "inherit",
+            "show_rules_top": true,
+            "show_rules_bottom": true,
+            "rule_spacing_mobile": 24,
+            "rule_spacing_desktop": 48,
+            "padding_top_mobile": 0,
+            "padding_bottom_mobile": 0,
+            "padding_top_desktop": 0,
+            "padding_bottom_desktop": 0
+          }
+        },
+        "media_with_content_9harNR": {
+          "type": "media_with_content",
+          "settings": {
+            "kicker": "",
+            "heading": "<p>Jarrett Johnson spent 15 years <br/>perfecting his craft, including a decade <br/>building award-winning Lineage Coffee.</p>",
+            "body": "<p>As a Certified Q Grader and one of the most respected cuppers in the industry, he knows what great coffee is supposed to taste like. They told him what they wanted to do. He didn’t laugh them out of the room.<br/><br/>He’s now Heist’s Director of Coffee. And what he told them about how the industry  handles decaf was the thing they’d been missing.</p>",
+            "media_position": "left",
+            "media_inline": false,
+            "media_type": "image",
+            "image": "shopify://shop_images/Frame_1410127415.jpg",
+            "image_mobile": "shopify://shop_images/Frame_1410127408.jpg",
+            "media_alt": "Founders sharing coffee",
+            "caption": "",
+            "button_label": "",
+            "button_link": "",
+            "padding_top_mobile": 32,
+            "padding_bottom_mobile": 32,
+            "padding_top_desktop": 91,
+            "padding_bottom_desktop": 84
+          }
+        },
+        "title_yARMP7": {
+          "type": "title",
+          "settings": {
+            "kicker": "",
+            "heading": "Why Decaf’s Been Bad For 50 Years.",
+            "heading_tag": "h2",
+            "text_align": "center",
+            "text_align_mobile": "left",
+            "show_rules_top": true,
+            "show_rules_bottom": true,
+            "rule_spacing_mobile": 24,
+            "rule_spacing_desktop": 48,
+            "padding_top_mobile": 0,
+            "padding_bottom_mobile": 0,
+            "padding_top_desktop": 0,
+            "padding_bottom_desktop": 0
+          }
+        },
+        "media_with_content_4qFUap": {
+          "type": "media_with_content",
+          "settings": {
+            "kicker": "",
+            "heading": "<p>Decaf is 7-12% of coffee sales and roasters<br/> know it. They treat it as an afterthought.</p>",
+            "body": "<p>They pour all the craft into their full-caf side and pick decaf from a small set of pre graded options nobody got excited about. And it gets worse. If you want to decaffeinate a great single-origin lot, the  decaffeinator has minimums. Big ones. Most roasters will never sell that much decaf, so they don’t even try. <br/><br/>So we did the only thing that made sense. We bought a LOT of some of the finest coffee on earth and sent it for decaffeination. The whole  point of Heist was inputs nobody else was willing to commit to.</p>",
+            "media_position": "right",
+            "media_inline": false,
+            "media_type": "image",
+            "image": "shopify://shop_images/Frame_1410127384_f78d8670-b1f4-4b22-84e7-f912401ae065.jpg",
+            "image_mobile": "shopify://shop_images/Frame_1410127411.jpg",
+            "media_alt": "Founders sharing coffee",
+            "caption": "",
+            "button_label": "",
+            "button_link": "",
+            "padding_top_mobile": 32,
+            "padding_bottom_mobile": 32,
+            "padding_top_desktop": 86,
+            "padding_bottom_desktop": 86
+          }
+        },
+        "title_UPX7L7": {
+          "type": "title",
+          "settings": {
+            "kicker": "",
+            "heading": "“Heist is decaffeinated with only water. The caffeine dissolves out.”",
+            "heading_tag": "h2",
+            "text_align": "center",
+            "text_align_mobile": "inherit",
+            "show_rules_top": true,
+            "show_rules_bottom": true,
+            "rule_spacing_mobile": 32,
+            "rule_spacing_desktop": 48,
+            "padding_top_mobile": 0,
+            "padding_bottom_mobile": 0,
+            "padding_top_desktop": 0,
+            "padding_bottom_desktop": 0
+          }
+        },
+        "media_with_content_CDceeb": {
+          "type": "media_with_content",
+          "settings": {
+            "kicker": "",
+            "heading": "<p>Most decaf in America is made with <br/>methylene chloride or ethyl acetate. <br/>solvents. If a bag of decaf has ever <br/>smelled like nail polish, that’s ethyl <br/>acetate residue.</p>",
+            "body": "<p>Both are “below the legal limit” by FDA standards. We think “below  the legal limit” is the bare minimum, not the goal.<br/><br/>Heist is decaffeinated with only water. The caffeine dissolves out while the delicious flavor stays. <br/><br/>Jarrett tests every batch for mold, mycotoxins, and heavy metals. If a lot doesn’t pass, it doesn’t ship. The full. process is on our <a href=\"#\" title=\"#\">Process Page</a>. The receipts are too.</p>",
+            "media_position": "left",
+            "media_inline": true,
+            "media_type": "video",
+            "image": "shopify://shop_images/Frame_1410127384.jpg",
+            "video": "shopify://files/videos/From KlickPin CF Winter Outfit Ideas Ideas Youll Keep Coming Back To 54562 - Pin-892205376170196933.mp4",
+            "video_mobile": "shopify://files/videos/From KlickPin CF Winter Outfit Ideas Ideas Youll Keep Coming Back To 54562 - Pin-892205376170196933_6d463d99-bc09-4ac6-8ef9-ba9b59129d3f.mp4",
+            "media_alt": "Founders sharing coffee",
+            "caption": "",
+            "button_label": "",
+            "button_link": "",
+            "padding_top_mobile": 32,
+            "padding_bottom_mobile": 32,
+            "padding_top_desktop": 88,
+            "padding_bottom_desktop": 88
+          }
+        },
+        "media_RVHYBe": {
+          "type": "media",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Frame_1410127390_44e11cd8-5874-4a12-9c40-6e03d81f2071.jpg",
+            "image_mobile": "shopify://shop_images/Frame_1410127403_a3c6a454-5fb7-4e25-ad7a-3cb65dc267f0.jpg",
+            "media_alt": "",
+            "caption": "",
+            "padding_top_mobile": 0,
+            "padding_bottom_mobile": 0,
+            "padding_top_desktop": 0,
+            "padding_bottom_desktop": 0
+          }
+        },
+        "title_yBRx8e": {
+          "type": "title",
+          "settings": {
+            "kicker": "",
+            "heading": "“We stole the caffeine. <br>Not the flavor. Not the joy. <br>That’s the Heist.”",
+            "heading_tag": "h2",
+            "text_align": "center",
+            "text_align_mobile": "inherit",
+            "show_rules_top": true,
+            "show_rules_bottom": false,
+            "rule_spacing_mobile": 32,
+            "rule_spacing_desktop": 56,
+            "padding_top_mobile": 32,
+            "padding_bottom_mobile": 0,
+            "padding_top_desktop": 88,
+            "padding_bottom_desktop": 0
+          }
+        }
+      },
+      "block_order": [
+        "title_khFB69",
+        "subheading_dtinNE",
+        "media_EnNJNV",
+        "title_hTrRgK",
+        "media_r69Ncp",
+        "media_with_content_yDJEV7",
+        "title_ja64dV",
+        "media_with_content_9harNR",
+        "title_yARMP7",
+        "media_with_content_4qFUap",
+        "title_UPX7L7",
+        "media_with_content_CDceeb",
+        "media_RVHYBe",
+        "title_yBRx8e"
+      ],
+      "name": "Our story",
+      "settings": {
+        "breaking_news": "Breaking news: our story",
+        "breaking_news_mobile": "breaking news",
+        "date": "Friday, June 5, 2026",
+        "date_mobile": "Friday 06/26",
+        "cta_label": "Pull the heist",
+        "cta_link": "#",
+        "background_color": "#e4ddcf",
+        "text_color": "#161414",
+        "block_gap_mobile": 0,
+        "block_gap_desktop": 0,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 55,
+        "padding_bottom_desktop": 120
+      }
+    },
+    "product_variant_showcase_MT8Ejn": {
+      "type": "product-variant-showcase",
+      "blocks": {
+        "badge_kzTinK": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-wholebeans.svg"
+          }
+        },
+        "badge_M68V4K": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-caffeine.svg"
+          }
+        },
+        "badge_c9TAhD": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-toxinfree.svg"
+          }
+        },
+        "badge_FyQQjH": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/Isolation_Mode.svg"
+          }
+        },
+        "product_card_enL3VD": {
+          "type": "product_card",
+          "settings": {
+            "product": "smooth-talker"
+          }
+        },
+        "product_card_QGFH3w": {
+          "type": "product_card",
+          "settings": {
+            "product": "blueprint"
+          }
+        }
+      },
+      "block_order": [
+        "badge_kzTinK",
+        "badge_M68V4K",
+        "badge_c9TAhD",
+        "badge_FyQQjH",
+        "product_card_enL3VD",
+        "product_card_QGFH3w"
+      ],
+      "name": "Product variant showcase",
+      "settings": {
+        "heading": "Coffee Without A Curfew.",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 0,
+        "padding_top_desktop": 90,
+        "padding_bottom_desktop": 0
+      }
+    }
+  },
+  "order": ["main", "our_story_jWY7ML", "product_variant_showcase_MT8Ejn"]
+}

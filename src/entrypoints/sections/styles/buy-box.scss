@@ -26,6 +26,7 @@
       }
     }
     .buy-box__guarantee.t-n1 {
+      margin-top: 0;
       @include respond-down(md) {
         max-width: 14rem;
         font-size: var(--fs-n2);
@@ -382,12 +383,14 @@
         padding: var(--space-12) var(--space-24) 0;
         font-size: var(--fs-n2-med);
         line-height: var(--lh-n2-med);
+        margin-left: 0;
         .buy-box-tier__save-unit {
           font-weight: var(--fw-medium);
         }
       }
     }
     .buy-box__guarantee {
+      margin-top: 0;
       @include respond-down(md) {
         display: none;
       }
@@ -447,7 +450,7 @@
 
         &_inner {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) var(--space-100);
+          grid-template-columns: minmax(var(--space-100), 1fr) auto;
           align-items: flex-start;
           gap: var(--space-17);
           @include respond-down(md) {

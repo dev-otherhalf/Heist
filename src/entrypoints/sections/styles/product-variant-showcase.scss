@@ -80,7 +80,7 @@
   &__badges-track {
     align-items: center;
     display: inline-flex;
-    gap: var(--space-8);
+    gap: var(--space-19);
     min-width: max-content;
     flex-wrap: nowrap;
     width: 100%;
@@ -377,6 +377,28 @@
     }
   }
 
+  &__detail-review {
+    display: flex;
+    justify-content: center;
+
+    .star-summary {
+      color: var(--cream);
+      justify-content: center;
+      padding-bottom: var(--space-24);
+      .star-summary__stars {
+        gap: 0.21875rem;
+        svg {
+          width: var(--space-14);
+        }
+      }
+      .star-summary__count {
+        u {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
   &__detail-media {
     background-color: var(--neutral-900);
     min-height: 14rem;
@@ -471,9 +493,13 @@
     z-index: 1;
 
     &.is-active {
-      color: var(--cream);
+      color: var(--ink);
       opacity: 1;
       transform: translateY(0);
+    }
+
+    &.is-indicated {
+      color: var(--cream);
     }
   }
 

@@ -179,7 +179,7 @@ body:has(.brewing-guide__modal.is-open) {
     inset: 0;
     background: rgb(0 0 0 / 0.8);
     opacity: 0;
-    transition: opacity var(--animation-speed, 0.3s) ease;
+    transition: opacity 0.5s ease;
     cursor: pointer;
   }
 
@@ -197,8 +197,7 @@ body:has(.brewing-guide__modal.is-open) {
     color: #161414cc;
     overflow: hidden;
     transform: translateX(100%);
-    transition: transform var(--animation-speed, 0.3s)
-      var(--animation-easing, ease);
+    transition: transform 0.5s var(--animation-easing, ease);
     background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
 
     @include respond-down(md) {
@@ -209,6 +208,7 @@ body:has(.brewing-guide__modal.is-open) {
       border-start-start-radius: 0;
       border-start-end-radius: 0;
       transform: translateY(100%);
+      border-block: var(--bw-2) solid var(--ink);
     }
   }
 
@@ -241,9 +241,8 @@ body:has(.brewing-guide__modal.is-open) {
     @include respond-down(md) {
       min-height: 0;
       padding-inline: var(--space-19);
-      max-height: 100dvh;
+      max-height: calc(100dvh - var(--space-16));
       border-left: 0;
-      border-block: var(--bw-2) solid var(--ink);
     }
   }
 
@@ -334,7 +333,7 @@ body:has(.brewing-guide__modal.is-open) {
 
   &__recipe-thumb {
     object-fit: cover;
-    border: var(--bw-1) solid var(--ink);
+    border: var(--bw-2) solid var(--ink);
     aspect-ratio: 0.8;
     flex: 0 0 10rem;
     width: 100%;

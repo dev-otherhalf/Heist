@@ -1,0 +1,518 @@
+@use "../../../styles/settings/tokens";
+@use "../../../styles/settings/breakpoints" as *;
+
+.our-story-section {
+  position: relative;
+  background: var(--our-story-bg);
+  color: var(--our-story-ink);
+  padding-block: var(--our-story-padding-top-mobile)
+    var(--our-story-padding-bottom-mobile);
+
+  @include respond-to(md) {
+    padding-block: var(--our-story-padding-top-desktop)
+      var(--our-story-padding-bottom-desktop);
+  }
+}
+
+.our-story__background {
+  inset: 0;
+  position: absolute;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.our-story__background-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.our-story {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-inline: var(--space-20);
+
+  @include respond-to(xl) {
+    padding-inline: var(--space-56);
+  }
+
+  &__masthead {
+    margin: 0 0 var(--space-20);
+  }
+
+  &__masthead-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-16);
+  }
+
+  &__masthead-date {
+    text-align: right;
+  }
+
+  // Masthead title/date have desktop + mobile variants; show one per breakpoint.
+  &__masthead-title--mobile,
+  &__masthead-date--mobile {
+    @include respond-to(md) {
+      display: none;
+    }
+  }
+
+  &__masthead-title--desktop,
+  &__masthead-date--desktop {
+    @include respond-down(md) {
+      display: none;
+    }
+  }
+
+  &__masthead-rules {
+    display: grid;
+    gap: var(--space-6);
+    margin-top: var(--space-16);
+  }
+
+  &__masthead-rule {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--ink);
+  }
+
+  &__kicker {
+    margin: 0 0 var(--space-8);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  &__heading,
+  &__quote-text {
+    margin: 0;
+  }
+
+  // Subheading and media-with-content headings use richtext, which wraps copy
+  // in <p>; strip its margins so the heading styling is preserved.
+  &__heading p {
+    margin: 0;
+  }
+
+  &__blocks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--our-story-gap-mobile);
+    padding-block: 0;
+
+    @include respond-to(md) {
+      gap: var(--our-story-gap-desktop);
+      padding-inline: var(--space-94);
+      border: var(--bw-2) solid var(--ink);
+      background-color: var(--bone);
+      padding-block: var(--space-52) var(--space-120);
+    }
+  }
+
+  &__block {
+    padding-top: var(--our-story-block-padding-top-mobile);
+    padding-bottom: var(--our-story-block-padding-bottom-mobile);
+
+    @include respond-to(md) {
+      padding-top: var(--our-story-block-padding-top-desktop);
+      padding-bottom: var(--our-story-block-padding-bottom-desktop);
+    }
+  }
+
+  &__block:last-child {
+    // border-bottom: var(--bw-1) solid var(--ink);
+  }
+
+  &__title-block {
+    // max-width: 56rem;
+  }
+
+  &__subheading-block {
+    // max-width: 42rem;
+  }
+
+  &__title-block--center {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  &__title-block--left,
+  &__subheading-block--left {
+    text-align: left;
+  }
+
+  &__subheading-block--center {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  &__title-rules {
+    display: grid;
+    gap: var(--space-8);
+
+    @include respond-down(md) {
+      gap: var(--space-4);
+    }
+  }
+
+  &__title-rules--top {
+    margin-bottom: var(--our-story-title-rule-gap-mobile, var(--space-32));
+
+    @include respond-to(md) {
+      margin-bottom: var(--our-story-title-rule-gap-desktop, var(--space-48));
+    }
+  }
+
+  &__title-rules--bottom {
+    margin-top: var(--our-story-title-rule-gap-mobile, var(--space-32));
+
+    @include respond-to(md) {
+      margin-top: var(--our-story-title-rule-gap-desktop, var(--space-48));
+    }
+  }
+
+  &__title-rule {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--ink);
+  }
+
+  &__heading--title {
+    &.t-h2 {
+      @include respond-down(md) {
+        font-size: var(--fs-h6);
+        line-height: var(--lh-h6);
+        letter-spacing: var(--ls-h6);
+      }
+    }
+  }
+
+  &__heading--subheading {
+    @include respond-down(lg) {
+      font-size: var(--fs-t1);
+      line-height: var(--lh-t1);
+      letter-spacing: var(--ls-t1);
+    }
+    br {
+      display: none;
+
+      @include respond-to(xxl) {
+        display: inline;
+      }
+    }
+  }
+
+  &__body {
+    margin-top: var(--space-20);
+    max-width: 33.313rem;
+
+    p {
+      margin: 0 0 var(--space-12);
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      line-height: var(--lh-t4);
+      font-weight: var(--fw-regular);
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+    @include respond-to(lg) {
+      margin-top: var(--space-32);
+    }
+  }
+
+  &__body--title,
+  &__body--subheading {
+    max-width: 38rem;
+  }
+
+  &__title-block--center &__body--title,
+  &__subheading-block--center &__body--subheading {
+    margin-inline: auto;
+  }
+
+  // Author-inserted <br> in the title heading and description copy only breaks
+  // from xxl up; below that the line wraps naturally. The subheading and
+  // media-with-content headings use inline richtext for intentional breaks, so
+  // those apply at every breakpoint (not matched here).
+  &__heading--title br {
+    display: none;
+
+    @include respond-to(xxl) {
+      display: inline;
+    }
+  }
+
+  &__figure {
+    margin: 0;
+  }
+
+  &__figure--standalone .viewport-video__frame {
+    padding: 0 0 177.915%;
+    @include respond-to(lg) {
+      padding: 0 0 52.465%;
+    }
+  }
+
+  &__media-shell {
+    overflow: hidden;
+    border: var(--bw-2) solid var(--our-story-ink);
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  &__image,
+  &__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__image {
+    min-height: 14rem;
+    object-fit: cover;
+    filter: saturate(0.85) contrast(1.02);
+
+    @include respond-to(md) {
+      min-height: 20rem;
+    }
+  }
+
+  &__video {
+    min-height: 14rem;
+    object-fit: cover;
+
+    @include respond-to(md) {
+      min-height: 20rem;
+    }
+  }
+
+  // Paired media in "media with content" uses fixed aspect ratios via
+  // padding-top: image is 544×400 (73.53%), video is 544×450 (82.72%).
+  &__figure--paired &__media-shell {
+    position: relative;
+    height: auto;
+    padding-top: 84.78%;
+    @include respond-to(md) {
+      padding-top: 73.53%;
+    }
+  }
+
+  &__figure--paired &__image {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+  }
+
+  &__figure--paired .viewport-video__frame {
+    padding: 0 0 84.78%;
+    @include respond-to(md) {
+      padding: 0 0 82.72%;
+    }
+  }
+
+  &__caption {
+    margin-top: var(--space-10);
+  }
+
+  &__media-content {
+    display: grid;
+    gap: var(--space-32);
+
+    @include respond-to(lg) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: center;
+      gap: var(--space-47);
+    }
+  }
+
+  &__block--media-left &__media-content-copy {
+    @include respond-to(lg) {
+      order: 2;
+    }
+  }
+
+  &__block--media-left &__figure--paired {
+    @include respond-to(lg) {
+      order: 1;
+    }
+  }
+
+  &__block--media-right &__media-content-copy {
+    @include respond-to(lg) {
+      order: 1;
+    }
+  }
+
+  &__block--media-right &__figure--paired {
+    @include respond-to(lg) {
+      order: 2;
+    }
+  }
+
+  // Media between heading and description — MOBILE ONLY. The head, figure and
+  // description stack in that order below lg. On desktop the head + description
+  // regroup into one column with the figure beside them (standard layout).
+  &__media-content--inline {
+    gap: var(--space-20);
+
+    @include respond-to(lg) {
+      grid-template-rows: auto auto;
+      row-gap: 0;
+      column-gap: var(--space-47);
+    }
+  }
+
+  &__media-content--inline &__body {
+    @include respond-down(md) {
+      margin-top: 0;
+    }
+  }
+
+  &__media-content--inline &__media-content-head {
+    @include respond-to(lg) {
+      grid-row: 1;
+      grid-column: 2;
+      align-self: end;
+    }
+  }
+
+  &__media-content--inline &__media-content-foot {
+    @include respond-to(lg) {
+      grid-row: 2;
+      grid-column: 2;
+      align-self: start;
+    }
+  }
+
+  &__media-content--inline &__figure--paired {
+    @include respond-to(lg) {
+      grid-row: 1 / span 2;
+      grid-column: 1;
+      align-self: center;
+    }
+  }
+
+  // Media on the right → swap the columns.
+  &__block--media-right &__media-content--inline &__media-content-head,
+  &__block--media-right &__media-content--inline &__media-content-foot {
+    @include respond-to(lg) {
+      grid-column: 1;
+    }
+  }
+
+  &__block--media-right &__media-content--inline &__figure--paired {
+    @include respond-to(lg) {
+      grid-column: 2;
+    }
+  }
+
+  &__media-content-copy {
+    max-width: 40rem;
+  }
+
+  &__heading--content {
+    margin-top: 0;
+
+    &.t-h7 {
+      @include respond-down(md) {
+        font-size: var(--fs-t2);
+        line-height: var(--lh-t2);
+        letter-spacing: var(--ls-t2);
+      }
+    }
+    br {
+      display: none;
+
+      @include respond-to(xxl) {
+        display: inline;
+      }
+    }
+  }
+
+  &__link {
+    display: inline-block;
+    margin-top: var(--space-16);
+    color: inherit;
+    text-decoration-thickness: var(--bw-1);
+    text-underline-offset: 0.2em;
+  }
+
+  &__quote {
+    max-width: 52rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  &__quote-credit {
+    margin-top: var(--space-16);
+  }
+
+  &__cta {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: var(--space-48);
+    @include respond-down(md) {
+      margin-top: var(--space-32);
+    }
+  }
+
+  &__cta-rules {
+    flex: 1;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  &__cta-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--ink);
+  }
+
+  &__cta-button {
+    flex: 0 0 auto;
+    padding-block: initial;
+    min-width: 224px;
+    gap: var(--space-2);
+  }
+
+  @include respond-down(md) {
+    &__masthead {
+      margin-bottom: var(--space-16);
+    }
+
+    &__media-content-copy,
+    &__title-block,
+    &__subheading-block,
+    &__body--title,
+    &__body--subheading {
+      max-width: none;
+    }
+
+    // Mobile-only title alignment override. Compound with the desktop align
+    // class so it always wins below md regardless of the desktop choice.
+    &__title-block--mobile-left#{&}__title-block--left,
+    &__title-block--mobile-left#{&}__title-block--center,
+    &__title-block--mobile-left {
+      margin-inline: 0;
+      text-align: left;
+    }
+
+    &__title-block--mobile-center#{&}__title-block--left,
+    &__title-block--mobile-center#{&}__title-block--center,
+    &__title-block--mobile-center {
+      margin-inline: auto;
+      text-align: center;
+    }
+  }
+}

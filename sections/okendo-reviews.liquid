@@ -13,10 +13,12 @@
 -%}
 
 {%- render 'vite-tag', entry: 'sections/styles/okendo-reviews.scss' -%}
+{%- render 'vite-tag', entry: 'sections/scripts/okendo-reviews.js' -%}
 
 <section
   class="okendo-reviews-section"
   id="shopify-section-{{- section.id -}}"
+  data-okendo-reviews
   style="
     --okendo-reviews-padding-top-mobile: {{- section.settings.padding_top_mobile -}}px;
     --okendo-reviews-padding-bottom-mobile: {{- section.settings.padding_bottom_mobile -}}px;
@@ -80,7 +82,6 @@
     {% render 'okendo-reviews-widget', product: product %}
   </div>
 </section>
-
 {% stylesheet %}
   .okendo-reviews-section {
     position: relative;

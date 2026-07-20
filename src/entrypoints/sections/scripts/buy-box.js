@@ -156,7 +156,12 @@ class BuyBox extends HTMLElement {
     // Clickable tier rows (V1)
     this.querySelectorAll("[data-select-tier]").forEach((row) => {
       row.addEventListener("click", () => {
-        this.state.tier = row.dataset.selectTier;
+        const isSelectedUpgrade =
+          row.closest("[data-upgrade-card]") && this.state.tier === "heist";
+
+        this.state.tier = isSelectedUpgrade
+          ? "standard"
+          : row.dataset.selectTier;
         this.render();
       });
     });

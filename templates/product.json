@@ -270,7 +270,7 @@
         "barcode_image": "shopify://shop_images/Frame_1.svg",
         "padding_top_mobile": 64,
         "padding_bottom_mobile": 64,
-        "padding_top_desktop": 120,
+        "padding_top_desktop": 121,
         "padding_bottom_desktop": 120
       }
     },
