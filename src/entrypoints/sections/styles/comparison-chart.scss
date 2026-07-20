@@ -1,0 +1,297 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+// =============================================================================
+// Comparison chart — decaf methods table on a bone panel.
+// The Heist column is drawn as an absolutely positioned overlay behind the
+// table rather than as cell backgrounds, so it can overhang below the last row
+// the way the comp does. Overlay and table share the --cc-col-* widths, and
+// `table-layout: fixed` makes those widths authoritative.
+// Row rules are suppressed on the highlighted cells, so each rule breaks either
+// side of the red block instead of running across it.
+// =============================================================================
+
+.comparison-chart {
+  --cc-col-label: 25%;
+  --cc-col-highlight: 25%;
+
+  color: var(--ink);
+  overflow: clip;
+  padding-block: var(--comparison-chart-padding-top-mobile)
+    var(--comparison-chart-padding-bottom-mobile);
+  position: relative;
+
+  // Background layer — absolutely positioned pseudo-element, no <img> in flow.
+  // Mobile prefers the mobile upload and falls back to the desktop one; at lg
+  // the preference flips. Unset custom properties resolve to the `none` tail.
+  &::before {
+    background-image: var(
+      --comparison-chart-bg-image-mobile,
+      var(--comparison-chart-bg-image, none)
+    );
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    content: "";
+    inset: 0;
+    position: absolute;
+    z-index: 0;
+  }
+
+  @include respond-to(lg) {
+    --cc-col-label: 26%;
+    --cc-col-highlight: 18%;
+
+    padding-block: var(--comparison-chart-padding-top-desktop)
+      var(--comparison-chart-padding-bottom-desktop);
+
+    &::before {
+      background-image: var(
+        --comparison-chart-bg-image,
+        var(--comparison-chart-bg-image-mobile, none)
+      );
+    }
+  }
+
+  > .page-width {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__empty {
+    padding: var(--space-48) var(--space-20);
+    position: relative;
+    text-align: center;
+    z-index: 1;
+  }
+
+  // --- Heading --------------------------------------------------------------
+  &__heading {
+    margin-bottom: var(--space-24);
+    text-align: center;
+
+    @include respond-to(lg) {
+      font-size: var(--fs-h6);
+      line-height: var(--lh-h6);
+      letter-spacing: var(--ls-h6);
+      margin-bottom: var(--space-40);
+    }
+  }
+
+  // --- Panel ----------------------------------------------------------------
+  &__panel {
+    background-color: var(--bone);
+    border: var(--bw-1) solid var(--ink);
+    padding: var(--space-16);
+
+    @include respond-to(lg) {
+      padding: var(--space-40) var(--space-32);
+    }
+  }
+
+  // --- Table ----------------------------------------------------------------
+  &__table-wrap {
+    padding-bottom: var(--space-24);
+    position: relative;
+
+    @include respond-to(lg) {
+      padding-bottom: var(--space-32);
+    }
+  }
+
+  // Spans the wrapper's padding box, so the padding-bottom above becomes the
+  // overhang below the final row.
+  &__highlight {
+    background-color: var(--red);
+    border: var(--bw-2) solid var(--ink);
+    bottom: 0;
+    left: var(--cc-col-label);
+    position: absolute;
+    top: 0;
+    width: var(--cc-col-highlight);
+    z-index: 0;
+  }
+
+  &__table {
+    border-collapse: collapse;
+    position: relative;
+    table-layout: fixed;
+    width: 100%;
+    z-index: 1;
+
+    th,
+    td {
+      border-bottom: var(--bw-1) solid var(--taupe);
+      padding: var(--space-10) var(--space-6);
+      text-align: center;
+      vertical-align: middle;
+
+      @include respond-to(lg) {
+        padding: var(--space-16) var(--space-12);
+      }
+    }
+
+    thead th {
+      padding-block: var(--space-12);
+      vertical-align: middle;
+
+      @include respond-to(lg) {
+        padding-block: var(--space-24);
+      }
+    }
+
+    // The red block supplies its own edges; a rule here would cut across it.
+    .comparison-chart__cell--highlight {
+      border-bottom-color: transparent;
+    }
+  }
+
+  &__col-title {
+    display: block;
+
+    @include respond-to(lg) {
+      font-size: var(--fs-t2);
+      line-height: var(--lh-t2);
+      letter-spacing: var(--ls-t2);
+    }
+  }
+
+  &__col-label {
+    display: block;
+    letter-spacing: 0.08em;
+    margin-top: var(--space-4);
+    text-transform: uppercase;
+  }
+
+  &__logo {
+    display: block;
+    height: auto;
+    margin-inline: auto;
+    max-width: 5rem;
+    width: 100%;
+
+    @include respond-to(lg) {
+      max-width: 10rem;
+    }
+  }
+
+  &__label {
+    font-weight: var(--fw-medium);
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    text-transform: uppercase;
+  }
+
+  // --- Footnote -------------------------------------------------------------
+  &__footnote {
+    margin-top: var(--space-16);
+    text-align: center;
+
+    @include respond-to(lg) {
+      font-size: var(--fs-t2);
+      line-height: var(--lh-t2);
+      letter-spacing: var(--ls-t2);
+      margin-top: var(--space-24);
+    }
+  }
+
+  // --- Decaffeination process ------------------------------------------------
+  &__process {
+    margin-top: var(--space-48);
+    position: relative;
+    z-index: 1;
+
+    @include respond-to(lg) {
+      margin-top: var(--space-96);
+    }
+  }
+
+  &__process-heading {
+    margin-bottom: var(--space-24);
+    text-align: center;
+
+    @include respond-to(lg) {
+      font-size: var(--fs-h6);
+      line-height: var(--lh-h6);
+      letter-spacing: var(--ls-h6);
+      margin-bottom: var(--space-40);
+    }
+  }
+
+  &__process-grid {
+    display: grid;
+    gap: var(--space-12);
+    margin-inline: auto;
+    max-width: 30rem;
+
+    @include respond-to(lg) {
+      gap: var(--space-12);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: none;
+    }
+  }
+
+  &__process-card {
+    background-color: var(--bone);
+    border: var(--bw-1) solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-12);
+
+    @include respond-to(lg) {
+      padding: var(--space-16);
+    }
+  }
+
+  &__process-image {
+    aspect-ratio: 1 / 1;
+    border: var(--bw-1) solid var(--ink);
+    overflow: hidden;
+    width: 100%;
+
+    img {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  &__process-content {
+    padding-top: var(--space-12);
+
+    @include respond-to(lg) {
+      padding-top: var(--space-16);
+    }
+  }
+
+  &__process-title {
+    margin-bottom: var(--space-8);
+  }
+
+  &__process-description {
+    p {
+      margin: 0;
+    }
+  }
+
+  &__process-footnote {
+    margin: var(--space-32) auto 0;
+    max-width: 52rem;
+    text-align: center;
+
+    p {
+      margin: 0;
+    }
+
+    @include respond-to(lg) {
+      font-size: var(--fs-t2);
+      line-height: var(--lh-t2);
+      letter-spacing: var(--ls-t2);
+      margin-top: var(--space-40);
+    }
+  }
+}
