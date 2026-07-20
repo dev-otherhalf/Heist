@@ -223,11 +223,16 @@
                       aria-pressed="false"
                       aria-label="Unmute video"
                     >
+                      {%- comment -%}
+                        The icon snippets are named for the state they toggle to, not what they
+                        draw: icon-sound-unmuted draws a struck speaker (shown while muted),
+                        icon-sound-muted draws a speaker with waves (shown while playing).
+                      {%- endcomment -%}
                       <span class="viewport-video__sound-icon" data-sound-icon-muted>
-                        {%- render 'icon-sound-muted' -%}
+                        {%- render 'icon-sound-unmuted' -%}
                       </span>
                       <span class="viewport-video__sound-icon" data-sound-icon-unmuted hidden>
-                        {%- render 'icon-sound-unmuted' -%}
+                        {%- render 'icon-sound-muted' -%}
                       </span>
                     </button>
                   </div>
