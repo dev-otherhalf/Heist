@@ -1,0 +1,133 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.decaf-manifesto {
+  background-color: var(--decaf-manifesto-bg, transparent);
+  color: var(--decaf-manifesto-ink, var(--ink));
+  overflow: clip;
+  padding-block: var(--decaf-manifesto-padding-top-mobile)
+    var(--decaf-manifesto-padding-bottom-mobile);
+  position: relative;
+
+  @include respond-to(lg) {
+    padding-block: var(--decaf-manifesto-padding-top-desktop)
+      var(--decaf-manifesto-padding-bottom-desktop);
+  }
+
+  &__background-image {
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+    z-index: 0;
+  }
+
+  > .page-width {
+    position: relative;
+    z-index: 1;
+  }
+
+  // --- Layout ---------------------------------------------------------------
+  &__grid {
+    display: grid;
+    gap: var(--space-32);
+    grid-template-areas:
+      "media"
+      "lead"
+      "body";
+
+    @include respond-to(lg) {
+      align-items: start;
+      column-gap: var(--space-40);
+      grid-template-areas: "lead media body";
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr) minmax(0, 1fr);
+      row-gap: 0;
+    }
+  }
+
+  &__lead {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    grid-area: lead;
+
+    @include respond-to(lg) {
+      gap: var(--space-64);
+      height: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  &__heading {
+    @include respond-to(lg) {
+      font-size: var(--fs-h5);
+      line-height: var(--lh-h5);
+      letter-spacing: var(--ls-h5);
+    }
+  }
+
+  // --- Proof points ---------------------------------------------------------
+  &__points {
+    display: grid;
+    gap: var(--space-10);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__point {
+    align-items: center;
+    display: flex;
+    gap: var(--space-8);
+  }
+
+  &__point-icon {
+    display: block;
+    flex-shrink: 0;
+    height: 1rem;
+    width: 1rem;
+
+    svg {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  // --- Media ----------------------------------------------------------------
+  &__media {
+    position: absolute;
+    top: 0;
+    right: 50%;
+    transform: translateX(50%);
+    @include respond-down(lg) {
+      justify-self: center;
+      width: 100%;
+      position: relative;
+    }
+  }
+
+  &__image {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
+  // --- Body copy ------------------------------------------------------------
+  &__body {
+    display: grid;
+    gap: var(--space-20);
+    grid-area: body;
+
+    @include respond-to(lg) {
+      align-self: center;
+      font-size: var(--fs-t2);
+      line-height: var(--lh-t2);
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}
