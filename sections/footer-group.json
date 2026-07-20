@@ -40,7 +40,7 @@
           "settings": {
             "audio_file_url": "sample-6s.mp3",
             "audio_poster_image": "shopify://shop_images/Rectangle_144433706.jpg",
-            "audio_title": "",
+            "audio_title": "HEIST.FM",
             "audio_detail_text": "<p>Ready to steal the night again? Cue Heist music.</p>",
             "apple_music_link": "/",
             "spotify_music_link": "/"
@@ -51,7 +51,7 @@
           "settings": {
             "audio_file_url": "sample-10s.mp3",
             "audio_poster_image": "shopify://shop_images/DECAF.jpg",
-            "audio_title": "",
+            "audio_title": "HEIST.FM",
             "audio_detail_text": "<p>Cue Heist music. 2</p>",
             "apple_music_link": "/",
             "spotify_music_link": "/"
@@ -62,7 +62,7 @@
           "settings": {
             "audio_file_url": "sample-12s.mp3",
             "audio_poster_image": "shopify://shop_images/Rectangle_144433639.jpg",
-            "audio_title": "",
+            "audio_title": "HEIST.FM",
             "audio_detail_text": "<p>Cue Heist music. 3</p>",
             "apple_music_link": "/",
             "spotify_music_link": "/"

@@ -191,6 +191,11 @@
         font-size: var(--fs-h6);
         line-height: var(--lh-h6);
         letter-spacing: var(--ls-h6);
+        &.the_first_cup_title,
+        &.heist_is_decaffein_title {
+          max-width: 17rem;
+          margin: 0 auto;
+        }
       }
     }
   }
