@@ -71,7 +71,15 @@
     {%- if settings.cart_upgrade_badge != blank -%}
       <p class="cart-upgrade__badge t-n1-med">{{ settings.cart_upgrade_badge }}</p>
     {%- endif -%}
+    <div class="cart-upgrade__content for_mobile hide-from-md">
+      <p class="cart-upgrade__title t-h7">{{ settings.cart_upgrade_title }}</p>
 
+      {%- if settings.cart_upgrade_subtitle != blank -%}
+        <p class="cart-upgrade__subtitle t-t4">
+          {{- settings.cart_upgrade_subtitle | escape | newline_to_br -}}
+        </p>
+      {%- endif -%}
+    </div>
     {%- capture upgrade_media -%}
       {%- render 'cart-upgrade-media',
         media_type: settings.cart_upgrade_media_1_type,

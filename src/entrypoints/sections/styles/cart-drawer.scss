@@ -219,6 +219,10 @@ $plan-control-height: 2.375rem; // 38px
     background-color: var(--bone);
     mask-image: none;
     padding: var(--space-19) var(--space-40) var(--space-20) var(--space-32);
+    @include respond-down(md) {
+      padding: var(--space-13) var(--space-19) var(--space-20) var(--space-20);
+      gap: var(--space-16);
+    }
     .cart-totals {
       margin: 0;
       padding: 0;
@@ -226,10 +230,14 @@ $plan-control-height: 2.375rem; // 38px
     }
     .cart__ctas {
       gap: var(--space-15);
+      @include respond-down(md) {
+        gap: var(--space-16);
+      }
     }
 
     .cart__checkout-button {
       height: var(--space-56);
+      padding: 0 var(--space-10);
     }
   }
 
@@ -260,6 +268,7 @@ $plan-control-height: 2.375rem; // 38px
       @include respond-down(md) {
         grid-template-columns: 4.525rem 1fr;
         column-gap: var(--space-16);
+        padding: 0 0 var(--space-32);
       }
     }
 
@@ -288,6 +297,15 @@ $plan-control-height: 2.375rem; // 38px
           width: 100%;
           height: 100%;
           object-fit: cover;
+          @include respond-down(md) {
+            object-fit: cover;
+            width: 80%;
+            height: 60%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
         }
       }
     }
@@ -344,6 +362,12 @@ $plan-control-height: 2.375rem; // 38px
         position: relative;
         top: -0.125rem;
       }
+      @include respond-down(md) {
+        grid-area: 2 / 2 / 3 / -1;
+        padding-top: 40px;
+        justify-self: start;
+        align-self: start;
+      }
     }
 
     .cart-items__price-compare {
@@ -396,6 +420,8 @@ $plan-control-height: 2.375rem; // 38px
       @include respond-down(md) {
         flex-wrap: wrap;
         gap: var(--space-8);
+        margin-top: var(--space-6);
+        padding-right: 7px;
       }
       .quantity-selector {
         padding: 0 var(--space-14);
@@ -416,6 +442,17 @@ $plan-control-height: 2.375rem; // 38px
           svg {
             width: var(--space-20);
             height: var(--space-20);
+          }
+          @include respond-down(md) {
+            top: 0;
+            right: var(--space-6);
+            width: var(--space-18);
+            height: var(--space-16);
+            .svg-wrapper,
+            svg {
+              width: var(--space-18);
+              height: var(--space-16);
+            }
           }
         }
       }
@@ -439,6 +476,10 @@ $plan-control-height: 2.375rem; // 38px
 
     .quantity-selector-wrapper {
       flex: 0 0 var(--cart-line-quantity-width);
+      @include respond-down(md) {
+        flex: 0 0 100%;
+        border-radius: 0;
+      }
 
       // Outranks the base `.cart-items .quantity-selector` sizing at >= 750px.
       .quantity-selector {
@@ -447,6 +488,9 @@ $plan-control-height: 2.375rem; // 38px
         border: var(--bw-2) solid var(--taupe);
         background-color: var(--bone);
         color: var(--ink);
+        @include respond-down(md) {
+          flex: 0 0 100%;
+        }
       }
     }
 
@@ -454,6 +498,10 @@ $plan-control-height: 2.375rem; // 38px
     .cart-line-plan__static {
       flex: 0 0 var(--cart-line-plan-width);
       margin-inline-start: auto;
+      @include respond-down(md) {
+        flex: 0 0 100%;
+        margin-inline-start: 0;
+      }
     }
   }
 }
@@ -700,6 +748,13 @@ $plan-control-height: 2.375rem; // 38px
     white-space: nowrap;
     min-height: var(--space-25);
     min-width: var(--space-98);
+    @include respond-down(md) {
+      inset-inline-end: auto;
+      inset-inline-start: 50%;
+      transform: translate(-50%, 0);
+      border-inline-end: var(--bw-2) solid var(--ink);
+      min-width: var(--space-100);
+    }
   }
 
   &__media {
@@ -729,11 +784,38 @@ $plan-control-height: 2.375rem; // 38px
     flex-direction: column;
     min-width: 0;
     padding-block-start: var(--space-8);
+    @include respond-down(md) {
+      padding-block-start: 0;
+    }
+    &.for_mobile {
+      display: none;
+      @include respond-down(md) {
+        padding-block-start: var(--space-22);
+        display: flex;
+      }
+      .cart-upgrade__title.t-h7 {
+        display: block;
+        text-align: center;
+        font-size: var(--fs-t1);
+        line-height: var(--lh-t1);
+        letter-spacing: var(--ls-t1);
+      }
+      .cart-upgrade__subtitle.t-t4 {
+        display: block;
+        text-align: center;
+        font-size: var(--fs-t4);
+        line-height: var(--lh-t4);
+        margin-block-start: var(--space-10);
+      }
+    }
   }
 
   &__title {
     color: var(--ink);
     text-wrap: balance;
+    @include respond-down(md) {
+      display: none;
+    }
   }
 
   &__subtitle {
@@ -741,6 +823,10 @@ $plan-control-height: 2.375rem; // 38px
     color: var(--ink);
     font-size: var(--fs-n1);
     line-height: var(--lh-n1);
+
+    @include respond-down(md) {
+      display: none;
+    }
   }
 
   &__perks {
@@ -751,6 +837,11 @@ $plan-control-height: 2.375rem; // 38px
     margin-block-start: var(--space-23);
     padding: 0;
     display: flex;
+    @include respond-down(md) {
+      padding: 0 var(--space-18);
+      margin: -0.2rem auto 0;
+      text-wrap: balance;
+    }
   }
 
   &__perk {
@@ -782,6 +873,9 @@ $plan-control-height: 2.375rem; // 38px
     text-transform: uppercase;
     cursor: pointer;
     padding-bottom: var(--space-5);
+    @include respond-down(md) {
+      margin-top: var(--space-27);
+    }
 
     &:disabled {
       opacity: 0.5;
@@ -791,14 +885,32 @@ $plan-control-height: 2.375rem; // 38px
 
   @include respond-down(md) {
     flex-direction: column;
-    padding: var(--space-24) var(--space-16);
+    padding: var(--space-24) var(--space-13) var(--space-30) var(--space-14);
+    margin-block-start: var(--space-49);
+    gap: var(--space-26);
 
     &__media {
       flex-direction: row;
+      gap: var(--space-15);
     }
 
     &__media-item {
       flex: 1;
+      position: relative;
+      height: auto;
+      &:after {
+        position: relative;
+        width: 100%;
+        display: block;
+        content: "";
+        padding-bottom: 122%;
+      }
+      img,
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
     }
 
     &__cta {
@@ -900,11 +1012,18 @@ $plan-control-height: 2.375rem; // 38px
   gap: var(--space-16);
   width: 100%;
   color: var(--ink);
+  @include respond-down(md) {
+    gap: var(--space-12);
+  }
 
   &__row {
     display: flex;
     align-items: flex-end;
     gap: var(--space-8);
+    @include respond-down(md) {
+      font-size: var(--fs-n2);
+      line-height: var(--lh-n2);
+    }
   }
 
   // Leader dots between the label and its value.
@@ -919,6 +1038,9 @@ $plan-control-height: 2.375rem; // 38px
     background-position: 0 calc(1em - var(--space-3));
     background-size: var(--space-6) var(--space-2);
     background-repeat: repeat-x;
+    @include respond-down(md) {
+      height: 1.2em;
+    }
   }
 
   &__value {
@@ -929,6 +1051,10 @@ $plan-control-height: 2.375rem; // 38px
     color: var(--ink);
     text-align: center;
     text-transform: uppercase;
+    @include respond-down(md) {
+      font-size: var(--fs-n3);
+      line-height: var(--lh-n3);
+    }
 
     small {
       font-size: inherit;
