@@ -1,0 +1,62 @@
+{% comment %}
+Privacy Policy section
+This section is a standalone page section that renders the Privacy Policy content.
+Uses theme typography tokens and CSS variables from the theme.
+{% endcomment %}
+<section id="{{ section.id }}" class="shopify-section section page-width-content page-privacy-policy">
+  {%- render 'vite-tag', entry: 'sections/styles/page-privacy-policy.scss' -%}
+  <div class="section-content-wrapper">
+    <div class="privacy-inner">
+      <header class="privacy-header">
+        <h1 class="h1">{{ section.settings.title }}</h1>
+        {% if section.settings.last_updated != blank %}
+          <div class="privacy-last-updated">{{ section.settings.last_updated }}</div>
+        {% endif %}
+        <div class="privacy-divider" aria-hidden="true"></div>
+      </header>
+
+      <div class="privacy-content">
+        {{ section.settings.content }}
+      </div>
+    </div>
+  </div>
+
+  {% schema %}
+  {
+    "name": "Privacy Policy Page",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Page title",
+        "default": "Privacy Policy"
+      },
+      {
+        "type": "text",
+        "id": "last_updated",
+        "label": "Last updated text",
+        "default": "LAST UPDATED: JUNE 2026"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Policy content",
+        "default": "<h3>What We Collect</h3><p>When you place an order or create an account, we collect your name, email address, shipping address, and payment information. We also collect browsing data through cookies to improve your experience on our site.</p><h3>How We Use It</h3><p>We use your information to process and fulfill orders, send order updates, and if you opt in, share news and offers. We do not sell your personal information to third parties.</p><h3>Cookies</h3><p>Our site uses cookies to remember your preferences and understand how people use our site. You can disable cookies in your browser settings at any time.</p><h3>Third Parties</h3><p>We work with trusted third-party services to process payments and fulfill orders. These partners only receive the information necessary to complete their service.</p><h3>Email / SMS Communications</h3><p>If you subscribe to our emails or SMS, you can unsubscribe at any time using the link at the bottom of any message.</p><h3>Your Data</h3><p>You can request access to, correction of, or deletion of your personal data at any time by contacting us at hello@heist.coffee.</p><h3>Changes To This Policy</h3><p>We may update this policy from time to time. Any changes will be posted on this page.</p>",
+        "info": "Use this field to paste the policy HTML. Headings and paragraphs will inherit theme typography."
+      },
+      {
+        "type": "text",
+        "id": "contact_email",
+        "label": "Contact email",
+        "default": "hello@heist.coffee"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Privacy Policy Page",
+        "category": "Pages"
+      }
+    ]
+  }
+  {% endschema %}
+</section>
