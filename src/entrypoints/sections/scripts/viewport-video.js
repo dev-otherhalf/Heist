@@ -12,6 +12,12 @@ class ViewportVideo {
   init() {
     if (this.videos.length === 0) return;
 
+    // Browsers restore a media element's muted state across reloads, and this
+    // script can start playback before the global autoplay handler (which runs
+    // on DOMContentLoaded) enforces `muted`. Assert the muted baseline here so
+    // desktop and mobile both stay silent on first play.
+    this.setMuted(true);
+
     this.observer = new IntersectionObserver(this.handleIntersect, {
       threshold: 0.5,
     });
@@ -38,20 +44,22 @@ class ViewportVideo {
     });
   }
 
-  handleToggleSound() {
-    const unmute = this.videos.every((video) => video.muted);
-
+  setMuted(muted) {
     this.videos.forEach((video) => {
-      video.muted = !unmute;
+      video.muted = muted;
     });
 
-    this.soundToggle.setAttribute("aria-pressed", String(unmute));
-    this.soundToggle.setAttribute(
+    this.soundToggle?.setAttribute("aria-pressed", String(!muted));
+    this.soundToggle?.setAttribute(
       "aria-label",
-      unmute ? "Mute video" : "Unmute video",
+      muted ? "Unmute video" : "Mute video",
     );
-    this.mutedIcon?.toggleAttribute("hidden", unmute);
-    this.unmutedIcon?.toggleAttribute("hidden", !unmute);
+    this.mutedIcon?.toggleAttribute("hidden", !muted);
+    this.unmutedIcon?.toggleAttribute("hidden", muted);
+  }
+
+  handleToggleSound() {
+    this.setMuted(!this.videos.every((video) => video.muted));
   }
 }
 

@@ -1,0 +1,137 @@
+{% doc %}
+  Cart Drawer — Heist Society upgrade banner
+
+  Offers to move every eligible cart line onto its prepaid plan in one click.
+
+  A line is eligible when its variant has a prepaid selling plan available and the
+  line is not already on one — i.e. one-time lines and standard subscription lines.
+  Each variant carries its own prepaid plan id (the component products are separate
+  products), so the ids are collected per line into a data island rather than being
+  assumed to be shared.
+
+  Renders nothing when the banner is disabled, when the cart is empty, or when no
+  line is eligible — which is also how it disappears after the upgrade lands: the
+  re-rendered cart has no eligible lines left.
+
+  All copy and imagery comes from Theme settings → Cart → "Cart drawer — upgrade banner".
+{% enddoc %}
+
+{% liquid
+  assign eligible_count = 0
+
+  capture eligible_lines_json
+    for item in cart.items
+      assign current_plan_name = item.selling_plan_allocation.selling_plan.name | downcase
+      assign is_prepaid_line = false
+      if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
+        assign is_prepaid_line = true
+      endif
+
+      assign prepaid_plan_id = ''
+      unless is_prepaid_line
+        for allocation in item.variant.selling_plan_allocations
+          assign plan_name = allocation.selling_plan.name | downcase
+          if plan_name contains 'prepaid' or plan_name contains 'prepay'
+            assign prepaid_plan_id = allocation.selling_plan.id
+            break
+          endif
+        endfor
+      endunless
+
+      if prepaid_plan_id != blank
+        if eligible_count > 0
+          echo ','
+        endif
+        assign eligible_count = eligible_count | plus: 1
+        echo '{"key":'
+        echo item.key | json
+        echo ',"quantity":'
+        echo item.quantity
+        echo ',"sellingPlan":'
+        echo prepaid_plan_id
+        echo '}'
+      endif
+    endfor
+  endcapture
+%}
+
+{%- if settings.cart_upgrade_enabled and eligible_count > 0 -%}
+  {% render 'vite-tag' with 'sections/scripts/cart-upgrade-banner.js' %}
+
+  {%- assign perks = settings.cart_upgrade_perks | strip | newline_to_br | split: '<br />' -%}
+
+  <cart-upgrade-banner class="cart-upgrade">
+    <script
+      type="application/json"
+      data-upgrade-lines
+    >
+      [{{ eligible_lines_json }}]
+    </script>
+
+    {%- if settings.cart_upgrade_badge != blank -%}
+      <p class="cart-upgrade__badge t-n1-med">{{ settings.cart_upgrade_badge }}</p>
+    {%- endif -%}
+    <div class="cart-upgrade__content for_mobile hide-from-md">
+      <p class="cart-upgrade__title t-h7">{{ settings.cart_upgrade_title }}</p>
+
+      {%- if settings.cart_upgrade_subtitle != blank -%}
+        <p class="cart-upgrade__subtitle t-t4">
+          {{- settings.cart_upgrade_subtitle | escape | newline_to_br -}}
+        </p>
+      {%- endif -%}
+    </div>
+    {%- capture upgrade_media -%}
+      {%- render 'cart-upgrade-media',
+        media_type: settings.cart_upgrade_media_1_type,
+        image: settings.cart_upgrade_image_1,
+        video: settings.cart_upgrade_video_1
+      -%}
+      {%- render 'cart-upgrade-media',
+        media_type: settings.cart_upgrade_media_2_type,
+        image: settings.cart_upgrade_image_2,
+        video: settings.cart_upgrade_video_2
+      -%}
+    {%- endcapture -%}
+
+    {%- if upgrade_media != blank -%}
+      <div
+        class="cart-upgrade__media"
+        aria-hidden="true"
+      >
+        {{ upgrade_media }}
+      </div>
+    {%- endif -%}
+
+    <div class="cart-upgrade__content">
+      <p class="cart-upgrade__title t-h7">{{ settings.cart_upgrade_title }}</p>
+
+      {%- if settings.cart_upgrade_subtitle != blank -%}
+        <p class="cart-upgrade__subtitle t-t4">
+          {{- settings.cart_upgrade_subtitle | escape | newline_to_br -}}
+        </p>
+      {%- endif -%}
+
+      {%- if perks.size > 0 -%}
+        <ul class="cart-upgrade__perks list-unstyled">
+          {%- for perk in perks -%}
+            {%- assign perk_text = perk | strip_html | strip -%}
+            {%- if perk_text != blank -%}
+              <li class="cart-upgrade__perk t-n1">
+                <span class="cart-upgrade__perk-icon svg-wrapper">{% render 'icon-red-checkbox' %}</span>
+                {{ perk_text }}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <button
+        type="button"
+        class="cart-upgrade__cta t-n1-med"
+        data-upgrade-button
+      >
+        {{- settings.cart_upgrade_cta_label | default: 'Upgrade and save 25%' -}}
+      </button>
+    </div>
+  </cart-upgrade-banner>
+{%- endif -%}

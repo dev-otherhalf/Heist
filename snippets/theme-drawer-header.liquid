@@ -29,13 +29,23 @@
   </h2>
 
   <button
-    class="theme-drawer__close-button"
+    class="theme-drawer__close-button cart-drawer__close-button"
     on:click="#{{ drawer_id }}/close"
     type="button"
     aria-label="{{ 'actions.close' | t }}"
   >
     <span class="svg-wrapper">
-      {{- 'icon-close.svg' | inline_asset_content -}}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clip-path="url(#clip0_6507_8191)">
+          <path d="M19.0703 4.9292L4.92818 19.0713" stroke="#282828" stroke-width="4" stroke-linecap="square"/>
+          <path d="M19.0718 19.0713L4.92969 4.9292" stroke="#282828" stroke-width="4" stroke-linecap="square"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_6507_8191">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
     </span>
   </button>
 </div>

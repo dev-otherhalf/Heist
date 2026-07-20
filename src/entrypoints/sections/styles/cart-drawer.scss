@@ -1,0 +1,1063 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+$plan-control-height: 2.375rem; // 38px
+
+// -----------------------------------------------------------------------------
+// Promo bar
+// -----------------------------------------------------------------------------
+
+.cart-promo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--space-32);
+  padding: var(--space-6) var(--space-16);
+  background-color: var(--red);
+  color: var(--ink);
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  // Only the linked variant is interactive.
+  &:is(a):hover {
+    text-decoration: underline;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Drawer
+// -----------------------------------------------------------------------------
+.theme-drawer__dialog {
+  border-left: none;
+}
+.cart-drawer {
+  // --- Overlay ---------------------------------------------------------------
+  //
+  // Only for the non-modal (page-squeezing) drawer at >= lg; below that the
+  // dialog is modal and its native ::backdrop does the job. Sits one layer
+  // under the panel — `--drawer-stack-order` is set on <theme-drawer>, so it
+  // inherits.
+
+  &__overlay {
+    // The theme's shared --backdrop-opacity (0.15) is tuned for small modals
+    // and reads as almost nothing behind a full-height drawer.
+    --cart-drawer-overlay-opacity: 0.4;
+
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--layer-sticky) + var(--drawer-stack-order, 0) - 1);
+    display: none;
+    background: rgb(0 0 0 / 0.8);
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity var(--animation-speed) var(--animation-timing-fade-out);
+
+    @include respond-to(lg) {
+      display: block;
+    }
+
+    @media screen and (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    theme-drawer[open] & {
+      opacity: 1;
+      transition-timing-function: var(--animation-timing-fade-in);
+    }
+
+    // A closed drawer's scrim must not swallow clicks on the page behind it.
+    theme-drawer:not([open]) & {
+      pointer-events: none;
+    }
+  }
+
+  // --- Chrome ----------------------------------------------------------------
+
+  &__inner {
+    background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13_089f24ef-991c-4d70-ba82-28b248b69f52.jpg?v=1783938817");
+
+    .theme-drawer__header {
+      border-block-end: var(--bw-2) solid var(--taupe);
+      padding: var(--space-24) var(--space-24) var(--space-22) var(--space-32);
+      @include respond-down(md) {
+        padding: var(--space-20) var(--space-19) var(--space-18) var(--space-20);
+      }
+      .theme-drawer__close-button {
+        background: none;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        width: var(--space-24);
+        height: var(--space-24);
+        padding: 0;
+        .svg-wrapper,
+        svg {
+          width: var(--space-24);
+          height: var(--space-24);
+        }
+        @include respond-down(md) {
+          width: var(--space-32);
+          height: var(--space-32);
+          .svg-wrapper,
+          svg {
+            width: var(--space-32);
+            height: var(--space-32);
+          }
+        }
+      }
+    }
+    &.cart-drawer--empty {
+      .theme-drawer__header {
+        border-block-end: var(--bw-2) solid var(--ink);
+      }
+    }
+
+    .theme-drawer__title {
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: var(--fs-s3);
+      font-weight: var(--fw-bold);
+      line-height: var(--lh-s3);
+      text-transform: uppercase;
+      @include respond-down(md) {
+        font-size: var(--fs-s2);
+        line-height: var(--lh-s2);
+      }
+    }
+  }
+
+  // The scrollable viewport, and the positioning context for the overlay
+  // scrollbar. Bounded above by the header and below by the summary, so the
+  // track never runs behind either.
+  &__inner &__scroll-area {
+    position: relative;
+    flex: 1;
+    display: flex;
+    min-height: 0;
+  }
+
+  &__inner &__content {
+    flex: 1;
+    // Overrides the base `height: calc(100% - var(--header-height))`: the scroll
+    // area already bounds it, and a percentage height would ignore the summary.
+    height: auto;
+    min-height: 0;
+    background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13_089f24ef-991c-4d70-ba82-28b248b69f52.jpg?v=1783938817");
+
+    // Native bar hidden; <cart-drawer-scrollbar> draws the visible one.
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  // --- Overlay scrollbar -----------------------------------------------------
+  //
+  // Mirrors `.brewing-guide__scrollbar`: an ink track that only appears while
+  // there is something to scroll, with a red thumb.
+
+  &__scrollbar {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 4;
+    display: block;
+    width: var(--space-6);
+    background: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--animation-speed) ease;
+
+    &.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @include respond-down(md) {
+      width: var(--space-4);
+    }
+  }
+
+  &__scrollbar-thumb {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: var(--space-2);
+    display: block;
+    width: var(--space-4);
+    height: 0;
+    background: var(--red);
+    cursor: grab;
+    will-change: transform;
+
+    &.is-dragging {
+      cursor: grabbing;
+    }
+
+    @include respond-down(md) {
+      inset-inline-end: 0;
+    }
+  }
+
+  // The progress bar lives inside the scroll container so it scrolls away with
+  // the lines. That only works if the container is the thing that scrolls —
+  // Horizon makes the item list its own scroller, which would pin the bar above
+  // it. Hand the overflow back to the content.
+  &__inner &__items {
+    overflow: visible;
+  }
+
+  // A footer of the drawer, not of the scrolling content — it keeps its height
+  // no matter how long the cart gets.
+  &__inner &__summary {
+    flex-shrink: 0;
+    border-block-start: var(--bw-2) solid var(--ink);
+    background-color: var(--bone);
+    mask-image: none;
+    padding: var(--space-19) var(--space-40) var(--space-20) var(--space-32);
+    @include respond-down(md) {
+      padding: var(--space-13) var(--space-19) var(--space-20) var(--space-20);
+      gap: var(--space-16);
+    }
+    .cart-totals {
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+    .cart__ctas {
+      gap: var(--space-15);
+      @include respond-down(md) {
+        gap: var(--space-16);
+      }
+    }
+
+    .cart__checkout-button {
+      height: var(--space-56);
+      padding: 0 var(--space-10);
+    }
+  }
+
+  // --- Line items ------------------------------------------------------------
+
+  &__items {
+    // No --space-* token matches these Figma values.
+    --cart-line-media-width: 7.625rem; // 122px
+    --cart-line-media-height: 8.5rem; // 136px
+    --cart-line-quantity-width: 8.875rem; // 142px
+    --cart-line-plan-width: 15rem; // 240px
+    --cart-line-control-height: var(--space-38); // 38px
+
+    padding: var(--space-32);
+    @include respond-down(md) {
+      padding: var(--space-32) var(--space-20);
+    }
+    .cart-items__table-row {
+      position: relative;
+      grid-template-areas: none;
+      grid-template-columns: var(--cart-line-media-width) minmax(0, 1fr) auto;
+      align-items: start;
+      column-gap: var(--space-20);
+      row-gap: 0;
+      border: none;
+      margin: 0;
+      padding: 0 0 var(--space-38);
+      @include respond-down(md) {
+        grid-template-columns: 4.525rem 1fr;
+        column-gap: var(--space-16);
+        padding: 0 0 var(--space-32);
+      }
+    }
+
+    .cart-items__details,
+    .cart-items__quantity {
+      display: contents;
+    }
+
+    .cart-items__media {
+      grid-area: 1 / 1 / -1 / 2;
+    }
+
+    .cart-items__media-container {
+      height: var(--cart-line-media-height);
+      aspect-ratio: auto;
+      border: var(--bw-2) solid var(--ink);
+      background-color: var(--cream);
+      @include respond-down(md) {
+        position: relative;
+        padding-bottom: 105%;
+        height: auto;
+        img.cart-items__media-image {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          @include respond-down(md) {
+            object-fit: cover;
+            width: 80%;
+            height: 60%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+    }
+
+    .cart-items__product-info {
+      grid-area: 1 / 2 / 2 / 3;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      padding-block-start: var(--space-5);
+      @include respond-down(md) {
+        padding-block-start: 0;
+      }
+    }
+
+    .cart-items__title {
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: var(--fs-s3);
+      font-weight: var(--fw-bold);
+      line-height: var(--lh-s3);
+      text-transform: uppercase;
+      @include respond-down(md) {
+        margin-top: -0.125rem;
+      }
+    }
+
+    // Outranks the base `.cart-items__details *` font-size, which the `t-t3`
+    // utility only ties on specificity.
+    .cart-items__subtitle {
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: var(--fs-t3);
+      line-height: var(--lh-t3);
+      letter-spacing: var(--ls-t3);
+    }
+
+    // Bottom of the title block, so it sits on the subtitle's line rather than
+    // the product title's — the trash icon holds the title line instead.
+    .cart-items__price {
+      grid-area: 1 / 3 / 2 / 4;
+      justify-self: end;
+      align-self: end;
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      width: auto;
+      min-width: 0;
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: var(--fs-n1);
+      line-height: var(--lh-n1);
+      * {
+        position: relative;
+        top: -0.125rem;
+      }
+      @include respond-down(md) {
+        grid-area: 2 / 2 / 3 / -1;
+        padding-top: 40px;
+        justify-self: start;
+        align-self: start;
+      }
+    }
+
+    .cart-items__price-compare {
+      color: var(--ink);
+      text-decoration-color: var(--red);
+      text-decoration-thickness: var(--bw-2);
+    }
+
+    // Variant on the left, prepaid tag on the right.
+    .cart-items__variants-wrapper {
+      grid-area: 2 / 2 / 3 / -1;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-12);
+      margin-top: var(--space-10);
+      @include respond-down(md) {
+        margin-top: var(--space-9);
+      }
+
+      // No variant, no properties, no tag — collapse the row rather than
+      // leaving its gap behind. `:empty` never matches: the markup carries
+      // whitespace.
+      &:not(:has(*)) {
+        display: none;
+      }
+    }
+
+    .cart-items__variants,
+    .cart-items__properties {
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: var(--fs-n1);
+      line-height: var(--lh-n1);
+      text-transform: uppercase;
+    }
+
+    // The line total carries its own strikethrough in the drawer.
+    .cart-items__unit-price-wrapper {
+      display: none;
+    }
+
+    .cart-items__quantity-controls {
+      grid-area: 3 / 2 / 4 / -1;
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      width: 100%;
+      margin-top: var(--space-14);
+      @include respond-down(md) {
+        flex-wrap: wrap;
+        gap: var(--space-8);
+        margin-top: var(--space-6);
+        padding-right: 7px;
+      }
+      .quantity-selector {
+        padding: 0 var(--space-14);
+      }
+      .button {
+        width: var(--space-16);
+        height: var(--space-16);
+        .svg-wrapper,
+        svg {
+          width: var(--space-16);
+          height: var(--space-16);
+        }
+        &.cart-items__remove {
+          width: var(--space-20);
+          height: var(--space-20);
+          top: var(--space-6);
+          .svg-wrapper,
+          svg {
+            width: var(--space-20);
+            height: var(--space-20);
+          }
+          @include respond-down(md) {
+            top: 0;
+            right: var(--space-6);
+            width: var(--space-18);
+            height: var(--space-16);
+            .svg-wrapper,
+            svg {
+              width: var(--space-18);
+              height: var(--space-16);
+            }
+          }
+        }
+      }
+    }
+
+    .cart-items__error {
+      grid-area: 4 / 2 / 5 / -1;
+    }
+
+    // Held on the title's line, outside the grid so it never widens a column.
+    .cart-items__remove {
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-end: 0;
+      color: var(--ink);
+    }
+
+    .volume-pricing-info {
+      margin-inline-start: 0;
+    }
+
+    .quantity-selector-wrapper {
+      flex: 0 0 var(--cart-line-quantity-width);
+      @include respond-down(md) {
+        flex: 0 0 100%;
+        border-radius: 0;
+      }
+
+      // Outranks the base `.cart-items .quantity-selector` sizing at >= 750px.
+      .quantity-selector {
+        width: 100%;
+        height: var(--cart-line-control-height);
+        border: var(--bw-2) solid var(--taupe);
+        background-color: var(--bone);
+        color: var(--ink);
+        @include respond-down(md) {
+          flex: 0 0 100%;
+        }
+      }
+    }
+
+    .cart-line-plan,
+    .cart-line-plan__static {
+      flex: 0 0 var(--cart-line-plan-width);
+      margin-inline-start: auto;
+      @include respond-down(md) {
+        flex: 0 0 100%;
+        margin-inline-start: 0;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Progress bar
+// -----------------------------------------------------------------------------
+
+.cart-progress {
+  $self: &;
+
+  // A flex item of the scrolling content — never let it compress.
+  flex-shrink: 0;
+  padding: var(--space-20) var(--space-32) var(--space-17);
+  border-block-end: var(--bw-2) solid var(--taupe);
+  background-color: var(--bone);
+  color: var(--ink);
+
+  @include respond-down(md) {
+    padding: var(--space-24) 1.15625rem var(--space-18) var(--space-20);
+  }
+
+  &__track {
+    height: var(--space-4);
+    background-color: var(--taupe);
+  }
+
+  &__fill {
+    display: block;
+    width: clamp(0%, var(--cart-progress, 0%), 100%);
+    height: 100%;
+    background-color: var(--red);
+    transition: width var(--animation-speed, 200ms)
+      var(--animation-easing, ease);
+
+    @media screen and (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  // --- Free shipping ---------------------------------------------------------
+
+  &--shipping {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  &__message {
+    color: var(--ink);
+    text-align: center;
+  }
+
+  // --- Bag tiers -------------------------------------------------------------
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(var(--cart-progress-tiers, 4), 1fr);
+    align-items: center;
+    justify-items: center;
+    gap: var(--space-8) var(--space-25);
+    @include respond-down(md) {
+      grid-template-columns: 67fr 67fr 67fr 78fr;
+      gap: var(--space-8) var(--space-18);
+      padding-right: var(--space-3);
+    }
+    &--markers {
+      position: relative;
+      padding-block: var(--space-8);
+      @include respond-down(md) {
+        padding-block: var(--space-8) var(--space-7);
+      }
+
+      // The track lies behind the markers, centred on their row.
+      #{$self}__track {
+        position: absolute;
+        inset-inline: 0;
+        top: 50%;
+        translate: 0 -50%;
+      }
+    }
+  }
+
+  &__tier-marker {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-24);
+    height: var(--space-24);
+    border: var(--bw-2) solid var(--taupe);
+    border-radius: 50%;
+    background-color: var(--bone);
+    color: var(--ink);
+    margin: var(--space-2) 0 0 0;
+
+    &--reached {
+      border-color: var(--red);
+      background-color: var(--red);
+    }
+
+    .svg-wrapper {
+      display: flex;
+      width: var(--space-16);
+      height: var(--space-16);
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__tier-label,
+  &__tier-reward {
+    white-space: nowrap;
+
+    @include respond-down(md) {
+      font-size: var(--fs-n2);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Empty state
+// -----------------------------------------------------------------------------
+
+.cart-drawer-empty {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    max-width: 29.375rem; // 470px
+    padding-inline: var(--space-32);
+    text-align: center;
+    margin-bottom: 12.025rem;
+
+    @include respond-down(md) {
+      gap: 0;
+      padding-inline: var(--space-32);
+      margin-bottom: 9.925rem;
+    }
+  }
+
+  &__eyebrow {
+    color: var(--ink);
+    padding-bottom: var(--space-36);
+    @include respond-down(md) {
+      padding-bottom: var(--space-32);
+    }
+  }
+
+  &__heading {
+    margin-block-start: calc(var(--space-12) * -1);
+    color: var(--ink);
+    text-wrap: balance;
+    padding-bottom: var(--space-23);
+
+    @include respond-down(md) {
+      padding-bottom: var(--space-24);
+    }
+  }
+
+  &__button {
+    min-width: 14.5rem; // 232px
+    height: var(--space-56);
+    border: var(--bw-2) solid var(--ink);
+    border-radius: 0;
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    @include respond-down(md) {
+      min-width: 17.5rem;
+    }
+  }
+
+  &__image {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    width: min(40%, 14.4375rem); // 231px
+    pointer-events: none;
+    @include respond-down(md) {
+      width: 14.1875rem;
+      inset-block-end: -0.5625rem;
+      inset-inline-end: -1.375rem;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Heist Society upgrade banner
+//
+// Sits under the cart lines. The badge notches into the top-right corner, so it
+// only carries its bottom and left borders — the card's own border draws the
+// other two.
+// -----------------------------------------------------------------------------
+
+.cart-upgrade {
+  --cart-upgrade-image-width: 8rem; // 128px
+  --cart-upgrade-image-height: 9.5rem; // 152px
+  --cart-upgrade-cta-width: 18.5rem; // 296px
+
+  position: relative;
+  display: flex;
+  gap: var(--space-30);
+  margin-block-end: 0;
+  margin-block-start: var(--space-32);
+  padding: var(--space-38) var(--space-30) var(--space-39);
+  border: var(--bw-2) solid var(--ink);
+  background-color: var(--bone);
+  color: var(--ink);
+
+  &__badge {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--space-4) var(--space-4);
+    border-block-end: var(--bw-2) solid var(--ink);
+    border-inline-start: var(--bw-2) solid var(--ink);
+    background-color: var(--cream);
+    text-transform: uppercase;
+    white-space: nowrap;
+    min-height: var(--space-25);
+    min-width: var(--space-98);
+    @include respond-down(md) {
+      inset-inline-end: auto;
+      inset-inline-start: 50%;
+      transform: translate(-50%, 0);
+      border-inline-end: var(--bw-2) solid var(--ink);
+      min-width: var(--space-100);
+    }
+  }
+
+  &__media {
+    flex: 0 0 var(--cart-upgrade-image-width);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-14);
+  }
+
+  &__media-item {
+    height: var(--cart-upgrade-image-height);
+    overflow: hidden;
+    border: var(--bw-2) solid var(--ink);
+
+    img,
+    video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-block-start: var(--space-8);
+    @include respond-down(md) {
+      padding-block-start: 0;
+    }
+    &.for_mobile {
+      display: none;
+      @include respond-down(md) {
+        padding-block-start: var(--space-22);
+        display: flex;
+      }
+      .cart-upgrade__title.t-h7 {
+        display: block;
+        text-align: center;
+        font-size: var(--fs-t1);
+        line-height: var(--lh-t1);
+        letter-spacing: var(--ls-t1);
+      }
+      .cart-upgrade__subtitle.t-t4 {
+        display: block;
+        text-align: center;
+        font-size: var(--fs-t4);
+        line-height: var(--lh-t4);
+        margin-block-start: var(--space-10);
+      }
+    }
+  }
+
+  &__title {
+    color: var(--ink);
+    text-wrap: balance;
+    @include respond-down(md) {
+      display: none;
+    }
+  }
+
+  &__subtitle {
+    margin-block-start: var(--space-8);
+    color: var(--ink);
+    font-size: var(--fs-n1);
+    line-height: var(--lh-n1);
+
+    @include respond-down(md) {
+      display: none;
+    }
+  }
+
+  &__perks {
+    gap: var(--space-8);
+    text-wrap: pretty;
+    flex-direction: column;
+    max-width: 19rem;
+    margin-block-start: var(--space-23);
+    padding: 0;
+    display: flex;
+    @include respond-down(md) {
+      padding: 0 var(--space-18);
+      margin: -0.2rem auto 0;
+      text-wrap: balance;
+    }
+  }
+
+  &__perk {
+    display: flex;
+    align-items: start;
+    gap: var(--space-8);
+    text-transform: uppercase;
+  }
+
+  &__perk-icon {
+    flex-shrink: 0;
+    display: flex;
+    width: var(--space-16);
+    height: var(--space-16);
+    // Nudge the 16px disc onto the cap height of the first line of text.
+    margin-block-start: var(--space-1);
+  }
+
+  &__cta {
+    width: min(100%, var(--cart-upgrade-cta-width));
+    height: var(--space-40);
+    margin-block-start: var(--space-21);
+    padding-inline: var(--space-12);
+    border: none;
+    border-radius: 0;
+    background-color: var(--button-dark-bg);
+    color: var(--button-dark-fg);
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding-bottom: var(--space-5);
+    @include respond-down(md) {
+      margin-top: var(--space-27);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: progress;
+    }
+  }
+
+  @include respond-down(md) {
+    flex-direction: column;
+    padding: var(--space-24) var(--space-13) var(--space-30) var(--space-14);
+    margin-block-start: var(--space-49);
+    gap: var(--space-26);
+
+    &__media {
+      flex-direction: row;
+      gap: var(--space-15);
+    }
+
+    &__media-item {
+      flex: 1;
+      position: relative;
+      height: auto;
+      &:after {
+        position: relative;
+        width: 100%;
+        display: block;
+        content: "";
+        padding-bottom: 122%;
+      }
+      img,
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+
+    &__cta {
+      width: 100%;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Line plan switcher (drawer and cart page)
+// -----------------------------------------------------------------------------
+
+.cart-line-plan {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+
+  &__static {
+    align-self: center;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+
+  // Right-hand end of the variant row, opposite the variant name.
+  &__badge {
+    color: var(--ink);
+    text-align: end;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &__select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    min-width: 0;
+    height: var(--cart-line-control-height, #{$plan-control-height});
+    padding-inline: var(--space-14) var(--space-34);
+    border: var(--bw-2) solid var(--taupe);
+    border-radius: 0;
+    background: var(--bone)
+      url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/16px-chevron-down.svg?v=1784117937)
+      no-repeat center right var(--space-10);
+    color: var(--ink);
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    outline: none;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: progress;
+    }
+  }
+
+  // Replaces the dropdown entirely while the line is a one-time purchase.
+  &__cta {
+    width: 100%;
+    height: var(--cart-line-control-height, #{$plan-control-height});
+    padding-inline: var(--space-12);
+    border: none;
+    border-radius: 0;
+    background-color: var(--button-dark-bg);
+    color: var(--button-dark-fg);
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: progress;
+    }
+  }
+
+  &__chevron {
+    position: absolute;
+    inset-inline-end: var(--space-12);
+    display: flex;
+    width: var(--space-16);
+    height: var(--space-16);
+    color: var(--ink);
+    pointer-events: none;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Drawer summary rows
+// -----------------------------------------------------------------------------
+
+.cart-summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  width: 100%;
+  color: var(--ink);
+  @include respond-down(md) {
+    gap: var(--space-12);
+  }
+
+  &__row {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-8);
+    @include respond-down(md) {
+      font-size: var(--fs-n2);
+      line-height: var(--lh-n2);
+    }
+  }
+
+  // Leader dots between the label and its value.
+  &__leader {
+    flex: 1;
+    height: 1em;
+    background-image: radial-gradient(
+      circle,
+      currentColor var(--space-1),
+      transparent var(--space-1)
+    );
+    background-position: 0 calc(1em - var(--space-3));
+    background-size: var(--space-6) var(--space-2);
+    background-repeat: repeat-x;
+    @include respond-down(md) {
+      height: 1.2em;
+    }
+  }
+
+  &__value {
+    white-space: nowrap;
+  }
+
+  &__tax-note {
+    color: var(--ink);
+    text-align: center;
+    text-transform: uppercase;
+    @include respond-down(md) {
+      font-size: var(--fs-n3);
+      line-height: var(--lh-n3);
+    }
+
+    small {
+      font-size: inherit;
+    }
+  }
+}

@@ -139,17 +139,17 @@
                 {%- if block.settings.heading != blank -%}
                   {%- case block_heading_tag -%}
                     {%- when 'h1' -%}
-                      <h1 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h1>
+                      <h1 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2 {{ block.settings.custom_class }}">{{ block.settings.heading }}</h1>
                     {%- when 'h3' -%}
-                      <h3 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h3>
+                      <h3 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2 {{ block.settings.custom_class }}">{{ block.settings.heading }}</h3>
                     {%- when 'h4' -%}
-                      <h4 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h4>
+                      <h4 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2 {{ block.settings.custom_class }}">{{ block.settings.heading }}</h4>
                     {%- when 'h5' -%}
-                      <h5 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h5>
+                      <h5 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2 {{ block.settings.custom_class }}">{{ block.settings.heading }}</h5>
                     {%- when 'h6' -%}
-                      <h6 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h6>
+                      <h6 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2 {{ block.settings.custom_class }}">{{ block.settings.heading }}</h6>
                     {%- else -%}
-                      <h2 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2">{{ block.settings.heading }}</h2>
+                      <h2 id="{{ block_heading_id }}" class="our-story__heading our-story__heading--title t-h2 {{ block.settings.custom_class }}">{{ block.settings.heading }}</h2>
                   {%- endcase -%}
                 {%- endif -%}
 
@@ -223,11 +223,16 @@
                       aria-pressed="false"
                       aria-label="Unmute video"
                     >
+                      {%- comment -%}
+                        The icon snippets are named for the state they toggle to, not what they
+                        draw: icon-sound-unmuted draws a struck speaker (shown while muted),
+                        icon-sound-muted draws a speaker with waves (shown while playing).
+                      {%- endcomment -%}
                       <span class="viewport-video__sound-icon" data-sound-icon-muted>
-                        {%- render 'icon-sound-muted' -%}
+                        {%- render 'icon-sound-unmuted' -%}
                       </span>
                       <span class="viewport-video__sound-icon" data-sound-icon-unmuted hidden>
-                        {%- render 'icon-sound-unmuted' -%}
+                        {%- render 'icon-sound-muted' -%}
                       </span>
                     </button>
                   </div>
@@ -392,7 +397,7 @@
       {%- if section.settings.cta_label != blank -%}
         {%- assign cta_words = section.settings.cta_label | split: ' ' -%}
         {%- assign cta_total = cta_words.size -%}
-        {%- assign cta_half = cta_total | plus: 1 | divided_by: 2 -%}
+        {%- assign cta_half = cta_total | divided_by: 2 -%}
 
         {%- capture cta_first_half -%}
           {%- for word in cta_words limit: cta_half -%}
@@ -558,6 +563,11 @@
       "type": "title",
       "name": "Title",
       "settings": [
+        {
+          "type": "text",
+          "id":"custom_class",
+          "label": "Custom Class"
+        },
         {
           "type": "text",
           "id": "kicker",

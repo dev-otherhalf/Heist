@@ -1618,6 +1618,405 @@
         "step": 1,
         "unit": "px",
         "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer — promo bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_promo_bar_enabled",
+        "label": "Show promo bar",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_promo_bar_text",
+        "label": "Promo bar text",
+        "default": "Free shipping on subscriptions",
+        "visible_if": "{{ settings.cart_promo_bar_enabled }}"
+      },
+      {
+        "type": "url",
+        "id": "cart_promo_bar_link",
+        "label": "Promo bar link",
+        "visible_if": "{{ settings.cart_promo_bar_enabled }}"
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer — progress bar"
+      },
+      {
+        "type": "select",
+        "id": "cart_progress_type",
+        "label": "Progress bar",
+        "options": [
+          { "value": "none", "label": "Hidden" },
+          { "value": "shipping", "label": "Free shipping threshold" },
+          { "value": "bags", "label": "Bag tiers" }
+        ],
+        "default": "bags"
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "info": "In your store currency, without the currency symbol. e.g. 50",
+        "default": 50,
+        "visible_if": "{{ settings.cart_progress_type == 'shipping' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_shipping_away_text",
+        "label": "Below threshold text",
+        "info": "Use [amount] where the remaining amount should appear.",
+        "default": "You're [amount] away from free shipping",
+        "visible_if": "{{ settings.cart_progress_type == 'shipping' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_shipping_unlocked_text",
+        "label": "Threshold reached text",
+        "default": "You've unlocked free shipping",
+        "visible_if": "{{ settings.cart_progress_type == 'shipping' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_subscription_free_shipping",
+        "label": "Subscriptions always ship free",
+        "info": "When any line is a subscription, the shipping row reads free and the threshold bar fills.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_shipping_subscriber_text",
+        "label": "Subscriber text",
+        "default": "You've unlocked free shipping as a subscriber",
+        "visible_if": "{{ settings.cart_progress_type == 'shipping' and settings.cart_subscription_free_shipping }}"
+      },
+      {
+        "type": "header",
+        "content": "Bag tier 1",
+        "info": "Set the quantity to 0 to hide a tier.",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "number",
+        "id": "cart_bag_tier_1_quantity",
+        "label": "Quantity",
+        "default": 2,
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_bag_tier_1_label",
+        "label": "Bag label",
+        "default": "2 bags",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_bag_tier_1_reward",
+        "label": "Save label",
+        "default": "Save 10%",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "header",
+        "content": "Bag tier 2",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "number",
+        "id": "cart_bag_tier_2_quantity",
+        "label": "Quantity",
+        "default": 3,
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_bag_tier_2_label",
+        "label": "Bag label",
+        "default": "3 bags",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_bag_tier_2_reward",
+        "label": "Save label",
+        "default": "Save 15%",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "header",
+        "content": "Bag tier 3",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "number",
+        "id": "cart_bag_tier_3_quantity",
+        "label": "Quantity",
+        "default": 5,
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_bag_tier_3_label",
+        "label": "Bag label",
+        "default": "5 bags",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_bag_tier_3_reward",
+        "label": "Save label",
+        "default": "Save 20%",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "header",
+        "content": "Bag tier 4",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "number",
+        "id": "cart_bag_tier_4_quantity",
+        "label": "Quantity",
+        "default": 6,
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_bag_tier_4_label",
+        "label": "Bag label",
+        "default": "6+ bags",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_bag_tier_4_reward",
+        "label": "Save label",
+        "default": "Save 25%",
+        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer — empty state"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_eyebrow",
+        "label": "Eyebrow",
+        "default": "Your cart is empty"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_heading",
+        "label": "Heading",
+        "default": "Looks like the bags didn’t make it out."
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_button_label",
+        "label": "Button label",
+        "default": "Shop decaf"
+      },
+      {
+        "type": "image_picker",
+        "id": "cart_empty_image",
+        "label": "Image"
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer — summary"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_shipping_row",
+        "label": "Show shipping row",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_shipping_row_label",
+        "label": "Shipping row label",
+        "default": "Shipping",
+        "visible_if": "{{ settings.cart_show_shipping_row }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_shipping_free_label",
+        "label": "Free shipping value",
+        "default": "Free",
+        "visible_if": "{{ settings.cart_show_shipping_row }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_shipping_calculated_label",
+        "label": "Paid shipping value",
+        "default": "Calculated at checkout",
+        "visible_if": "{{ settings.cart_show_shipping_row }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_savings_row",
+        "label": "Show total savings row",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_savings_row_label",
+        "label": "Savings row label",
+        "default": "Total savings",
+        "visible_if": "{{ settings.cart_show_savings_row }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_checkout_label",
+        "label": "Checkout button label",
+        "info": "The cart total is appended automatically.",
+        "default": "Continue to checkout"
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer — subscriptions"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_line_selling_plan",
+        "label": "Let customers switch plan in the cart",
+        "info": "Shows a plan dropdown on each line whose product has subscription plans. Prepaid plans are never offered here.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_one_time_label",
+        "label": "One-time option label",
+        "default": "One time purchase",
+        "visible_if": "{{ settings.cart_line_selling_plan }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_subscribe_cta_label",
+        "label": "One-time line — subscribe button",
+        "info": "Shown instead of the dropdown while a line is a one-time purchase. Use [discount] for the saving, calculated from the plan's price.",
+        "default": "Subscribe & save [discount]",
+        "visible_if": "{{ settings.cart_line_selling_plan }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_subscribe_target_plan",
+        "label": "One-time line — plan to apply",
+        "info": "The first non-prepaid plan whose name contains this is applied when the button is clicked. Falls back to the first non-prepaid plan.",
+        "default": "4 weeks",
+        "visible_if": "{{ settings.cart_line_selling_plan }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_prepaid_option_label",
+        "label": "Prepaid line — dropdown label",
+        "info": "A prepaid plan is named for how it bills (\"3 months prepaid\"), not how it ships. This is shown in the dropdown instead. Leave blank to use the plan name.",
+        "default": "Ships every 4 weeks"
+      },
+      {
+        "type": "text",
+        "id": "cart_prepaid_badge_label",
+        "label": "Prepaid line — tag",
+        "info": "Shown beside the line's variant. Leave blank to use the plan name.",
+        "default": "Prepaid for 3 months"
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer — upgrade banner"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_upgrade_enabled",
+        "label": "Show the upgrade banner",
+        "info": "Appears under the cart lines whenever at least one line can still be moved onto a prepaid plan. It hides itself once every eligible line is prepaid.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_upgrade_badge",
+        "label": "Corner badge",
+        "default": "Save 25%",
+        "visible_if": "{{ settings.cart_upgrade_enabled }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_upgrade_title",
+        "label": "Title",
+        "default": "Join the Heist Society™",
+        "visible_if": "{{ settings.cart_upgrade_enabled }}"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_upgrade_subtitle",
+        "label": "Subtitle",
+        "default": "3 months prepaid today, then monthly.\nCancel anytime after.",
+        "visible_if": "{{ settings.cart_upgrade_enabled }}"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_upgrade_perks",
+        "label": "Perks",
+        "info": "One per line.",
+        "default": "Lowest price. Locked forever.\nFree shipping forever, no thresholds\nLimited-edition Smuggle Bear every 6 months\nSmuggle Bear Welcome Kit (value $70)",
+        "visible_if": "{{ settings.cart_upgrade_enabled }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_upgrade_cta_label",
+        "label": "Button label",
+        "default": "Upgrade and save 25%",
+        "visible_if": "{{ settings.cart_upgrade_enabled }}"
+      },
+      {
+        "type": "select",
+        "id": "cart_upgrade_media_1_type",
+        "label": "Media 1 type",
+        "options": [
+          { "value": "image", "label": "Image" },
+          { "value": "video", "label": "Video" }
+        ],
+        "default": "image",
+        "visible_if": "{{ settings.cart_upgrade_enabled }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "cart_upgrade_image_1",
+        "label": "Image 1",
+        "visible_if": "{{ settings.cart_upgrade_enabled and settings.cart_upgrade_media_1_type == 'image' }}"
+      },
+      {
+        "type": "video",
+        "id": "cart_upgrade_video_1",
+        "label": "Video 1",
+        "visible_if": "{{ settings.cart_upgrade_enabled and settings.cart_upgrade_media_1_type == 'video' }}"
+      },
+      {
+        "type": "select",
+        "id": "cart_upgrade_media_2_type",
+        "label": "Media 2 type",
+        "options": [
+          { "value": "image", "label": "Image" },
+          { "value": "video", "label": "Video" }
+        ],
+        "default": "image",
+        "visible_if": "{{ settings.cart_upgrade_enabled }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "cart_upgrade_image_2",
+        "label": "Image 2",
+        "visible_if": "{{ settings.cart_upgrade_enabled and settings.cart_upgrade_media_2_type == 'image' }}"
+      },
+      {
+        "type": "video",
+        "id": "cart_upgrade_video_2",
+        "label": "Video 2",
+        "visible_if": "{{ settings.cart_upgrade_enabled and settings.cart_upgrade_media_2_type == 'video' }}"
       }
     ]
   },

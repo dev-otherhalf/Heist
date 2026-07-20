@@ -62,6 +62,7 @@
         "title_khFB69": {
           "type": "title",
           "settings": {
+            "custom_class": "",
             "kicker": "",
             "heading": "The World's Biggest Coffee Heist",
             "heading_tag": "h1",
@@ -107,6 +108,7 @@
         "title_hTrRgK": {
           "type": "title",
           "settings": {
+            "custom_class": "the_first_cup_title",
             "kicker": "",
             "heading": "The First Cup Was a Date Night",
             "heading_tag": "h2",
@@ -161,6 +163,7 @@
         "title_ja64dV": {
           "type": "title",
           "settings": {
+            "custom_class": "",
             "kicker": "",
             "heading": "They called the best in the business.",
             "heading_tag": "h2",
@@ -200,6 +203,7 @@
         "title_yARMP7": {
           "type": "title",
           "settings": {
+            "custom_class": "",
             "kicker": "",
             "heading": "Why Decaf’s Been Bad For 50 Years.",
             "heading_tag": "h2",
@@ -239,6 +243,7 @@
         "title_UPX7L7": {
           "type": "title",
           "settings": {
+            "custom_class": "heist_is_decaffein_title",
             "kicker": "",
             "heading": "“Heist is decaffeinated with only water. The caffeine dissolves out.”",
             "heading_tag": "h2",
@@ -293,6 +298,7 @@
         "title_yBRx8e": {
           "type": "title",
           "settings": {
+            "custom_class": "",
             "kicker": "",
             "heading": "“We stole the caffeine. <br>Not the flavor. Not the joy. <br>That’s the Heist.”",
             "heading_tag": "h2",
@@ -302,7 +308,7 @@
             "show_rules_bottom": false,
             "rule_spacing_mobile": 32,
             "rule_spacing_desktop": 56,
-            "padding_top_mobile": 32,
+            "padding_top_mobile": 26,
             "padding_bottom_mobile": 0,
             "padding_top_desktop": 88,
             "padding_bottom_desktop": 0

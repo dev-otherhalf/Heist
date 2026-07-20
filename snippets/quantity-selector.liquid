@@ -57,7 +57,9 @@
     >
       <span class="visually-hidden">{{ 'accessibility.decrease_quantity' | t }}</span
       ><span class="svg-wrapper icon-plus">
-        {{- 'icon-minus.svg' | inline_asset_content -}}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M14.6663 8H1.33301" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+        </svg>
       </span>
     </button>
     <input
@@ -95,7 +97,17 @@
     >
       <span class="visually-hidden">{{ 'accessibility.increase_quantity' | t }}</span
       ><span class="svg-wrapper icon-plus">
-        {{- 'icon-plus.svg' | inline_asset_content -}}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <g clip-path="url(#clip0_7168_10051)">
+              <path d="M8 1.33333V14.6667" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+              <path d="M14.6663 8H1.33301" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_7168_10051">
+                <rect width="16" height="16" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
       </span>
     </button>
   </{{ component_name }}>
