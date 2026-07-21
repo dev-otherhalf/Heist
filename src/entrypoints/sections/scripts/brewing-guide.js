@@ -31,7 +31,10 @@ import { guardSwiperWheel } from "../../../scripts/swiper-wheel-guard";
 // `lenis-locked` class. Nested scroll (the drawer's own scroll area) still works
 // because lenis runs with `allowNestedScroll: true`.
 function lockPageScroll() {
-  if (window.lenis) window.lenis.isLocked = true;
+  if (window.lenis) {
+    window.lenis.reset();
+    window.lenis.isLocked = true;
+  }
 }
 
 function unlockPageScroll() {
