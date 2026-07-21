@@ -287,6 +287,66 @@
         "padding_top_desktop": 48,
         "padding_bottom_desktop": 48
       }
+    },
+    "gallery_showcase_p3M8Eq": {
+      "type": "gallery-showcase",
+      "blocks": {
+        "card_djFWVE": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_23.jpg"
+          }
+        },
+        "card_KCP9iM": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_63.jpg"
+          }
+        },
+        "card_3WrCPH": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_64.jpg"
+          }
+        },
+        "card_Lafamf": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_65.jpg"
+          }
+        },
+        "card_wLgjXe": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_23.jpg"
+          }
+        },
+        "card_3pHGym": {
+          "type": "card",
+          "settings": {
+            "video": "shopify://files/videos/interioryesplz_1769153020_3816254488500013143_5401634217.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "card_djFWVE",
+        "card_KCP9iM",
+        "card_3WrCPH",
+        "card_Lafamf",
+        "card_wLgjXe",
+        "card_3pHGym"
+      ],
+      "name": "Gallery showcase",
+      "settings": {
+        "heading": "For those who are serious about coffee.",
+        "cta_label": "Follow @Heist",
+        "cta_link": "/",
+        "marquee_speed": 40,
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 104,
+        "padding_bottom_desktop": 96
+      }
     }
   },
   "order": [
@@ -295,6 +355,7 @@
     "comparison_chart_3yHKjb",
     "batch_testing_wxtHyd",
     "decaf_manifesto_Cqh9Jf",
-    "product_variant_showcase_ptQkpY"
+    "product_variant_showcase_ptQkpY",
+    "gallery_showcase_p3M8Eq"
   ]
 }
