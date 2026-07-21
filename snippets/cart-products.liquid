@@ -147,314 +147,415 @@
           </thead>
 
           <tbody role="rowgroup">
-            {% for item in cart.items %}
-              <tr
-                id="CartItem-{{ item.key }}"
-                role="row"
-                class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% if context == 'drawer' %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}{% endif %}"
-                ref="cartItemRows[]"
-                data-parent-key="{{ item.parent_relationship.parent.key }}"
-                data-key="{{ item.key }}"
-              >
-                <td
-                  class="cart-items__media"
-                  role="cell"
-                  headers="productImage"
-                >
-                  {% if item.image -%}
-                    {% liquid
-                      assign ratio = 1
-                      assign border_opacity = settings.cart_thumbnail_border_opacity | divided_by: 100.0
-                      assign border_override = '--border-width: [cart_thumbnail_border_width]px; --border-style: [cart_thumbnail_border_style]; --border-color: rgb(var(--color-border-rgb) / [cart_thumbnail_border_opacity]); --border-radius: [cart_thumbnail_border_radius]px;' | replace: '[cart_thumbnail_border_width]', settings.cart_thumbnail_border_width | replace: '[cart_thumbnail_border_style]', settings.cart_thumbnail_border | replace: '[cart_thumbnail_border_opacity]', border_opacity | replace: '[cart_thumbnail_border_radius]', settings.cart_thumbnail_border_radius
+            {%- comment -%}
+              Two passes over the same list: the bought lines first, then the
+              membership and its gift. Shopify orders the cart by when each line
+              was added, which puts the membership wherever it happened to land;
+              the drawer wants it read as a footer to the order instead.
+            {%- endcomment -%}
+            {% for pass in (1..2) %}
+              {% for item in cart.items %}
+                {%- liquid
+                  comment
+                    Membership and gifted lines are cards, not ordinary rows: the
+                    membership is identified by its product tag, the gift by its
+                    zero line price. Both drop the quantity stepper and the
+                    right-hand line price.
+                  endcomment
+                  assign item_tags = item.product.tags | join: ',' | downcase
+                  assign is_membership_item = false
+                  if item_tags contains 'membership'
+                    assign is_membership_item = true
+                  endif
 
-                      if settings.cart_thumbnail_border_radius > 0
-                        assign border_override = border_override | append: ' overflow: hidden;'
-                      endif
-                      if block_settings.image_ratio == 'portrait'
-                        assign ratio = 0.8
-                      elsif block_settings.image_ratio == 'adapt'
-                        assign ratio = item.image.aspect_ratio
-                      endif
-                    %}
-                    <a
-                      href="{{ item.url }}"
-                      class="cart-items__media-container"
-                      style="--ratio:{{ ratio }};"
-                    >
-                      {%- liquid
-                        echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
-                      -%}
-                    </a>
-                  {%- endif %}
-                </td>
-                <td
-                  class="cart-items__details cart-primary-typography"
-                  role="cell"
-                  headers="productInformation"
+                  assign is_free_item = false
+                  if is_membership_item == false and item.final_line_price == 0
+                    assign is_free_item = true
+                  endif
+
+                  assign is_card_item = false
+                  if is_membership_item or is_free_item
+                    assign is_card_item = true
+                  endif
+
+                  comment
+                    "(VALUE $70)" is the compare-at the gift would have cost; with
+                    no compare-at set the flag reads just "FREE".
+                  endcomment
+                  assign free_value = item.variant.compare_at_price | default: item.variant.price
+
+                  comment
+                    The card treatment is a drawer affordance — the cart page keeps
+                    the standard row so its table stays uniform.
+                  endcomment
+                  unless context == 'drawer'
+                    assign is_membership_item = false
+                    assign is_free_item = false
+                    assign is_card_item = false
+                  endunless
+
+                  # forloop.index restarts on the second pass, so the true cart
+                  # line number has to come off the item.
+                  assign line_number = item.index | plus: 1
+
+                  if pass == 1 and is_card_item
+                    continue
+                  endif
+                  if pass == 2 and is_card_item == false
+                    continue
+                  endif
+                -%}
+                <tr
+                  id="CartItem-{{ item.key }}"
+                  role="row"
+                  class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% if context == 'drawer' %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}{% if is_card_item %} cart-items__table-row--card{% endif %}{% if is_membership_item %} cart-items__table-row--membership{% endif %}{% if is_free_item %} cart-items__table-row--free{% endif %}{% endif %}"
+                  ref="cartItemRows[]"
+                  data-parent-key="{{ item.parent_relationship.parent.key }}"
+                  data-key="{{ item.key }}"
                 >
-                  <div class="cart-items__product-info">
-                    {%- liquid
-                      assign cart_disclosure_unique_id = 'page-' | append: item.index
-                      if context == 'drawer'
-                        assign cart_disclosure_unique_id = 'drawer-' | append: item.index
-                      endif
-                    -%}
-                    <div class="cart-items__title-row">
+                  <td
+                    class="cart-items__media"
+                    role="cell"
+                    headers="productImage"
+                  >
+                    {% if item.image -%}
+                      {% liquid
+                        assign ratio = 1
+                        assign border_opacity = settings.cart_thumbnail_border_opacity | divided_by: 100.0
+                        assign border_override = '--border-width: [cart_thumbnail_border_width]px; --border-style: [cart_thumbnail_border_style]; --border-color: rgb(var(--color-border-rgb) / [cart_thumbnail_border_opacity]); --border-radius: [cart_thumbnail_border_radius]px;' | replace: '[cart_thumbnail_border_width]', settings.cart_thumbnail_border_width | replace: '[cart_thumbnail_border_style]', settings.cart_thumbnail_border | replace: '[cart_thumbnail_border_opacity]', border_opacity | replace: '[cart_thumbnail_border_radius]', settings.cart_thumbnail_border_radius
+
+                        if settings.cart_thumbnail_border_radius > 0
+                          assign border_override = border_override | append: ' overflow: hidden;'
+                        endif
+                        if block_settings.image_ratio == 'portrait'
+                          assign ratio = 0.8
+                        elsif block_settings.image_ratio == 'adapt'
+                          assign ratio = item.image.aspect_ratio
+                        endif
+                      %}
                       <a
                         href="{{ item.url }}"
-                        class="cart-items__title"
-                        {% if item.parent_relationship.parent != null %}
-                          aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"
-                        {% endif %}
+                        class="cart-items__media-container"
+                        style="--ratio:{{ ratio }};"
                       >
-                        {{- item.product.title -}}
+                        {%- liquid
+                          echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
+                        -%}
                       </a>
-                      {% render 'cart-disclosure-tooltip',
-                        product: item.product,
-                        unique_id: cart_disclosure_unique_id,
-                        mode: 'trigger'
-                      %}
-                    </div>
-
-                    {%- assign product_subtitle = item.product.metafields.custom.product_subtitle.value
-                      | default: item.product.metafields.custom.product_subtitle
-                    -%}
-                    {%- if product_subtitle != blank -%}
-                      <p class="cart-items__subtitle t-t3">{{ product_subtitle }}</p>
-                    {%- endif -%}
-
-                    {% if item.product.vendor and block_settings.vendor %}
-                      <p>
-                        {{ item.product.vendor }}
-                      </p>
-                    {% endif %}
-
-                    {%- if item.item_components.size != 0 -%}
-                      <ul class="cart-items__bundle list-unstyled">
-                        {%- for component in item.item_components -%}
-                          <li>
-                            {{- component.title -}}
-                            {%- if component.quantity > 1 -%}
-                              <span> × {{ component.quantity }}</span>
-                            {%- endif -%}
-                          </li>
-                        {%- endfor -%}
-                      </ul>
-                    {%- endif -%}
-                  </div>
-
-                  <div class="cart-items__variants-wrapper">
-                    {%- if item.product.has_only_default_variant == false
-                      or item.properties.size != 0
-                      or item.selling_plan_allocation != null
-                    -%}
-                      {%- if item.product.has_only_default_variant == false and item.item_components.size == 0 -%}
-                        <dl class="cart-items__variants">
-                          {%- for option in item.options_with_values -%}
-                            <div class="cart-items__variant">
-                              <dt class="visually-hidden">{{ option.name }}:</dt>
-                              <dd class="t-n1">
-                                {{- option.value -}}
-                                {%- if forloop.last != true %},&nbsp;{% endif -%}
-                              </dd>
-                            </div>
-                          {%- endfor -%}
-                        </dl>
-                      {%- endif -%}
-
+                    {%- endif %}
+                  </td>
+                  <td
+                    class="cart-items__details cart-primary-typography"
+                    role="cell"
+                    headers="productInformation"
+                  >
+                    <div class="cart-items__product-info">
                       {%- liquid
-                        assign has_visible_properties = false
-                        for property in item.properties
-                          assign property_first_char = property.first | slice: 0
-                          if property.last != blank and property_first_char != '_'
-                            assign has_visible_properties = true
-                            break
-                          endif
-                        endfor
+                        assign cart_disclosure_unique_id = 'page-' | append: item.index
+                        if context == 'drawer'
+                          assign cart_disclosure_unique_id = 'drawer-' | append: item.index
+                        endif
                       -%}
-                      {%- if has_visible_properties -%}
-                        <dl class="cart-items__properties">
-                          {%- for property in item.properties -%}
-                            {%- assign property_first_char = property.first | slice: 0 -%}
-                            {%- if property.last != blank and property_first_char != '_' -%}
-                              <div class="cart-items__property">
-                                <dt>{{ property.first }}:</dt>
-                                <dd>
-                                  {%- if property.last contains '/uploads/' -%}
-                                    <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
-                                  {%- else -%}
-                                    {{ property.last }}
-                                  {%- endif -%}
-                                </dd>
-                              </div>
-                            {%- endif -%}
-                          {%- endfor -%}
-                        </dl>
+                      <div class="cart-items__title-row">
+                        <a
+                          href="{{ item.url }}"
+                          class="cart-items__title{% if is_card_item %} t-t2{% endif %}"
+                          {% if item.parent_relationship.parent != null %}
+                            aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"
+                          {% endif %}
+                        >
+                          {{- item.product.title -}}
+                        </a>
+                        {% render 'cart-disclosure-tooltip',
+                          product: item.product,
+                          unique_id: cart_disclosure_unique_id,
+                          mode: 'trigger'
+                        %}
+                      </div>
+
+                      {%- if is_free_item -%}
+                        <p class="cart-items__free-flag t-n1">
+                          {%- if free_value > 0 -%}
+                            FREE (VALUE {{ free_value | money_without_trailing_zeros }})
+                          {%- else -%}
+                            FREE
+                          {%- endif -%}
+                        </p>
                       {%- endif -%}
 
-                      {%- if item.line_level_discount_allocations.size > 0 -%}
-                        <ul
-                          class="list-unstyled"
-                          role="list"
-                        >
-                          {%- for discount in item.line_level_discount_allocations -%}
-                            <li>{{ discount.discount_application.title | escape }}</li>
+                      {%- assign product_subtitle = item.product.metafields.custom.product_subtitle.value
+                        | default: item.product.metafields.custom.product_subtitle
+                      -%}
+
+                      {%- if is_card_item -%}
+                        {%- comment -%}
+                          The card copy is the terms of the offer, not a tagline, so
+                          it falls back to the standing membership/gift wording when
+                          the product has no subtitle authored.
+                        {%- endcomment -%}
+                        {%- capture card_description -%}
+                          {%- if product_subtitle != blank -%}
+                            {{ product_subtitle }}
+                          {%- elsif is_membership_item -%}
+                            3 months prepaid today, then monthly.<br>Cancel anytime after.
+                          {%- else -%}
+                            Includes a Coffee Tin, Scoop, Smuggle Bear, and Member Card signed by our founder.
+                          {%- endif -%}
+                        {%- endcapture -%}
+                        <p class="cart-items__card-description t-t4">{{ card_description | strip }}</p>
+                      {%- elsif product_subtitle != blank -%}
+                        <p class="cart-items__subtitle t-t3">{{ product_subtitle }}</p>
+                      {%- endif -%}
+
+                      {% if item.product.vendor and block_settings.vendor %}
+                        <p>
+                          {{ item.product.vendor }}
+                        </p>
+                      {% endif %}
+
+                      {%- if item.item_components.size != 0 -%}
+                        <ul class="cart-items__bundle list-unstyled">
+                          {%- for component in item.item_components -%}
+                            <li>
+                              {{- component.title -}}
+                              {%- if component.quantity > 1 -%}
+                                <span> × {{ component.quantity }}</span>
+                              {%- endif -%}
+                            </li>
                           {%- endfor -%}
                         </ul>
                       {%- endif -%}
-                    {%- endif -%}
+                    </div>
 
-                    {% render 'cart-line-selling-plan', item: item, line: forloop.index, part: 'badge' %}
-                  </div>
+                    <div class="cart-items__variants-wrapper">
+                      {%- if item.product.has_only_default_variant == false
+                        or item.properties.size != 0
+                        or item.selling_plan_allocation != null
+                      -%}
+                        {%- if item.product.has_only_default_variant == false and item.item_components.size == 0 -%}
+                          <dl class="cart-items__variants">
+                            {%- for option in item.options_with_values -%}
+                              <div class="cart-items__variant">
+                                <dt class="visually-hidden">{{ option.name }}:</dt>
+                                <dd class="t-n1">
+                                  {{- option.value -}}
+                                  {%- if forloop.last != true %},&nbsp;{% endif -%}
+                                </dd>
+                              </div>
+                            {%- endfor -%}
+                          </dl>
+                        {%- endif -%}
 
-                  <div class="cart-items__unit-price-wrapper">
-                    <div>
-                      {% if item.original_price != item.final_price %}
-                        <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
-                        <span>{{ item.final_price | money }}</span>
-                        <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                        <s class="compare-at-price">
-                          {% if item.variant.compare_at_price > item.original_price %}
-                            {{ item.variant.compare_at_price | money }}
-                          {% else %}
-                            {{ item.original_price | money }}
-                          {% endif %}
-                        </s>
-                      {% else %}
-                        {% if item.variant.compare_at_price > item.original_price %}
+                        {%- liquid
+                          assign has_visible_properties = false
+                          for property in item.properties
+                            assign property_first_char = property.first | slice: 0
+                            if property.last != blank and property_first_char != '_'
+                              assign has_visible_properties = true
+                              break
+                            endif
+                          endfor
+                        -%}
+                        {%- if has_visible_properties -%}
+                          <dl class="cart-items__properties">
+                            {%- for property in item.properties -%}
+                              {%- assign property_first_char = property.first | slice: 0 -%}
+                              {%- if property.last != blank and property_first_char != '_' -%}
+                                <div class="cart-items__property">
+                                  <dt>{{ property.first }}:</dt>
+                                  <dd>
+                                    {%- if property.last contains '/uploads/' -%}
+                                      <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+                                    {%- else -%}
+                                      {{ property.last }}
+                                    {%- endif -%}
+                                  </dd>
+                                </div>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </dl>
+                        {%- endif -%}
+
+                        {%- if item.line_level_discount_allocations.size > 0 -%}
+                          <ul
+                            class="list-unstyled"
+                            role="list"
+                          >
+                            {%- for discount in item.line_level_discount_allocations -%}
+                              <li>{{ discount.discount_application.title | escape }}</li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      {%- endif -%}
+
+                      {% render 'cart-line-selling-plan', item: item, line: line_number, part: 'badge' %}
+                    </div>
+
+                    <div class="cart-items__unit-price-wrapper">
+                      <div>
+                        {% if item.original_price != item.final_price %}
                           <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
-                        {% else %}
-                          <span class="visually-hidden">{{ 'content.price' | t }}</span>
-                        {% endif %}
-
-                        <span>{{ item.original_price | money }}</span>
-
-                        {% if item.variant.compare_at_price > item.original_price %}
+                          <span>{{ item.final_price | money }}</span>
                           <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                          <s class="compare-at-price">{{ item.variant.compare_at_price | money }}</s>
+                          <s class="compare-at-price">
+                            {% if item.variant.compare_at_price > item.original_price %}
+                              {{ item.variant.compare_at_price | money }}
+                            {% else %}
+                              {{ item.original_price | money }}
+                            {% endif %}
+                          </s>
+                        {% else %}
+                          {% if item.variant.compare_at_price > item.original_price %}
+                            <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
+                          {% else %}
+                            <span class="visually-hidden">{{ 'content.price' | t }}</span>
+                          {% endif %}
+
+                          <span>{{ item.original_price | money }}</span>
+
+                          {% if item.variant.compare_at_price > item.original_price %}
+                            <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
+                            <s class="compare-at-price">{{ item.variant.compare_at_price | money }}</s>
+                          {% endif %}
                         {% endif %}
-                      {% endif %}
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td
-                  class="cart-items__quantity"
-                  role="cell"
-                  headers="quantity"
-                >
-                  {% # Here I want to pass some arguments to the quantity block so it knows which value should the input be set to. Though quantity block could be a snippet instead %}
-                  {% assign can_update_quantity = item.instructions.can_update_quantity
-                    | default: true, allow_false: true
-                  %}
-                  <div class="cart-items__quantity-controls">
-                    {% render 'volume-pricing-info',
-                      variant: item.variant,
-                      unique_id: item.index,
-                      quantity: item.quantity
-                    %}
-
-                    {% render 'quantity-selector',
-                      product: item.product,
-                      variant: item.variant,
-                      in_cart_quantity: item.quantity,
-                      line_index: item.index,
-                      class: 'cart-primary-typography',
-                      can_update_quantity: can_update_quantity
-                    %}
-
-                    {% render 'cart-line-selling-plan', item: item, line: forloop.index %}
-
-                    <button
-                      class="button cart-items__remove"
-                      type="button"
-                      aria-label="{{ 'accessibility.remove_item' | t: title: item.title | escape }}"
-                      on:click="/onLineItemRemove/{{ item.index | plus: 1 }}"
-                      {% assign can_remove = item.instructions.can_remove | default: true, allow_false: true %}
-                      {% if can_remove == false %}
-                        hidden
-                      {% endif %}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M8.33366 9.16667V14.1667M11.667 9.16667V14.1667M15.0003 5.83333V15.8333C15.0003 16.2754 14.8247 16.6993 14.5122 17.0118C14.1996 17.3244 13.7757 17.5 13.3337 17.5H6.66699C6.22496 17.5 5.80104 17.3244 5.48848 17.0118C5.17592 16.6993 5.00032 16.2754 5.00032 15.8333V5.83333M16.667 5.83333H3.33366M14.3753 5L12.5003 2.5H7.50033L5.62533 5" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
-                      </svg>
-                      <span class="visually-hidden">{{ 'accessibility.remove' | t }}</span>
-                    </button>
-                  </div>
-                </td>
-                <td
-                  class="cart-items__error hidden"
-                  role="cell"
-                  ref="cartItemErrorContainer-{{ item.index | plus: 1 }}"
-                  headers="quantity"
-                >
-                  <div
-                    class="cart-item__error"
-                    role="alert"
+                  </td>
+                  <td
+                    class="cart-items__quantity"
+                    role="cell"
+                    headers="quantity"
                   >
-                    <span class="svg-wrapper">
-                      {{- 'icon-error.svg' | inline_asset_content -}}
-                    </span>
-                    <small
-                      class="cart-item__error-text cart-primary-typography"
-                      ref="cartItemError-{{ item.index | plus: 1 }}"
-                    ></small>
-                  </div>
-                </td>
-                {%- liquid
-                  if settings.currency_code_enabled_cart_items
-                    assign price = item.final_line_price | money_with_currency
-                    assign unit_price = item.unit_price | money_with_currency
-                  else
-                    assign price = item.final_line_price | money
-                    assign unit_price = item.unit_price | money
-                  endif
-                -%}
-                <td
-                  class="cart-items__price cart-secondary-typography"
-                  role="cell"
-                  headers="productTotal"
-                >
-                  <text-component value="{{ price | strip_html }}" class="t-n1">{{ price }}</text-component>
+                    {% # Here I want to pass some arguments to the quantity block so it knows which value should the input be set to. Though quantity block could be a snippet instead %}
+                    {% assign can_update_quantity = item.instructions.can_update_quantity
+                      | default: true, allow_false: true
+                    %}
+                    {%- if is_card_item -%}
+                      {%- comment -%}
+                        The gift is granted by the membership, so it carries no
+                        controls at all — removing the membership takes it with it.
+                      {%- endcomment -%}
+                      {%- if is_membership_item -%}
+                        <button
+                          class="btn btn--membership cart-items__membership-remove"
+                          type="button"
+                          on:click="/onLineItemRemove/{{ item.index | plus: 1 }}"
+                        >
+                          Remove membership
+                        </button>
+                      {%- endif -%}
+                    {%- else -%}
+                      <div class="cart-items__quantity-controls">
+                        {% render 'volume-pricing-info',
+                          variant: item.variant,
+                          unique_id: item.index,
+                          quantity: item.quantity
+                        %}
 
-                  {%- if context == 'drawer' -%}
-                    {%- liquid
-                      # A prepaid plan bills several deliveries in one charge, so its
-                      # line price covers all of them. The "before" price has to span
-                      # the same deliveries or the strikethrough never outruns it.
-                      # Shopify hands Liquid the plan's name but not its billing cycle,
-                      # so the 3 in "3 months prepaid" can't be read off the plan.
-                      assign current_plan_name = item.selling_plan_allocation.selling_plan.name | downcase
-                      assign deliveries = 1
-                      if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
-                        assign deliveries = 3
-                      endif
+                        {% render 'quantity-selector',
+                          product: item.product,
+                          variant: item.variant,
+                          in_cart_quantity: item.quantity,
+                          line_index: item.index,
+                          class: 'cart-primary-typography',
+                          can_update_quantity: can_update_quantity
+                        %}
 
-                      assign regular_price = item.variant.compare_at_price | default: 0
-                      if item.variant.price > regular_price
-                        assign regular_price = item.variant.price
-                      endif
+                        {% render 'cart-line-selling-plan', item: item, line: line_number %}
 
-                      # The strikethrough is whichever "before" price is highest: the
-                      # variant's regular price across every billed delivery, or the
-                      # pre-discount line price.
-                      assign compare_at_line_price = regular_price | times: item.quantity | times: deliveries
-                      if item.original_line_price > compare_at_line_price
-                        assign compare_at_line_price = item.original_line_price
-                      endif
-                    -%}
-                    {%- if compare_at_line_price > item.final_line_price -%}
-                      <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                      <s class="cart-items__price-compare compare-at-price t-n1">{{ compare_at_line_price | money }}</s>
+                        <button
+                          class="button cart-items__remove"
+                          type="button"
+                          aria-label="{{ 'accessibility.remove_item' | t: title: item.title | escape }}"
+                          on:click="/onLineItemRemove/{{ item.index | plus: 1 }}"
+                          {% assign can_remove = item.instructions.can_remove | default: true, allow_false: true %}
+                          {% if can_remove == false %}
+                            hidden
+                          {% endif %}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M8.33366 9.16667V14.1667M11.667 9.16667V14.1667M15.0003 5.83333V15.8333C15.0003 16.2754 14.8247 16.6993 14.5122 17.0118C14.1996 17.3244 13.7757 17.5 13.3337 17.5H6.66699C6.22496 17.5 5.80104 17.3244 5.48848 17.0118C5.17592 16.6993 5.00032 16.2754 5.00032 15.8333V5.83333M16.667 5.83333H3.33366M14.3753 5L12.5003 2.5H7.50033L5.62533 5" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+                          </svg>
+                          <span class="visually-hidden">{{ 'accessibility.remove' | t }}</span>
+                        </button>
+                      </div>
                     {%- endif -%}
-                  {%- endif -%}
-
-                  {%- if item.unit_price_measurement -%}
-                    <div class="cart-items__price-unit cart-secondary-typography">
-                      {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}
+                  </td>
+                  <td
+                    class="cart-items__error hidden"
+                    role="cell"
+                    ref="cartItemErrorContainer-{{ item.index | plus: 1 }}"
+                    headers="quantity"
+                  >
+                    <div
+                      class="cart-item__error"
+                      role="alert"
+                    >
+                      <span class="svg-wrapper">
+                        {{- 'icon-error.svg' | inline_asset_content -}}
+                      </span>
+                      <small
+                        class="cart-item__error-text cart-primary-typography"
+                        ref="cartItemError-{{ item.index | plus: 1 }}"
+                      ></small>
                     </div>
-                  {%- endif -%}
-                </td>
-              </tr>
+                  </td>
+                  {%- liquid
+                    if settings.currency_code_enabled_cart_items
+                      assign price = item.final_line_price | money_with_currency
+                      assign unit_price = item.unit_price | money_with_currency
+                    else
+                      assign price = item.final_line_price | money
+                      assign unit_price = item.unit_price | money
+                    endif
+                  -%}
+                  <td
+                    class="cart-items__price cart-secondary-typography"
+                    role="cell"
+                    headers="productTotal"
+                  >
+                    <text-component value="{{ price | strip_html }}" class="t-n1">{{ price }}</text-component>
+
+                    {%- if context == 'drawer' -%}
+                      {%- liquid
+                        # A prepaid plan bills several deliveries in one charge, so its
+                        # line price covers all of them. The "before" price has to span
+                        # the same deliveries or the strikethrough never outruns it.
+                        # Shopify hands Liquid the plan's name but not its billing cycle,
+                        # so the 3 in "3 months prepaid" can't be read off the plan.
+                        assign current_plan_name = item.selling_plan_allocation.selling_plan.name | downcase
+                        assign deliveries = 1
+                        if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
+                          assign deliveries = 3
+                        endif
+
+                        assign regular_price = item.variant.compare_at_price | default: 0
+                        if item.variant.price > regular_price
+                          assign regular_price = item.variant.price
+                        endif
+
+                        # The strikethrough is whichever "before" price is highest: the
+                        # variant's regular price across every billed delivery, or the
+                        # pre-discount line price.
+                        assign compare_at_line_price = regular_price | times: item.quantity | times: deliveries
+                        if item.original_line_price > compare_at_line_price
+                          assign compare_at_line_price = item.original_line_price
+                        endif
+                      -%}
+                      {%- if compare_at_line_price > item.final_line_price -%}
+                        <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
+                        <s class="cart-items__price-compare compare-at-price t-n1">{{ compare_at_line_price | money }}</s>
+                      {%- endif -%}
+                    {%- endif -%}
+
+                    {%- if item.unit_price_measurement -%}
+                      <div class="cart-items__price-unit cart-secondary-typography">
+                        {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}
+                      </div>
+                    {%- endif -%}
+                  </td>
+                </tr>
+              {% endfor %}
             {% endfor %}
           </tbody>
         </table>

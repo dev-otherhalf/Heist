@@ -321,7 +321,9 @@ $plan-control-height: 2.375rem; // 38px
       }
     }
 
-    .cart-items__title {
+    // `:not(.t-t2)` steps aside for the membership / gift cards, which carry the
+    // display-face utility on the markup instead.
+    .cart-items__title:not(.t-t2) {
       color: var(--ink);
       font-family: var(--font-ui);
       font-size: var(--fs-s3);
@@ -502,6 +504,80 @@ $plan-control-height: 2.375rem; // 38px
         flex: 0 0 100%;
         margin-inline-start: 0;
       }
+    }
+
+    // --- Membership / gift lines ---------------------------------------------
+    // These read as bordered cards rather than rows. Neither is quantity-
+    // adjustable: the membership is removed by its own CTA and the gift rides
+    // along with it, so the stepper, trash icon and line price all drop out and
+    // the copy stacks under a display-face title.
+    .cart-items__table-row--card {
+      grid-template-columns: 6.5rem minmax(0, 1fr);
+      column-gap: var(--space-20);
+      padding: var(--space-16);
+      margin-bottom: var(--space-20);
+      border: var(--bw-2) solid var(--taupe);
+      background-color: var(--bone);
+      @include respond-down(md) {
+        grid-template-columns: 5.25rem minmax(0, 1fr);
+        column-gap: var(--space-16);
+        padding: var(--space-12);
+      }
+
+      .cart-items__media {
+        grid-area: 1 / 1 / 3 / 2;
+      }
+
+      .cart-items__media-container {
+        height: auto;
+        aspect-ratio: 1 / 1;
+        padding-bottom: 0;
+      }
+
+      .cart-items__product-info {
+        grid-area: 1 / 2 / 2 / 3;
+        gap: var(--space-8);
+        padding-block-start: 0;
+      }
+
+      // Type is the `t-*` utility on the markup. The base cart rule
+      // `.cart-items__details *` forces a font-size onto every descendant and
+      // only ties the utility on specificity, so the size is the one thing that
+      // has to be handed back.
+      .t-t2 {
+        font-size: var(--fs-t2);
+        text-transform: none;
+      }
+
+      .cart-items__card-description {
+        font-size: var(--fs-t4);
+        color: var(--ink);
+      }
+
+      // Nothing on the right rail, and no per-unit controls.
+      .cart-items__price,
+      .cart-items__variants-wrapper,
+      .cart-items__unit-price-wrapper,
+      .cart-items__remove {
+        display: none;
+      }
+
+      .cart-items__error {
+        grid-area: 3 / 2 / 4 / -1;
+      }
+    }
+
+    .cart-items__free-flag {
+      font-size: var(--fs-n1);
+      color: var(--ink);
+    }
+
+    .cart-items__membership-remove {
+      grid-area: 2 / 2 / 3 / -1;
+      width: 100%;
+      min-height: var(--cart-line-control-height);
+      margin-top: var(--space-16);
+      padding: var(--space-8) var(--space-16);
     }
   }
 }
