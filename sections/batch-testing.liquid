@@ -7,6 +7,13 @@
     this and stacks the copy under the whole grid instead.
   endcomment
   assign copy_after = 2
+
+  comment
+    Either upload alone is enough — each viewport falls back to the other so a
+    single image still covers both.
+  endcomment
+  assign bg_desktop = section.settings.background_image | default: section.settings.background_image_mobile
+  assign bg_mobile = section.settings.background_image_mobile | default: section.settings.background_image
 -%}
 
 {%- capture copy_block -%}
@@ -38,14 +45,34 @@
     --batch-testing-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
     --batch-testing-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
     --batch-testing-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
-    {% if section.settings.background_image != blank %}
-      --batch-testing-bg-image: url({{ section.settings.background_image | image_url: width: 2560 }});
-    {% endif %}
-    {% if section.settings.background_image_mobile != blank %}
-      --batch-testing-bg-image-mobile: url({{ section.settings.background_image_mobile | image_url: width: 1500 }});
-    {% endif %}
   "
 >
+  {%- if bg_mobile != blank -%}
+    {{
+      bg_mobile
+      | image_url: width: 1500
+      | image_tag:
+        widths: '600, 900, 1200, 1500',
+        sizes: '100vw',
+        loading: 'lazy',
+        alt: '',
+        class: 'batch-testing__background batch-testing__background--mobile'
+    }}
+  {%- endif -%}
+
+  {%- if bg_desktop != blank -%}
+    {{
+      bg_desktop
+      | image_url: width: 2560
+      | image_tag:
+        widths: '1200, 1600, 2000, 2560',
+        sizes: '100vw',
+        loading: 'lazy',
+        alt: '',
+        class: 'batch-testing__background batch-testing__background--desktop'
+    }}
+  {%- endif -%}
+
   <div class="page-width">
     {%- if section.settings.kicker != blank or section.settings.heading != blank -%}
       <div class="batch-testing__header">

@@ -1,0 +1,300 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {
+            "text_color": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "clean_job_gydQGG": {
+      "type": "clean-job",
+      "blocks": {
+        "text_iFAfK6": {
+          "type": "text",
+          "settings": {
+            "text": "Water Decaf Method"
+          }
+        },
+        "text_jAyYMy": {
+          "type": "text",
+          "settings": {
+            "text": "No Solvents / Chemicals"
+          }
+        },
+        "text_GrjFYh": {
+          "type": "text",
+          "settings": {
+            "text": "99.9% Caffeine Removed"
+          }
+        },
+        "text_B9V3WU": {
+          "type": "text",
+          "settings": {
+            "text": "Every Batch on File"
+          }
+        }
+      },
+      "block_order": [
+        "text_iFAfK6",
+        "text_jAyYMy",
+        "text_GrjFYh",
+        "text_B9V3WU"
+      ],
+      "name": "Clean job",
+      "settings": {
+        "heading": "The Cleanest Job in Coffee History.",
+        "video": "shopify://files/videos/Screen Recording 2026-07-13 at 4.43.03 PM.mp4",
+        "video_number": "24724 1632 248",
+        "background_image": "shopify://shop_images/Rectangle_144433687_ab7187c1-83f0-43a2-80a8-14f89e4ae09d.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_13_ba4d70b6-7f39-429c-819a-f06d09a59f4c.jpg",
+        "background_color": "",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96
+      }
+    },
+    "comparison_chart_3yHKjb": {
+      "type": "comparison-chart",
+      "name": "Comparison chart",
+      "settings": {
+        "chart_selection": "3-ways-to-decaf-only-1-we-trust",
+        "background_image": "shopify://shop_images/Rectangle.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_144433642_26111641-889d-4efe-b990-5c988af03d3e.jpg",
+        "process_heading": "Caffeine Out. Everything Else In.",
+        "step_1_image": "shopify://shop_images/Frame_1410127399.jpg",
+        "step_1_title": "Soak",
+        "step_1_description": "<p>Green beans soak in water. Caffeine and flavor compounds dissolve into the water.</p>",
+        "step_2_image": "shopify://shop_images/Frame_14101273990.jpg",
+        "step_2_title": "Filter",
+        "step_2_description": "<p>Water passes through a charcoal filter. Caffeine binds to the carbon. Flavor compounds pass through.</p>",
+        "step_3_image": "shopify://shop_images/Frame_1410127354.jpg",
+        "step_3_title": "Re-Soak",
+        "step_3_description": "<p>Beans return to the flavor-rich, caffeine-free water. The flavor goes back. The caffeine is gone.</p>",
+        "process_footnote": "<p>Two passes. No chemicals introduced. No flavor lost. 99.9% of the caffeine removed.</p>",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96
+      }
+    },
+    "batch_testing_wxtHyd": {
+      "type": "batch-testing",
+      "blocks": {
+        "media_VryCiJ": {
+          "type": "media",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Rectangle_17_0a6f860c-fa0c-474e-932c-fb55420bf1f3.jpg"
+          }
+        },
+        "media_i6x4i9": {
+          "type": "media",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Rectangle_18.jpg"
+          }
+        },
+        "media_4WrpJM": {
+          "type": "media",
+          "settings": {
+            "media_type": "video",
+            "video": "shopify://files/videos/Explore Fresh minimalist bedroom decor for your next Pinterest save designed for people who want results that look intentional - Pin-346988346312202474.mp4"
+          }
+        },
+        "media_NqyKHf": {
+          "type": "media",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Rectangle_21_0b9e67d6-ae51-41d4-a271-b6596a9422da.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "media_VryCiJ",
+        "media_i6x4i9",
+        "media_4WrpJM",
+        "media_NqyKHf"
+      ],
+      "name": "Batch testing",
+      "settings": {
+        "kicker": "Every batch on file",
+        "heading": "Lightlabs tests every lot before it ships. 99+% of coffee, decaf or regular does not go through this type of testing. Ours does.",
+        "body": "<p>Mycotoxins. Mold. Heavy metals. If a lot doesn't pass, it doesn't ship.</p>",
+        "button_label": "View Lightlabs report",
+        "button_link": "/",
+        "background_image": "shopify://shop_images/Rectangle_144433687_ab7187c1-83f0-43a2-80a8-14f89e4ae09d.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_13_ba4d70b6-7f39-429c-819a-f06d09a59f4c.jpg",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96
+      }
+    },
+    "decaf_manifesto_Cqh9Jf": {
+      "type": "decaf-manifesto",
+      "blocks": {
+        "proof_point_KxMiMr": {
+          "type": "proof_point",
+          "settings": {
+            "text": "Top 1% of World's Arabica Beans"
+          }
+        },
+        "proof_point_gyYdca": {
+          "type": "proof_point",
+          "settings": {
+            "text": "Water Extracts the Caffeine"
+          }
+        },
+        "proof_point_W4xhGm": {
+          "type": "proof_point",
+          "settings": {
+            "text": "Third-Party Testing"
+          }
+        },
+        "proof_point_xx38kB": {
+          "type": "proof_point",
+          "settings": {
+            "text": "Small-Batch Roasting"
+          }
+        }
+      },
+      "block_order": [
+        "proof_point_KxMiMr",
+        "proof_point_gyYdca",
+        "proof_point_W4xhGm",
+        "proof_point_xx38kB"
+      ],
+      "name": "Decaf manifesto",
+      "settings": {
+        "heading": "Decaf has been an apology for fifty years. We're done apologizing.",
+        "body": "<p>The old decaf was cheap beans, fast solvents, and a reputation it earned. We started over.</p><p>The result is a cup we actually want to drink. After dinner. At 11 p.m. On a Sunday. Without paying for it the next day.</p>",
+        "image": "shopify://shop_images/Group_23.png",
+        "background_image": "shopify://shop_images/Rectangle.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_144433642_26111641-889d-4efe-b990-5c988af03d3e.jpg",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96
+      }
+    },
+    "product_variant_showcase_ptQkpY": {
+      "type": "product-variant-showcase",
+      "blocks": {
+        "badge_jCMCex": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-wholebeans.svg"
+          }
+        },
+        "badge_hkw7gi": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-caffeine.svg"
+          }
+        },
+        "badge_tz3Rab": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-toxinfree.svg"
+          }
+        },
+        "badge_4t7dGt": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/Isolation_Mode.svg"
+          }
+        },
+        "product_card_aLXjKa": {
+          "type": "product_card",
+          "settings": {
+            "product": "smooth-talker"
+          }
+        },
+        "product_card_KpNUC8": {
+          "type": "product_card",
+          "settings": {
+            "product": "blueprint"
+          }
+        }
+      },
+      "block_order": [
+        "badge_jCMCex",
+        "badge_hkw7gi",
+        "badge_tz3Rab",
+        "badge_4t7dGt",
+        "product_card_aLXjKa",
+        "product_card_KpNUC8"
+      ],
+      "name": "Product variant showcase",
+      "settings": {
+        "heading": "World-Class Decaf Coffee",
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 48
+      }
+    }
+  },
+  "order": [
+    "main",
+    "clean_job_gydQGG",
+    "comparison_chart_3yHKjb",
+    "batch_testing_wxtHyd",
+    "decaf_manifesto_Cqh9Jf",
+    "product_variant_showcase_ptQkpY"
+  ]
+}

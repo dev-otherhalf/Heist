@@ -17,32 +17,33 @@
     var(--batch-testing-padding-bottom-mobile);
   position: relative;
 
-  // Background layer — absolutely positioned pseudo-element, no <img> in flow.
-  // Mobile prefers the mobile upload and falls back to the desktop one; at lg
-  // the preference flips. Unset custom properties resolve to the `none` tail.
-  &::before {
-    background-image: var(
-      --batch-testing-bg-image-mobile,
-      var(--batch-testing-bg-image, none)
-    );
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    content: "";
+  // Background layer — real <img> rather than a background-image custom
+  // property, so an unresolvable URL degrades to a broken-free empty box
+  // instead of invalidating the whole declaration. Both uploads are emitted and
+  // the breakpoint decides which one paints.
+  &__background {
+    height: 100%;
     inset: 0;
+    object-fit: cover;
     position: absolute;
+    width: 100%;
     z-index: 0;
+  }
+
+  &__background--desktop {
+    display: none;
   }
 
   @include respond-to(lg) {
     padding-block: var(--batch-testing-padding-top-desktop)
       var(--batch-testing-padding-bottom-desktop);
 
-    &::before {
-      background-image: var(
-        --batch-testing-bg-image,
-        var(--batch-testing-bg-image-mobile, none)
-      );
+    .batch-testing__background--mobile {
+      display: none;
+    }
+
+    .batch-testing__background--desktop {
+      display: block;
     }
   }
 
