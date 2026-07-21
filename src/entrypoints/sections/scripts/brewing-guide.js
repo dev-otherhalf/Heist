@@ -18,6 +18,7 @@
 import Swiper from "swiper";
 import { FreeMode, Mousewheel } from "swiper/modules";
 import { initCustomScrollbar } from "../../../scripts/custom-scrollbar";
+import { guardSwiperWheel } from "../../../scripts/swiper-wheel-guard";
 
 // The drawer is a class-toggled overlay (not a native <dialog>/showModal) —
 // showModal auto-focuses inside the drawer, which makes the browser scroll the
@@ -199,6 +200,9 @@ function registerDrawer(modal) {
 function initSwiper(el) {
   if (el.dataset.brewingSwiperReady === "true") return;
   el.dataset.brewingSwiperReady = "true";
+
+  // Keep a sideways trackpad swipe from also creeping the page down.
+  guardSwiperWheel("[data-brewing-swiper]");
 
   new Swiper(el, {
     modules: [FreeMode, Mousewheel],

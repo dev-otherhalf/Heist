@@ -10,6 +10,7 @@
 
 import Swiper from "swiper";
 import { FreeMode, Mousewheel } from "swiper/modules";
+import { guardSwiperWheel } from "../../../scripts/swiper-wheel-guard";
 
 function initTabs(root) {
   if (root.dataset.coffeeHeistTabsReady === "true") return;
@@ -53,6 +54,9 @@ function initReceipts(root) {
   const swiperEl = root.querySelector("[data-receipts-swiper]");
 
   if (swiperEl) {
+    // Keep a sideways trackpad swipe from also creeping the page down.
+    guardSwiperWheel("[data-receipts-swiper]");
+
     new Swiper(swiperEl, {
       modules: [FreeMode, Mousewheel],
       slidesPerView: "auto",
