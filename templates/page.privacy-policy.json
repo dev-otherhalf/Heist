@@ -15,7 +15,11 @@
         "title": "Privacy Policy",
         "last_updated": "LAST UPDATED: JUNE 2026",
         "content": "<h3>What We Collect</h3><p>When you place an order or create an account, we collect your name, email address, shipping address, and payment information. We also collect browsing data through cookies to improve your experience on our site.</p><h3>How We Use It</h3><p>We use your information to process and fulfill orders, send order updates, and if you opt in, share news and offers. We do not sell your personal information to third parties.</p><h3>Cookies</h3><p>Our site uses cookies to remember your preferences and understand how people use our site. You can disable cookies in your browser settings at any time.</p><h3>Third Parties</h3><p>We work with trusted third-party services to process payments and fulfill orders. These partners only receive the information necessary to complete their service.</p><h3>Email / SMS Communications</h3><p>If you subscribe to our emails or SMS, you can unsubscribe at any time using the link at the bottom of any message.</p><h3>Your Data</h3><p>You can request access to, correction of, or deletion of your personal data at any time by contacting us at <a href=\"mailto:hello@heist.coffee\" target=\"_blank\" title=\"mailto:hello@heist.coffee\">hello@heist.coffee</a>.</p><h3>Changes To This Policy</h3><p>We may update this policy from time to time. Any changes will be posted on this page.</p><h3>Questions? Reach us at <a href=\"mailto:hello@heist.coffee\" target=\"_blank\" title=\"mailto:hello@heist.coffee\">hello@heist.coffee</a>.</h3>",
-        "contact_email": "hello@heist.coffee"
+        "contact_email": "hello@heist.coffee",
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 56,
+        "padding_bottom_desktop": 120
       }
     }
   },

@@ -7,8 +7,11 @@
   --page-content-width: 55rem;
   --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
 
-  padding-top: var(--space-57);
-  padding-bottom: var(--space-80);
+  padding-top: var(--page-privacy-policy-padding-top-desktop, var(--space-57));
+  padding-bottom: var(
+    --page-privacy-policy-padding-bottom-desktop,
+    var(--space-80)
+  );
 
   .privacy-inner {
     max-width: 55rem;
@@ -79,8 +82,11 @@
   }
 
   @include respond-down(md) {
-    padding-top: var(--space-38);
-    padding-bottom: var(--space-24);
+    padding-top: var(--page-privacy-policy-padding-top-mobile, var(--space-38));
+    padding-bottom: var(
+      --page-privacy-policy-padding-bottom-mobile,
+      var(--space-24)
+    );
 
     .privacy-inner {
       width: 100%;

@@ -3,7 +3,16 @@ Privacy Policy section
 This section is a standalone page section that renders the Privacy Policy content.
 Uses theme typography tokens and CSS variables from the theme.
 {% endcomment %}
-<section id="{{ section.id }}" class="shopify-section section page-width-content page-privacy-policy">
+<section
+  id="{{ section.id }}"
+  class="shopify-section section page-width-content page-privacy-policy"
+  style="
+    --page-privacy-policy-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --page-privacy-policy-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --page-privacy-policy-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --page-privacy-policy-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+>
   {%- render 'vite-tag', entry: 'sections/styles/page-privacy-policy.scss' -%}
   <div class="section-content-wrapper">
     <div class="privacy-inner">
@@ -49,6 +58,38 @@ Uses theme typography tokens and CSS variables from the theme.
         "id": "contact_email",
         "label": "Contact email",
         "default": "hello@heist.coffee"
+      },
+      {
+        "type": "header",
+        "content": "Mobile padding"
+      },
+      {
+        "type": "number",
+        "id": "padding_top_mobile",
+        "label": "Top",
+        "default": 38
+      },
+      {
+        "type": "number",
+        "id": "padding_bottom_mobile",
+        "label": "Bottom",
+        "default": 24
+      },
+      {
+        "type": "header",
+        "content": "Desktop padding"
+      },
+      {
+        "type": "number",
+        "id": "padding_top_desktop",
+        "label": "Top",
+        "default": 57
+      },
+      {
+        "type": "number",
+        "id": "padding_bottom_desktop",
+        "label": "Bottom",
+        "default": 80
       }
     ],
     "presets": [
