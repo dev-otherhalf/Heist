@@ -1,0 +1,359 @@
+{%- comment -%}
+  Comparison chart — "3 Ways to Decaf, Only 1 We Trust." plus the three-step
+  "Caffeine Out. Everything Else In." process block beneath it.
+
+  Chart content comes from the metaobject
+  `the_process_comparison_chart_selections_oh`, which curates an ordered list of
+  `the_process_comparison_chart_entries_oh` rows. See
+  docs/metaobjects/the-process-comparison-chart.md.
+
+  The process block, background images and padding are section settings. The two
+  halves render independently, so the process still shows when no metaobject is
+  assigned.
+{%- endcomment -%}
+
+{%- render 'vite-tag', entry: 'sections/styles/comparison-chart.scss' -%}
+
+{%- liquid
+  assign chart = section.settings.chart_selection.value | default: section.settings.chart_selection
+
+  assign heading = chart.heading.value | default: chart.heading
+  assign highlight_logo = chart.highlight_logo.value | default: chart.highlight_logo
+  assign highlight_heading = chart.highlight_heading.value | default: chart.highlight_heading
+  assign highlight_label = chart.highlight_label.value | default: chart.highlight_label
+  assign column_2_heading = chart.column_2_heading.value | default: chart.column_2_heading
+  assign column_3_heading = chart.column_3_heading.value | default: chart.column_3_heading
+  assign rows = chart.rows.value | default: chart.rows
+  assign footnote = chart.footnote.value | default: chart.footnote
+
+  assign logo_alt = highlight_heading | default: 'Heist'
+
+  comment
+    The process block is settings-driven. Steps are read by key so the markup
+    stays a single loop rather than three near-identical copies.
+  endcomment
+  assign has_steps = false
+  for i in (1..3)
+    assign image_key = 'step_' | append: i | append: '_image'
+    assign title_key = 'step_' | append: i | append: '_title'
+    if section.settings[image_key] != blank or section.settings[title_key] != blank
+      assign has_steps = true
+      break
+    endif
+  endfor
+
+  assign has_process = false
+  if has_steps or section.settings.process_heading != blank or section.settings.process_footnote != blank
+    assign has_process = true
+  endif
+-%}
+
+<section
+  class="comparison-chart"
+  id="shopify-section-{{ section.id }}"
+  style="
+    --comparison-chart-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --comparison-chart-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --comparison-chart-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --comparison-chart-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    {% if section.settings.background_image != blank %}
+      --comparison-chart-bg-image: url({{ section.settings.background_image | image_url: width: 2560 }});
+    {% endif %}
+    {% if section.settings.background_image_mobile != blank %}
+      --comparison-chart-bg-image-mobile: url({{ section.settings.background_image_mobile | image_url: width: 1500 }});
+    {% endif %}
+  "
+>
+  {%- if chart != blank -%}
+    <div class="page-width">
+      {%- if heading != blank -%}
+        <h2 class="comparison-chart__heading t-h7">{{ heading }}</h2>
+      {%- endif -%}
+
+      <div class="comparison-chart__panel">
+        <div class="comparison-chart__table-wrap">
+          {%- comment -%}
+            The red Heist column is an overlay rather than cell backgrounds, so
+            it can overhang above the header and below the last row the way the
+            comp does. It shares the column widths via the --cc-col-* tokens.
+          {%- endcomment -%}
+          <span class="comparison-chart__highlight" aria-hidden="true"></span>
+
+          <table class="comparison-chart__table">
+            <thead>
+              <tr>
+                <th scope="col"><span class="visually-hidden">Method</span></th>
+                <th scope="col" class="comparison-chart__cell--highlight">
+                  {%- if highlight_logo != blank -%}
+                    {{
+                      highlight_logo
+                      | image_url: width: 400
+                      | image_tag:
+                        widths: '120, 200, 300, 400',
+                        sizes: '(min-width: 990px) 10rem, 5rem',
+                        loading: 'lazy',
+                        alt: logo_alt,
+                        class: 'comparison-chart__logo'
+                    }}
+                  {%- elsif highlight_heading != blank -%}
+                    <span class="comparison-chart__col-title t-t3">{{ highlight_heading }}</span>
+                  {%- endif -%}
+
+                  {%- if highlight_label != blank -%}
+                    <span class="comparison-chart__col-label t-n3">{{ highlight_label }}</span>
+                  {%- endif -%}
+                </th>
+                <th scope="col">
+                  <span class="comparison-chart__col-title t-t3">{{ column_2_heading }}</span>
+                </th>
+                <th scope="col">
+                  <span class="comparison-chart__col-title t-t3">{{ column_3_heading }}</span>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {%- for row in rows -%}
+                {%- liquid
+                  assign row_label = row.row_label.value | default: row.row_label
+                  assign highlight_value = row.highlight_value.value | default: row.highlight_value
+                  assign column_2_value = row.column_2_value.value | default: row.column_2_value
+                  assign column_3_value = row.column_3_value.value | default: row.column_3_value
+                -%}
+                <tr>
+                  <th scope="row" class="comparison-chart__label t-n2-med">{{ row_label }}</th>
+                  <td class="comparison-chart__value comparison-chart__cell--highlight t-n2-med">
+                    {{ highlight_value | newline_to_br }}
+                  </td>
+                  <td class="comparison-chart__value t-n2-med">{{ column_2_value | newline_to_br }}</td>
+                  <td class="comparison-chart__value t-n2-med">{{ column_3_value | newline_to_br }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+
+        {%- if footnote != blank -%}
+          <p class="comparison-chart__footnote t-t3">{{ footnote }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+ {%- if has_process -%}
+  <div class="comparison-chart__process page-width">
+    {%- if section.settings.process_heading != blank -%}
+      <h2 class="comparison-chart__process-heading t-h7">
+        {{ section.settings.process_heading }}
+      </h2>
+    {%- endif -%}
+
+    {%- if has_steps -%}
+      <div class="comparison-chart__process-grid">
+        {%- for i in (1..3) -%}
+          {%- liquid
+            assign image_key = 'step_' | append: i | append: '_image'
+            assign title_key = 'step_' | append: i | append: '_title'
+            assign description_key = 'step_' | append: i | append: '_description'
+
+            assign step_image = section.settings[image_key]
+            assign step_title = section.settings[title_key]
+            assign step_description = section.settings[description_key]
+          -%}
+
+          {%- if step_image != blank or step_title != blank or step_description != blank -%}
+            <article class="comparison-chart__process-card">
+              {%- if step_image != blank -%}
+                <div class="comparison-chart__process-image">
+                  {{
+                    step_image
+                    | image_url: width: 1000
+                    | image_tag:
+                      widths: '320, 480, 640, 800, 1000',
+                      sizes: '(min-width: 990px) 30vw, calc(100vw - 64px)',
+                      loading: 'lazy',
+                      alt: step_image.alt
+                  }}
+                </div>
+              {%- endif -%}
+
+              <div class="comparison-chart__process-content">
+                {%- if step_title != blank -%}
+                  <h3 class="comparison-chart__process-title t-h6">
+                    {{ i }}. {{ step_title }}
+                  </h3>
+                {%- endif -%}
+
+                {%- if step_description != blank -%}
+                  <div class="comparison-chart__process-description t-t4">
+                    {{ step_description }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.process_footnote != blank -%}
+      <div class="comparison-chart__process-footnote t-h7">
+        {{ section.settings.process_footnote }}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Comparison chart",
+  "tag": "section",
+  "class": "shopify-section-comparison-chart",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Chart content"
+    },
+    {
+      "type": "metaobject",
+      "id": "chart_selection",
+      "label": "Chart selection",
+      "metaobject_type": "the_process_comparison_chart_selections_oh"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Process"
+    },
+    {
+      "type": "text",
+      "id": "process_heading",
+      "label": "Heading",
+      "default": "Caffeine Out. Everything Else In."
+    },
+    {
+      "type": "header",
+      "content": "Step 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "Title",
+      "default": "Soak"
+    },
+    {
+      "type": "richtext",
+      "id": "step_1_description",
+      "label": "Description",
+      "default": "<p>Green beans soak in water. Caffeine and flavor compounds dissolve into the water.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Step 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "Title",
+      "default": "Filter"
+    },
+    {
+      "type": "richtext",
+      "id": "step_2_description",
+      "label": "Description",
+      "default": "<p>Water passes through a charcoal filter. Caffeine binds to the carbon. Flavor compounds pass through.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Step 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "Title",
+      "default": "Re-Soak"
+    },
+    {
+      "type": "richtext",
+      "id": "step_3_description",
+      "label": "Description",
+      "default": "<p>Beans return to the flavor-rich, caffeine-free water. The flavor goes back. The caffeine is gone.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "process_footnote",
+      "label": "Process footnote",
+      "default": "<p>Two passes. No chemicals introduced. No flavor lost. 99.9% of the caffeine removed.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "default": 48
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "default": 96
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "default": 96
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison chart"
+    }
+  ]
+}
+{% endschema %}
