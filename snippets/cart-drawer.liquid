@@ -31,6 +31,17 @@
   {% endcomment %}
   {% render 'vite-tag' with 'sections/scripts/cart-drawer-scrollbar.js' %}
 
+  {% comment %}
+    Same reason as above: a cart whose lines are all prepaid renders no upgrade
+    banner, so a <script> shipped with the banner markup would only ever arrive
+    through a morph — where it never executes. Removing a line or switching one
+    back to one-time then re-adds the banner with an un-upgraded custom element
+    and a dead button.
+  {% endcomment %}
+  {% if settings.cart_upgrade_enabled %}
+    {% render 'vite-tag' with 'sections/scripts/cart-upgrade-banner.js' %}
+  {% endif %}
+
   {% capture empty_cart_drawer_content %}
     {% render 'cart-drawer-empty' %}
   {% endcapture %}
@@ -195,12 +206,6 @@
   .cart-drawer__items .cart-items__table-row:has(+ .cart-items__nested-line) {
     border-bottom: none;
     margin-bottom: 0;
-  }
-
-  .cart-drawer__items .cart-items__table-row:last-child {
-    border-bottom: none;
-    padding-block-end: 0;
-    margin-block-end: 0;
   }
 
   .cart-drawer__close-button--empty {

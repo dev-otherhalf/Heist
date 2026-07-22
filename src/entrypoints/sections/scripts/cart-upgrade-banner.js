@@ -38,12 +38,21 @@ const CART_CHANGE_URL = () =>
 
 class CartUpgradeBanner extends HTMLElement {
   connectedCallback() {
-    this.#button?.addEventListener("click", this.#onUpgrade);
+    // Delegated from the host: a morph can swap the button node underneath us
+    // without re-running this callback, which would strand a listener on a
+    // detached element.
+    this.addEventListener("click", this.#onClick);
+    this.#button?.removeAttribute("disabled");
   }
 
   disconnectedCallback() {
-    this.#button?.removeEventListener("click", this.#onUpgrade);
+    this.removeEventListener("click", this.#onClick);
   }
+
+  #onClick = (event) => {
+    if (!event.target.closest("[data-upgrade-button]")) return;
+    this.#onUpgrade();
+  };
 
   get #button() {
     return this.querySelector("[data-upgrade-button]");

@@ -55,9 +55,13 @@
   endcapture
 %}
 
+{%- comment -%}
+  The <script> for this element is loaded from cart-drawer.liquid, not here: this
+  markup can first appear in a morph response (a cart that had no eligible line
+  until one was removed or switched to one-time), and morph-inserted scripts
+  never execute.
+{%- endcomment -%}
 {%- if settings.cart_upgrade_enabled and eligible_count > 0 -%}
-  {% render 'vite-tag' with 'sections/scripts/cart-upgrade-banner.js' %}
-
   {%- assign perks = settings.cart_upgrade_perks | strip | newline_to_br | split: '<br />' -%}
 
   <cart-upgrade-banner class="cart-upgrade">

@@ -148,13 +148,18 @@
 
           <tbody role="rowgroup">
             {%- comment -%}
-              Two passes over the same list: the bought lines first, then the
-              membership and its gift. Shopify orders the cart by when each line
-              was added, which puts the membership wherever it happened to land;
-              the drawer wants it read as a footer to the order instead.
+              Shopify orders the cart by when each line was added, which puts the
+              membership wherever it happened to land. The drawer wants it read as
+              a footer to the order instead: bought lines, then the membership,
+              then the gift it grants. Each row is captured into its own bucket
+              and the buckets are printed in that order below.
             {%- endcomment -%}
-            {% for pass in (1..2) %}
-              {% for item in cart.items %}
+            {%- liquid
+              assign rows_bought = ''
+              assign rows_membership = ''
+              assign rows_free = ''
+            -%}
+            {% for item in cart.items %}
                 {%- liquid
                   comment
                     Membership and gifted lines are cards, not ordinary rows: the
@@ -194,17 +199,11 @@
                     assign is_card_item = false
                   endunless
 
-                  # forloop.index restarts on the second pass, so the true cart
-                  # line number has to come off the item.
+                  # The rows are reordered below, so the true cart line number has
+                  # to come off the item rather than forloop.index.
                   assign line_number = item.index | plus: 1
-
-                  if pass == 1 and is_card_item
-                    continue
-                  endif
-                  if pass == 2 and is_card_item == false
-                    continue
-                  endif
                 -%}
+                {%- capture cart_row -%}
                 <tr
                   id="CartItem-{{ item.key }}"
                   role="row"
@@ -555,8 +554,20 @@
                     {%- endif -%}
                   </td>
                 </tr>
-              {% endfor %}
+                {%- endcapture -%}
+                {%- liquid
+                  if is_membership_item
+                    assign rows_membership = rows_membership | append: cart_row
+                  elsif is_free_item
+                    assign rows_free = rows_free | append: cart_row
+                  else
+                    assign rows_bought = rows_bought | append: cart_row
+                  endif
+                -%}
             {% endfor %}
+            {{ rows_bought }}
+            {{ rows_membership }}
+            {{ rows_free }}
           </tbody>
         </table>
         {% for item in cart.items %}
