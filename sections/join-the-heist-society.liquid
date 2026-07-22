@@ -16,6 +16,7 @@
   assign heading_markup = heading_markup | remove: '<h5>' | remove: '</h5>'
   assign heading_markup = heading_markup | remove: '<h6>' | remove: '</h6>'
   assign heading_text = heading_markup | strip_html | strip
+  assign heading_markup = heading_markup | newline_to_br
   assign fallback_alt = 'Drink Heist'
   assign section_heading_alt = heading_text | default: fallback_alt | escape
   assign has_left_video = false
@@ -355,7 +356,7 @@
       "type": "textarea",
       "id": "heading",
       "label": "Heading",
-      "default": "Join the Heist Society™"
+      "default": "Join the \nHeist Society™",
     },
     {
       "type": "textarea",

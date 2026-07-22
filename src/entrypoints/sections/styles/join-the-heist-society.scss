@@ -212,7 +212,8 @@
     &.t-h4 {
       @include respond-down(lg) {
         font-size: var(--fs-h5);
-        text-wrap-style: balance;
+        text-wrap: wrap;
+        text-wrap-style: auto;
       }
     }
   }
