@@ -286,7 +286,9 @@ $plan-control-height: 2.375rem; // 38px
       aspect-ratio: auto;
       border: var(--bw-2) solid var(--ink);
       background-color: var(--cream);
+      padding: var(--space-22);
       @include respond-down(md) {
+        padding: 0;
         position: relative;
         padding-bottom: 105%;
         height: auto;
@@ -388,6 +390,9 @@ $plan-control-height: 2.375rem; // 38px
       margin-top: var(--space-10);
       @include respond-down(md) {
         margin-top: var(--space-9);
+      }
+      .cart-line-plan__badge {
+        margin: 0 var(--space-3) 0 0;
       }
 
       // No variant, no properties, no tag — collapse the row rather than
@@ -512,12 +517,13 @@ $plan-control-height: 2.375rem; // 38px
     // along with it, so the stepper, trash icon and line price all drop out and
     // the copy stacks under a display-face title.
     .cart-items__table-row--card {
-      grid-template-columns: 6.5rem minmax(0, 1fr);
-      column-gap: var(--space-20);
-      padding: var(--space-16);
-      margin-bottom: var(--space-20);
-      border: var(--bw-2) solid var(--taupe);
+      grid-template-columns: 7.6rem minmax(0, 1fr);
+      column-gap: var(--space-25);
+      padding: var(--space-14) var(--space-22) var(--space-14) var(--space-14);
+      margin-bottom: var(--space-30);
+      border: var(--bw-2) solid var(--ink);
       background-color: var(--bone);
+      margin-top: -0.4rem;
       @include respond-down(md) {
         grid-template-columns: 5.25rem minmax(0, 1fr);
         column-gap: var(--space-16);
@@ -530,8 +536,19 @@ $plan-control-height: 2.375rem; // 38px
 
       .cart-items__media-container {
         height: auto;
-        aspect-ratio: 1 / 1;
-        padding-bottom: 0;
+        width: 100%;
+        display: block;
+        padding: 0;
+        padding-bottom: 122%;
+        position: relative;
+        img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
 
       .cart-items__product-info {
@@ -545,12 +562,15 @@ $plan-control-height: 2.375rem; // 38px
       // only ties the utility on specificity, so the size is the one thing that
       // has to be handed back.
       .t-t2 {
-        font-size: var(--fs-t2);
+        font-size: var(--fs-t1);
+        line-height: var(--lh-t1);
+        letter-spacing: var(--ls-t1);
+        font-weight: var(--fw-regular);
         text-transform: none;
+        margin-top: var(--space-9);
       }
 
       .cart-items__card-description {
-        font-size: var(--fs-t4);
         color: var(--ink);
       }
 
@@ -565,6 +585,17 @@ $plan-control-height: 2.375rem; // 38px
       .cart-items__error {
         grid-area: 3 / 2 / 4 / -1;
       }
+      &.cart-items__table-row--free {
+        .cart-items__title {
+          &.t-t2 {
+            margin-top: var(--space-22);
+          }
+        }
+        .cart-items__card-description {
+          max-width: 19rem;
+          margin-top: var(--space-4);
+        }
+      }
     }
 
     .cart-items__free-flag {
@@ -576,7 +607,7 @@ $plan-control-height: 2.375rem; // 38px
       grid-area: 2 / 2 / 3 / -1;
       width: 100%;
       min-height: var(--cart-line-control-height);
-      margin-top: var(--space-16);
+      margin-top: var(--space-8);
       padding: var(--space-8) var(--space-16);
     }
   }
