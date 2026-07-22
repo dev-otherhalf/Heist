@@ -216,7 +216,7 @@
   }
   &__cta {
     padding: var(--space-5) var(--space-5);
-    min-width: 17rem;
+    min-width: 17.5rem;
     @include respond-down(lg) {
       width: 100%;
     }
