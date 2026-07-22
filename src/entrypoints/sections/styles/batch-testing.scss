@@ -1,0 +1,234 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+// =============================================================================
+// Batch testing — kicker + statement heading over a staggered media row.
+// Desktop lays the four media blocks across uneven columns; each cell is its
+// own stack, so the supporting copy sits directly under its media rather than
+// below the tallest one. Mobile drops to a 2x2 grid with the copy underneath.
+// The copy is authored once (Liquid capture) and emitted into both slots —
+// only one is ever displayed, so the hidden one stays out of the a11y tree.
+// =============================================================================
+
+.batch-testing {
+  color: var(--cream);
+  overflow: clip;
+  padding-block: var(--batch-testing-padding-top-mobile)
+    var(--batch-testing-padding-bottom-mobile);
+  position: relative;
+
+  // Background layer — real <img> rather than a background-image custom
+  // property, so an unresolvable URL degrades to a broken-free empty box
+  // instead of invalidating the whole declaration. Both uploads are emitted and
+  // the breakpoint decides which one paints.
+  &__background {
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+    z-index: 0;
+  }
+
+  &__background--desktop {
+    display: none;
+  }
+
+  @include respond-to(lg) {
+    padding-block: var(--batch-testing-padding-top-desktop)
+      var(--batch-testing-padding-bottom-desktop);
+
+    .batch-testing__background--mobile {
+      display: none;
+    }
+
+    .batch-testing__background--desktop {
+      display: block;
+    }
+  }
+
+  > .page-width {
+    position: relative;
+    z-index: 1;
+  }
+
+  // --- Header ---------------------------------------------------------------
+  &__header {
+    display: grid;
+    gap: var(--space-9);
+    margin-bottom: var(--space-33);
+
+    @include respond-to(lg) {
+      gap: var(--space-27);
+      margin-bottom: var(--space-56);
+    }
+  }
+
+  &__heading {
+    @include respond-to(lg) {
+      font-size: var(--fs-h4);
+      line-height: var(--lh-h4);
+      letter-spacing: var(--ls-h4);
+      br {
+        display: none;
+      }
+    }
+  }
+  &__kicker {
+    @include respond-down(lg) {
+      &.t-n1 {
+        font-size: var(--fs-n2);
+        line-height: var(--lh-n2);
+        font-weight: var(--fw-medium);
+      }
+    }
+  }
+
+  // --- Media grid -----------------------------------------------------------
+  // Mobile 2x2; desktop spreads to four uneven columns matching the comp.
+  // `align-items: start` keeps every cell top-aligned so the differing media
+  // aspect ratios produce the staggered baseline.
+  &__grid {
+    align-items: start;
+    display: flex;
+    gap: var(--space-16);
+    @include respond-down(lg) {
+      display: grid;
+      position: relative;
+      padding: 0 0 154.4%;
+    }
+  }
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    @include respond-down(lg) {
+      position: absolute;
+    }
+    &:nth-child(1) {
+      width: 24.1%;
+      .batch-testing__media {
+        padding-bottom: 168.5%;
+        @include respond-down(lg) {
+          padding-bottom: 167.5%;
+        }
+      }
+      @include respond-down(lg) {
+        width: 47.7%;
+        top: 0;
+        left: 0;
+      }
+    }
+    &:nth-child(2) {
+      width: 32.5%;
+      .batch-testing__media {
+        padding-bottom: 60%;
+        @include respond-down(lg) {
+          padding-bottom: 98%;
+        }
+      }
+      @include respond-down(lg) {
+        width: 47.4%;
+        right: 0;
+        top: 8.9%;
+      }
+    }
+    &:nth-child(3) {
+      width: 24.1%;
+      .batch-testing__media {
+        padding-bottom: 171%;
+        @include respond-down(lg) {
+          padding-bottom: 147%;
+        }
+      }
+      @include respond-down(lg) {
+        width: 47.7%;
+        left: 0;
+        top: 55.8%;
+      }
+    }
+    &:nth-child(4) {
+      width: 15.7%;
+      .batch-testing__media {
+        padding-bottom: 124.3%;
+        @include respond-down(lg) {
+          padding-bottom: 148%;
+        }
+      }
+      @include respond-down(lg) {
+        width: 47.5%;
+        right: 0;
+        top: 43%;
+      }
+    }
+  }
+
+  &__media {
+    margin: 0;
+    border: var(--bw-2) solid var(--ink);
+    position: relative;
+    width: 100%;
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  &__image,
+  &__video {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  // --- Copy -----------------------------------------------------------------
+  &__copy {
+    color: var(--ink);
+    display: grid;
+    gap: var(--space-20);
+    justify-items: start;
+    @include respond-down(lg) {
+      gap: var(--space-27);
+    }
+  }
+
+  // Inline copy rides in its media cell on desktop; stacked copy takes over
+  // below lg, where the grid is 2x2 and the copy belongs under everything.
+  &__copy--inline {
+    display: none;
+
+    @include respond-to(lg) {
+      display: grid;
+      padding: var(--space-17) var(--space-33) var(--space-17) var(--space-28);
+      gap: var(--space-31);
+    }
+  }
+
+  &__copy--stacked {
+    margin-top: var(--space-32);
+
+    @include respond-to(lg) {
+      display: none;
+    }
+  }
+  &__cta {
+    padding: var(--space-5) var(--space-5);
+    min-width: 17.5rem;
+    @include respond-down(lg) {
+      width: 100%;
+    }
+  }
+
+  &__body {
+    // Richtext emits sibling <p>s; the grid gap owns the rhythm between them.
+    @include respond-down(lg) {
+      margin-right: -1rem;
+    }
+    p {
+      margin: 0;
+    }
+  }
+}

@@ -415,7 +415,7 @@
   }
 
   &__copy {
-    padding: var(--space-20) var(--space-56);
+    padding: var(--space-13) var(--space-56) var(--space-14) var(--space-56);
     display: flex;
     align-items: center;
     @include respond-down(lg) {

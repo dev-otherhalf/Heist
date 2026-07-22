@@ -34,7 +34,7 @@ body.product {
             flex: 0 0 45%;
             max-width: 45%;
             margin: 0;
-            padding: 0 0 var(--space-96);
+            padding: 0 0 var(--space-98);
             min-width: auto;
             width: 100%;
           }
@@ -42,7 +42,7 @@ body.product {
             flex: 0 0 53.889%;
             max-width: 53.889%;
             margin: 0;
-            padding: 0 0 var(--space-96);
+            padding: 0 0 var(--space-98);
             min-width: auto;
             width: 100%;
           }
@@ -70,7 +70,7 @@ body.product {
           .slideshow-controls {
             &__thumbnails {
               gap: var(--space-14);
-              padding: var(--space-11) var(--space-23) var(--space-13)
+              padding: var(--space-14) var(--space-23) var(--space-26)
                 var(--space-15);
             }
             &__thumbnail {
