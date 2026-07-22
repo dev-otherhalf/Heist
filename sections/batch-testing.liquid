@@ -1,0 +1,271 @@
+{%- render 'vite-tag', entry: 'sections/styles/batch-testing.scss' -%}
+
+{%- liquid
+  assign media_blocks = section.blocks | where: 'type', 'media'
+  comment
+    The comp hangs the copy under the second media on desktop. Mobile ignores
+    this and stacks the copy under the whole grid instead.
+  endcomment
+  assign copy_after = 2
+
+  comment
+    Either upload alone is enough — each viewport falls back to the other so a
+    single image still covers both.
+  endcomment
+  assign bg_desktop = section.settings.background_image | default: section.settings.background_image_mobile
+  assign bg_mobile = section.settings.background_image_mobile | default: section.settings.background_image
+-%}
+
+{%- capture copy_block -%}
+  {%- if section.settings.body != blank -%}
+    <div class="batch-testing__body t-h7">{{ section.settings.body }}</div>
+  {%- endif -%}
+
+  {%- if section.settings.button_label != blank -%}
+    <a
+      class="btn batch-testing__cta"
+      {% if section.settings.button_link != blank %}
+        href="{{ section.settings.button_link }}"
+      {% else %}
+        role="link" aria-disabled="true"
+      {% endif %}
+    >
+      {{ section.settings.button_label }}
+    </a>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- assign copy_block = copy_block | strip -%}
+
+<section
+  class="batch-testing"
+  id="shopify-section-{{ section.id }}"
+  style="
+    --batch-testing-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --batch-testing-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --batch-testing-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --batch-testing-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+>
+  {%- if bg_mobile != blank -%}
+    {{
+      bg_mobile
+      | image_url: width: 1500
+      | image_tag:
+        widths: '600, 900, 1200, 1500',
+        sizes: '100vw',
+        loading: 'lazy',
+        alt: '',
+        class: 'batch-testing__background batch-testing__background--mobile'
+    }}
+  {%- endif -%}
+
+  {%- if bg_desktop != blank -%}
+    {{
+      bg_desktop
+      | image_url: width: 2560
+      | image_tag:
+        widths: '1200, 1600, 2000, 2560',
+        sizes: '100vw',
+        loading: 'lazy',
+        alt: '',
+        class: 'batch-testing__background batch-testing__background--desktop'
+    }}
+  {%- endif -%}
+
+  <div class="page-width">
+    {%- if section.settings.kicker != blank or section.settings.heading != blank -%}
+      <div class="batch-testing__header">
+        {%- if section.settings.kicker != blank -%}
+          <p class="batch-testing__kicker t-n1">{{ section.settings.kicker }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="batch-testing__heading t-h7">{{ section.settings.heading | newline_to_br }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if media_blocks.size > 0 -%}
+      <div class="batch-testing__grid">
+        {%- for block in media_blocks -%}
+          <div class="batch-testing__cell" {{ block.shopify_attributes }}>
+            {%- if block.settings.media_type == 'video' and block.settings.video != blank -%}
+              <figure class="batch-testing__media">
+                {{
+                  block.settings.video
+                  | video_tag:
+                    image_size: '1200x',
+                    loop: true,
+                    muted: true,
+                    controls: false,
+                    playsinline: true,
+                    autoplay: false,
+                    preload: 'none',
+                    class: 'batch-testing__video js-autoplay-video'
+                }}
+              </figure>
+            {%- elsif block.settings.image != blank -%}
+              {%- assign media_alt = block.settings.image.alt | default: 'Drink Heist' -%}
+              <figure class="batch-testing__media">
+                {{
+                  block.settings.image
+                  | image_url: width: 1200
+                  | image_tag:
+                    widths: '300, 500, 700, 900, 1200',
+                    sizes: '(min-width: 990px) 25vw, 50vw',
+                    loading: 'lazy',
+                    alt: media_alt,
+                    class: 'batch-testing__image'
+                }}
+              </figure>
+            {%- endif -%}
+
+            {%- if forloop.index == copy_after and copy_block != blank -%}
+              <div class="batch-testing__copy batch-testing__copy--inline">{{ copy_block }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if copy_block != blank -%}
+      <div class="batch-testing__copy batch-testing__copy--stacked">{{ copy_block }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Batch testing",
+  "tag": "section",
+  "class": "shopify-section-batch-testing",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Every batch on file"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Lightlabs tests every lot before it ships. 99+% of coffee, decaf or regular does not go through this type of testing. Ours does."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Mycotoxins. Mold. Heavy metals. If a lot doesn't pass, it doesn't ship.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View Lightlabs report"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "default": 48
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "default": 96
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "media",
+      "name": "Media",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "default": "image",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Alt text comes from the image in Content > Files. Falls back to \"Drink Heist\".",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Batch testing",
+      "blocks": [
+        { "type": "media" },
+        { "type": "media" },
+        { "type": "media" },
+        { "type": "media" }
+      ]
+    }
+  ]
+}
+{% endschema %}

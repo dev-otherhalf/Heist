@@ -1,0 +1,176 @@
+{%- render 'vite-tag', entry: 'sections/styles/decaf-manifesto.scss' -%}
+
+{%- liquid
+  assign image_alt = section.settings.image.alt | default: 'Drink Heist'
+  assign point_blocks = section.blocks | where: 'type', 'proof_point'
+-%}
+
+<section
+  class="decaf-manifesto"
+  id="shopify-section-{{ section.id }}"
+  style="
+    --decaf-manifesto-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --decaf-manifesto-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --decaf-manifesto-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --decaf-manifesto-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    {% if section.settings.background_image != blank %}
+      --decaf-manifesto-bg-image: url({{ section.settings.background_image | image_url: width: 2560 }});
+    {% endif %}
+    {% if section.settings.background_image_mobile != blank %}
+      --decaf-manifesto-bg-image-mobile: url({{ section.settings.background_image_mobile | image_url: width: 1500 }});
+    {% endif %}
+  "
+>
+  {%- if section.settings.image != blank -%}
+    <div class="decaf-manifesto__media">
+      {{
+        section.settings.image
+        | image_url: width: 1400
+        | image_tag:
+          widths: '400, 600, 900, 1200, 1400',
+          sizes: '(min-width: 990px) 30vw, 62vw',
+          loading: 'lazy',
+          alt: image_alt,
+          class: 'decaf-manifesto__image'
+      }}
+    </div>
+  {%- endif -%}
+  <div class="page-width">
+    <div class="decaf-manifesto__grid">
+      <div class="decaf-manifesto__lead">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="decaf-manifesto__heading t-h4">{{ section.settings.heading | newline_to_br }}</h2>
+        {%- endif -%}
+
+        {%- if point_blocks.size > 0 -%}
+          <ul class="decaf-manifesto__points" role="list">
+            {%- for block in point_blocks -%}
+              {%- if block.settings.text != blank -%}
+                <li class="decaf-manifesto__point t-n1" {{ block.shopify_attributes }}>
+                  <span class="decaf-manifesto__point-icon svg-wrapper">
+                    {%- render 'icon-red-checkbox' -%}
+                  </span>
+                  {{ block.settings.text }}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.body != blank -%}
+        <div class="decaf-manifesto__body t-h7">{{ section.settings.body }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Decaf manifesto",
+  "tag": "section",
+  "class": "shopify-section-decaf-manifesto",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Decaf has been an apology for fifty years. We're done apologizing."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>The old decaf was cheap beans, fast solvents, and a reputation it earned. We started over.</p><p>The result is a cup we actually want to drink. After dinner. At 11 p.m. On a Sunday. Without paying for it the next day.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "default": 48
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "number",
+      "id": "padding_top_desktop",
+      "label": "Top",
+      "default": 96
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "proof_point",
+      "name": "Proof point",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Proof point"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Decaf manifesto",
+      "blocks": [
+        { "type": "proof_point", "settings": { "text": "Top 1% of World's Arabica Beans" } },
+        { "type": "proof_point", "settings": { "text": "Water Extracts the Caffeine" } },
+        { "type": "proof_point", "settings": { "text": "Third-Party Testing" } },
+        { "type": "proof_point", "settings": { "text": "Small-Batch Roasting" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
