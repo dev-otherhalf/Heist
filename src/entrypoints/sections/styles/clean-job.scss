@@ -8,7 +8,9 @@
   padding-block: var(--clean-job-padding-top-mobile)
     var(--clean-job-padding-bottom-mobile);
   position: relative;
-
+  @include respond-down(lg) {
+    border-bottom: var(--bw-2) solid var(--ink);
+  }
   @include respond-to(lg) {
     padding-block: var(--clean-job-padding-top-desktop)
       var(--clean-job-padding-bottom-desktop);
@@ -64,31 +66,35 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
     @include respond-to(lg) {
-      align-items: center;
       gap: 3rem;
       grid-template-areas: "heading media features";
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr);
     }
 
     @include respond-to(xl) {
-      gap: 5rem;
+      gap: 4.2rem;
     }
   }
 
   // --- Heading ---------------------------------------------------------------
   &__heading {
     grid-area: heading;
-    color: var(--cream);
-    hanging-punctuation: first last;
+    color: var(--ink);
     margin: 0;
-    text-wrap: pretty;
+    padding: var(--space-57) 0 0 var(--space-1);
+    position: relative;
+    z-index: 1;
 
     // 40px display — between --fs-h6 (48px) and --fs-t2 (28px), so no token fits.
     @include respond-down(lg) {
-      font-size: var(--space-40);
-      line-height: var(--lh-h4);
-      letter-spacing: var(--ls-h4);
-      margin-right: calc(var(--space-9) * -1);
+      color: var(--cream);
+      padding: 0;
+      text-align: center;
+      font-size: var(--fs-h6);
+      line-height: var(--lh-h6);
+      letter-spacing: var(--ls-h6);
+      font-weight: var(--fw-regular);
+      margin-left: 0.5rem;
     }
   }
 
@@ -96,10 +102,11 @@
   &__media {
     grid-area: media;
     overflow: visible;
+    margin: 0 -0.4rem 0 -3.6rem;
 
     @include respond-down(lg) {
       width: 88.3%;
-      margin: 0 auto;
+      margin: var(--space-22) auto 0;
     }
   }
 
@@ -107,7 +114,7 @@
     overflow: visible;
     position: relative;
     width: 100%;
-    padding-top: 141.59%;
+    padding-top: 118.09%;
 
     @include respond-down(lg) {
       padding-top: 116.3%;
@@ -129,16 +136,13 @@
     pointer-events: none;
     position: absolute;
     margin-inline: 0;
-    left: var(--space-11);
-    top: var(--space-30);
-    bottom: var(--space-24);
-    right: var(--space-7);
+    left: var(--space-58);
+    top: var(--space-56);
+    bottom: -0.3rem;
+    right: var(--space-37);
 
     @include respond-down(lg) {
-      left: -1.3rem;
-      top: 0;
-      bottom: 0;
-      right: -1.2rem;
+      inset: 0.1rem -1.3rem -0.2rem -1.2rem;
     }
   }
 
@@ -146,17 +150,28 @@
   &__annotation {
     background-color: var(--red);
     color: var(--ink);
+    padding: var(--space-5);
+    right: -1.3rem;
+    top: -1.9rem;
+    min-width: var(--space-125);
+    min-height: var(--space-32);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
     line-height: 1;
-    padding: 0.625rem 0.688rem 0.563rem;
+    display: flex;
     position: absolute;
-    right: calc(var(--space-20) * -1);
-    top: 0;
-    transform: translateY(-100%);
 
     @include respond-to(lg) {
-      padding: 0.625rem var(--space-12) 0.563rem;
-      right: var(--space-7);
-      top: var(--space-30);
+      padding: var(--space-5);
+      right: var(--space-37);
+      top: var(--space-56);
+      min-width: var(--space-128);
+      min-height: var(--space-33);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
   }
 
@@ -206,17 +221,20 @@
 
   // --- Features --------------------------------------------------------------
   &__features {
+    gap: 0;
     grid-area: features;
-    display: grid;
-    gap: var(--space-16);
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    list-style: none;
-    margin: 0;
+    margin: var(--space-45) 0 0 -0.1875rem;
     padding: 0;
-
-    @include respond-to(lg) {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    @include respond-down(lg) {
+      gap: var(--space-15) var(--space-21);
+      grid-template-columns: 1fr 1fr;
+      display: grid;
+      margin: var(--space-3) 0 0 0px;
+      padding-right: var(--space-12);
     }
   }
 
@@ -242,7 +260,7 @@
       line-height: var(--lh-h6);
       letter-spacing: var(--ls-h6);
       font-weight: var(--fw-regular);
-      padding-block: var(--space-24);
+      padding: var(--space-24) 0 var(--space-22);
 
       &:first-child {
         padding-top: 0;

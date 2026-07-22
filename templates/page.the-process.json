@@ -46,10 +46,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "heading",
-        "page-content"
-      ],
+      "block_order": ["heading", "page-content"],
       "disabled": true,
       "settings": {
         "content_direction": "column",
@@ -98,13 +95,13 @@
         "heading": "The Cleanest Job in Coffee History.",
         "video": "shopify://files/videos/Screen Recording 2026-07-13 at 4.43.03 PM.mp4",
         "video_number": "24724 1632 248",
-        "background_image": "shopify://shop_images/Rectangle_144433687_ab7187c1-83f0-43a2-80a8-14f89e4ae09d.jpg",
-        "background_image_mobile": "shopify://shop_images/Rectangle_13_ba4d70b6-7f39-429c-819a-f06d09a59f4c.jpg",
+        "background_image": "shopify://shop_images/Rectangle_144433687_1792fcb8-4f92-4aa8-bf0a-f8d1f43d4f1b.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_144433687_1.jpg",
         "background_color": "",
-        "padding_top_mobile": 48,
-        "padding_bottom_mobile": 48,
-        "padding_top_desktop": 96,
-        "padding_bottom_desktop": 96
+        "padding_top_mobile": 38,
+        "padding_bottom_mobile": 62,
+        "padding_top_desktop": 64,
+        "padding_bottom_desktop": 107
       }
     },
     "comparison_chart_3yHKjb": {
@@ -113,22 +110,22 @@
       "settings": {
         "chart_selection": "3-ways-to-decaf-only-1-we-trust",
         "background_image": "shopify://shop_images/Rectangle.jpg",
-        "background_image_mobile": "shopify://shop_images/Rectangle_144433642_26111641-889d-4efe-b990-5c988af03d3e.jpg",
+        "background_image_mobile": "shopify://shop_images/hero-top.jpg",
         "process_heading": "Caffeine Out. Everything Else In.",
-        "step_1_image": "shopify://shop_images/Frame_1410127399.jpg",
+        "step_1_image": "shopify://shop_images/Frame_1410127354_3e952f15-652b-49f9-9a5d-77da086ed3b1.jpg",
         "step_1_title": "Soak",
         "step_1_description": "<p>Green beans soak in water. Caffeine and flavor compounds dissolve into the water.</p>",
-        "step_2_image": "shopify://shop_images/Frame_14101273990.jpg",
+        "step_2_image": "shopify://shop_images/Frame_1410127470.jpg",
         "step_2_title": "Filter",
         "step_2_description": "<p>Water passes through a charcoal filter. Caffeine binds to the carbon. Flavor compounds pass through.</p>",
-        "step_3_image": "shopify://shop_images/Frame_1410127354.jpg",
+        "step_3_image": "shopify://shop_images/Frame_1410127471.jpg",
         "step_3_title": "Re-Soak",
         "step_3_description": "<p>Beans return to the flavor-rich, caffeine-free water. The flavor goes back. The caffeine is gone.</p>",
         "process_footnote": "<p>Two passes. No chemicals introduced. No flavor lost. 99.9% of the caffeine removed.</p>",
-        "padding_top_mobile": 48,
-        "padding_bottom_mobile": 48,
-        "padding_top_desktop": 96,
-        "padding_bottom_desktop": 96
+        "padding_top_mobile": 63,
+        "padding_bottom_mobile": 72,
+        "padding_top_desktop": 117,
+        "padding_bottom_desktop": 119
       }
     },
     "batch_testing_wxtHyd": {
@@ -172,16 +169,16 @@
       "name": "Batch testing",
       "settings": {
         "kicker": "Every batch on file",
-        "heading": "Lightlabs tests every lot before it ships. 99+% of coffee, decaf or regular does not go through this type of testing. Ours does.",
+        "heading": "Lightlabs tests every <br>lot before it ships. <br>99+% of coffee, decaf or <br>regular does not go <br>through this type of <br>testing. Ours does.",
         "body": "<p>Mycotoxins. Mold. Heavy metals. If a lot doesn't pass, it doesn't ship.</p>",
         "button_label": "View Lightlabs report",
         "button_link": "/",
         "background_image": "shopify://shop_images/Rectangle_144433687_ab7187c1-83f0-43a2-80a8-14f89e4ae09d.jpg",
         "background_image_mobile": "shopify://shop_images/Rectangle_13_ba4d70b6-7f39-429c-819a-f06d09a59f4c.jpg",
-        "padding_top_mobile": 48,
-        "padding_bottom_mobile": 48,
-        "padding_top_desktop": 96,
-        "padding_bottom_desktop": 96
+        "padding_top_mobile": 63,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 119,
+        "padding_bottom_desktop": 120
       }
     },
     "decaf_manifesto_Cqh9Jf": {
@@ -220,15 +217,15 @@
       ],
       "name": "Decaf manifesto",
       "settings": {
-        "heading": "Decaf has been an apology for fifty years. We're done apologizing.",
+        "heading": "Decaf has been <br>an apology for fifty <br>years. We're done apologizing.",
         "body": "<p>The old decaf was cheap beans, fast solvents, and a reputation it earned. We started over.</p><p>The result is a cup we actually want to drink. After dinner. At 11 p.m. On a Sunday. Without paying for it the next day.</p>",
         "image": "shopify://shop_images/Group_23.png",
-        "background_image": "shopify://shop_images/Rectangle.jpg",
-        "background_image_mobile": "shopify://shop_images/Rectangle_144433642_26111641-889d-4efe-b990-5c988af03d3e.jpg",
-        "padding_top_mobile": 48,
-        "padding_bottom_mobile": 48,
-        "padding_top_desktop": 96,
-        "padding_bottom_desktop": 96
+        "background_image": "shopify://shop_images/hero.jpg",
+        "background_image_mobile": "shopify://shop_images/hero-top_1.jpg",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 88,
+        "padding_top_desktop": 120,
+        "padding_bottom_desktop": 173
       }
     },
     "product_variant_showcase_ptQkpY": {
@@ -281,11 +278,11 @@
       ],
       "name": "Product variant showcase",
       "settings": {
-        "heading": "World-Class Decaf Coffee",
-        "padding_top_mobile": 24,
-        "padding_bottom_mobile": 24,
+        "heading": "Coffee Without A Curfew.",
+        "padding_top_mobile": 68,
+        "padding_bottom_mobile": 0,
         "padding_top_desktop": 48,
-        "padding_bottom_desktop": 48
+        "padding_bottom_desktop": 8
       }
     },
     "gallery_showcase_p3M8Eq": {

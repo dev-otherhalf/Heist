@@ -39,14 +39,14 @@
     <div class="decaf-manifesto__grid">
       <div class="decaf-manifesto__lead">
         {%- if section.settings.heading != blank -%}
-          <h2 class="decaf-manifesto__heading t-h7">{{ section.settings.heading | newline_to_br }}</h2>
+          <h2 class="decaf-manifesto__heading t-h4">{{ section.settings.heading | newline_to_br }}</h2>
         {%- endif -%}
 
         {%- if point_blocks.size > 0 -%}
           <ul class="decaf-manifesto__points" role="list">
             {%- for block in point_blocks -%}
               {%- if block.settings.text != blank -%}
-                <li class="decaf-manifesto__point t-n2-med" {{ block.shopify_attributes }}>
+                <li class="decaf-manifesto__point t-n1" {{ block.shopify_attributes }}>
                   <span class="decaf-manifesto__point-icon svg-wrapper">
                     {%- render 'icon-red-checkbox' -%}
                   </span>
@@ -59,7 +59,7 @@
       </div>
 
       {%- if section.settings.body != blank -%}
-        <div class="decaf-manifesto__body t-t3">{{ section.settings.body }}</div>
+        <div class="decaf-manifesto__body t-h7">{{ section.settings.body }}</div>
       {%- endif -%}
     </div>
   </div>

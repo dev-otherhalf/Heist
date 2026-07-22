@@ -65,9 +65,9 @@
   "
 >
   {%- if chart != blank -%}
-    <div class="page-width">
+    <div class="page-width comparison-chart__table_bg">
       {%- if heading != blank -%}
-        <h2 class="comparison-chart__heading t-h7">{{ heading }}</h2>
+        <h2 class="comparison-chart__heading t-h4">{{ heading }}</h2>
       {%- endif -%}
 
       <div class="comparison-chart__panel">
@@ -82,7 +82,7 @@
           <table class="comparison-chart__table">
             <thead>
               <tr>
-                <th scope="col"><span class="visually-hidden">Method</span></th>
+                <th scope="col" class="comparison-chart__cell_th_first"><span class="visually-hidden">Method</span></th>
                 <th scope="col" class="comparison-chart__cell--highlight">
                   {%- if highlight_logo != blank -%}
                     {{
@@ -96,18 +96,18 @@
                         class: 'comparison-chart__logo'
                     }}
                   {%- elsif highlight_heading != blank -%}
-                    <span class="comparison-chart__col-title t-t3">{{ highlight_heading }}</span>
+                    <span class="comparison-chart__col-title t-h7">{{ highlight_heading }}</span>
                   {%- endif -%}
 
                   {%- if highlight_label != blank -%}
-                    <span class="comparison-chart__col-label t-n3">{{ highlight_label }}</span>
+                    <span class="comparison-chart__col-label t-n1">{{ highlight_label }}</span>
                   {%- endif -%}
                 </th>
-                <th scope="col">
-                  <span class="comparison-chart__col-title t-t3">{{ column_2_heading }}</span>
+                <th scope="col" class="comparison-chart__cell_th_com_1">
+                  <span class="comparison-chart__col-title t-h7">{{ column_2_heading }}</span>
                 </th>
-                <th scope="col">
-                  <span class="comparison-chart__col-title t-t3">{{ column_3_heading }}</span>
+                <th scope="col" class="comparison-chart__cell_th_com">
+                  <span class="comparison-chart__col-title t-h7">{{ column_3_heading }}</span>
                 </th>
               </tr>
             </thead>
@@ -121,12 +121,12 @@
                   assign column_3_value = row.column_3_value.value | default: row.column_3_value
                 -%}
                 <tr>
-                  <th scope="row" class="comparison-chart__label t-n2-med">{{ row_label }}</th>
-                  <td class="comparison-chart__value comparison-chart__cell--highlight t-n2-med">
+                  <th scope="row" class="comparison-chart__cell_th_first comparison-chart__label t-n1">{{ row_label }}</th>
+                  <td class="comparison-chart__value comparison-chart__cell--highlight t-n1">
                     {{ highlight_value | newline_to_br }}
                   </td>
-                  <td class="comparison-chart__value t-n2-med">{{ column_2_value | newline_to_br }}</td>
-                  <td class="comparison-chart__value t-n2-med">{{ column_3_value | newline_to_br }}</td>
+                  <td class="comparison-chart__cell_th_com_1 comparison-chart__value t-n1">{{ column_2_value | newline_to_br }}</td>
+                  <td class="comparison-chart__cell_th_com comparison-chart__value t-n1">{{ column_3_value | newline_to_br }}</td>
                 </tr>
               {%- endfor -%}
             </tbody>
@@ -134,7 +134,7 @@
         </div>
 
         {%- if footnote != blank -%}
-          <p class="comparison-chart__footnote t-t3">{{ footnote }}</p>
+          <p class="comparison-chart__footnote t-h7">{{ footnote }}</p>
         {%- endif -%}
       </div>
     </div>
@@ -143,7 +143,7 @@
  {%- if has_process -%}
   <div class="comparison-chart__process page-width">
     {%- if section.settings.process_heading != blank -%}
-      <h2 class="comparison-chart__process-heading t-h7">
+      <h2 class="comparison-chart__process-heading t-h4">
         {{ section.settings.process_heading }}
       </h2>
     {%- endif -%}

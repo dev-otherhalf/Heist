@@ -17,9 +17,11 @@
 
   color: var(--ink);
   overflow: clip;
-  padding-block: var(--comparison-chart-padding-top-mobile)
-    var(--comparison-chart-padding-bottom-mobile);
+  padding-block: 0 var(--comparison-chart-padding-bottom-mobile);
   position: relative;
+  @include respond-to(lg) {
+    border-bottom: var(--bw-2) solid var(--ink);
+  }
 
   // Background layer — absolutely positioned pseudo-element, no <img> in flow.
   // Mobile prefers the mobile upload and falls back to the desktop one; at lg
@@ -36,6 +38,9 @@
     inset: 0;
     position: absolute;
     z-index: 0;
+    @include respond-down(lg) {
+      background-color: var(--bone);
+    }
   }
 
   @include respond-to(lg) {
@@ -52,7 +57,14 @@
       );
     }
   }
-
+  .comparison-chart__table_bg {
+    @include respond-down(lg) {
+      border-bottom: var(--bw-2) solid var(--ink);
+      background-color: var(--bone);
+      padding-top: var(--comparison-chart-padding-top-mobile);
+      padding-bottom: var(--space-56);
+    }
+  }
   > .page-width {
     position: relative;
     z-index: 1;
@@ -67,10 +79,10 @@
 
   // --- Heading --------------------------------------------------------------
   &__heading {
-    margin-bottom: var(--space-24);
+    margin-bottom: var(--space-64);
     text-align: center;
 
-    @include respond-to(lg) {
+    @include respond-down(lg) {
       font-size: var(--fs-h6);
       line-height: var(--lh-h6);
       letter-spacing: var(--ls-h6);
@@ -81,11 +93,12 @@
   // --- Panel ----------------------------------------------------------------
   &__panel {
     background-color: var(--bone);
-    border: var(--bw-1) solid var(--ink);
-    padding: var(--space-16);
+    border: none;
+    padding: 0;
 
     @include respond-to(lg) {
-      padding: var(--space-40) var(--space-32);
+      border: var(--bw-2) solid var(--ink);
+      padding: var(--space-53) var(--space-54) var(--space-60);
     }
   }
 
@@ -95,7 +108,7 @@
     position: relative;
 
     @include respond-to(lg) {
-      padding-bottom: var(--space-32);
+      padding-bottom: var(--space-75);
     }
   }
 
@@ -110,56 +123,140 @@
     top: 0;
     width: var(--cc-col-highlight);
     z-index: 0;
+    display: none;
   }
 
   &__table {
     border-collapse: collapse;
     position: relative;
-    table-layout: fixed;
+    // table-layout: fixed;
     width: 100%;
     z-index: 1;
 
     th,
     td {
-      border-bottom: var(--bw-1) solid var(--taupe);
+      border: var(--bw-2) solid var(--ink);
       padding: var(--space-10) var(--space-6);
       text-align: center;
       vertical-align: middle;
-
       @include respond-to(lg) {
-        padding: var(--space-16) var(--space-12);
+        border: none;
+        border-bottom: var(--bw-2) solid var(--ink);
+        padding: var(--space-10) var(--space-8);
+        height: 4.4813rem;
+      }
+    }
+    th {
+      text-align: left;
+      padding: var(--space-10) 0;
+      height: 4.4813rem;
+      @include respond-down(lg) {
+        height: 4.50625rem;
       }
     }
 
     thead th {
       padding-block: var(--space-12);
       vertical-align: middle;
+      text-align: center;
+      padding: var(--space-31) 0 var(--space-18);
 
-      @include respond-to(lg) {
-        padding-block: var(--space-24);
+      @include respond-down(lg) {
+        padding: 0 0 var(--space-5);
+        &.comparison-chart__cell--highlight {
+          padding: 0;
+        }
+        &.comparison-chart__cell_th_first {
+          border-top-color: transparent;
+        }
+        &.comparison-chart__cell_th_com {
+          border-top-color: transparent;
+        }
+        &.comparison-chart__cell_th_com_1 {
+          border-top-color: transparent;
+        }
       }
     }
 
     // The red block supplies its own edges; a rule here would cut across it.
     .comparison-chart__cell--highlight {
-      border-bottom-color: transparent;
+      border: var(--bw-2) solid var(--ink);
+      background-color: var(--red);
+      width: 12.4rem;
+      @include respond-down(lg) {
+        width: 11.4rem;
+      }
+    }
+    .comparison-chart__cell_th_first {
+      width: 19.9rem;
+      @include respond-down(lg) {
+        border-left: none;
+        width: 8.9rem;
+      }
+    }
+    .comparison-chart__cell_th_com_1 {
+      width: 27.3rem;
+      @include respond-down(lg) {
+        width: auto;
+      }
+    }
+    .comparison-chart__cell_th_com {
+      width: 16.4rem;
+      padding-right: var(--space-62);
+      @include respond-down(lg) {
+        padding-right: 0;
+        border-right: none;
+        width: 11.4rem;
+      }
+    }
+    tbody {
+      tr:nth-last-child(1) {
+        .comparison-chart__cell--highlight {
+          position: relative;
+          &::after {
+            content: "";
+            border: var(--bw-2) solid var(--ink);
+            background-color: var(--red);
+            position: absolute;
+            inset: 100% -0.13rem -2.7rem;
+            @include respond-down(lg) {
+              inset: 100% -0.13rem -2.2rem;
+            }
+          }
+        }
+        .comparison-chart__cell_th_com_1 {
+          position: relative;
+          &::after {
+            content: "";
+            border-right: var(--bw-2) solid var(--ink);
+            position: absolute;
+            inset: 100% -0.13rem -2.2rem;
+            display: none;
+            @include respond-down(lg) {
+              display: block;
+            }
+          }
+        }
+      }
     }
   }
 
   &__col-title {
     display: block;
 
-    @include respond-to(lg) {
-      font-size: var(--fs-t2);
-      line-height: var(--lh-t2);
-      letter-spacing: var(--ls-t2);
+    @include respond-down(lg) {
+      font-family: var(--font-mono);
+      font-size: var(--fs-n1);
+      line-height: var(--lh-n1);
+      font-weight: var(--fw-medium);
+      text-transform: uppercase;
     }
   }
 
   &__col-label {
     display: block;
-    letter-spacing: 0.08em;
-    margin-top: var(--space-4);
+    letter-spacing: normal;
+    margin-top: var(--space-5);
     text-transform: uppercase;
   }
 
@@ -167,11 +264,12 @@
     display: block;
     height: auto;
     margin-inline: auto;
-    max-width: 5rem;
+    max-width: 4rem;
     width: 100%;
 
     @include respond-to(lg) {
-      max-width: 10rem;
+      max-width: var(--space-120);
+      margin-top: -0.5rem;
     }
   }
 
@@ -190,45 +288,49 @@
     margin-top: var(--space-16);
     text-align: center;
 
-    @include respond-to(lg) {
+    @include respond-down(lg) {
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
       letter-spacing: var(--ls-t2);
-      margin-top: var(--space-24);
+      max-width: 18rem;
+      margin: var(--space-45) auto 0;
     }
   }
 
   // --- Decaffeination process ------------------------------------------------
   &__process {
-    margin-top: var(--space-48);
+    margin-top: var(--space-65);
     position: relative;
     z-index: 1;
 
+    @include respond-down(lg) {
+      padding: 0 var(--space-15) 0 var(--space-16);
+    }
     @include respond-to(lg) {
-      margin-top: var(--space-96);
+      margin-top: var(--space-118);
     }
   }
 
   &__process-heading {
-    margin-bottom: var(--space-24);
+    margin-bottom: var(--space-62);
     text-align: center;
 
-    @include respond-to(lg) {
+    @include respond-down(lg) {
       font-size: var(--fs-h6);
       line-height: var(--lh-h6);
       letter-spacing: var(--ls-h6);
-      margin-bottom: var(--space-40);
+      margin-bottom: var(--space-32);
     }
   }
 
   &__process-grid {
     display: grid;
-    gap: var(--space-12);
+    gap: var(--space-16);
     margin-inline: auto;
     max-width: 30rem;
 
     @include respond-to(lg) {
-      gap: var(--space-12);
+      gap: var(--space-16);
       grid-template-columns: repeat(3, minmax(0, 1fr));
       max-width: none;
     }
@@ -236,62 +338,80 @@
 
   &__process-card {
     background-color: var(--bone);
-    border: var(--bw-1) solid var(--ink);
+    border: var(--bw-2) solid var(--ink);
     display: flex;
     flex-direction: column;
-    padding: var(--space-12);
+    padding: var(--space-21) var(--space-30) var(--space-26) var(--space-22);
 
     @include respond-to(lg) {
-      padding: var(--space-16);
+      padding: var(--space-31) var(--space-30) var(--space-46) var(--space-30);
     }
   }
 
   &__process-image {
-    aspect-ratio: 1 / 1;
-    border: var(--bw-1) solid var(--ink);
+    border: var(--bw-2) solid var(--ink);
     overflow: hidden;
     width: 100%;
+    position: relative;
+    padding-bottom: 107.8%;
+    @include respond-down(lg) {
+      padding-bottom: 98.8%;
+    }
 
     img {
       display: block;
       height: 100%;
       object-fit: cover;
       width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
   }
 
   &__process-content {
-    padding-top: var(--space-12);
+    padding-top: var(--space-25);
 
     @include respond-to(lg) {
-      padding-top: var(--space-16);
+      padding-top: var(--space-24);
     }
   }
 
   &__process-title {
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-20);
+    @include respond-down(lg) {
+      font-size: var(--fs-h7);
+      line-height: var(--lh-h7);
+      letter-spacing: var(--ls-h7);
+      font-weight: var(--fw-regular);
+      margin-bottom: var(--space-14);
+    }
   }
 
   &__process-description {
+    @include respond-down(lg) {
+      min-height: var(--space-61);
+    }
     p {
       margin: 0;
     }
   }
 
   &__process-footnote {
-    margin: var(--space-32) auto 0;
-    max-width: 52rem;
+    margin: var(--space-65) auto 0;
+    max-width: 72rem;
     text-align: center;
 
     p {
       margin: 0;
     }
 
-    @include respond-to(lg) {
+    @include respond-down(lg) {
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
       letter-spacing: var(--ls-t2);
-      margin-top: var(--space-40);
+      margin-top: var(--space-42);
+      max-width: 19rem;
     }
   }
 }
