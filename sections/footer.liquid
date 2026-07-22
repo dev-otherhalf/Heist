@@ -20,6 +20,8 @@
   assign heading_text = section.settings.heading_text
   assign barcode_image = section.settings.barcode_image
   assign barcode_image_mobile = section.settings.barcode_image_mobile
+  assign klaviyo_public_key = section.settings.klaviyo_public_key | strip
+  assign klaviyo_list_id = section.settings.klaviyo_list_id | strip
 
   assign audio_bg_color = section.settings.audio_bg_color
   assign audio_text_color = section.settings.audio_text_color
@@ -34,7 +36,7 @@
   assign policy_menu = section.settings.policy_menu
 -%}
 
-{%- if audio_blocks.size > 0 -%}
+{%- if audio_blocks.size > 0 or klaviyo_public_key != blank -%}
   {%- render 'vite-tag', entry: 'sections/scripts/footer.js' -%}
 {%- endif -%}
 
@@ -136,6 +138,48 @@
                     {%- endfor -%}
                   </div>
                 {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if klaviyo_public_key != blank and klaviyo_list_id != blank -%}
+              <div class="footer__newsletter-klaviyo" data-klaviyo-newsletter>
+                <form
+                  class="footer__newsletter-form"
+                  data-klaviyo-form
+                  data-public-key="{{ klaviyo_public_key | escape }}"
+                  data-list-id="{{ klaviyo_list_id | escape }}"
+                  data-success-message="{{ section.settings.klaviyo_success_message | default: 'Thanks for joining the Heist.' | escape }}"
+                  data-error-message="{{ section.settings.klaviyo_error_message | default: 'Something went wrong. Please try again.' | escape }}"
+                  novalidate
+                >
+                  <label class="visually-hidden" for="FooterEmail-{{ section.id }}">
+                    {{- section.settings.klaviyo_placeholder | default: 'Email address' | escape -}}
+                  </label>
+                  <div class="footer__newsletter-field">
+                    <input
+                      id="FooterEmail-{{ section.id }}"
+                      class="footer__newsletter-input t-n3"
+                      data-klaviyo-input
+                      type="email"
+                      name="email"
+                      autocomplete="email"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      placeholder="{{ section.settings.klaviyo_placeholder | default: 'Email address' | escape }}"
+                      required
+                    >
+                    <button
+                      class="footer__newsletter-submit"
+                      type="submit"
+                      data-klaviyo-submit
+                      aria-label="{{ 'actions.sign_up' | t }}"
+                    >
+                      <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M0 7H18M18 7L12.5 1M18 7L12.5 13" stroke="currentColor" stroke-width="1.5"/>
+                      </svg>
+                    </button>
+                  </div>
+                </form>
+                <p class="footer__newsletter-message t-n3" data-klaviyo-message role="status" hidden></p>
               </div>
             {%- endif -%}
             {% comment %}
@@ -563,6 +607,34 @@
       "id": "heading_text",
       "label": "Add heading text",
       "default": "Join the Heist."
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_public_key",
+      "label": "Klaviyo public API key"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_list_id",
+      "label": "Klaviyo list ID"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_placeholder",
+      "label": "Email input placeholder",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_success_message",
+      "label": "Newsletter success message",
+      "default": "Thanks for joining the Heist."
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_error_message",
+      "label": "Newsletter error message",
+      "default": "Something went wrong. Please try again."
     },
     {
       "type": "image_picker",

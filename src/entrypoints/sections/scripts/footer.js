@@ -358,10 +358,92 @@ function initAudioPlayers(scope = document) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => initAudioPlayers());
+function initNewsletterForms(scope = document) {
+  scope.querySelectorAll("[data-klaviyo-form]").forEach((form) => {
+    if (form.dataset.klaviyoFormReady === "true") return;
+    form.dataset.klaviyoFormReady = "true";
+
+    const input = form.querySelector("[data-klaviyo-input]");
+    const submit = form.querySelector("[data-klaviyo-submit]");
+    const message = form
+      .closest("[data-klaviyo-newsletter]")
+      ?.querySelector("[data-klaviyo-message]");
+    const publicKey = form.dataset.publicKey;
+    const listId = form.dataset.listId;
+
+    const setMessage = (text, isError) => {
+      if (!message) return;
+      message.textContent = text;
+      message.hidden = !text;
+      message.classList.toggle("footer__newsletter-message--error", !!isError);
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const email = input?.value.trim();
+
+      if (!email || !input.checkValidity()) {
+        setMessage("Please enter a valid email address.", true);
+        return;
+      }
+
+      if (!publicKey || !listId) return;
+
+      if (submit) submit.disabled = true;
+      setMessage("", false);
+
+      try {
+        const response = await fetch(
+          `https://a.klaviyo.com/client/subscriptions/?company_id=${encodeURIComponent(
+            publicKey
+          )}`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              revision: "2024-10-15",
+            },
+            body: JSON.stringify({
+              data: {
+                type: "subscription",
+                attributes: {
+                  profile: {
+                    data: {
+                      type: "profile",
+                      attributes: { email },
+                    },
+                  },
+                },
+                relationships: {
+                  list: { data: { type: "list", id: listId } },
+                },
+              },
+            }),
+          }
+        );
+
+        if (!response.ok) throw new Error(`Klaviyo error ${response.status}`);
+
+        form.reset();
+        setMessage(form.dataset.successMessage, false);
+      } catch (error) {
+        setMessage(form.dataset.errorMessage, true);
+      } finally {
+        if (submit) submit.disabled = false;
+      }
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initAudioPlayers();
+  initNewsletterForms();
+});
 
 document.addEventListener("shopify:section:load", (event) => {
   initAudioPlayers(event.target);
+  initNewsletterForms(event.target);
 });
 
 document.addEventListener("shopify:section:unload", (event) => {
