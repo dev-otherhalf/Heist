@@ -2515,5 +2515,57 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "t:names.site_lock",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "site_lock_enabled",
+        "label": "t:settings.site_lock_enabled",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "site_lock_heading",
+        "label": "t:settings.site_lock_heading",
+        "default": "The Lights Are Off.",
+        "visible_if": "{{ settings.site_lock_enabled == true }}"
+      },
+      {
+        "type": "text",
+        "id": "site_lock_subheading",
+        "label": "t:settings.site_lock_subheading",
+        "default": "We’ll let you know when we’re back on.",
+        "visible_if": "{{ settings.site_lock_enabled == true }}"
+      },
+      {
+        "type": "text",
+        "id": "site_lock_notify_input_placeholder",
+        "label": "t:settings.site_lock_notify_input_placeholder",
+        "default": "email address",
+        "visible_if": "{{ settings.site_lock_enabled == true }}"
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_public_api_key",
+        "label": "t:settings.klaviyo_public_api_key",
+        "default": "S6dNxP",
+        "visible_if": "{{ settings.site_lock_enabled == true }}"
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_list_id",
+        "label": "t:settings.klaviyo_list_id",
+        "default": "SrVk27",
+        "visible_if": "{{ settings.site_lock_enabled == true }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "site_lock_image",
+        "label": "t:settings.site_lock_image",
+        "visible_if": "{{ settings.site_lock_enabled == true }}"
+      }
+    ]
   }
 ]

@@ -453,7 +453,8 @@
     "view_all_button": "View all",
     "disclosures": "Disclosures",
     "pills": "Pills",
-    "comparison_slider": "Comparison slider"
+    "comparison_slider": "Comparison slider",
+    "site_lock": "Site lock"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -1219,7 +1220,14 @@
     "top_row_background": "Top row background",
     "top_row_text": "Top row text",
     "bottom_row_background": "Bottom row background",
-    "bottom_row_text": "Bottom row text"
+    "bottom_row_text": "Bottom row text",
+    "site_lock_enabled": "Enable site lock",
+    "site_lock_heading": "Heading",
+    "site_lock_subheading": "Subheading",
+    "site_lock_notify_input_placeholder": "Notify input placeholder",
+    "klaviyo_public_api_key": "Klaviyo Public API Key",
+    "klaviyo_list_id": "Klaviyo List ID",
+    "site_lock_image": "Barcode image"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

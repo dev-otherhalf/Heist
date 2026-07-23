@@ -110,6 +110,8 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
+    "site_lock_enabled": true,
+    "site_lock_image": "shopify://shop_images/Frame_67.png",
     "content_for_index": [],
     "blocks": {
       "733389323033596483": {
