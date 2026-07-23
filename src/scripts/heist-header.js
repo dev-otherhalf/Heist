@@ -344,13 +344,17 @@ if (header) {
     const canShowStickyHeader = beyondHeader && hasClearedScrollCapture;
     const canShowStickyCta =
       beyondHeader && (!isDesktop || hasClearedScrollCapture);
+    const atTop = scrollTop <= 1;
+    const isSticky =
+      header.classList.contains("is-pinned") ||
+      header.classList.contains("is-hidden");
 
-    if (!canShowStickyHeader) {
+    if (atTop || !hasClearedScrollCapture) {
       header.classList.remove("is-pinned", "is-hidden");
-    } else if (delta > 3) {
+    } else if (delta > 3 && canShowStickyHeader) {
       header.classList.remove("is-pinned");
       header.classList.add("is-hidden");
-    } else if (delta < -3) {
+    } else if (delta < -3 && (canShowStickyHeader || isSticky)) {
       header.classList.add("is-pinned");
       header.classList.remove("is-hidden");
     }

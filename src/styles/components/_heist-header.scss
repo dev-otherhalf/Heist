@@ -3,6 +3,11 @@
 .heist-header-section {
   position: relative;
   z-index: 3;
+  
+  &:has(.heist-header--inner.is-pinned),
+  &:has(.heist-header--inner.is-hidden) {
+    min-height: var(--header-height);
+  }
 
   &:has(.heist-header--home) {
     position: absolute;
@@ -31,6 +36,7 @@
 
   &--inner {
     border-bottom: var(--bw-2) solid currentColor;
+    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13.jpg?v=1782913691);
   }
 
   &--home.is-pinned,
