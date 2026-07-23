@@ -552,6 +552,16 @@
                         {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}
                       </div>
                     {%- endif -%}
+
+                    {%- comment -%}
+                      Mobile only: the prepaid tag is relocated from the variant
+                      row to sit under the line price. CSS toggles which copy shows.
+                    {%- endcomment -%}
+                    {%- if context == 'drawer' -%}
+                      <div class="cart-items__price-badge">
+                        {% render 'cart-line-selling-plan', item: item, line: line_number, part: 'badge' %}
+                      </div>
+                    {%- endif -%}
                   </td>
                 </tr>
                 {%- endcapture -%}

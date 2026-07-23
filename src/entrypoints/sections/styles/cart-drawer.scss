@@ -366,7 +366,31 @@ $plan-control-height: 2.375rem; // 38px
         position: relative;
         top: -0.125rem;
       }
+
+      // Prepaid tag, relocated from the variant row on mobile. Hidden on
+      // desktop, where the variant-row copy is the one shown.
+      .cart-items__price-badge {
+        display: none;
+
+        // Nothing rendered when the line isn't prepaid — collapse the block
+        // so it never leaves a gap under the price.
+        &:not(:has(*)) {
+          display: none;
+        }
+
+        @include respond-down(md) {
+          display: block;
+          flex: 0 0 100%;
+          margin-top: var(--space-8);
+
+          .cart-line-plan__badge {
+            text-align: start;
+          }
+        }
+      }
+
       @include respond-down(md) {
+        flex-wrap: wrap;
         grid-area: 2 / 2 / 3 / -1;
         padding-top: 40px;
         justify-self: start;
@@ -393,6 +417,12 @@ $plan-control-height: 2.375rem; // 38px
       }
       .cart-line-plan__badge {
         margin: 0 var(--space-3) 0 0;
+
+        // Moves under the line price on mobile — the copy rendered inside
+        // `.cart-items__price` takes over there.
+        @include respond-down(md) {
+          display: none;
+        }
       }
 
       // No variant, no properties, no tag — collapse the row rather than
@@ -532,6 +562,12 @@ $plan-control-height: 2.375rem; // 38px
 
       .cart-items__media {
         grid-area: 1 / 1 / 3 / 2;
+
+        // On mobile the remove CTA goes full width under the card, so the
+        // image only holds the first row rather than spanning both.
+        @include respond-down(md) {
+          grid-area: 1 / 1 / 2 / 2;
+        }
       }
 
       .cart-items__media-container {
@@ -609,6 +645,11 @@ $plan-control-height: 2.375rem; // 38px
       min-height: var(--cart-line-control-height);
       margin-top: var(--space-8);
       padding: var(--space-8) var(--space-16);
+
+      // Full width across the whole card on mobile, below the image.
+      @include respond-down(md) {
+        grid-area: 2 / 1 / 3 / -1;
+      }
     }
   }
 }
