@@ -22,6 +22,9 @@
   @include respond-to(lg) {
     border-bottom: var(--bw-2) solid var(--ink);
   }
+  @include respond-down(lg) {
+    border-top: var(--bw-2) solid var(--ink);
+  }
 
   // Background layer — absolutely positioned pseudo-element, no <img> in flow.
   // Mobile prefers the mobile upload and falls back to the desktop one; at lg
@@ -40,6 +43,7 @@
     z-index: 0;
     @include respond-down(lg) {
       background-color: var(--bone);
+      border-top: var(--bw-2) solid var(--ink);
     }
   }
 
@@ -87,6 +91,9 @@
       line-height: var(--lh-h6);
       letter-spacing: var(--ls-h6);
       margin-bottom: var(--space-40);
+      max-width: 18rem;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 

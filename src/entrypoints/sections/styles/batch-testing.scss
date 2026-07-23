@@ -65,13 +65,15 @@
   }
 
   &__heading {
+    @include respond-to(md) {
+      br {
+        display: none;
+      }
+    }
     @include respond-to(lg) {
       font-size: var(--fs-h4);
       line-height: var(--lh-h4);
       letter-spacing: var(--ls-h4);
-      br {
-        display: none;
-      }
     }
   }
   &__kicker {

@@ -8,9 +8,6 @@
   padding-block: var(--clean-job-padding-top-mobile)
     var(--clean-job-padding-bottom-mobile);
   position: relative;
-  @include respond-down(lg) {
-    border-bottom: var(--bw-2) solid var(--ink);
-  }
   @include respond-to(lg) {
     padding-block: var(--clean-job-padding-top-desktop)
       var(--clean-job-padding-bottom-desktop);
