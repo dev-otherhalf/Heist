@@ -3,7 +3,7 @@
 .heist-header-section {
   position: relative;
   z-index: 3;
-  
+
   &:has(.heist-header--inner.is-pinned),
   &:has(.heist-header--inner.is-hidden) {
     min-height: var(--header-height);
