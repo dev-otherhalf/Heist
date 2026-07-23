@@ -142,6 +142,7 @@
     align-items: flex-start;
     input.input--email-signup[type="email"] {
       padding: 0 0 var(--space-13) var(--space-8);
+      font-weight: var(--fw-medium);
       @include respond-down(md) {
         padding: 0 0 var(--space-10) var(--space-8);
       }
@@ -159,13 +160,13 @@
     content: "";
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
     width: 0.125rem;
     height: calc(var(--fs-n1) * var(--lh-n1));
     background-color: var(--ink);
     animation: site-lock-cursor-blink 1s step-start infinite;
     pointer-events: none;
+    display: none;
   }
 
   &__field .field__control:focus-within::before {
