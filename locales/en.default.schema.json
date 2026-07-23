@@ -1227,7 +1227,8 @@
     "site_lock_notify_input_placeholder": "Notify input placeholder",
     "klaviyo_public_api_key": "Klaviyo Public API Key",
     "klaviyo_list_id": "Klaviyo List ID",
-    "site_lock_image": "Barcode image"
+    "site_lock_image": "Barcode image",
+    "site_lock_image_mobile": "Barcode image Mobile"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

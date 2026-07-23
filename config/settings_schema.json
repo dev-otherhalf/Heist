@@ -2565,6 +2565,12 @@
         "id": "site_lock_image",
         "label": "t:settings.site_lock_image",
         "visible_if": "{{ settings.site_lock_enabled == true }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "site_lock_image_mobile",
+        "label": "t:settings.site_lock_image_mobile",
+        "visible_if": "{{ settings.site_lock_enabled == true }}"
       }
     ]
   }

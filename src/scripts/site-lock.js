@@ -22,7 +22,7 @@ function bindSpotlight(overlay, backdrop) {
 
   const getMobileBreakpoint = () => window.matchMedia("(max-width: 46.865rem)");
 
-  const getRadius = () => getMobileBreakpoint().matches ? 122 : 214;
+  const getRadius = () => (getMobileBreakpoint().matches ? 122 : 214);
 
   backdrop.style.setProperty("--spotlight-r", `${getRadius()}px`);
 
@@ -31,8 +31,20 @@ function bindSpotlight(overlay, backdrop) {
   });
 
   if (panel) {
-    panel.addEventListener("mouseenter", () => { overPanel = true; }, { passive: true });
-    panel.addEventListener("mouseleave", () => { overPanel = false; }, { passive: true });
+    panel.addEventListener(
+      "mouseenter",
+      () => {
+        overPanel = true;
+      },
+      { passive: true },
+    );
+    panel.addEventListener(
+      "mouseleave",
+      () => {
+        overPanel = false;
+      },
+      { passive: true },
+    );
   }
 
   const applyPosition = () => {
@@ -178,6 +190,5 @@ export function initSiteLock() {
     if (backdrop) {
       bindSpotlight(overlay, backdrop);
     }
-  } catch {
-  }
+  } catch {}
 }
