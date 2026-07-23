@@ -396,7 +396,7 @@ function initNewsletterForms(scope = document) {
       try {
         const response = await fetch(
           `https://a.klaviyo.com/client/subscriptions/?company_id=${encodeURIComponent(
-            publicKey
+            publicKey,
           )}`,
           {
             method: "POST",
@@ -420,7 +420,7 @@ function initNewsletterForms(scope = document) {
                 },
               },
             }),
-          }
+          },
         );
 
         if (!response.ok) throw new Error(`Klaviyo error ${response.status}`);
