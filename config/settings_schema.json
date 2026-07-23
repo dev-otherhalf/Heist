@@ -2548,6 +2548,13 @@
       },
       {
         "type": "text",
+        "id": "site_lock_success_message",
+        "label": "t:settings.site_lock_success_message",
+        "default": "You're on the list — we'll notify you when the site goes live.",
+        "visible_if": "{{ settings.site_lock_enabled == true }}"
+      },
+      {
+        "type": "text",
         "id": "klaviyo_public_api_key",
         "label": "t:settings.klaviyo_public_api_key",
         "default": "S6dNxP",

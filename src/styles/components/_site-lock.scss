@@ -125,6 +125,13 @@
     width: 100%;
   }
 
+  &__success {
+    margin: var(--space-5) 0 0;
+    font-size: var(--fs-n1);
+    line-height: var(--lh-n1);
+    color: #3a7d44;
+  }
+
   &__field {
     width: 100%;
   }

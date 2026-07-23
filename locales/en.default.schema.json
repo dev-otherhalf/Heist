@@ -1225,6 +1225,7 @@
     "site_lock_heading": "Heading",
     "site_lock_subheading": "Subheading",
     "site_lock_notify_input_placeholder": "Notify input placeholder",
+    "site_lock_success_message": "Success message",
     "klaviyo_public_api_key": "Klaviyo Public API Key",
     "klaviyo_list_id": "Klaviyo List ID",
     "site_lock_image": "Barcode image",

@@ -142,13 +142,17 @@ function bindSiteLockForm(form) {
         return response;
       })
       .then(() => {
+        const field = form.querySelector("[data-site-lock-field]");
+        const successMsg = form.querySelector("[data-site-lock-success]");
+
         if (input) {
           input.value = "";
         }
-        if (button) {
-          button.disabled = true;
-          button.removeAttribute("aria-busy");
-          button.setAttribute("aria-label", "Subscribed");
+        if (field) {
+          field.hidden = true;
+        }
+        if (successMsg) {
+          successMsg.hidden = false;
         }
         form.classList.add("is-subscribed");
       })

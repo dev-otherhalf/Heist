@@ -21,7 +21,7 @@
             data-klaviyo-list-id="{{ settings.klaviyo_list_id | escape }}"
             novalidate
           >
-            <div class="field field--email-signup site-lock__field">
+            <div class="field field--email-signup site-lock__field" data-site-lock-field>
               <div class="field__control">
                 <label class="field__label visually-hidden" for="site-lock-email">Email address</label>
                 <input
@@ -38,6 +38,10 @@
                 </button>
               </div>
             </div>
+
+            <p class="site-lock__success" data-site-lock-success aria-live="polite" hidden>
+              {{ settings.site_lock_success_message | escape }}
+            </p>
           </form>
 
           {% if settings.site_lock_image != blank %}
