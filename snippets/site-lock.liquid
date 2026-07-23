@@ -1,0 +1,59 @@
+{% if settings.site_lock_enabled %}
+  <div id="site-lock-overlay" class="site-lock" aria-hidden="false">
+    <div class="site-lock__backdrop" aria-hidden="true"></div>
+
+    <div class="site-lock__panel" role="dialog" aria-modal="true">
+      <div class="site-lock__inner">
+        <div class="site-lock__copy">
+          {% if settings.site_lock_heading != blank %}
+            <h2 class="site-lock__heading t-h6">{{ settings.site_lock_heading }}</h2>
+          {% endif %}
+          {% if settings.site_lock_subheading != blank %}
+            <p class="site-lock__subheading t-t4">{{ settings.site_lock_subheading }}</p>
+          {% endif %}
+        </div>
+
+        <div class="site-lock__aside">
+          <form
+            class="site-lock__form"
+            data-site-lock-form
+            data-klaviyo-public-api-key="{{ settings.klaviyo_public_api_key | escape }}"
+            data-klaviyo-list-id="{{ settings.klaviyo_list_id | escape }}"
+            novalidate
+          >
+            <div class="field field--email-signup site-lock__field">
+              <div class="field__control">
+                <label class="field__label visually-hidden" for="site-lock-email">Email address</label>
+                <input
+                  id="site-lock-email"
+                  class="input input--email-signup site-lock__input"
+                  type="email"
+                  name="email"
+                  autocomplete="email"
+                  placeholder="{{ settings.site_lock_notify_input_placeholder }}"
+                  aria-label="Email address"
+                >
+                <button class="field__submit site-lock__submit" type="submit" aria-label="Notify">
+                  {{- 'icon-arrow.svg' | inline_asset_content -}}
+                </button>
+              </div>
+            </div>
+          </form>
+
+          {% if settings.site_lock_image != blank %}
+            <div class="site-lock__image">
+              {% render 'responsive-image',
+                desktop_image: settings.site_lock_image,
+                mobile_image: settings.site_lock_image_mobile,
+                alt: settings.site_lock_heading,
+                class: 'site-lock__image-picture',
+                image_class: 'site-lock__image-img',
+                sizes: '(max-width: 749px) 100vw, 739px'
+              %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}

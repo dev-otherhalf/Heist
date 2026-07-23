@@ -1,0 +1,215 @@
+@use "../settings/breakpoints" as *;
+:root {
+  --site-lock-z: 99999;
+}
+
+.site-lock {
+  position: fixed;
+  inset: 0;
+  z-index: var(--site-lock-z);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background: transparent;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: #000;
+    opacity: 0.9;
+    --mouseX: 50%;
+    --mouseY: 50%;
+    --spotlight-r: 214px;
+    -webkit-mask-image: radial-gradient(
+      circle var(--spotlight-r) at var(--mouseX) var(--mouseY),
+      transparent 0%,
+      transparent 70%,
+      black 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--spotlight-r) at var(--mouseX) var(--mouseY),
+      transparent 0%,
+      transparent 70%,
+      black 100%
+    );
+  }
+
+  &__panel {
+    position: relative;
+    z-index: 1;
+    width: calc(100% - var(--space-48));
+    max-width: 69.25rem;
+    margin: 0 var(--space-24);
+    pointer-events: auto;
+    transition:
+      transform 220ms var(--ease),
+      opacity 220ms var(--ease);
+    transform: translateY(0);
+    opacity: 1;
+
+    @include respond-down(md) {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-24);
+    padding: var(--space-22) var(--space-68) var(--space-24) var(--space-80);
+    background: var(--cream);
+    border: var(--bw-2) solid var(--ink);
+    color: var(--ink);
+    border-radius: var(--r-0);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    @include respond-down(xxl) {
+      padding: var(--space-24);
+    }
+    @include respond-down(md) {
+      flex-direction: column;
+      gap: var(--space-19);
+      padding: var(--space-15) var(--space-24) var(--space-16);
+      border-radius: var(--r-0);
+      border: none;
+    }
+  }
+
+  &__copy {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 28rem;
+
+    @include respond-down(md) {
+      max-width: 100%;
+    }
+  }
+
+  &__heading {
+    margin: 0 0 var(--space-11);
+    @include respond-down(md) {
+      font-size: var(--fs-h7);
+      line-height: var(--lh-h7);
+      letter-spacing: var(--ls-h7);
+      font-weight: var(--fw-regular);
+      margin-bottom: var(--space-5);
+    }
+  }
+
+  &__subheading {
+    margin: 0;
+  }
+
+  &__aside {
+    flex: 0 0 auto;
+    max-width: 46.1875rem;
+    margin-top: var(--space-3);
+    @include respond-down(xxl) {
+      width: 50%;
+    }
+
+    @include respond-down(md) {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  &__form {
+    width: 100%;
+  }
+
+  &__field {
+    width: 100%;
+  }
+
+  &__field .field__control {
+    position: relative;
+    padding: 0;
+    align-items: flex-start;
+    input.input--email-signup[type="email"] {
+      padding: 0 0 var(--space-13) var(--space-8);
+      @include respond-down(md) {
+        padding: 0 0 var(--space-10) var(--space-8);
+      }
+    }
+    .field__submit {
+      margin-top: -0.2rem;
+    }
+    @include respond-down(md) {
+      border-bottom: var(--bw-2) solid var(--ink);
+      width: 88.3%;
+    }
+  }
+
+  &__field .field__control::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.125rem;
+    height: calc(var(--fs-n1) * var(--lh-n1));
+    background-color: var(--ink);
+    animation: site-lock-cursor-blink 1s step-start infinite;
+    pointer-events: none;
+  }
+
+  &__field .field__control:focus-within::before {
+    display: none;
+  }
+
+  @keyframes site-lock-cursor-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    margin-top: var(--space-18);
+
+    @include respond-down(md) {
+      margin-top: var(--space-16);
+    }
+
+    picture,
+    img {
+      display: block;
+      width: 100%;
+      height: var(--space-28);
+      object-fit: contain;
+      @include respond-down(md) {
+        width: 94.982%;
+        height: var(--space-24);
+      }
+    }
+  }
+
+  &.is-subscribed &__submit {
+    opacity: 0.5;
+  }
+}
+
+body.has-site-lock {
+  overflow: hidden;
+
+  *:not(.site-lock):not(.site-lock *) {
+    pointer-events: none !important;
+  }
+}
+
+.site-lock,
+.site-lock * {
+  pointer-events: auto !important;
+}
