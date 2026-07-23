@@ -183,10 +183,10 @@ body:has(.footer__audio) main {
   }
 
   &__newsletter-klaviyo {
-    margin-block-start: var(--space-24);
+    margin-block-start: var(--space-23);
 
     @include respond-to(md) {
-      margin-block-start: var(--space-32);
+      margin-block-start: var(--space-23);
     }
   }
 
@@ -196,11 +196,16 @@ body:has(.footer__audio) main {
 
   &__newsletter-field {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-16);
     border-block-end: calc(var(--space-4) * 0.75) solid
       var(--newsletter-text-color);
-    padding-block-end: var(--space-12);
+    padding-block-end: var(--space-11);
+    @include respond-down(md) {
+      align-items: center;
+      padding-block-end: var(--space-8);
+      border-bottom: var(--bw-2) solid var(--ink);
+    }
   }
 
   &__newsletter-field input#{&}__newsletter-input {
@@ -224,17 +229,18 @@ body:has(.footer__audio) main {
       box-shadow: none;
       appearance: none;
       text-transform: uppercase;
-      font-family: inherit;
-      font-size: var(--fs-n3);
+      font-family: var(--font-mono);
+      font-size: var(--fs-n1);
+      font-weight: var(--fw-medium);
       line-height: 1;
       letter-spacing: inherit;
+      padding-left: var(--space-8);
     }
 
     &::placeholder {
       color: var(--newsletter-text-color);
       opacity: 1;
       text-transform: uppercase;
-      font-size: var(--fs-n3);
     }
 
     &:-webkit-autofill,
@@ -256,6 +262,7 @@ body:has(.footer__audio) main {
     background-color: transparent;
     border: 0;
     appearance: none;
+    margin: -0.2rem -0.1rem 0 0;
 
     &:disabled {
       opacity: 0.5;
@@ -264,7 +271,7 @@ body:has(.footer__audio) main {
 
     svg {
       display: block;
-      width: var(--space-20);
+      width: var(--space-16);
       height: auto;
     }
   }
@@ -285,7 +292,7 @@ body:has(.footer__audio) main {
 
   &__newsletter-barcode {
     width: 100%;
-    margin-block-start: var(--space-32);
+    margin-block-start: var(--space-29);
     img {
       height: var(--space-32);
       @include respond-to(md) {
