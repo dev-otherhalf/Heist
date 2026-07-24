@@ -250,15 +250,30 @@
                           assign ratio = item.image.aspect_ratio
                         endif
                       %}
-                      <a
-                        href="{{ item_url }}"
-                        class="cart-items__media-container"
-                        style="--ratio:{{ ratio }};"
-                      >
-                        {%- liquid
-                          echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
-                        -%}
-                      </a>
+                      {%- comment -%}
+                        The membership and its gift aren't shoppable on their own,
+                        so their cards carry no link to a product page.
+                      {%- endcomment -%}
+                      {%- if is_card_item -%}
+                        <div
+                          class="cart-items__media-container"
+                          style="--ratio:{{ ratio }};"
+                        >
+                          {%- liquid
+                            echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
+                          -%}
+                        </div>
+                      {%- else -%}
+                        <a
+                          href="{{ item_url }}"
+                          class="cart-items__media-container"
+                          style="--ratio:{{ ratio }};"
+                        >
+                          {%- liquid
+                            echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
+                          -%}
+                        </a>
+                      {%- endif -%}
                     {%- endif %}
                   </td>
                   <td
@@ -274,15 +289,19 @@
                         endif
                       -%}
                       <div class="cart-items__title-row">
-                        <a
-                          href="{{ item_url }}"
-                          class="cart-items__title{% if is_card_item %} t-t2{% endif %}"
-                          {% if item.parent_relationship.parent != null %}
-                            aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"
-                          {% endif %}
-                        >
-                          {{- item.product.title -}}
-                        </a>
+                        {%- if is_card_item -%}
+                          <span class="cart-items__title t-t2">{{- item.product.title -}}</span>
+                        {%- else -%}
+                          <a
+                            href="{{ item_url }}"
+                            class="cart-items__title"
+                            {% if item.parent_relationship.parent != null %}
+                              aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"
+                            {% endif %}
+                          >
+                            {{- item.product.title -}}
+                          </a>
+                        {%- endif -%}
                         {% render 'cart-disclosure-tooltip',
                           product: item.product,
                           unique_id: cart_disclosure_unique_id,
