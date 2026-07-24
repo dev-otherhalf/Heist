@@ -81,7 +81,7 @@ body:has(.footer__audio) main {
       max-width: 92%;
     }
 
-    @include respond-to(lg) {
+    @include respond-to(xl) {
       justify-content: space-between;
     }
 
