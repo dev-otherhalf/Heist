@@ -13,7 +13,7 @@
       "type": "heist-scroll-capture",
       "name": "Heist scroll capture",
       "settings": {
-        "desktop_background": "shopify://shop_images/Desktop_BG.jpg",
+        "desktop_background": "shopify://shop_images/Homepage.jpg",
         "mobile_background": "shopify://shop_images/Homepage_-_Section_1.jpg",
         "glass_image": "shopify://shop_images/New.png",
         "mobile_glass_image": "shopify://shop_images/New.png",

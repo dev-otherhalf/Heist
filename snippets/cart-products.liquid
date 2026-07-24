@@ -45,6 +45,11 @@
 {% endcomment %}
 {% render 'vite-tag' with 'sections/styles/cart-drawer.scss' %}
 
+{% comment %}
+  Also loaded by cart-drawer.liquid, which renders the empty state without this
+  snippet — this copy covers the cart page, where the drawer never renders.
+  Duplicate tags de-duplicate in the browser.
+{% endcomment %}
 {% if settings.cart_line_selling_plan %}
   {% render 'vite-tag' with 'sections/scripts/cart-line-selling-plan.js' %}
 {% endif %}
@@ -202,6 +207,19 @@
                   # The rows are reordered below, so the true cart line number has
                   # to come off the item rather than forloop.index.
                   assign line_number = item.index | plus: 1
+
+                  comment
+                    A line sold as part of a bundle points back at the bundle's
+                    product page rather than its own — the standalone page isn't
+                    where the customer bought it. Falls back to the line's own url
+                    when no bundle is referenced (or the reference is dangling).
+                  endcomment
+                  assign item_url = item.url
+                  assign bundle_reference = item.product.metafields.custom.bundle_product.value
+                  if bundle_reference != blank and bundle_reference.url != blank
+                    # The bundle page opens on the same variant the line was bought as.
+                    assign item_url = bundle_reference.url | append: '?variantId=' | append: item.variant.id
+                  endif
                 -%}
                 {%- capture cart_row -%}
                 <tr
@@ -233,7 +251,7 @@
                         endif
                       %}
                       <a
-                        href="{{ item.url }}"
+                        href="{{ item_url }}"
                         class="cart-items__media-container"
                         style="--ratio:{{ ratio }};"
                       >
@@ -257,7 +275,7 @@
                       -%}
                       <div class="cart-items__title-row">
                         <a
-                          href="{{ item.url }}"
+                          href="{{ item_url }}"
                           class="cart-items__title{% if is_card_item %} t-t2{% endif %}"
                           {% if item.parent_relationship.parent != null %}
                             aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"

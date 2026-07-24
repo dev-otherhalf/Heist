@@ -42,6 +42,16 @@
     {% render 'vite-tag' with 'sections/scripts/cart-upgrade-banner.js' %}
   {% endif %}
 
+  {% comment %}
+    Same reason again: an empty drawer renders no lines, so the copy of this tag
+    in cart-products.liquid only ever arrives through a morph — where it never
+    executes. The first line added would get a "Subscribe & save" button on an
+    un-upgraded element that does nothing until a reload.
+  {% endcomment %}
+  {% if settings.cart_line_selling_plan %}
+    {% render 'vite-tag' with 'sections/scripts/cart-line-selling-plan.js' %}
+  {% endif %}
+
   {% capture empty_cart_drawer_content %}
     {% render 'cart-drawer-empty' %}
   {% endcapture %}
