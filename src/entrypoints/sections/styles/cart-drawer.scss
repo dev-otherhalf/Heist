@@ -286,7 +286,10 @@ $plan-control-height: 2.375rem; // 38px
       aspect-ratio: auto;
       border: var(--bw-2) solid var(--ink);
       background-color: var(--cream);
-      padding: var(--space-22);
+      padding: var(--space-16);
+      img {
+        object-fit: contain;
+      }
       @include respond-down(md) {
         padding: 0;
         position: relative;
