@@ -121,11 +121,15 @@ body:has(.footer__audio) main {
     padding-inline: calc(var(--space-24) - 0.125rem);
     position: relative;
     z-index: 1;
+    width: 100%;
 
     @include respond-to(md) {
       width: calc(50% - var(--space-8));
       padding-block: var(--space-32) var(--space-24);
       padding-inline: var(--space-31);
+    }
+    @include respond-between(md, xl) {
+      padding: var(--space-30) var(--space-16) var(--space-50);
     }
   }
 
@@ -325,12 +329,14 @@ body:has(.footer__audio) main {
       left: 0;
       width: 100%;
     }
-
     @include respond-to(md) {
       width: calc(50% - var(--space-8));
       border: calc(var(--space-4) * 0.5) solid var(--audio-text-color);
       padding-block: var(--space-30) var(--space-24);
       padding-inline: var(--space-31);
+    }
+    @include respond-between(md, xl) {
+      padding: var(--space-30) var(--space-16) var(--space-50);
     }
 
     &-player {
@@ -576,6 +582,9 @@ body:has(.footer__audio) main {
         @include respond-to(md) {
           gap: calc(var(--space-32) + var(--space-4));
           margin-block-start: calc(var(--space-16) + 0.125rem);
+        }
+        @include respond-between(md, xl) {
+          gap: var(--space-16);
         }
       }
 
