@@ -1,15 +1,20 @@
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function getPointerPosition(event) {
+function getPointerPosition(event, element) {
+  const touch = event.touches?.[0] || event.changedTouches?.[0];
+  const clientX = event.clientX ?? touch?.clientX;
+  const clientY = event.clientY ?? touch?.clientY;
+  const bounds = element.getBoundingClientRect(); 
+
   return {
     x:
-      event.clientX ||
-      (event.touches && event.touches[0] && event.touches[0].clientX) ||
-      window.innerWidth / 2,
+      clientX === undefined
+        ? bounds.width / 2
+        : Math.max(0, Math.min(clientX - bounds.left, bounds.width)),
     y:
-      event.clientY ||
-      (event.touches && event.touches[0] && event.touches[0].clientY) ||
-      window.innerHeight / 2,
+      clientY === undefined
+        ? bounds.height / 2
+        : Math.max(0, Math.min(clientY - bounds.top, bounds.height)),
   };
 }
 
@@ -30,7 +35,11 @@ function bindSpotlight(overlay, backdrop) {
     backdrop.style.setProperty("--spotlight-r", `${getRadius()}px`);
   });
 
-  if (panel) {
+  const supportsHover = window.matchMedia(
+    "(hover: hover) and (pointer: fine)",
+  ).matches;
+
+  if (panel && supportsHover) {
     panel.addEventListener(
       "mouseenter",
       () => {
@@ -56,7 +65,7 @@ function bindSpotlight(overlay, backdrop) {
   const updateMouse = (event) => {
     if (overPanel) return;
 
-    const { x, y } = getPointerPosition(event);
+    const { x, y } = getPointerPosition(event, backdrop);
     pendingX = x;
     pendingY = y;
 
@@ -66,11 +75,20 @@ function bindSpotlight(overlay, backdrop) {
   };
 
   window.addEventListener("mousemove", updateMouse, { passive: true });
-  window.addEventListener("touchmove", updateMouse, { passive: true });
+  overlay.addEventListener(
+    "touchmove",
+    (event) => {
+      if (event.target.closest(".site-lock__field")) return;
+
+      event.preventDefault();
+      updateMouse(event);
+    },
+    { passive: false },
+  );
   applyPosition();
 }
 
-function bindSiteLockForm(form) {
+function bindSiteLockForm(form, overlay) {
   if (form.dataset.siteLockBound === "true") {
     return;
   }
@@ -79,6 +97,20 @@ function bindSiteLockForm(form) {
 
   const input = form.querySelector(".site-lock__input");
   const button = form.querySelector(".site-lock__submit");
+
+  overlay.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.target.closest(".site-lock__field")) return;
+
+      event.preventDefault();
+
+      if (input === document.activeElement) {
+        input.blur();
+      }
+    },
+    { capture: true, passive: false },
+  );
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -146,6 +178,7 @@ function bindSiteLockForm(form) {
         const successMsg = form.querySelector("[data-site-lock-success]");
 
         if (input) {
+          input.blur();
           input.value = "";
         }
         if (field) {
@@ -183,11 +216,17 @@ export function initSiteLock() {
 
     const panel = overlay.querySelector(".site-lock__panel");
     const focusable = panel?.querySelector("input,button,a,select,textarea");
-    focusable?.focus();
+    const isTouchDevice =
+      window.matchMedia("(pointer: coarse)").matches ||
+      navigator.maxTouchPoints > 0;
+
+    if (!isTouchDevice) {
+      focusable?.focus();
+    }
 
     const form = overlay.querySelector("[data-site-lock-form]");
     if (form instanceof HTMLFormElement) {
-      bindSiteLockForm(form);
+      bindSiteLockForm(form, overlay);
     }
 
     const backdrop = overlay.querySelector(".site-lock__backdrop");

@@ -88,7 +88,7 @@
               "settings": {
                 "layout_variation": "variation_1",
                 "one_time_enabled": true,
-                "default_tier": "heist",
+                "default_tier": "standard",
                 "bags_label": "Select your bags: take more, save more.",
                 "default_bag_quantity": 1,
                 "heist_title": "Heist Society™ Subscription",
