@@ -398,9 +398,8 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       ?.then(async ({ detail }) => {
         const sections = detail?.sections;
         const cartItemsHtml = sections?.[this.sectionId];
-        // Animate empty → non-empty in the drawer (possible in squeeze mode
-        // where the page is interactive alongside the open drawer). This also
-        // needs the response stylesheet because it adds the cart summary markup.
+        // The empty drawer needs the response stylesheet because the populated
+        // response adds the cart summary markup.
         const wasEmptyCartDrawer =
           this.isDrawer &&
           this.querySelector("[data-cart-drawer-empty]") !== null;
@@ -417,9 +416,10 @@ export class CartItemsComponent extends createViewEventElement(Component) {
           );
 
           if (wasEmptyCartDrawer) {
-            startViewTransition(() => {
-              morphSection(this.sectionId, cartItemsHtml, morphOptions);
-            }, ["fill-cart-drawer"]);
+            // Render the first item directly. The fill-cart-drawer view
+            // transition moves the newly populated content upward, which is
+            // distracting when the drawer opens immediately afterward.
+            await morphSection(this.sectionId, cartItemsHtml, morphOptions);
           } else {
             await morphSection(this.sectionId, cartItemsHtml, morphOptions);
           }
@@ -437,7 +437,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
           // Update button states for all cart quantity selectors after morph
           this.#updateCartQuantitySelectorButtonStates();
         } else {
-          sectionRenderer.renderSection(this.sectionId, {
+          await sectionRenderer.renderSection(this.sectionId, {
             cache: false,
             ...morphOptions,
           });
