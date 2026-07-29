@@ -120,13 +120,21 @@ class BuyBox extends HTMLElement {
     return opt ? opt.textContent.trim() : null;
   }
 
+  /** True when Liquid rendered this stepper's row as sold out. */
+  #isUnavailable(stepper) {
+    return stepper.closest("[data-unavailable]") !== null;
+  }
+
   /** Read the server-rendered stepper values into state. */
   #seedQuantities() {
     this.querySelectorAll("[data-buy-box-stepper]").forEach((stepper) => {
       const variantId = stepper.dataset.variantId;
-      const value = Number(
-        stepper.querySelector("[data-stepper-input]")?.value || 0,
-      );
+      // A sold-out bag keeps showing its default quantity, but must never count
+      // as selected — it contributes 0 so it stays out of totals and cart lines,
+      // and the CTA disables itself once nothing available is left.
+      const value = this.#isUnavailable(stepper)
+        ? 0
+        : Number(stepper.querySelector("[data-stepper-input]")?.value || 0);
       this.state.quantities.set(variantId, value);
     });
   }
@@ -278,13 +286,15 @@ class BuyBox extends HTMLElement {
 
   /** Set a variant's quantity (state + stepper DOM). */
   #setQty(variantId, qty, rerender = true) {
-    const next = Math.max(0, qty);
-    this.state.quantities.set(variantId, next);
-
     const stepper = this.querySelector(
       `[data-buy-box-stepper][data-variant-id="${variantId}"]`,
     );
-    if (stepper) {
+    const unavailable = stepper ? this.#isUnavailable(stepper) : false;
+    // Sold out can never be selected — not by a stepper, not by ?variantId=.
+    const next = unavailable ? 0 : Math.max(0, qty);
+    this.state.quantities.set(variantId, next);
+
+    if (stepper && !unavailable) {
       stepper.querySelector("[data-stepper-value]").textContent = String(next);
       stepper.querySelector("[data-stepper-input]").value = String(next);
       const dec = stepper.querySelector("[data-stepper-decrease]");
