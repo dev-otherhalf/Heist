@@ -268,6 +268,8 @@
         "background_image_mobile": "shopify://shop_images/full-briefing-bg-mobile.jpg",
         "heading": "Word On The Street",
         "barcode_image": "shopify://shop_images/Frame_1.svg",
+        "review_barcode_image": "shopify://shop_images/Frame_1.png",
+        "review_barcode_image_mobile": "shopify://shop_images/Frame_1_1.png",
         "padding_top_mobile": 64,
         "padding_bottom_mobile": 64,
         "padding_top_desktop": 121,

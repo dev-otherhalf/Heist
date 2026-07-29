@@ -10,6 +10,11 @@
   assign review_count = okendo_summary.reviewCount | default: 0
   assign desktop_background = section.settings.background_image_desktop
   assign mobile_background = section.settings.background_image_mobile | default: desktop_background
+
+  # Okendo injects the review cards client-side, so okendo-reviews.js reads this
+  # off the section and inserts the barcode into each card.
+  assign review_barcode = section.settings.review_barcode_image
+  assign review_barcode_mobile = section.settings.review_barcode_image_mobile
 -%}
 
 {%- render 'vite-tag', entry: 'sections/styles/okendo-reviews.scss' -%}
@@ -19,6 +24,12 @@
   class="okendo-reviews-section"
   id="shopify-section-{{- section.id -}}"
   data-okendo-reviews
+  {%- if review_barcode != blank %}
+    data-review-barcode="{{ review_barcode | image_url: width: 720 }}"
+  {%- endif %}
+  {%- if review_barcode_mobile != blank %}
+    data-review-barcode-mobile="{{ review_barcode_mobile | image_url: width: 720 }}"
+  {%- endif %}
   style="
     --okendo-reviews-padding-top-mobile: {{- section.settings.padding_top_mobile -}}px;
     --okendo-reviews-padding-bottom-mobile: {{- section.settings.padding_bottom_mobile -}}px;
@@ -164,6 +175,18 @@
       "type": "image_picker",
       "id": "barcode_image",
       "label": "Heading graphic (barcode)"
+    },
+    {
+      "type": "image_picker",
+      "id": "review_barcode_image",
+      "label": "Review card graphic (barcode)",
+      "info": "Shown on every review card, between the reviewer details and the verified buyer line."
+    },
+    {
+      "type": "image_picker",
+      "id": "review_barcode_image_mobile",
+      "label": "Review card graphic (barcode) — mobile",
+      "info": "Optional. Falls back to the desktop graphic when empty."
     },
     {
       "type": "header",

@@ -247,8 +247,16 @@
       text-transform: uppercase;
       box-shadow: none !important;
     }
-
+    .oke-w-review-reviewer {
+      margin: 0;
+    }
     .oke-w-reviewer {
+      @include respond-down(md) {
+        width: 100%;
+        > div {
+          width: 100%;
+        }
+      }
       .oke-w-reviewer-identity {
         .oke-w-reviewer-name {
           font-family: var(--font-mono);
@@ -259,23 +267,50 @@
         }
       }
 
+      // Injected by okendo-reviews.js — Okendo renders the review cards
+      // client-side, so there is no Liquid hook to render this markup from.
+      .okendo-reviews-section__review-barcode {
+        width: 100%;
+        margin-top: var(--space-39);
+        @include respond-down(md) {
+          margin-top: var(--space-24);
+        }
+        picture {
+          display: block;
+        }
+
+        img {
+          display: block;
+          width: 100%;
+          height: auto;
+          object-fit: contain;
+          object-position: left center;
+
+          @include respond-to(md) {
+            height: var(--space-37);
+          }
+        }
+      }
+
       .oke-w-reviewer-verified {
         font-family: var(--font-mono);
         font-size: var(--fs-n1);
         line-height: var(--lh-n1);
         font-weight: var(--fw-medium);
         text-transform: uppercase;
-        margin-top: var(--space-16);
+        margin-top: var(--space-33);
         display: flex;
         flex-direction: row-reverse;
         gap: var(--space-4);
-        align-items: center;
+        justify-content: flex-end;
+        @include respond-down(md) {
+          margin-top: var(--space-16);
+        }
       }
     }
 
     .oke-w-review-recommendation {
       .oke-w-reviewerRecommendation-text {
-        font-family: var(--font-micro);
         font-size: var(--fs-n1);
         line-height: var(--lh-n1);
         font-weight: var(--fw-medium);
