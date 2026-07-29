@@ -36,13 +36,13 @@
 
   &--inner {
     border-bottom: var(--bw-2) solid currentColor;
-    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13.jpg?v=1782913691);
+    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793);
   }
 
   &--home.is-pinned,
   &--inner.is-pinned {
     color: var(--heist-inner-text);
-    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13.jpg?v=1782913691);
+    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793);
   }
 
   &.is-pinned {
@@ -65,7 +65,7 @@
 
   @include respond-down(lg) {
     color: var(--heist-mobile-text);
-    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13.jpg?v=1782913691);
+    background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793);
 
     &--home:not(.is-pinned) {
       color: var(--heist-home-text);
@@ -388,7 +388,7 @@
   display: grid;
   grid-template-columns: 1fr minmax(10.5rem, 14vw);
   color: var(--sticky-text);
-  background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_13.jpg?v=1782913691);
+  background: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793);
   border-bottom: var(--bw-2) solid var(--sticky-text);
   opacity: 0;
   pointer-events: none;

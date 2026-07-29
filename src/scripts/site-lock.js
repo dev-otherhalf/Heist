@@ -4,7 +4,7 @@ function getPointerPosition(event, element) {
   const touch = event.touches?.[0] || event.changedTouches?.[0];
   const clientX = event.clientX ?? touch?.clientX;
   const clientY = event.clientY ?? touch?.clientY;
-  const bounds = element.getBoundingClientRect(); 
+  const bounds = element.getBoundingClientRect();
 
   return {
     x:

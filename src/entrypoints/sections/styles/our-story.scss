@@ -21,13 +21,12 @@
   width: 100%;
   height: 100%;
   z-index: 0;
-}
+  background-image: var(--our-story-background-mobile);
+  background-position: center;
 
-.our-story__background-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  @include respond-to(md) {
+    background-image: var(--our-story-background-desktop);
+  }
 }
 
 .our-story {
@@ -191,10 +190,16 @@
         font-size: var(--fs-h6);
         line-height: var(--lh-h6);
         letter-spacing: var(--ls-h6);
+        max-width: 22rem;
+        margin: 0 auto;
         &.the_first_cup_title,
         &.heist_is_decaffein_title {
           max-width: 17rem;
           margin: 0 auto;
+        }
+        &.why_decaf_been_title {
+          max-width: 19rem;
+          margin: 0;
         }
       }
     }
@@ -205,6 +210,8 @@
       font-size: var(--fs-t1);
       line-height: var(--lh-t1);
       letter-spacing: var(--ls-t1);
+      max-width: 21rem;
+      margin: 0 auto;
     }
     br {
       display: none;

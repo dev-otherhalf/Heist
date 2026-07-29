@@ -2,6 +2,16 @@
 @use "/src/styles/settings/breakpoints" as *;
 
 body.product {
+  background-image: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793);
+  @include respond-down(md) {
+    background-image: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Mobile.jpg?v=1785306792);
+  }
+  .content-for-layout {
+    background-image: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793);
+    @include respond-down(md) {
+      background-image: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Mobile.jpg?v=1785306792);
+    }
+  }
   .heist-sticky-cta {
     display: none;
   }
@@ -60,6 +70,12 @@ body.product {
                 @include respond-down(md) {
                   width: 81.067%;
                   border: var(--bw-2) solid var(--ink);
+                  &:nth-child(1) {
+                    border-left: none;
+                  }
+                  &:nth-last-child(1) {
+                    border-right: none;
+                  }
                 }
               }
             }

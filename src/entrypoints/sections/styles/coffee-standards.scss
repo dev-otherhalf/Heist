@@ -89,7 +89,7 @@
     flex-wrap: wrap;
     gap: var(--space-16);
     margin-top: 0;
-    max-width: 37.563rem;
+    max-width: 35.763rem;
 
     @include respond-to(lg) {
       display: flex;
@@ -98,9 +98,15 @@
   }
 
   &__badge {
-    flex: 0 0 auto;
-    max-width: 8.5rem;
+    flex: 1;
+    max-width: 100%;
     width: 100%;
+    &:nth-child(3) {
+      margin-left: -1.3125rem;
+    }
+    &:nth-last-child(1) {
+      padding-right: var(--space-10);
+    }
 
     &--marquee {
       width: 8rem;
@@ -109,13 +115,13 @@
 
   &__badge-image {
     display: block;
-    height: auto;
+    height: 100%;
     width: 100%;
     object-fit: contain;
   }
 
   &__badge-marquee {
-    --coffee-standards-marquee-gap: var(--space-8);
+    --coffee-standards-marquee-gap: var(--space-24);
 
     display: block;
     margin-inline: 0;

@@ -15,21 +15,21 @@
 .star-summary__stars {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: 0.21875rem;
   @include respond-down(md) {
-    gap: var(--space-2);
+    gap: var(--space-3);
   }
 }
 
 // All three icons share a 16×16 viewBox, so a fixed square keeps them aligned.
 .star-summary__stars svg {
   display: block;
-  width: 1rem;
-  height: 1rem;
+  width: 0.875rem;
+  height: 0.83125rem;
   flex: none;
   @include respond-down(md) {
-    width: 0.8rem;
-    height: 0.8rem;
+    width: 0.75rem;
+    height: 0.7125rem;
   }
 }
 

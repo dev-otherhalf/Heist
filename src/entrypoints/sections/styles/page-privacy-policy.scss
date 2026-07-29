@@ -3,7 +3,11 @@
 @use "../../../styles/components/typography";
 @use "../../../styles/settings/breakpoints" as *;
 
-.page-privacy-policy {
+section.page-privacy-policy.section.page-width-content {
+  background-image: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793);
+  @include respond-down(md) {
+    background-image: url(https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Mobile.jpg?v=1785306792);
+  }
   --page-content-width: 55rem;
   --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
 

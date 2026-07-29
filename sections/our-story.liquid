@@ -27,40 +27,22 @@
     --our-story-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
     --our-story-gap-mobile: {{ section.settings.block_gap_mobile }}px;
     --our-story-gap-desktop: {{ section.settings.block_gap_desktop }}px;
+    {%- if section.settings.background_image_desktop != blank -%}
+      --our-story-background-desktop: url('{{ section.settings.background_image_desktop | image_url: width: 2560 }}');
+    {%- elsif section.settings.background_image_mobile != blank -%}
+      --our-story-background-desktop: url('{{ section.settings.background_image_mobile | image_url: width: 1500 }}');
+    {%- endif -%}
+    {%- if section.settings.background_image_mobile != blank -%}
+      --our-story-background-mobile: url('{{ section.settings.background_image_mobile | image_url: width: 1500 }}');
+    {%- elsif section.settings.background_image_desktop != blank -%}
+      --our-story-background-mobile: url('{{ section.settings.background_image_desktop | image_url: width: 1500 }}');
+    {%- endif -%}
   }
 {%- endstyle -%}
 
 <section class="our-story-section">
   {%- if section.settings.background_image_desktop != blank or section.settings.background_image_mobile != blank -%}
-    <picture class="our-story__background">
-      {%- if section.settings.background_image_mobile != blank -%}
-        <source
-          media="(max-width: 989px)"
-          srcset="{{ section.settings.background_image_mobile | image_url: width: 1500 }}"
-        >
-      {%- endif -%}
-      {%- if section.settings.background_image_desktop != blank -%}
-        {{
-          section.settings.background_image_desktop
-          | image_url: width: 2560
-          | image_tag:
-            widths: '750, 1100, 1500, 2000, 2560',
-            sizes: '100vw',
-            loading: 'lazy',
-            class: 'our-story__background-image'
-        }}
-      {%- else -%}
-        {{
-          section.settings.background_image_mobile
-          | image_url: width: 1500
-          | image_tag:
-            widths: '750, 1100, 1500',
-            sizes: '100vw',
-            loading: 'lazy',
-            class: 'our-story__background-image'
-        }}
-      {%- endif -%}
-    </picture>
+    <div class="our-story__background" aria-hidden="true"></div>
   {%- endif -%}
 
   <div class="our-story">

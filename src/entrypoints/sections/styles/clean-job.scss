@@ -249,6 +249,10 @@
       line-height: var(--lh-t2);
       letter-spacing: var(--ls-t2);
       margin-right: -0.2rem;
+      text-wrap: unset;
+      &:nth-last-child(1) {
+        padding-right: var(--space-10);
+      }
     }
 
     @include respond-to(lg) {
