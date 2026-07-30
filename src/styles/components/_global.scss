@@ -85,6 +85,20 @@ html.lenis body {
   }
 }
 
+html.no-smooth-scroll,
+html.no-smooth-scroll body {
+  @include respond-to(lg) {
+    height: auto;
+    overflow-x: clip;
+    overflow-y: auto;
+  }
+}
+
+html.page-scroll-locked,
+html.page-scroll-locked body {
+  overflow: hidden;
+}
+
 .page-wrapper {
   height: auto;
   min-height: 100%;

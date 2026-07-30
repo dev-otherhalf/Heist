@@ -1,3 +1,5 @@
+import { lockPageScroll, unlockPageScroll } from "./page-scroll-lock";
+
 class HeistFMPlayer {
   constructor(root) {
     if (!root || root.dataset.heistPlayerReady === "true") return;
@@ -410,9 +412,11 @@ if (header) {
   if (mobileMenu) {
     mobileMenu.addEventListener("toggle", () => {
       if (mobileMenu.open) {
-        window.lenis?.stop();
+        if (window.lenis) window.lenis.stop();
+        else lockPageScroll();
       } else {
-        window.lenis?.start();
+        if (window.lenis) window.lenis.start();
+        else unlockPageScroll();
       }
     });
   }

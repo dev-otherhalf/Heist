@@ -1133,6 +1133,12 @@
     "settings": [
       {
         "type": "checkbox",
+        "id": "smooth_scroll_enabled",
+        "label": "t:settings.smooth_scroll_enabled",
+        "default": true
+      },
+      {
+        "type": "checkbox",
         "id": "page_transition_enabled",
         "label": "t:settings.page_transition_enabled",
         "default": true

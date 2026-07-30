@@ -9,6 +9,10 @@ const reducedMotionQuery = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
 
+function isSmoothScrollEnabled() {
+  return document.body?.dataset.smoothScroll !== "false";
+}
+
 function createLenis() {
   const pageWrapper = document.querySelector(".page-wrapper");
   const isDesktop = desktopMediaQuery.matches;
@@ -71,7 +75,7 @@ function reinitializeLenis() {
 
   window.lenis = null;
 
-  if (reducedMotionQuery.matches) {
+  if (reducedMotionQuery.matches || !isSmoothScrollEnabled()) {
     return;
   }
 
@@ -80,6 +84,11 @@ function reinitializeLenis() {
 
 export function initLenis() {
   if (typeof window === "undefined") {
+    return null;
+  }
+
+  if (!isSmoothScrollEnabled()) {
+    destroyLenis();
     return null;
   }
 

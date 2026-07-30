@@ -82,7 +82,20 @@
 
       <div class="quality-showcase__media">
         <div class="quality-showcase__video-wrapper">
-          {% if section.settings.video != blank %}
+          {% if section.settings.video_url != blank %}
+            <video
+              class="quality-showcase__video js-autoplay-video"
+              preload="none"
+              {% if section.settings.video_fallback_image != blank %}
+                poster="{{ section.settings.video_fallback_image | image_url: width: 1600 }}"
+              {% endif %}
+              muted
+              loop
+              playsinline
+            >
+              <source src="{{ section.settings.video_url | escape }}">
+            </video>
+          {% elsif section.settings.video != blank %}
             {{
               section.settings.video
               | video_tag:
@@ -191,10 +204,16 @@
       "label": "Video"
     },
     {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL",
+      "info": "Direct link to an .mp4 or .webm file. Takes priority over the uploaded video."
+    },
+    {
       "type": "image_picker",
       "id": "video_fallback_image",
       "label": "Fallback image",
-      "info": "Shown when no video is set"
+      "info": "Used as the poster, and shown when no video is set"
     },
     {
       "type": "header",

@@ -10,6 +10,8 @@
   assign features_left = standards.features_left.value | default: standards.features_left
   assign features_right = standards.features_right.value | default: standards.features_right
   assign standards_video = standards.video.value | default: standards.video
+
+  assign standards_video_url = standards.video_url.value | default: standards.video_url
   assign poster_image = standards.video_fallback_image.value | default: standards.video_fallback_image
   assign background_image = standards.background_image.value | default: standards.background_image
   assign background_image_mobile = standards.background_image_mobile.value | default: standards.background_image_mobile
@@ -139,7 +141,20 @@
         <div class="coffee-standards__media">
           <div class="coffee-standards__media-inner">
             
-            {%- if standards_video != blank -%}
+            {%- if standards_video_url != blank -%}
+              <video
+                class="coffee-standards__video js-autoplay-video"
+                preload="none"
+                {% if poster_image != blank %}
+                  poster="{{ poster_image | image_url: width: 1200 }}"
+                {% endif %}
+                muted
+                loop
+                playsinline
+              >
+                <source src="{{ standards_video_url | escape }}">
+              </video>
+            {%- elsif standards_video != blank -%}
               <video
                 class="coffee-standards__video js-autoplay-video"
                 preload="none"

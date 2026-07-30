@@ -249,7 +249,8 @@
     "video_autoplay": "Videos will be muted by default",
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
-    "media_type_info": "Features are populated from your menu links"
+    "media_type_info": "Features are populated from your menu links",
+    "smooth_scroll": "Turn off to use the browser's native scrolling"
   },
   "names": {
     "column": "Column",
@@ -1229,7 +1230,8 @@
     "klaviyo_public_api_key": "Klaviyo Public API Key",
     "klaviyo_list_id": "Klaviyo List ID",
     "site_lock_image": "Barcode image",
-    "site_lock_image_mobile": "Barcode image Mobile"
+    "site_lock_image_mobile": "Barcode image Mobile",
+    "smooth_scroll_enabled": "Lenis scrolling"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

@@ -1,16 +1,12 @@
 /**
- * Locks background scrolling while the cart drawer is open.
- *
- * Uses lenis' `isLocked` rather than `stop()`: `stop()` applies
- * `.lenis-stopped { overflow: hidden }` to the scroll container, which resets it
- * to the top (the visible jump). `isLocked` instead preventDefaults wheel/touch
- * in place — no overflow change, no jump — and only adds a harmless
- * `lenis-locked` class. Nested scroll (the drawer's own scroll area) still works
- * because lenis runs with `allowNestedScroll: true`.
+ * Locks background scrolling while the cart drawer is open — see
+ * page-scroll-lock.js for how the lock works with and without lenis.
  *
  * Scoped to the cart drawer only: `theme-drawer:open` / `theme-drawer:close`
  * bubble from each drawer's <theme-drawer>, so we match on the target id.
  */
+
+import { lockPageScroll, unlockPageScroll } from "./page-scroll-lock";
 
 const CART_DRAWER_ID = "cart-drawer";
 const OPEN_ON_LOAD_FLAG = "heist:open-cart-drawer";
@@ -95,15 +91,14 @@ export function initCartDrawerScrollLock() {
   }
 
   document.addEventListener("theme-drawer:open", (event) => {
-    if (isCartDrawerEvent(event) && window.lenis) {
-      window.lenis.reset();
-      window.lenis.isLocked = true;
+    if (isCartDrawerEvent(event)) {
+      lockPageScroll();
     }
   });
 
   document.addEventListener("theme-drawer:close", (event) => {
-    if (isCartDrawerEvent(event) && window.lenis) {
-      window.lenis.isLocked = false;
+    if (isCartDrawerEvent(event)) {
+      unlockPageScroll();
     }
   });
 }

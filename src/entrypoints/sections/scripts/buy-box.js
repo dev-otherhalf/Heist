@@ -24,6 +24,11 @@
  * auto-refresh.
  */
 
+import {
+  lockPageScroll,
+  unlockPageScroll,
+} from "../../../scripts/page-scroll-lock";
+
 // Same URL as the "@shopify/events" importmap entry (see snippets/scripts.liquid).
 // Held in a variable + @vite-ignore so Vite leaves the dynamic import untouched.
 const STANDARD_EVENTS_URL =
@@ -40,20 +45,6 @@ function loadStandardEvents() {
     );
   }
   return eventsModulePromise;
-}
-
-// Background scroll lock (same as the brewing-guide drawer). lenis' `isLocked`
-// freezes the page in place — preventDefaults wheel/touch with no overflow
-// change and no jump — while the tooltip modal is open.
-function lockPageScroll() {
-  if (window.lenis) {
-    window.lenis.reset();
-    window.lenis.isLocked = true;
-  }
-}
-
-function unlockPageScroll() {
-  if (window.lenis) window.lenis.isLocked = false;
 }
 
 // Theme.routes.cart_add_url already carries the `.js` suffix (see scripts.liquid).

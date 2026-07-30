@@ -4,6 +4,7 @@
 {%- liquid
   assign heading = section.settings.heading
   assign clean_video = section.settings.video
+  assign clean_video_url = section.settings.video_url
   assign poster_image = section.settings.video_fallback_image
   assign annotation_value = section.settings.video_number
   assign background_image = section.settings.background_image
@@ -53,7 +54,20 @@
 
       <div class="clean-job__media">
         <div class="clean-job__media-inner">
-          {%- if clean_video != blank -%}
+          {%- if clean_video_url != blank -%}
+            <video
+              class="clean-job__video js-autoplay-video"
+              preload="none"
+              {% if poster_image != blank %}
+                poster="{{ poster_image | image_url: width: 1200 }}"
+              {% endif %}
+              muted
+              loop
+              playsinline
+            >
+              <source src="{{ clean_video_url | escape }}">
+            </video>
+          {%- elsif clean_video != blank -%}
             <video
               class="clean-job__video js-autoplay-video"
               preload="none"
@@ -149,6 +163,12 @@
       "type": "video",
       "id": "video",
       "label": "Video"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL",
+      "info": "Direct link to an .mp4 or .webm file. Takes priority over the uploaded video."
     },
     {
       "type": "image_picker",

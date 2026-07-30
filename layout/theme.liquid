@@ -1,8 +1,6 @@
 <!doctype html>
 <html
-  {% if request.design_mode %}
-    class="shopify-design-mode"
-  {% endif %}
+  class="{% if request.design_mode %}shopify-design-mode{% endif %}{% unless settings.smooth_scroll_enabled %} no-smooth-scroll{% endunless %}"
   lang="{{ request.locale.iso_code }}"
 >
   <head>
@@ -54,7 +52,10 @@
     {{ content_for_header }}
   </head>
 
-  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }} {{ template.name }}">
+  <body
+    class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }} {{ template.name }}"
+    data-smooth-scroll="{{ settings.smooth_scroll_enabled }}"
+  >
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
 
     {% render 'chat-drawer' %}
