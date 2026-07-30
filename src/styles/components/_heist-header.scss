@@ -209,10 +209,10 @@
   }
 
   a {
+    text-underline-offset: var(--space-6);
     &:hover,
     &[aria-current="page"] {
       text-decoration: underline;
-      text-underline-offset: var(--space-6);
     }
     &.heist-desktop-header__shop {
       text-decoration: none;
@@ -399,8 +399,7 @@
   @include respond-down(lg) {
     bottom: 0;
     top: auto;
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(100%);
     grid-template-columns: 1fr;
     border-bottom: none;
   }

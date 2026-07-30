@@ -84,6 +84,9 @@
     margin: 0 auto;
     position: relative;
     z-index: 5;
+    transform: scale(calc(1 + (var(--heist-progress) * 0.25)));
+    transform-origin: center;
+    will-change: transform;
 
     picture,
     &-image {
@@ -417,7 +420,7 @@
     }
 
     &__brand-logo {
-      width: 100%;
+      width: 80%;
       max-width: 21rem;
     }
     &__glass-motion {

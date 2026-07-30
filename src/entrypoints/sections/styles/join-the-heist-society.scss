@@ -26,8 +26,7 @@
   }
 
   &__media {
-    border: var(--bw-2) solid var(--ink);
-    border-bottom: 0;
+    border-right: var(--bw-2) solid var(--ink);
     overflow: hidden;
     position: relative;
   }

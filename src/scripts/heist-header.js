@@ -301,6 +301,12 @@ const pageWrapper = document.querySelector(".page-wrapper");
 const scrollCaptureSection = header?.classList.contains("heist-header--home")
   ? document.querySelector(".heist-scroll-capture-section")
   : null;
+const scrollCaptureBrandLogo = scrollCaptureSection?.querySelector(
+  ".heist-capture__brand-logo",
+);
+const scrollCaptureButton = scrollCaptureSection?.querySelector(
+  ".heist-capture__button",
+);
 
 if (header) {
   let lastScrollTop = 0;
@@ -340,18 +346,36 @@ if (header) {
     const delta = scrollTop - lastScrollTop;
     const beyondHeader = scrollTop > header.offsetHeight + 24;
     const isDesktop = window.matchMedia("(min-width: 990px)").matches;
+    const isHomeHeader = header.classList.contains("heist-header--home");
+    const headerTriggerOffset = header.offsetHeight;
+    const hasReachedBrandLogo =
+      isHomeHeader &&
+      scrollCaptureBrandLogo &&
+      scrollCaptureBrandLogo.getBoundingClientRect().top <= headerTriggerOffset;
+    const hasReachedCaptureButton =
+      isHomeHeader &&
+      scrollCaptureButton &&
+      scrollCaptureButton.getBoundingClientRect().top <= headerTriggerOffset;
     const hasClearedScrollCapture =
       !scrollCaptureSection ||
       scrollCaptureSection.getBoundingClientRect().bottom <= 0;
-    const canShowStickyHeader = beyondHeader && hasClearedScrollCapture;
-    const canShowStickyCta =
-      beyondHeader && (!isDesktop || hasClearedScrollCapture);
+    const canShowStickyHeader = isHomeHeader
+      ? hasReachedCaptureButton
+      : beyondHeader && hasClearedScrollCapture;
+    const canShowStickyCta = isHomeHeader
+      ? hasReachedCaptureButton
+      : beyondHeader && (!isDesktop || hasClearedScrollCapture);
     const atTop = scrollTop <= 1;
     const isSticky =
       header.classList.contains("is-pinned") ||
       header.classList.contains("is-hidden");
 
-    if (atTop || !hasClearedScrollCapture) {
+    if (atTop || (isHomeHeader && !hasReachedBrandLogo)) {
+      header.classList.remove("is-pinned", "is-hidden");
+    } else if (isHomeHeader && !canShowStickyHeader) {
+      header.classList.remove("is-pinned");
+      header.classList.add("is-hidden");
+    } else if (!isHomeHeader && !hasClearedScrollCapture) {
       header.classList.remove("is-pinned", "is-hidden");
     } else if (delta > 3 && canShowStickyHeader) {
       header.classList.remove("is-pinned");

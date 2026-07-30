@@ -5,6 +5,18 @@
   assign heading = section.settings.heading
   assign clean_video = section.settings.video
   assign clean_video_url = section.settings.video_url
+  assign clean_video_tablet = section.settings.video_tablet
+  assign clean_video_url_tablet = section.settings.video_url_tablet
+  assign clean_video_mobile = section.settings.video_mobile
+  assign clean_video_url_mobile = section.settings.video_url_mobile
+  assign has_tablet_video = false
+  if clean_video_tablet != blank or clean_video_url_tablet != blank
+    assign has_tablet_video = true
+  endif
+  assign has_mobile_video = false
+  if clean_video_mobile != blank or clean_video_url_mobile != blank
+    assign has_mobile_video = true
+  endif
   assign poster_image = section.settings.video_fallback_image
   assign annotation_value = section.settings.video_number
   assign background_image = section.settings.background_image
@@ -46,6 +58,110 @@
     </picture>
   {%- endif -%}
 
+  <div class="clean-job__video-background" aria-hidden="true">
+    {%- if clean_video_url != blank -%}
+      <video
+        class="clean-job__video clean-job__video--desktop js-autoplay-video{% if has_tablet_video %} clean-job__video--hide-tablet{% endif %}{% if has_mobile_video or has_tablet_video %} clean-job__video--hide-mobile{% endif %}"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 2000 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        <source src="{{ clean_video_url | escape }}">
+      </video>
+    {%- elsif clean_video != blank -%}
+      <video
+        class="clean-job__video clean-job__video--desktop js-autoplay-video{% if has_tablet_video %} clean-job__video--hide-tablet{% endif %}{% if has_mobile_video or has_tablet_video %} clean-job__video--hide-mobile{% endif %}"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 2000 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        {%- if clean_video.sources.size > 0 -%}
+          {%- for source in clean_video.sources -%}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {%- endfor -%}
+        {%- else -%}
+          <source src="{{ clean_video | file_url }}">
+        {%- endif -%}
+      </video>
+    {%- endif -%}
+
+    {%- if clean_video_url_tablet != blank -%}
+      <video
+        class="clean-job__video clean-job__video--tablet js-autoplay-video{% unless has_mobile_video %} clean-job__video--tablet-mobile-fallback{% endunless %}"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 1600 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        <source src="{{ clean_video_url_tablet | escape }}">
+      </video>
+    {%- elsif clean_video_tablet != blank -%}
+      <video
+        class="clean-job__video clean-job__video--tablet js-autoplay-video{% unless has_mobile_video %} clean-job__video--tablet-mobile-fallback{% endunless %}"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 1600 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        {%- if clean_video_tablet.sources.size > 0 -%}
+          {%- for source in clean_video_tablet.sources -%}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {%- endfor -%}
+        {%- else -%}
+          <source src="{{ clean_video_tablet | file_url }}">
+        {%- endif -%}
+      </video>
+    {%- endif -%}
+
+    {%- if clean_video_url_mobile != blank -%}
+      <video
+        class="clean-job__video clean-job__video--mobile js-autoplay-video"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 1200 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        <source src="{{ clean_video_url_mobile | escape }}">
+      </video>
+    {%- elsif clean_video_mobile != blank -%}
+      <video
+        class="clean-job__video clean-job__video--mobile js-autoplay-video"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 1200 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        {%- if clean_video_mobile.sources.size > 0 -%}
+          {%- for source in clean_video_mobile.sources -%}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {%- endfor -%}
+        {%- else -%}
+          <source src="{{ clean_video_mobile | file_url }}">
+        {%- endif -%}
+      </video>
+    {%- endif -%}
+  </div>
+
   <div class="clean-job__inner">
     <div class="clean-job__grid">
       {%- if heading != blank -%}
@@ -54,51 +170,6 @@
 
       <div class="clean-job__media">
         <div class="clean-job__media-inner">
-          {%- if clean_video_url != blank -%}
-            <video
-              class="clean-job__video js-autoplay-video"
-              preload="none"
-              {% if poster_image != blank %}
-                poster="{{ poster_image | image_url: width: 1200 }}"
-              {% endif %}
-              muted
-              loop
-              playsinline
-            >
-              <source src="{{ clean_video_url | escape }}">
-            </video>
-          {%- elsif clean_video != blank -%}
-            <video
-              class="clean-job__video js-autoplay-video"
-              preload="none"
-              {% if poster_image != blank %}
-                poster="{{ poster_image | image_url: width: 1200 }}"
-              {% endif %}
-              muted
-              loop
-              playsinline
-            >
-              {%- if clean_video.sources.size > 0 -%}
-                {%- for source in clean_video.sources -%}
-                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
-                {%- endfor -%}
-              {%- else -%}
-                <source src="{{ clean_video | file_url }}">
-              {%- endif -%}
-            </video>
-          {%- elsif poster_image != blank -%}
-            {{
-              poster_image
-              | image_url: width: 1200
-              | image_tag:
-                widths: '600, 900, 1200',
-                sizes: '(min-width: 990px) 30rem, 100vw',
-                loading: 'lazy',
-                alt: poster_image.alt,
-                class: 'clean-job__poster'
-            }}
-          {%- endif -%}
-
           <div class="clean-job__frame" aria-hidden="true"></div>
 
           {%- if annotation_value != blank -%}
@@ -162,13 +233,37 @@
     {
       "type": "video",
       "id": "video",
-      "label": "Video"
+      "label": "Desktop video"
     },
     {
       "type": "text",
       "id": "video_url",
-      "label": "Video URL",
+      "label": "Desktop video URL",
       "info": "Direct link to an .mp4 or .webm file. Takes priority over the uploaded video."
+    },
+    {
+      "type": "video",
+      "id": "video_tablet",
+      "label": "Tablet video",
+      "info": "Used from 750px to 989px. Uses the desktop video when left blank."
+    },
+    {
+      "type": "text",
+      "id": "video_url_tablet",
+      "label": "Tablet video URL",
+      "info": "Direct link to an .mp4 or .webm file. Takes priority over the uploaded tablet video."
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile video",
+      "info": "Used up to 749px. Uses the tablet video, then desktop video, when left blank."
+    },
+    {
+      "type": "text",
+      "id": "video_url_mobile",
+      "label": "Mobile video URL",
+      "info": "Direct link to an .mp4 or .webm file. Takes priority over the uploaded mobile video."
     },
     {
       "type": "image_picker",

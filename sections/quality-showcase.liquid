@@ -5,6 +5,21 @@
   assign feature_blocks = section.blocks | where: 'type', 'feature_point'
   assign annotation_value = section.settings.annotation_value
   assign fallback_alt = 'Drink Heist'
+  assign showcase_video = section.settings.video
+  assign showcase_video_url = section.settings.video_url
+  assign showcase_video_tablet = section.settings.video_tablet
+  assign showcase_video_url_tablet = section.settings.video_url_tablet
+  assign showcase_video_mobile = section.settings.video_mobile
+  assign showcase_video_url_mobile = section.settings.video_url_mobile
+  assign poster_image = section.settings.video_fallback_image
+  assign has_tablet_video = false
+  if showcase_video_tablet != blank or showcase_video_url_tablet != blank
+    assign has_tablet_video = true
+  endif
+  assign has_mobile_video = false
+  if showcase_video_mobile != blank or showcase_video_url_mobile != blank
+    assign has_mobile_video = true
+  endif
 -%}
 
 <section
@@ -55,6 +70,98 @@
     </picture>
   {% endif %}
 
+  <div class="quality-showcase__video-background" aria-hidden="true">
+    {%- if showcase_video_url != blank -%}
+      <video
+        class="quality-showcase__video quality-showcase__video--desktop js-autoplay-video{% if has_tablet_video %} quality-showcase__video--hide-tablet{% endif %}{% if has_mobile_video or has_tablet_video %} quality-showcase__video--hide-mobile{% endif %}"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 2000 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        <source src="{{ showcase_video_url | escape }}">
+      </video>
+    {%- elsif showcase_video != blank -%}
+      <video
+        class="quality-showcase__video quality-showcase__video--desktop js-autoplay-video{% if has_tablet_video %} quality-showcase__video--hide-tablet{% endif %}{% if has_mobile_video or has_tablet_video %} quality-showcase__video--hide-mobile{% endif %}"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 2000 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        {%- for source in showcase_video.sources -%}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {%- endfor -%}
+      </video>
+    {%- endif -%}
+
+    {%- if showcase_video_url_tablet != blank -%}
+      <video
+        class="quality-showcase__video quality-showcase__video--tablet js-autoplay-video{% unless has_mobile_video %} quality-showcase__video--tablet-mobile-fallback{% endunless %}"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 1600 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        <source src="{{ showcase_video_url_tablet | escape }}">
+      </video>
+    {%- elsif showcase_video_tablet != blank -%}
+      <video
+        class="quality-showcase__video quality-showcase__video--tablet js-autoplay-video{% unless has_mobile_video %} quality-showcase__video--tablet-mobile-fallback{% endunless %}"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 1600 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        {%- for source in showcase_video_tablet.sources -%}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {%- endfor -%}
+      </video>
+    {%- endif -%}
+
+    {%- if showcase_video_url_mobile != blank -%}
+      <video
+        class="quality-showcase__video quality-showcase__video--mobile js-autoplay-video"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 1200 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        <source src="{{ showcase_video_url_mobile | escape }}">
+      </video>
+    {%- elsif showcase_video_mobile != blank -%}
+      <video
+        class="quality-showcase__video quality-showcase__video--mobile js-autoplay-video"
+        preload="none"
+        {% if poster_image != blank %}
+          poster="{{ poster_image | image_url: width: 1200 }}"
+        {% endif %}
+        muted
+        loop
+        playsinline
+      >
+        {%- for source in showcase_video_mobile.sources -%}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {%- endfor -%}
+      </video>
+    {%- endif -%}
+  </div>
+
   <div class="page-width">
     {% if section.settings.heading != blank %}
       <div class="quality-showcase__header">
@@ -81,47 +188,7 @@
       </div>
 
       <div class="quality-showcase__media">
-        <div class="quality-showcase__video-wrapper">
-          {% if section.settings.video_url != blank %}
-            <video
-              class="quality-showcase__video js-autoplay-video"
-              preload="none"
-              {% if section.settings.video_fallback_image != blank %}
-                poster="{{ section.settings.video_fallback_image | image_url: width: 1600 }}"
-              {% endif %}
-              muted
-              loop
-              playsinline
-            >
-              <source src="{{ section.settings.video_url | escape }}">
-            </video>
-          {% elsif section.settings.video != blank %}
-            {{
-              section.settings.video
-              | video_tag:
-                image_size: '1600x',
-                autoplay: false,
-                preload: 'none',
-                loop: true,
-                muted: true,
-                controls: false,
-                playsinline: true,
-                class: 'quality-showcase__video js-autoplay-video'
-            }}
-          {% elsif section.settings.video_fallback_image != blank %}
-            {% assign poster_alt = section.settings.heading | strip_html | strip | default: fallback_alt %}
-            {{
-              section.settings.video_fallback_image
-              | image_url: width: 1600
-              | image_tag:
-                widths: '640, 960, 1280, 1600',
-                sizes: '(min-width: 990px) 40rem, 100vw',
-                loading: 'lazy',
-                alt: poster_alt,
-                class: 'quality-showcase__poster'
-            }}
-          {% endif %}
-        </div>
+        <div class="quality-showcase__video-wrapper"></div>
 
         <div class="quality-showcase__frame" aria-hidden="true"></div>
 
@@ -201,13 +268,37 @@
     {
       "type": "video",
       "id": "video",
-      "label": "Video"
+      "label": "Desktop video"
     },
     {
       "type": "text",
       "id": "video_url",
-      "label": "Video URL",
+      "label": "Desktop video URL",
       "info": "Direct link to an .mp4 or .webm file. Takes priority over the uploaded video."
+    },
+    {
+      "type": "video",
+      "id": "video_tablet",
+      "label": "Tablet video",
+      "info": "Used from 750px to 989px. Uses the desktop video when left blank."
+    },
+    {
+      "type": "text",
+      "id": "video_url_tablet",
+      "label": "Tablet video URL",
+      "info": "Direct link to an .mp4 or .webm file. Takes priority over the uploaded tablet video."
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile video",
+      "info": "Used up to 749px. Uses the tablet video, then desktop video, when left blank."
+    },
+    {
+      "type": "text",
+      "id": "video_url_mobile",
+      "label": "Mobile video URL",
+      "info": "Direct link to an .mp4 or .webm file. Takes priority over the uploaded mobile video."
     },
     {
       "type": "image_picker",

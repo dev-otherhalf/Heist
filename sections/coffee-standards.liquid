@@ -10,8 +10,19 @@
   assign features_left = standards.features_left.value | default: standards.features_left
   assign features_right = standards.features_right.value | default: standards.features_right
   assign standards_video = standards.video.value | default: standards.video
-
   assign standards_video_url = standards.video_url.value | default: standards.video_url
+  assign standards_video_tablet = standards.video_tablet.value | default: standards.video_tablet
+  assign standards_video_url_tablet = standards.video_url_tablet.value | default: standards.video_url_tablet
+  assign standards_video_mobile = standards.video_mobile.value | default: standards.video_mobile
+  assign standards_video_url_mobile = standards.video_url_mobile.value | default: standards.video_url_mobile
+  assign has_tablet_video = false
+  if standards_video_tablet != blank or standards_video_url_tablet != blank
+    assign has_tablet_video = true
+  endif
+  assign has_mobile_video = false
+  if standards_video_mobile != blank or standards_video_url_mobile != blank
+    assign has_mobile_video = true
+  endif
   assign poster_image = standards.video_fallback_image.value | default: standards.video_fallback_image
   assign background_image = standards.background_image.value | default: standards.background_image
   assign background_image_mobile = standards.background_image_mobile.value | default: standards.background_image_mobile
@@ -74,6 +85,110 @@
         }}
       </picture>
     {%- endif -%}
+
+    <div class="coffee-standards__video-background" aria-hidden="true">
+      {%- if standards_video_url != blank -%}
+        <video
+          class="coffee-standards__video coffee-standards__video--desktop js-autoplay-video{% if has_tablet_video %} coffee-standards__video--hide-tablet{% endif %}{% if has_mobile_video or has_tablet_video %} coffee-standards__video--hide-mobile{% endif %}"
+          preload="none"
+          {% if poster_image != blank %}
+            poster="{{ poster_image | image_url: width: 2000 }}"
+          {% endif %}
+          muted
+          loop
+          playsinline
+        >
+          <source src="{{ standards_video_url | escape }}">
+        </video>
+      {%- elsif standards_video != blank -%}
+        <video
+          class="coffee-standards__video coffee-standards__video--desktop js-autoplay-video{% if has_tablet_video %} coffee-standards__video--hide-tablet{% endif %}{% if has_mobile_video or has_tablet_video %} coffee-standards__video--hide-mobile{% endif %}"
+          preload="none"
+          {% if poster_image != blank %}
+            poster="{{ poster_image | image_url: width: 2000 }}"
+          {% endif %}
+          muted
+          loop
+          playsinline
+        >
+          {%- if standards_video.sources.size > 0 -%}
+            {%- for source in standards_video.sources -%}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- endfor -%}
+          {%- else -%}
+            <source src="{{ standards_video | file_url }}">
+          {%- endif -%}
+        </video>
+      {%- endif -%}
+
+      {%- if standards_video_url_tablet != blank -%}
+        <video
+          class="coffee-standards__video coffee-standards__video--tablet js-autoplay-video{% unless has_mobile_video %} coffee-standards__video--tablet-mobile-fallback{% endunless %}"
+          preload="none"
+          {% if poster_image != blank %}
+            poster="{{ poster_image | image_url: width: 1600 }}"
+          {% endif %}
+          muted
+          loop
+          playsinline
+        >
+          <source src="{{ standards_video_url_tablet | escape }}">
+        </video>
+      {%- elsif standards_video_tablet != blank -%}
+        <video
+          class="coffee-standards__video coffee-standards__video--tablet js-autoplay-video{% unless has_mobile_video %} coffee-standards__video--tablet-mobile-fallback{% endunless %}"
+          preload="none"
+          {% if poster_image != blank %}
+            poster="{{ poster_image | image_url: width: 1600 }}"
+          {% endif %}
+          muted
+          loop
+          playsinline
+        >
+          {%- if standards_video_tablet.sources.size > 0 -%}
+            {%- for source in standards_video_tablet.sources -%}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- endfor -%}
+          {%- else -%}
+            <source src="{{ standards_video_tablet | file_url }}">
+          {%- endif -%}
+        </video>
+      {%- endif -%}
+
+      {%- if standards_video_url_mobile != blank -%}
+        <video
+          class="coffee-standards__video coffee-standards__video--mobile js-autoplay-video"
+          preload="none"
+          {% if poster_image != blank %}
+            poster="{{ poster_image | image_url: width: 1200 }}"
+          {% endif %}
+          muted
+          loop
+          playsinline
+        >
+          <source src="{{ standards_video_url_mobile | escape }}">
+        </video>
+      {%- elsif standards_video_mobile != blank -%}
+        <video
+          class="coffee-standards__video coffee-standards__video--mobile js-autoplay-video"
+          preload="none"
+          {% if poster_image != blank %}
+            poster="{{ poster_image | image_url: width: 1200 }}"
+          {% endif %}
+          muted
+          loop
+          playsinline
+        >
+          {%- if standards_video_mobile.sources.size > 0 -%}
+            {%- for source in standards_video_mobile.sources -%}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- endfor -%}
+          {%- else -%}
+            <source src="{{ standards_video_mobile | file_url }}">
+          {%- endif -%}
+        </video>
+      {%- endif -%}
+    </div>
 
     <div class="coffee-standards__inner">
       {%- if heading != blank -%}
@@ -140,52 +255,6 @@
 
         <div class="coffee-standards__media">
           <div class="coffee-standards__media-inner">
-            
-            {%- if standards_video_url != blank -%}
-              <video
-                class="coffee-standards__video js-autoplay-video"
-                preload="none"
-                {% if poster_image != blank %}
-                  poster="{{ poster_image | image_url: width: 1200 }}"
-                {% endif %}
-                muted
-                loop
-                playsinline
-              >
-                <source src="{{ standards_video_url | escape }}">
-              </video>
-            {%- elsif standards_video != blank -%}
-              <video
-                class="coffee-standards__video js-autoplay-video"
-                preload="none"
-                {% if poster_image != blank %}
-                  poster="{{ poster_image | image_url: width: 1200 }}"
-                {% endif %}
-                muted
-                loop
-                playsinline
-              >
-                {%- if standards_video.sources.size > 0 -%}
-                  {%- for source in standards_video.sources -%}
-                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
-                  {%- endfor -%}
-                {%- else -%}
-                  <source src="{{ standards_video | file_url }}">
-                {%- endif -%}
-              </video>
-            {%- elsif poster_image != blank -%}
-              {{
-                poster_image
-                | image_url: width: 1200
-                | image_tag:
-                  widths: '600, 900, 1200',
-                  sizes: '(min-width: 990px) 40rem, 100vw',
-                  loading: 'lazy',
-                  alt: poster_image.alt,
-                  class: 'coffee-standards__poster'
-              }}
-            {%- endif -%}
-
             <div class="coffee-standards__frame" aria-hidden="true"></div>
 
             {%- if annotation_value != blank -%}
