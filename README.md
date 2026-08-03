@@ -1,4 +1,4 @@
-# Studs Theme
+# Theme
 
 Shopify **Horizon** theme with a **Vite** layer for the JS/SCSS we author.
 
@@ -11,7 +11,7 @@ Shopify **Horizon** theme with a **Vite** layer for the JS/SCSS we author.
 
 ## Prerequisites
 
-- Node 20+ · Shopify CLI 3.77+ · access to `studs-dev.myshopify.com`
+- Node 20+ · Shopify CLI 3.77+ · access to `*.myshopify.com`
 
 ## Setup
 
