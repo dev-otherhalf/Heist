@@ -97,6 +97,7 @@ body:has(.brewing-guide__modal.is-open) {
     object-fit: cover;
   }
 
+  &__card-image--hover,
   &__card-video {
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -107,6 +108,8 @@ body:has(.brewing-guide__modal.is-open) {
   }
 
   @include respond-to(md) {
+    &__card:hover &__card-image--hover,
+    &__card:focus-visible &__card-image--hover,
     &__card:hover &__card-video,
     &__card:focus-visible &__card-video {
       opacity: 1;

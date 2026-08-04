@@ -48,6 +48,13 @@ assign fallback_alt = 'Drink Heist'
         | image_tag: loading: 'lazy', class: 'brewing-guide__card-image', alt: card_alt
         }}
         {% endif %}
+        {% if recipe.card_hover_image.value != blank %}
+        {{
+        recipe.card_hover_image.value
+        | image_url: width: 800
+        | image_tag: loading: 'lazy', class: 'brewing-guide__card-image brewing-guide__card-image--hover', alt: card_alt
+        }}
+        {% endif %}
         {% if recipe.card_video.value != blank %}
         {% assign card_video = recipe.card_video.value %}
         <video class="brewing-guide__card-video js-autoplay-video" muted loop playsinline>
