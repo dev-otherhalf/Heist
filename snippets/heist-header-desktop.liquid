@@ -22,7 +22,7 @@
           {{- link.title -}}
         </a>
       {% endfor %}
-      {% comment %} {% if shop.customer_accounts_enabled %}
+      {% if shop.customer_accounts_enabled %}
         <shopify-account class="heist-nav-account t-n1" menu="{{ section.settings.customer_account_menu }}">
           {% if customer %}
             <span>ACCOUNT</span>
@@ -30,7 +30,7 @@
             <span class="t-n1" slot="signed-out-avatar">ACCOUNT</span>
           {% endif %}
         </shopify-account>
-      {% endif %} {% endcomment %}
+      {% endif %}
     </nav>
     {% render 'heist-header-actions', section: section, hide_account: true %}
   </div>

@@ -66,11 +66,11 @@
       <nav class="heist-mobile-nav" aria-label="Mobile navigation">
         {% for link in menu.links %}
 
-          {% comment %} {% if forloop.index == 2 and shop.customer_accounts_enabled %}
+          {% if forloop.index == 2 and shop.customer_accounts_enabled %}
             <a href="{{ routes.account_url }}" class="t-s4">
               ACCOUNT
             </a>
-          {% endif %} {% endcomment %}
+          {% endif %}
 
           <a
             class="t-s4"

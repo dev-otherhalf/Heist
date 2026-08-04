@@ -2,13 +2,13 @@
   {% unless mobile %}
     {% unless hide_account %}
       {% if shop.customer_accounts_enabled %}
-        {% comment %} <shopify-account class="heist-actions__account" menu="{{ section.settings.customer_account_menu }}">
+        <shopify-account class="heist-actions__account" menu="{{ section.settings.customer_account_menu }}">
           {% if customer %}
             <span class="heist-actions__account-fallback t-n1">ACCOUNT</span>
           {% else %}
             <span class="t-n1" slot="signed-out-avatar">ACCOUNT</span>
           {% endif %}
-        </shopify-account> {% endcomment %}
+        </shopify-account>
       {% endif %}
     {% endunless %}
   {% endunless %}
