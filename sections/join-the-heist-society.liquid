@@ -40,7 +40,7 @@
 
 <section
   class="join-the-heist-society"
-  id="shopify-section-{{- section.id -}}"
+  id="{% if section.settings.custom_id != blank %}{{- section.settings.custom_id | escape -}}{% else %}shopify-section-{{- section.id -}}{% endif %}"
   style="
     --join-the-heist-society-padding-top-mobile: {{- section.settings.padding_top_mobile -}}px;
     --join-the-heist-society-padding-bottom-mobile: {{- section.settings.padding_bottom_mobile -}}px;
@@ -348,6 +348,11 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Section ID",
+    },
     {
       "type": "header",
       "content": "Content"

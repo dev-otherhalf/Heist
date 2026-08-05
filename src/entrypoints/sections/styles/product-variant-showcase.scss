@@ -390,6 +390,9 @@
         gap: 0.21875rem;
         svg {
           width: var(--space-14);
+          path {
+            fill: var(--cream);
+          }
         }
       }
       .star-summary__count {

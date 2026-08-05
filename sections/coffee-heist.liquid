@@ -39,6 +39,9 @@
 
 <div
   class="coffee-heist-section"
+  {% if section.settings.custom_id != blank %}
+    id="{{ section.settings.custom_id | escape }}"
+  {% endif %}
   {% if tabs_obj != blank and tabs_obj.tabs.value.size > 0 %}
     data-coffee-heist-tabs
   {% endif %}
@@ -424,6 +427,11 @@
   "tag": "section",
   "class": "coffee-heist-section-wrapper",
   "settings": [
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Section ID",
+    },
     {
       "type": "color",
       "id": "background_color",

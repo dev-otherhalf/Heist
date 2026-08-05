@@ -261,6 +261,7 @@
       "type": "coffee-heist",
       "name": "Coffee Heist Comparison",
       "settings": {
+        "custom_id": "homepage-coffee-heist-comparison",
         "background_color": "",
         "tabs_selection": "the-words-biggest-coffee-heist",
         "receipts_selection": "the-receipts-dont-lie",
@@ -314,6 +315,7 @@
       "block_order": ["product_bjHE3X", "product_zWXPXB", "product_43rK8n"],
       "name": "Join the Heist Society",
       "settings": {
+        "custom_id": "homepage-join-the-heist",
         "heading": "Join the \nHeist Society™",
         "subheading": "3 months prepaid today, then monthly. Pause or cancel anytime after.",
         "features": "Lowest price.\nFree shipping forever\nExclusive- Smuggle Bear with secret stash compartment\nExclusive- Collectible Matchbook each month\nExclusive- Coffee Storage Tin & Scoop\nAccess to Member Forum & Special Drops",
