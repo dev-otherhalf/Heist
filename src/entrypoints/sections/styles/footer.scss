@@ -346,8 +346,7 @@ body:has(.footer__audio) main {
         position: relative;
 
         &--empty {
-          .footer__audio-player-controls,
-          .footer__audio-player-progress {
+          .footer__audio-player-controls {
             opacity: 0.4;
             pointer-events: none;
           }
@@ -371,6 +370,22 @@ body:has(.footer__audio) main {
 
         &--visible {
           display: block;
+        }
+
+        &--hidden {
+          display: none;
+        }
+
+        &-art {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+
+          &[hidden] {
+            display: none;
+          }
         }
 
         &-picture,
@@ -491,84 +506,6 @@ body:has(.footer__audio) main {
 
         &[hidden] {
           display: none;
-        }
-      }
-
-      &-progress {
-        display: flex;
-        align-items: center;
-        gap: var(--space-8);
-        margin-block-start: calc(var(--space-24) - 0.125rem);
-
-        @include respond-to(md) {
-          margin-block-start: var(--space-16);
-        }
-      }
-
-      &-time {
-        min-width: var(--space-32);
-        font-size: var(--fs-n3);
-        line-height: 1;
-        text-align: center;
-      }
-
-      &-range {
-        --audio-progress: 0%;
-
-        width: 100%;
-        height: var(--space-4);
-        margin: 0;
-        cursor: pointer;
-        appearance: none;
-        background: transparent;
-        border: 0;
-        border-radius: 0;
-
-        &::-webkit-slider-runnable-track {
-          width: 100%;
-          height: var(--space-4);
-          background: linear-gradient(
-            to right,
-            var(--background-color) 0%,
-            var(--background-color) var(--audio-progress),
-            var(--audio-text-color) var(--audio-progress),
-            var(--audio-text-color) 100%
-          );
-          border: 0;
-          border-radius: 0;
-        }
-
-        &::-webkit-slider-thumb {
-          width: var(--space-12);
-          height: var(--space-12);
-          margin-block-start: calc(var(--space-4) * -1);
-          margin-inline-start: calc(var(--space-4) * -1);
-          appearance: none;
-          background-color: var(--background-color);
-          border: 0;
-          border-radius: 50%;
-        }
-
-        &::-moz-range-track {
-          height: var(--space-4);
-          background-color: var(--audio-text-color);
-          border: 0;
-          border-radius: 0;
-        }
-
-        &::-moz-range-progress {
-          height: var(--space-8);
-          background-color: var(--background-color);
-          border: 0;
-          border-radius: 0;
-        }
-
-        &::-moz-range-thumb {
-          width: var(--space-12);
-          height: var(--space-12);
-          background-color: var(--background-color);
-          border: 0;
-          border-radius: 50%;
         }
       }
 

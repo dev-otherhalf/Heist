@@ -69,29 +69,7 @@
             "corner_image": "shopify://shop_images/Group_10.png",
             "corner_image_width": 80
           },
-          "blocks": {
-            "heist_fm_track_4N8zJM": {
-              "type": "_heist-fm-track",
-              "settings": {
-                "track_title": "Heist Track",
-                "track_artist": "Heist Coffee Co.",
-                "audio_file_name": "sample-12s.mp3",
-                "cover_image": "shopify://shop_images/Rectangle_1444336488.jpg"
-              },
-              "blocks": {}
-            },
-            "heist_fm_track_FzcJq9": {
-              "type": "_heist-fm-track",
-              "settings": {
-                "track_title": "Heist Track",
-                "track_artist": "Heist Coffee Co.",
-                "audio_file_name": "sample-10s.mp3",
-                "cover_image": "shopify://shop_images/Rectangle_1444336488.jpg"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": ["heist_fm_track_4N8zJM", "heist_fm_track_FzcJq9"]
+          "blocks": {}
         }
       },
       "block_order": [

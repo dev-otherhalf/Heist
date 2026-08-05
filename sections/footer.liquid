@@ -30,13 +30,35 @@
   assign social_blocks = section.blocks | where: 'type', 'social-link'
   assign first_audio_block = audio_blocks.first
 
+  assign radio_station_id = section.settings.radio_station_id | strip
+  assign radio_stream_url = section.settings.radio_stream_url | strip
+  assign radio_metadata_url = ''
+
+  if radio_station_id != blank
+    assign radio_metadata_url = 'https://api.live365.com/station/' | append: radio_station_id
+    if radio_stream_url != blank
+      assign radio_stream_url_end = radio_stream_url | slice: -1
+      unless radio_stream_url_end == '/'
+        assign radio_stream_url = radio_stream_url | append: '/'
+      endunless
+      assign radio_stream_url = radio_stream_url | append: radio_station_id
+    endif
+  endif
+
+  assign radio_default_title = first_audio_block.settings.audio_title | default: 'HEIST.MUSIC'
+  assign radio_default_detail = first_audio_block.settings.audio_detail_text | strip_html | strip
+  assign radio_cover_desktop = first_audio_block.settings.audio_poster_image
+  assign radio_cover_mobile = first_audio_block.settings.audio_mobile_poster_image
+  assign radio_cover_desktop = radio_cover_desktop | default: radio_cover_mobile
+  assign radio_cover_mobile = radio_cover_mobile | default: radio_cover_desktop
+
   assign strip_bg_color = section.settings.strip_bg_color
   assign strip_text_color = section.settings.strip_text_color
   assign copyright_text = section.settings.copyright_text
   assign policy_menu = section.settings.policy_menu
 -%}
 
-{%- if audio_blocks.size > 0 or klaviyo_public_key != blank -%}
+{%- if radio_stream_url != blank or klaviyo_public_key != blank -%}
   {%- render 'vite-tag', entry: 'sections/scripts/footer.js' -%}
 {%- endif -%}
 
@@ -272,75 +294,53 @@
               </div>
             {%- endif -%}
           </div>
-          {%- if audio_blocks.size > 0 -%}
+          {%- if radio_stream_url != blank -%}
             <div class="footer__audio">
-              <div class="footer__audio-player-card" data-audio-player>
-                <audio data-audio-element preload="metadata"></audio>
-
-                <script type="application/json" data-audio-tracks>
-                  [
-                    {%- for block in audio_blocks -%}
-                      {%- liquid
-                        assign audio_value = block.settings.audio_file_url | strip
-                        assign audio_src = ''
-
-                        if audio_value != blank
-                          assign audio_src = audio_value
-                          unless audio_value contains '://'
-                            assign audio_src = audio_value | file_url
-                          endunless
-                        endif
-                      -%}
-                      {
-                        "title": {{ block.settings.audio_title | json }},
-                        "detail": {{ block.settings.audio_detail_text | strip_html | json }},
-                        "audio": {{ audio_src | json }},
-                        "appleMusicUrl": {{ block.settings.apple_music_link | json }},
-                        "spotifyUrl": {{ block.settings.spotify_music_link | json }},
-                        "blockIndex": {{ forloop.index0 | json }}
-                      }{%- unless forloop.last -%},{%- endunless -%}
-                    {%- endfor -%}
-                  ]
-                </script>
+              <div
+                class="footer__audio-player-card"
+                data-audio-player
+                data-stream-url="{{ radio_stream_url | escape }}"
+                data-metadata-url="{{ radio_metadata_url | escape }}"
+              >
+                <audio data-audio-element preload="none"></audio>
 
                 <div class="footer__audio-player-media">
                   <div class="footer__audio-player-cover-wrap">
-                    {%- for block in audio_blocks -%}
-                      {%- liquid
-                        assign desktop_cover_image = block.settings.audio_poster_image
-                        assign mobile_cover_image = block.settings.audio_mobile_poster_image
-                        assign desktop_cover_image = desktop_cover_image | default: mobile_cover_image
-                        assign mobile_cover_image = mobile_cover_image | default: desktop_cover_image
-                        assign cover_alt = block.settings.audio_title | default: 'Drink Heist'
-                      -%}
-                      {%- if desktop_cover_image != blank -%}
-                        <div
-                          class="footer__audio-player-cover"
-                          data-audio-cover
-                          data-audio-cover-index="{{ forloop.index0 }}"
-                        >
-                          {% render 'responsive-image',
-                            desktop_image: desktop_cover_image,
-                            mobile_image: mobile_cover_image,
-                            alt: cover_alt,
-                            class: 'footer__audio-player-cover-picture',
-                            image_class: 'footer__audio-player-cover-image',
-                            sizes: '(max-width: 749px) 58px, 76px'
-                          %}
-                        </div>
-                      {%- endif -%}
-                    {%- endfor -%}
-                    <div class="footer__audio-player-cover-placeholder" data-audio-placeholder>FM</div>
+                    {%- if radio_cover_desktop != blank -%}
+                      <div class="footer__audio-player-cover footer__audio-player-cover--visible">
+                        {% render 'responsive-image',
+                          desktop_image: radio_cover_desktop,
+                          mobile_image: radio_cover_mobile,
+                          alt: radio_default_title,
+                          class: 'footer__audio-player-cover-picture',
+                          image_class: 'footer__audio-player-cover-image',
+                          sizes: '(max-width: 749px) 58px, 76px'
+                        %}
+                      </div>
+                    {%- endif -%}
+                    <img
+                      class="footer__audio-player-cover-art"
+                      data-audio-art
+                      alt=""
+                      loading="lazy"
+                      hidden
+                    >
+                    <div
+                      class="footer__audio-player-cover-placeholder{% if radio_cover_desktop != blank %} footer__audio-player-cover-placeholder--hidden{% endif %}"
+                      data-audio-placeholder
+                    >
+                      FM
+                    </div>
                   </div>
 
                   <div class="footer__audio-player-content">
                     <div class="footer__audio-player-top">
                       <div class="footer__audio-player-header">
-                        <p class="footer__audio-player-title t-h6" data-audio-title>
-                          {{- first_audio_block.settings.audio_title | escape -}}
+                        <p class="footer__audio-player-title t-h6">
+                          {{- radio_default_title | escape -}}
                         </p>
-                        <p class="footer__audio-player-subtitle t-t4" data-audio-detail>
-                          {{- first_audio_block.settings.audio_detail_text | strip_html | escape -}}
+                        <p class="footer__audio-player-subtitle t-t4">
+                          {{- radio_default_detail | escape -}}
                         </p>
                       </div>
 
@@ -393,48 +393,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="footer__audio-player-progress">
-                  {% comment %} <span class="footer__audio-player-time" data-audio-current-time>0:00</span> {% endcomment %}
-                  <input
-                    class="footer__audio-player-range"
-                    data-audio-progress
-                    type="range"
-                    min="0"
-                    max="100"
-                    value="0"
-                    step="0.1"
-                    aria-label="Audio progress"
-                  >
-                  {% comment %} <span class="footer__audio-player-time" data-audio-duration>0:00</span> {% endcomment %}
-                </div>
-
                 <div class="footer__audio-player-controls">
-                  <button
-                    class="footer__audio-player-control"
-                    type="button"
-                    data-audio-action="shuffle"
-                    aria-label="Shuffle"
-                    aria-pressed="false"
-                  >
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M25.125 3.625L30.125 8.625L25.125 13.625" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
-                      <path d="M1.125 23.625H5.914C6.90174 23.6249 7.87418 23.381 8.74501 22.9149C9.61584 22.4488 10.3581 21.7749 10.906 20.953L17.344 11.297C17.8919 10.4751 18.6342 9.80123 19.505 9.33511C20.3758 8.86899 21.3483 8.62507 22.336 8.625H30.125" stroke="#161414" stroke-width="2" stroke-miterlimit="10"/>
-                      <path d="M25.125 28.625L30.125 23.625L25.125 18.625" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
-                      <path d="M15.7915 18.625L17.344 20.953C17.8919 21.7749 18.6342 22.4488 19.505 22.9149C20.3758 23.381 21.3483 23.6249 22.336 23.625H30.125" stroke="#161414" stroke-width="2" stroke-miterlimit="10"/>
-                      <path d="M1.125 8.625H5.914C6.90174 8.62507 7.87418 8.86899 8.74501 9.33511C9.61584 9.80123 10.3581 10.4751 10.906 11.297L12.4585 13.625" stroke="#161414" stroke-width="2" stroke-miterlimit="10"/>
-                    </svg>
-                  </button>
-                  <button
-                    class="footer__audio-player-control"
-                    type="button"
-                    data-audio-action="previous"
-                    aria-label="Previous track"
-                  >
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5.25 30.25V2.25" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
-                      <path d="M27.25 3.25V29.25L9.25 16.25L27.25 3.25Z" fill="#161414" stroke="#161414" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
-                    </svg>
-                  </button>
                   <button
                     class="footer__audio-player-play"
                     type="button"
@@ -453,29 +412,6 @@
                         </defs>
                       </svg>
                     </span>
-                  </button>
-                  <button
-                    class="footer__audio-player-control"
-                    type="button"
-                    data-audio-action="next"
-                    aria-label="Next track"
-                  >
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M26.75 30.25V2.25" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
-                      <path d="M4.75 3.25V29.25L22.75 16.25L4.75 3.25Z" fill="#161414" stroke="#161414" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="square"/>
-                    </svg>
-                  </button>
-                  <button
-                    class="footer__audio-player-control"
-                    type="button"
-                    data-audio-action="loop"
-                    aria-label="Loop current track"
-                    aria-pressed="false"
-                  >
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M2.75 11.75L2.75 5.75C2.75 4.0931 4.0931 2.75 5.75 2.75L25.75 2.75C27.4069 2.75 28.75 4.0931 28.75 5.75L28.75 19.75C28.75 21.4069 27.4069 22.75 25.75 22.75L2.75 22.75L3.25 22.75" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
-                      <path d="M9.75 15.75L2.75 22.75L9.75 29.75" stroke="#161414" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
-                    </svg>
                   </button>
                 </div>
               </div>
@@ -670,6 +606,18 @@
       "info": "Placement - bottom right side of the audio block"
     },
     {
+      "type": "text",
+      "id": "radio_station_id",
+      "label": "Live365 station ID",
+      "default": "a30031"
+    },
+    {
+      "type": "text",
+      "id": "radio_stream_url",
+      "label": "Stream base URL",
+      "default": "https://streaming.live365.com"
+    },
+    {
       "type": "header",
       "content": "Bottom strip settings",
       "info": "includes copyright text and policy links"
@@ -721,10 +669,8 @@
       "name": "Audio",
       "settings": [
         {
-          "type": "text",
-          "id": "audio_file_url",
-          "label": "MP3 file name or URL",
-          "info": "Upload the MP3 in Content > Files, then enter its exact file name or paste a complete URL."
+          "type": "paragraph",
+          "content": "Playback comes from the live HEIST.MUSIC broadcast set in Audio block settings. These fields are the fallbacks shown before a live track loads, or when the broadcast sends no album art. Only the first Audio block is used."
         },
         {
           "type": "image_picker",
@@ -775,12 +721,6 @@
         },
         {
           "type": "social-link"
-        },
-        {
-          "type": "audio"
-        },
-        {
-          "type": "audio"
         },
         {
           "type": "audio"

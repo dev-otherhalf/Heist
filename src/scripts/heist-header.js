@@ -1,5 +1,7 @@
 import { lockPageScroll, unlockPageScroll } from "./page-scroll-lock";
 
+const METADATA_POLL_INTERVAL = 20000;
+
 class HeistFMPlayer {
   constructor(root) {
     if (!root || root.dataset.heistPlayerReady === "true") return;
@@ -9,44 +11,31 @@ class HeistFMPlayer {
     this.audio = root.querySelector("[data-heist-audio]");
     this.cover = root.querySelector("[data-heist-cover]");
     this.placeholder = root.querySelector("[data-heist-placeholder]");
-    this.trackTitle = root.querySelector("[data-heist-track-title]");
     this.status = root.querySelector("[data-heist-status]");
-    this.progress = root.querySelector("[data-heist-progress]");
-    this.currentTime = root.querySelector("[data-heist-current-time]");
-    this.duration = root.querySelector("[data-heist-duration]");
     this.playIcon = root.querySelector("[data-heist-play-icon]");
     this.playButton = root.querySelector('[data-heist-action="toggle"]');
-    this.shuffleButton = root.querySelector('[data-heist-action="shuffle"]');
-    this.loopButton = root.querySelector('[data-heist-action="loop"]');
-    this.currentIndex = 0;
-    this.isSeeking = false;
-    this.isShuffle = false;
-    this.isLoop = false;
-    this.tracks = this.getTracks();
+    this.streamUrl = root.dataset.streamUrl || "";
+    this.metadataUrl = root.dataset.metadataUrl || "";
+    this.fallbackCover = root.dataset.fallbackCover || "";
+    this.isOnAir = false;
+    this.isDestroyed = false;
+    this.pollTimer = null;
+    this.isVisible = true;
+    this.isInView = true;
+    this.metadataObserver = null;
+    this.handleVisibilityChange = () => {
+      this.isVisible = !document.hidden;
+      this.syncPolling();
+    };
 
-    if (!this.audio || !this.tracks.length) {
+    if (!this.audio || !this.streamUrl) {
       this.root.classList.add("is-empty");
-      this.setStatus(
-        "Add an FM track and MP3 file name in the header settings.",
-      );
+      this.setStatus("Add a Live365 station ID in the header settings.");
       return;
     }
 
     this.bindEvents();
-    this.loadTrack(0, false);
-  }
-
-  getTracks() {
-    return [...this.root.querySelectorAll("[data-heist-fm-track]")]
-      .map((script) => {
-        try {
-          return JSON.parse(script.textContent || "{}");
-        } catch (error) {
-          console.error("Heist FM: Invalid track JSON", error);
-          return null;
-        }
-      })
-      .filter((track) => track?.audio?.trim());
+    this.setupMetadataPolling();
   }
 
   bindEvents() {
@@ -54,153 +43,136 @@ class HeistFMPlayer {
       const button = event.target.closest("[data-heist-action]");
       if (!button) return;
 
-      const action = button.dataset.heistAction;
-
-      if (action === "toggle") this.togglePlay();
-      if (action === "next") this.nextTrack(true);
-      if (action === "previous") this.previousTrack(true);
-
-      if (action === "shuffle") this.setShuffle(!this.isShuffle);
-      if (action === "loop") this.setLoop(!this.isLoop);
+      if (button.dataset.heistAction === "toggle") this.toggle();
     });
 
-    this.progress.addEventListener("pointerdown", (event) => {
-      this.isSeeking = true;
-      this.progress.setPointerCapture(event.pointerId);
-      this.updateProgressFromPointer(event);
+    this.audio.addEventListener("playing", () => {
+      this.isOnAir = true;
+      this.setPlaying(true);
+      this.setStatus("Live on Heist FM.");
+      this.fetchMetadata();
     });
 
-    this.progress.addEventListener("pointermove", (event) => {
-      if (this.isSeeking) this.updateProgressFromPointer(event);
+    this.audio.addEventListener("waiting", () => {
+      if (this.isOnAir) this.setStatus("Connecting to the broadcast.");
     });
 
-    this.progress.addEventListener("pointerup", (event) => {
-      this.updateProgressFromPointer(event);
-      this.commitProgress();
-    });
+    this.audio.addEventListener("pause", () => this.handleOffAir("Off air."));
 
-    this.progress.addEventListener("pointercancel", () => {
-      this.isSeeking = false;
-    });
-
-    this.progress.addEventListener("keydown", (event) => {
-      const currentValue = this.getProgressValue();
-      let nextValue = currentValue;
-
-      if (event.key === "ArrowRight" || event.key === "ArrowUp") {
-        nextValue += 2;
-      } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
-        nextValue -= 2;
-      } else if (event.key === "Home") {
-        nextValue = 0;
-      } else if (event.key === "End") {
-        nextValue = 100;
-      } else {
-        return;
-      }
-
-      event.preventDefault();
-      this.setProgressValue(nextValue);
-      this.updateTimeFromProgress();
-      this.commitProgress();
-    });
-
-    this.audio.addEventListener("loadedmetadata", () => {
-      this.updateProgress();
-      this.updateDuration();
-    });
-    this.audio.addEventListener("timeupdate", () => {
-      if (!this.isSeeking) this.updateProgress();
-    });
-    this.audio.addEventListener("play", () => this.setPlaying(true));
-    this.audio.addEventListener("pause", () => this.setPlaying(false));
-    this.audio.addEventListener("ended", () => {
-      if (!this.isLoop) this.nextTrack(true);
-    });
     this.audio.addEventListener("error", () => {
-      this.setPlaying(false);
-      this.setStatus("Audio file could not load. Check the MP3 file name.");
+      if (!this.audio.getAttribute("src")) return;
+      this.handleOffAir("The broadcast is unavailable right now.");
     });
+
+    document.addEventListener("visibilitychange", this.handleVisibilityChange);
   }
 
-  loadTrack(index, shouldPlay) {
-    this.currentIndex = this.normalizeIndex(index);
-    const track = this.tracks[this.currentIndex];
-
-    this.audio.src = track.audio;
-    this.audio.load();
-    this.trackTitle.textContent = track.artist
-      ? `${track.title || "Untitled track"} — ${track.artist}`
-      : track.title || "Untitled track";
-
-    if (track.cover) {
-      this.cover.src = track.cover;
-      this.cover.alt = track.title || "Track cover";
-      this.cover.classList.add("is-visible");
-      this.placeholder.classList.add("is-hidden");
-    } else {
-      this.cover.removeAttribute("src");
-      this.cover.classList.remove("is-visible");
-      this.placeholder.classList.remove("is-hidden");
-    }
-
-    this.resetProgress();
-    if (shouldPlay) this.play();
-  }
-
-  setShuffle(isActive) {
-    this.isShuffle = isActive;
-    this.updateModeButton(this.shuffleButton, isActive);
-
-    if (isActive && this.isLoop) this.setLoop(false);
-  }
-
-  setLoop(isActive) {
-    this.isLoop = isActive;
-    this.audio.loop = isActive;
-    this.updateModeButton(this.loopButton, isActive);
-
-    if (isActive && this.isShuffle) this.setShuffle(false);
-  }
-
-  updateModeButton(button, isActive) {
-    if (!button) return;
-
-    button.classList.toggle("is-active", isActive);
-    button.setAttribute("aria-pressed", String(isActive));
-  }
-
-  togglePlay() {
-    if (this.audio.paused) this.play();
-    else this.audio.pause();
+  toggle() {
+    if (this.isOnAir) this.stop();
+    else this.play();
   }
 
   play() {
+    this.isOnAir = true;
+    this.audio.src = `${this.streamUrl}${
+      this.streamUrl.includes("?") ? "&" : "?"
+    }t=${Date.now()}`;
+    this.audio.load();
+    this.setPlaying(true);
+    this.setStatus("Connecting to the broadcast.");
+    this.syncPolling();
+
     this.audio.play()?.catch(() => {
-      this.setStatus("Playback was blocked. Tap play again.");
+      this.handleOffAir("Playback was blocked. Tap play again.");
     });
   }
 
-  nextTrack(shouldPlay) {
-    if (this.isShuffle && this.tracks.length > 1) {
-      let nextIndex = this.currentIndex;
-      while (nextIndex === this.currentIndex) {
-        nextIndex = Math.floor(Math.random() * this.tracks.length);
-      }
-      this.loadTrack(nextIndex, shouldPlay);
+  stop() {
+    if (!this.audio) return;
+
+    this.audio.pause();
+    this.audio.removeAttribute("src");
+    this.audio.load();
+    this.handleOffAir("Off air.");
+  }
+
+  handleOffAir(message) {
+    this.isOnAir = false;
+    this.setPlaying(false);
+    this.setStatus(message);
+    this.syncPolling();
+  }
+
+  setupMetadataPolling() {
+    if (!this.metadataUrl) return;
+
+    if ("IntersectionObserver" in window) {
+      this.isInView = false;
+      this.metadataObserver = new IntersectionObserver((entries) => {
+        this.isInView = entries.some((entry) => entry.isIntersecting);
+        this.syncPolling();
+      });
+      this.metadataObserver.observe(this.root);
+    }
+
+    this.syncPolling();
+  }
+
+  syncPolling() {
+    const shouldPoll =
+      !this.isDestroyed &&
+      Boolean(this.metadataUrl) &&
+      this.isVisible &&
+      (this.isInView || this.isOnAir);
+
+    if (!shouldPoll) {
+      this.stopPolling();
       return;
     }
-    this.loadTrack(this.currentIndex + 1, shouldPlay);
+
+    if (this.pollTimer) return;
+
+    this.fetchMetadata();
+    this.pollTimer = window.setInterval(
+      () => this.fetchMetadata(),
+      METADATA_POLL_INTERVAL,
+    );
   }
 
-  previousTrack(shouldPlay) {
-    this.loadTrack(this.currentIndex - 1, shouldPlay);
+  stopPolling() {
+    if (!this.pollTimer) return;
+    window.clearInterval(this.pollTimer);
+    this.pollTimer = null;
   }
 
-  normalizeIndex(index) {
-    if (index < 0) return this.tracks.length - 1;
-    if (index >= this.tracks.length) return 0;
-    return index;
+  async fetchMetadata() {
+    if (!this.metadataUrl) return;
+
+    try {
+      const response = await fetch(this.metadataUrl);
+      if (!response.ok) throw new Error(`Live365 error ${response.status}`);
+
+      const data = await response.json();
+      this.updateCover((data?.["current-track"]?.art || "").trim());
+    } catch (error) {
+      this.updateCover("");
+    }
+  }
+
+  updateCover(url) {
+    if (!this.cover) return;
+
+    const source = url || this.fallbackCover;
+
+    if (source) {
+      if (this.cover.getAttribute("src") !== source) this.cover.src = source;
+      this.cover.classList.add("is-visible");
+      this.placeholder?.classList.add("is-hidden");
+    } else {
+      this.cover.removeAttribute("src");
+      this.cover.classList.remove("is-visible");
+      this.placeholder?.classList.remove("is-hidden");
+    }
   }
 
   setPlaying(isPlaying) {
@@ -227,71 +199,12 @@ class HeistFMPlayer {
     this.playIcon.innerHTML = isPlaying ? pauseIcon : playIcon;
     this.playButton?.setAttribute(
       "aria-label",
-      isPlaying ? "Pause audio" : "Play audio",
+      isPlaying ? "Stop audio" : "Play audio",
     );
-  }
-
-  updateProgress() {
-    if (!Number.isFinite(this.audio.duration)) return;
-    this.setProgressValue((this.audio.currentTime / this.audio.duration) * 100);
-    this.currentTime.textContent = this.formatTime(this.audio.currentTime);
-  }
-
-  updateDuration() {
-    this.duration.textContent = this.formatTime(this.audio.duration);
-  }
-
-  updateTimeFromProgress() {
-    if (!Number.isFinite(this.audio.duration)) return;
-    const previewTime = (this.getProgressValue() / 100) * this.audio.duration;
-    const formattedTime = this.formatTime(previewTime);
-    this.currentTime.textContent = formattedTime;
-    this.progress.setAttribute("aria-valuetext", formattedTime);
-  }
-
-  resetProgress() {
-    this.setProgressValue(0);
-    this.currentTime.textContent = "0:00";
-    this.duration.textContent = "0:00";
-  }
-
-  updateProgressFromPointer(event) {
-    const bounds = this.progress.getBoundingClientRect();
-    if (!bounds.width) return;
-
-    const value = ((event.clientX - bounds.left) / bounds.width) * 100;
-    this.setProgressValue(value);
-    this.updateTimeFromProgress();
-  }
-
-  commitProgress() {
-    if (Number.isFinite(this.audio.duration)) {
-      this.audio.currentTime =
-        (this.getProgressValue() / 100) * this.audio.duration;
-    }
-    this.isSeeking = false;
-  }
-
-  setProgressValue(value) {
-    const safeValue = Math.min(100, Math.max(0, Number(value) || 0));
-    this.progress.dataset.value = String(safeValue);
-    this.progress.style.setProperty("--heist-fm-progress", `${safeValue}%`);
-    this.progress.setAttribute("aria-valuenow", String(Math.round(safeValue)));
-  }
-
-  getProgressValue() {
-    return Number(this.progress.dataset.value) || 0;
   }
 
   setStatus(message) {
     if (this.status) this.status.textContent = message;
-  }
-
-  formatTime(seconds) {
-    const safeSeconds = Number.isFinite(seconds) ? seconds : 0;
-    const minutes = Math.floor(safeSeconds / 60);
-    const remainder = Math.floor(safeSeconds % 60);
-    return `${minutes}:${remainder.toString().padStart(2, "0")}`;
   }
 }
 
