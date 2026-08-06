@@ -257,7 +257,6 @@ $plan-control-height: 2.375rem; // 38px
     }
     .cart-items__table-row {
       position: relative;
-      grid-template-areas: none;
       grid-template-columns: var(--cart-line-media-width) minmax(0, 1fr) auto;
       align-items: start;
       column-gap: var(--space-20);
