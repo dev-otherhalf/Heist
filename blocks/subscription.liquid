@@ -58,6 +58,7 @@
   data-standard-hint="week"
   data-prepaid-divisor="{{ block.settings.heist_prepaid_divisor | default: 3 }}"
   data-one-time-enabled="{{ block.settings.one_time_enabled }}"
+  data-min-subscription-bags="{{ block.settings.min_subscription_bags | default: 3 }}"
   data-default-tier="{{ default_tier }}"
   data-cta-standard="{{ block.settings.subscribe_cta_label | default: 'Start the heist' | escape }}"
   data-cta-heist="{{ block.settings.cta_heist_label | default: 'Join the Heist Society™' | escape }}"
@@ -232,6 +233,16 @@
       "max": 5,
       "step": 1,
       "default": 1
+    },
+    {
+      "type": "range",
+      "id": "min_subscription_bags",
+      "label": "Minimum bags for subscription",
+      "info": "Below this many bags, only the one-time tier can be selected.",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "header",

@@ -1,3 +1,8 @@
+{% capture heist_cart_count %}
+  {% render 'cart-visible-item-count' %}
+{% endcapture %}
+{% assign heist_cart_count = heist_cart_count | strip %}
+
 <div class="heist-actions{% if mobile %} heist-actions--mobile{% endif %}">
   {% unless mobile %}
     {% unless hide_account %}
@@ -27,10 +32,10 @@
     <a class="heist-cart" href="{{ routes.cart_url }}" aria-label="{{ 'accessibility.cart' | t }}">
   {% endif %}
   <span class="heist-cart__desktop"
-    >CART(<span data-heist-cart-count>{{ cart.item_count }}</span>)</span
+    >CART(<span data-heist-cart-count>{{ heist_cart_count }}</span>)</span
   >
   <span class="heist-cart__mobile t-nav3" aria-hidden="true"
-    ><span data-heist-cart-count>{{ cart.item_count }}</span></span
+    ><span data-heist-cart-count>{{ heist_cart_count }}</span></span
   >
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     </button>

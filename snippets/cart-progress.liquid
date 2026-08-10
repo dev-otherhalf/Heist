@@ -13,21 +13,41 @@
 
   Renders nothing when the mode is `none`, when the cart is empty, or when the
   chosen mode has no data to draw (no threshold / no tiers).
+
+  Membership and gifted (free) lines don't count toward either mode: their
+  quantity and price are excluded from the totals the bar tracks.
 {% enddoc %}
 
 {% liquid
   assign progress_type = settings.cart_progress_type | default: 'none'
 
   assign has_subscription = false
+  assign progress_item_count = 0
+  assign progress_total_price = 0
   for item in cart.items
     if item.selling_plan_allocation != blank
       assign has_subscription = true
-      break
     endif
+
+    assign item_tags = item.product.tags | join: ',' | downcase
+    assign is_membership_item = false
+    if item_tags contains 'membership'
+      assign is_membership_item = true
+    endif
+
+    assign is_free_item = false
+    if is_membership_item == false and item.final_line_price == 0
+      assign is_free_item = true
+    endif
+
+    unless is_membership_item or is_free_item
+      assign progress_item_count = progress_item_count | plus: item.quantity
+      assign progress_total_price = progress_total_price | plus: item.final_line_price
+    endunless
   endfor
 %}
 
-{%- if progress_type != 'none' and cart.item_count > 0 -%}
+{%- if progress_type != 'none' and progress_item_count > 0 -%}
   {%- if progress_type == 'shipping' -%}
     {% liquid
       assign threshold = settings.cart_free_shipping_threshold | default: 0 | times: 100
@@ -39,12 +59,12 @@
       if subscriber_free
         assign percent = 100
         assign message = settings.cart_shipping_subscriber_text
-      elsif threshold > 0 and cart.total_price >= threshold
+      elsif threshold > 0 and progress_total_price >= threshold
         assign percent = 100
         assign message = settings.cart_shipping_unlocked_text
       elsif threshold > 0
-        assign percent = cart.total_price | times: 100.0 | divided_by: threshold
-        assign remaining = threshold | minus: cart.total_price | money
+        assign percent = progress_total_price | times: 100.0 | divided_by: threshold
+        assign remaining = threshold | minus: progress_total_price | money
         assign message = settings.cart_shipping_away_text | replace: '[amount]', remaining
       endif
     %}
@@ -92,7 +112,7 @@
       endif
 
       assign tier_lines = tier_source | split: '§'
-      assign count = cart.item_count
+      assign count = progress_item_count
 
       # Collect the thresholds up front so we can index them while interpolating.
       assign tier_quantities = ''

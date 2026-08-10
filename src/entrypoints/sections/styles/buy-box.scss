@@ -620,6 +620,11 @@
     padding-block: var(--space-16);
   }
 
+  &--disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
   &__toggle {
     position: relative;
     width: 1.5rem;
@@ -1089,6 +1094,12 @@
     padding: var(--space-20) var(--space-16) var(--space-16) var(--space-14);
     gap: var(--space-12);
   }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
   &--summary {
     align-items: flex-start;
   }

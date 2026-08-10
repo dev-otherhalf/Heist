@@ -95,10 +95,14 @@
           {% render 'cart-promo-bar' %}
           
 
+          {% capture cart_visible_item_count %}
+            {% render 'cart-visible-item-count' %}
+          {% endcapture %}
+          {% assign cart_visible_item_count = cart_visible_item_count | strip %}
           {% assign cart_drawer_title = 'content.cart_title'
             | t
             | append: ' ('
-            | append: cart.item_count
+            | append: cart_visible_item_count
             | append: ')'
           %}
           {% render 'theme-drawer-header',

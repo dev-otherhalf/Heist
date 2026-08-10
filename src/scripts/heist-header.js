@@ -358,15 +358,31 @@ if (header) {
     });
   }
 
-  document.addEventListener("shopify:cart:lines-update", (event) => {
-    event.promise
-      ?.then(({ cart, detail }) => {
-        const count = cart?.totalQuantity ?? detail?.itemCount;
-        if (typeof count !== "number") return;
+  // The raw cart payload has no product tags, so it can't tell a membership
+  // line from a regular one — re-fetch the header section instead and read
+  // back the count Liquid already excluded memberships and gifts from.
+  const refreshCartCount = () => {
+    const sectionId = header.dataset.sectionId;
+    if (!sectionId) return;
+
+    fetch(`${window.location.pathname}?sections=${sectionId}`)
+      .then((response) => response.json())
+      .then((sections) => {
+        const html = sections[sectionId];
+        if (!html) return;
+        const fresh = new DOMParser().parseFromString(html, "text/html");
+        const count = fresh.querySelector(
+          "[data-heist-cart-count]",
+        )?.textContent;
+        if (count == null) return;
         document.querySelectorAll("[data-heist-cart-count]").forEach((node) => {
-          node.textContent = String(count);
+          node.textContent = count;
         });
       })
       .catch(() => {});
+  };
+
+  document.addEventListener("shopify:cart:lines-update", (event) => {
+    event.promise?.then(refreshCartCount).catch(() => {});
   });
 }

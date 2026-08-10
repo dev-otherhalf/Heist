@@ -15,6 +15,7 @@
   id="header-component"
   class="heist-header{% if is_home %} heist-header--home{% else %} heist-header--inner{% endif %}"
   data-heist-header
+  data-section-id="{{ section.id }}"
   data-skip-node-update
   {% if is_home %}
     transparent="always"

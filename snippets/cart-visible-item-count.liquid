@@ -1,0 +1,35 @@
+{% doc %}
+  Cart Visible Item Count
+
+  Total quantity across cart lines, excluding the membership line and any
+  free/gift line (tagged `membership`, or priced at $0). Use this wherever
+  the cart shows a customer-facing count, so a membership or gift never
+  makes the number look wrong.
+
+  @example
+  {% capture cart_visible_item_count %}
+    {% render 'cart-visible-item-count' %}
+  {% endcapture %}
+  {{ cart_visible_item_count | strip }}
+{% enddoc %}
+
+{%- liquid
+  assign cart_visible_item_count = 0
+  for item in cart.items
+    assign item_tags = item.product.tags | join: ',' | downcase
+    assign is_membership_item = false
+    if item_tags contains 'membership'
+      assign is_membership_item = true
+    endif
+
+    assign is_free_item = false
+    if is_membership_item == false and item.final_line_price == 0
+      assign is_free_item = true
+    endif
+
+    unless is_membership_item or is_free_item
+      assign cart_visible_item_count = cart_visible_item_count | plus: item.quantity
+    endunless
+  endfor
+-%}
+{{- cart_visible_item_count -}}

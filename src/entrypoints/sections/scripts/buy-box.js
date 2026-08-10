@@ -72,6 +72,8 @@ class BuyBox extends HTMLElement {
     this.unit = this.priceMode === "per_bag" ? "/bag" : "/mo";
     // Prepaid plans bill one fixed total for N deliveries — divide to get per bag.
     this.prepaidDivisor = Number(this.dataset.prepaidDivisor) || 1;
+    // Below this many bags, subscription/prepaid are off the table — one-time only.
+    this.minSubscriptionBags = Number(this.dataset.minSubscriptionBags) || 1;
 
     // Map every plan id → its name. Each component product can have its OWN
     // plan ids for the same plan (e.g. two different "3 month prepaid" ids), so
@@ -460,6 +462,39 @@ class BuyBox extends HTMLElement {
     return n;
   }
 
+  #meetsSubscriptionMinimum() {
+    return this.#bagCount() >= this.minSubscriptionBags;
+  }
+
+  #hasOneTimeOption() {
+    return !!this.querySelector(
+      '[data-select-tier="one_time"], [data-tier="one_time"]',
+    );
+  }
+
+  /** Disable the subscription/heist tier controls when under the bag minimum. */
+  #updateTierAvailability(belowMinimum) {
+    this.querySelectorAll('[data-buy-box-tier] input[type="radio"]').forEach(
+      (radio) => {
+        if (radio.value === "heist" || radio.value === "standard") {
+          radio.disabled = belowMinimum;
+          radio
+            .closest("[data-buy-box-tier]")
+            ?.classList.toggle("buy-box-tier--disabled", belowMinimum);
+        }
+      },
+    );
+
+    this.querySelectorAll("[data-select-tier]").forEach((row) => {
+      if (
+        row.dataset.selectTier === "heist" ||
+        row.dataset.selectTier === "standard"
+      ) {
+        row.disabled = belowMinimum;
+      }
+    });
+  }
+
   /** Convert a tier total (cents) to the displayed figure for this variation. */
   #displayValue(total, bags) {
     if (this.priceMode === "per_bag" && bags > 0) {
@@ -473,6 +508,19 @@ class BuyBox extends HTMLElement {
   render() {
     const bags = this.#displayBags();
     const hasBags = this.#bagCount() > 0;
+
+    const belowMinimum = !this.#meetsSubscriptionMinimum();
+    if (
+      belowMinimum &&
+      this.state.tier !== "one_time" &&
+      this.#hasOneTimeOption()
+    ) {
+      this.state.tier = "one_time";
+    }
+    this.#updateTierAvailability(belowMinimum);
+    // Nothing left to buy once subscription/heist are locked out and there's
+    // no one-time tier to fall back on (Variation 2, or one-time turned off).
+    this.blockedByMinimum = belowMinimum && !this.#hasOneTimeOption();
 
     // Tiles (all variations) — reflect the selected tier's per-bag price/badge.
     this.querySelectorAll("[data-buy-box-tile]").forEach((tile) => {
@@ -548,7 +596,7 @@ class BuyBox extends HTMLElement {
         compareEl.textContent = this.formatMoney(compareDisp);
       }
     }
-    this.#setDisabled(!hasBags);
+    this.#setDisabled(!hasBags || this.blockedByMinimum);
   }
 
   #setDisabled(disabled) {
@@ -671,7 +719,7 @@ class BuyBox extends HTMLElement {
     );
     if (subLabelEl && subCtaLabel) subLabelEl.textContent = subCtaLabel;
 
-    this.#setDisabled(!hasBags);
+    this.#setDisabled(!hasBags || this.blockedByMinimum);
   }
 
   #setToggle(name, on) {
