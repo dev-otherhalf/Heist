@@ -91,8 +91,28 @@ function registerFaqs(group) {
   }
 }
 
+function registerShowMore(button) {
+  if (button.dataset.fullBriefingReady === "true") return;
+  button.dataset.fullBriefingReady = "true";
+
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const group = button
+      .closest(".full-briefing__content")
+      ?.querySelector(".full-briefing__faqs");
+    group?.querySelectorAll("[data-full-briefing-faq-extra]").forEach((faq) => {
+      faq.removeAttribute("hidden");
+      faq.removeAttribute("data-full-briefing-faq-extra");
+    });
+  });
+}
+
 function initFullBriefing(scope = document) {
   scope.querySelectorAll(".full-briefing__faqs").forEach(registerFaqs);
+  scope
+    .querySelectorAll("[data-full-briefing-faqs-more]")
+    .forEach(registerShowMore);
 }
 
 document.addEventListener("DOMContentLoaded", () => initFullBriefing());

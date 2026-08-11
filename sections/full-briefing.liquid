@@ -81,13 +81,27 @@
 
       <div class="full-briefing__content">
         {%- if faqs != blank -%}
-          <div class="full-briefing__faqs">
+          {%- liquid
+            assign faq_visible_count = 6
+            assign faq_has_more = false
+            if faqs.size > faq_visible_count
+              assign faq_has_more = true
+            endif
+          -%}
+          <div class="full-briefing__faqs" data-full-briefing-faqs>
             {%- for faq in faqs -%}
               {%- liquid
                 assign question = faq.question.value | default: faq.question
                 assign answer = faq.answer.value | default: faq.answer
               -%}
-              <details class="full-briefing__faq" name="full-briefing-{{ section.id }}">
+              <details
+                class="full-briefing__faq"
+                name="full-briefing-{{ section.id }}"
+                {% if forloop.index > faq_visible_count %}
+                  hidden
+                  data-full-briefing-faq-extra
+                {% endif %}
+              >
                 <summary class="full-briefing__q">
                   <span class="full-briefing__q-text t-n1">{{ question | escape }}</span>
                   <span class="full-briefing__q-icon" aria-hidden="true">
@@ -174,6 +188,9 @@
               href="{{ button_link }}"
             {% else %}
               role="link" aria-disabled="true"
+            {% endif %}
+            {% if faq_has_more %}
+              data-full-briefing-faqs-more
             {% endif %}
           >
             <span class="btn__text">{{ first_half | strip | escape }}</span>
