@@ -56,6 +56,12 @@ const CART_URL = () =>
   "/cart";
 
 class BuyBox extends HTMLElement {
+  // Tier that was active right before the min-bags gate forced a fallback to
+  // one_time — restored automatically once bags are back at/above minimum,
+  // unless the shopper explicitly picks a tier in the meantime (see
+  // #bindEvents). Null when no auto-fallback is currently in effect.
+  #tierBeforeMinimum = null;
+
   connectedCallback() {
     const dataEl = this.querySelector("[data-buy-box-data]");
     if (!dataEl) return; // empty metafield / editor placeholder
@@ -149,6 +155,9 @@ class BuyBox extends HTMLElement {
       radio.addEventListener("change", () => {
         if (radio.checked) {
           this.state.tier = radio.value;
+          // Explicit choice — don't let a later render() snap it back to
+          // whatever tier was active before the min-bags gate kicked in.
+          this.#tierBeforeMinimum = null;
           this.render();
         }
       });
@@ -163,6 +172,9 @@ class BuyBox extends HTMLElement {
         this.state.tier = isSelectedUpgrade
           ? "standard"
           : row.dataset.selectTier;
+        // Explicit choice — don't let a later render() snap it back to
+        // whatever tier was active before the min-bags gate kicked in.
+        this.#tierBeforeMinimum = null;
         this.render();
       });
     });
@@ -515,14 +527,25 @@ class BuyBox extends HTMLElement {
       this.state.tier !== "one_time" &&
       this.#hasOneTimeOption()
     ) {
+      // Remember what was selected so it can be restored the moment the
+      // shopper is back at/above the minimum — otherwise the tier stays
+      // stuck on one_time even after the disabled state clears.
+      this.#tierBeforeMinimum = this.state.tier;
       this.state.tier = "one_time";
+    } else if (
+      !belowMinimum &&
+      this.#tierBeforeMinimum &&
+      this.state.tier === "one_time"
+    ) {
+      this.state.tier = this.#tierBeforeMinimum;
+      this.#tierBeforeMinimum = null;
     }
     this.#updateTierAvailability(belowMinimum);
-    // Nothing left to buy once subscription/heist are locked out and there's
-    // no one-time tier to fall back on (Variation 2, or one-time turned off).
     this.blockedByMinimum = belowMinimum && !this.#hasOneTimeOption();
+    this.querySelectorAll('input[type="radio"][value]').forEach((radio) => {
+      radio.checked = radio.value === this.state.tier;
+    });
 
-    // Tiles (all variations) — reflect the selected tier's per-bag price/badge.
     this.querySelectorAll("[data-buy-box-tile]").forEach((tile) => {
       const firstStepper = tile.querySelector("[data-buy-box-stepper]");
       const variant = firstStepper

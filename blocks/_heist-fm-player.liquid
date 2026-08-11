@@ -15,6 +15,7 @@
   endif
 
   assign cover_image = block.settings.cover_image
+  assign heist_music_link = block.settings.heist_music_link 
 -%}
 
 <section class="heist-fm-player-block" data-heist-fm-block {{ block.shopify_attributes }}>
@@ -49,7 +50,9 @@
           FM
         </span>
       </div>
-      <h2 class="heist-fm-player__title t-t1">{{ block.settings.heading | escape }}</h2>
+      <h2 class="heist-fm-player__title t-t1">
+        <a href="{{ heist_music_link }}" target="_blank" rel="noopener noreferrer">{{ block.settings.heading | escape }}</a>
+      </h2>
     </div>
 
     <p class="heist-fm-player__subtitle">{{ block.settings.subheading | escape }}</p>
@@ -98,6 +101,16 @@
   {% endif %}
 </section>
 
+{% stylesheet %}
+  // The heading text links out to the station URL — keep it looking like
+  // plain heading text, not a default underlined browser link.
+  .heist-fm-player__title a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "Heist FM player",
@@ -117,6 +130,11 @@
       "default": "https://streaming.live365.com"
     },
     { "type": "image_picker", "id": "cover_image", "label": "Fallback cover image" },
+    {
+      "type": "url",
+      "id": "heist_music_link",
+      "label": "Heading link"
+    },
     { "type": "url", "id": "apple_music_url", "label": "Apple Music URL" },
     { "type": "url", "id": "spotify_url", "label": "Spotify URL" },
     { "type": "image_picker", "id": "corner_image", "label": "Fixed corner image" },

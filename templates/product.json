@@ -91,6 +91,7 @@
                 "default_tier": "standard",
                 "bags_label": "Select your bags: take more, save more.",
                 "default_bag_quantity": 1,
+                "min_subscription_bags": 3,
                 "heist_title": "Heist Society™ Subscription",
                 "heist_subtitle": "3 month commitment, prepaid. Then ships every 4 weeks.",
                 "heist_upgrade_title": "Upgrade & Join the Heist Society™",
@@ -213,6 +214,8 @@
         "product_GWyXew": {
           "type": "product",
           "settings": {
+            "product": "",
+            "variant_id": "",
             "custom_name": "Tin + Scoop",
             "custom_description": "(value $20)",
             "custom_image": "shopify://shop_images/tin_scoop.jpg"
@@ -221,6 +224,8 @@
         "product_8PBii8": {
           "type": "product",
           "settings": {
+            "product": "",
+            "variant_id": "",
             "custom_name": "smuggle bear",
             "custom_description": "(value $50)",
             "custom_image": "shopify://shop_images/SmuggleBear.jpg"
@@ -229,6 +234,8 @@
         "product_CkwP3g": {
           "type": "product",
           "settings": {
+            "product": "",
+            "variant_id": "",
             "custom_name": "member card",
             "custom_description": "(founder signed)",
             "custom_image": "shopify://shop_images/MemberCard.jpg"
@@ -238,6 +245,7 @@
       "block_order": ["product_GWyXew", "product_8PBii8", "product_CkwP3g"],
       "name": "Join the Heist Society",
       "settings": {
+        "custom_id": "",
         "heading": "Join the Heist Society™",
         "subheading": "3 months prepaid today, then monthly. Pause or cancel anytime after.",
         "features": "Lowest price. Locked forever.\nFree shipping forever, no thresholds.\nLimited-edition Smuggle Bear every 6 months.\nSmuggle Bear welcome kit (value $70).",
@@ -245,7 +253,7 @@
         "kit_value": "(Value $70)",
         "button_label": "Join",
         "button_label_two": "Now",
-        "button_link": "#",
+        "cart_products": ["heist-society™-membership"],
         "disclaimer": "30-day escape plan. <br>Love it or your money back.",
         "left_media_type": "video",
         "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
@@ -280,6 +288,7 @@
       "type": "coffee-heist",
       "name": "Coffee Heist Comparison",
       "settings": {
+        "custom_id": "",
         "background_color": "",
         "tabs_selection": "",
         "receipts_selection": "",

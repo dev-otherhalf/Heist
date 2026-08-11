@@ -74,7 +74,11 @@ function saveScrollPosition() {
         ? history.state
         : {};
     history.replaceState(
-      { ...currentState, scrollTop: getScrollContainer().scrollTop },
+      {
+        ...currentState,
+        scrollTop: getScrollContainer().scrollTop,
+        scrollTopUrl: location.href,
+      },
       "",
     );
   } catch (_) {
@@ -106,6 +110,11 @@ function restoreSavedScrollTop(savedScrollTop) {
 window.addEventListener("pageshow", () => {
   const scrollTop = history.state?.scrollTop;
   if (scrollTop == null) return;
+  // pageshow fires on every cross-document navigation here, not just
+  // bfcache restores — only replay a saved offset onto the page it was
+  // actually captured on, or a fresh nav to a shorter page gets clamped
+  // straight to that page's bottom instead of starting at the top.
+  if (history.state?.scrollTopUrl !== location.href) return;
 
   requestAnimationFrame(() => {
     restoreSavedScrollTop(scrollTop);

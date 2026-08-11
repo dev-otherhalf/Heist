@@ -290,6 +290,8 @@
         "product_bjHE3X": {
           "type": "product",
           "settings": {
+            "product": "",
+            "variant_id": "",
             "custom_name": "Tin + Scoop",
             "custom_description": "(value $20)",
             "custom_image": "shopify://shop_images/tin_scoop.jpg"
@@ -298,6 +300,8 @@
         "product_zWXPXB": {
           "type": "product",
           "settings": {
+            "product": "",
+            "variant_id": "",
             "custom_name": "smuggle bear",
             "custom_description": "(value $50)",
             "custom_image": "shopify://shop_images/SmuggleBear.jpg"
@@ -306,6 +310,8 @@
         "product_43rK8n": {
           "type": "product",
           "settings": {
+            "product": "",
+            "variant_id": "",
             "custom_name": "Collectible Matchbooks",
             "custom_description": "(founder signed)",
             "custom_image": "shopify://shop_images/MemberCard.jpg"
@@ -323,7 +329,7 @@
         "kit_value": "(Value $70)",
         "button_label": "Join",
         "button_label_two": "Now",
-        "button_link": "#",
+        "cart_products": ["heist-society™-membership"],
         "disclaimer": "",
         "left_media_type": "video",
         "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",

@@ -505,7 +505,7 @@ $plan-control-height: 2.375rem; // 38px
     // Held on the title's line, outside the grid so it never widens a column.
     .cart-items__remove {
       position: absolute;
-      inset-block-start: 0;
+      inset-block-start: var(--space-6);
       inset-inline-end: 0;
       color: var(--ink);
     }
@@ -632,11 +632,13 @@ $plan-control-height: 2.375rem; // 38px
         }
       }
 
-      // Nothing on the right rail, and no per-unit controls.
+      // Nothing on the right rail, and no per-unit controls. The membership
+      // still gets its own remove control (a small trash icon), so its own
+      // class is excluded from this blanket hide.
       .cart-items__price,
       .cart-items__variants-wrapper,
       .cart-items__unit-price-wrapper,
-      .cart-items__remove {
+      .cart-items__remove:not(.cart-items__membership-remove) {
         display: none;
       }
 
@@ -673,16 +675,14 @@ $plan-control-height: 2.375rem; // 38px
     }
 
     .cart-items__membership-remove {
-      grid-area: 2 / 2 / 3 / -1;
-      width: 100%;
-      min-height: var(--cart-line-control-height);
-      margin-top: var(--space-11);
-      padding: var(--space-8) var(--space-16);
+      grid-area: 1 / 2 / 2 / -1;
+      justify-self: end;
+      align-self: start;
+      margin-inline-end: calc(-1 * var(--space-9));
 
-      // Full width across the whole card on mobile, below the image.
       @include respond-down(md) {
-        grid-area: 2 / 1 / 3 / -1;
-        margin-top: var(--space-14);
+        grid-area: 1 / 1 / 2 / -1;
+        margin-inline-end: calc(-1 * var(--space-6));
       }
     }
   }

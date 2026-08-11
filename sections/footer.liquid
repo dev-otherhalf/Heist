@@ -51,6 +51,7 @@
   assign radio_cover_mobile = first_audio_block.settings.audio_mobile_poster_image
   assign radio_cover_desktop = radio_cover_desktop | default: radio_cover_mobile
   assign radio_cover_mobile = radio_cover_mobile | default: radio_cover_desktop
+  assign radio_cover_link = first_audio_block.settings.audio_cover_link | default: 'https://heist.music'
 
   assign strip_bg_color = section.settings.strip_bg_color
   assign strip_text_color = section.settings.strip_text_color
@@ -307,7 +308,12 @@
                 <div class="footer__audio-player-media">
                   <div class="footer__audio-player-cover-wrap">
                     {%- if radio_cover_desktop != blank -%}
-                      <div class="footer__audio-player-cover footer__audio-player-cover--visible">
+                      <a
+                        href="{{ radio_cover_link }}"
+                        class="footer__audio-player-cover footer__audio-player-cover--visible"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {% render 'responsive-image',
                           desktop_image: radio_cover_desktop,
                           mobile_image: radio_cover_mobile,
@@ -316,7 +322,7 @@
                           image_class: 'footer__audio-player-cover-image',
                           sizes: '(max-width: 749px) 58px, 76px'
                         %}
-                      </div>
+                      </a>
                     {%- endif -%}
                     <img
                       class="footer__audio-player-cover-art"
@@ -337,59 +343,15 @@
                     <div class="footer__audio-player-top">
                       <div class="footer__audio-player-header">
                         <p class="footer__audio-player-title t-h6">
-                          {{- radio_default_title | escape -}}
+                          <a href="{{ radio_cover_link }}" target="_blank" rel="noopener noreferrer">
+                            {{- radio_default_title | escape -}}
+                          </a>
                         </p>
                         <p class="footer__audio-player-subtitle t-t4">
                           {{- radio_default_detail | escape -}}
                         </p>
                       </div>
 
-                      <div class="footer__audio-player-links">
-                        <a
-                          class="footer__audio-player-link"
-                          data-audio-apple-link
-                          {% if first_audio_block.settings.apple_music_link != blank %}
-                            href="{{ first_audio_block.settings.apple_music_link }}"
-                          {% else %}
-                            hidden
-                          {% endif %}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Open Apple Music in a new tab"
-                        >
-                          <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 14 14"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M13.5 10.0787C13.5 11.1703 12.6184 12.5232 10.6073 12.5232C8.81127 12.5232 8.35696 11.3718 8.35696 10.5956C8.35696 9.63997 8.93377 8.66218 10.6092 8.66315C12.1265 8.66315 12.2142 8.27647 12.2142 7.51275V3.62861L5.14304 4.78093C5.14304 4.78093 5.14304 10.5329 5.14304 11.1761C5.14304 12.2676 4.26143 13.5 2.25032 13.5C0.454308 13.5 0 12.3486 0 11.5724C0 10.6168 0.576807 9.639 2.25225 9.639C3.76951 9.639 3.85728 9.25232 3.85728 8.48861C3.85728 6.35754 3.85728 1.92761 3.85728 1.92761C3.85728 1.60939 4.09263 1.35772 4.39551 1.30564L12.7756 0.00482304C12.7756 0.00482304 12.8316 2.41981e-06 12.8576 2.41981e-06C13.2126 -0.000961866 13.5 0.286395 13.5 0.641252C13.5 0.641252 13.5 9.4365 13.5 10.0787Z" fill="#DDD6C7"/>
-                          </svg>
-                        </a>
-                        <a
-                          class="footer__audio-player-link"
-                          data-audio-spotify-link
-                          {% if first_audio_block.settings.spotify_music_link != blank %}
-                            href="{{ first_audio_block.settings.spotify_music_link }}"
-                          {% else %}
-                            hidden
-                          {% endif %}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Open Spotify in a new tab"
-                        >
-                          <svg
-                            width="18"
-                            height="12"
-                            viewBox="0 0 18 12"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M13.8382 10.8752C13.6132 11.2502 13.1632 11.3252 12.7882 11.1002C9.93823 9.37521 6.41323 9.00021 2.21323 9.97521C1.76323 10.1252 1.46323 9.82521 1.31323 9.45021C1.16323 9.00021 1.46323 8.70021 1.83823 8.55021C6.41323 7.50021 10.3882 7.95021 13.4632 9.90021C13.9132 10.0502 13.9882 10.5002 13.8382 10.8752ZM15.2632 7.57521C14.9632 8.02521 14.4382 8.17521 13.9882 7.87521C10.7632 5.92521 5.81323 5.32521 2.06323 6.52521C1.61322 6.67521 1.01323 6.37521 0.938225 5.92521C0.788225 5.40021 1.01323 4.87521 1.53823 4.80021C5.88823 3.45021 11.2882 4.12521 15.0382 6.45021C15.3382 6.60021 15.5632 7.20021 15.2632 7.57521ZM15.3382 4.20021C11.5132 1.95021 5.06323 1.65021 1.38823 2.85021C0.788225 3.00021 0.188225 2.70021 0.0382251 2.10021C-0.111775 1.50021 0.188225 0.900213 0.788225 0.750213C5.06323 -0.524787 12.0382 -0.299787 16.5382 2.40021C17.0632 2.70021 17.2882 3.45021 16.9882 3.97521C16.6132 4.35021 15.9382 4.50021 15.3382 4.20021Z" fill="#DDD6C7"/>
-                          </svg>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -694,6 +656,11 @@
           "id": "audio_detail_text",
           "label": "Add audio detail text",
           "default": "<p>Ready to steal the night again? Cue Heist music.</p>"
+        },
+        {
+          "type": "url",
+          "id": "audio_cover_link",
+          "label": "Add cover image link"
         },
         {
           "type": "url",

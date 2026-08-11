@@ -56,9 +56,20 @@
     {% render 'cart-drawer-empty' %}
   {% endcapture %}
 
+  {% comment %}
+    no-persist: cart-drawer-scroll-lock.js deliberately force-closes this
+    drawer on every fresh load (a page should never start with it open) — the
+    one legitimate load-time open (after a /cart redirect) uses its own
+    one-shot sessionStorage flag, not this generic restore. Without
+    no-persist, theme-drawer.liquid's session restore still paints it open
+    on first parse and the force-close only lands after DOMContentLoaded +
+    customElements.whenDefined, so the drawer visibly flashes open before
+    slamming shut a moment later.
+  {% endcomment %}
   <theme-drawer
     id="cart-drawer"
     data-skip-node-update
+    no-persist
   >
     {% comment %}
       Below 990px the drawer opens as a modal dialog and the native ::backdrop

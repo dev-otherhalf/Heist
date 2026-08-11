@@ -472,6 +472,13 @@ body:has(.footer__audio) main {
           font-size: var(--fs-h7);
           width: 100%;
         }
+
+        // The title text links out to the station URL — keep it looking like
+        // plain heading text, not a default underlined browser link.
+        a {
+          display: block;
+          text-decoration: none;
+        }
       }
 
       &-subtitle {

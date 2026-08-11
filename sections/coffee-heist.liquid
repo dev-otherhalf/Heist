@@ -115,8 +115,27 @@
 
         <div class="coffee-heist__panels">
           {% for tab in tabs_obj.tabs.value %}
-            {% assign scale_min = tab.scale_min.value | default: 60 %}
-            {% assign scale_range = 100 | minus: scale_min %}
+            {%- comment -%} Truncated scale (was 0-100) so bars spread out more instead of clustering near the top. {%- endcomment -%}
+            {% assign scale_min = tab.scale_min.value | default: 70 %}
+
+            {%- comment -%}
+              No scale_max set in the metaobject: derive it from the highest
+              score in this tab's chart, rounded up to the next multiple of 10
+              (85 -> 90, 93 -> 100, 47 -> 50) so the axis always clears the tallest bar.
+            {%- endcomment -%}
+            {% assign highest_score = 0 %}
+            {% for row in tab.chart_rows.value %}
+              {% if row.score.value > highest_score %}
+                {% assign highest_score = row.score.value %}
+              {% endif %}
+            {% endfor %}
+            {% assign auto_scale_max = highest_score | divided_by: 10.0 | ceil | times: 10 %}
+
+            {% assign scale_max = tab.scale_max.value | default: auto_scale_max %}
+            {% if scale_max <= scale_min %}
+              {% assign scale_max = scale_min | plus: 10 %}
+            {% endif %}
+            {% assign scale_range = scale_max | minus: scale_min %}
 
             <div
               role="tabpanel"
@@ -135,9 +154,10 @@
                     <div class="coffee-heist__chart">
                       {% for row in tab.chart_rows.value %}
                         {% assign bar_percent = row.score.value | minus: scale_min | times: 100.0 | divided_by: scale_range %}
+                        {% assign bar_percent = bar_percent | at_least: 0 | at_most: 100 %}
 
                         <div class="coffee-heist__bar-row{% if row.is_featured.value %} coffee-heist__bar-row--featured{% endif %}">
-                          <div class="coffee-heist__bar-label t-n1-med">
+                          <div class="coffee-heist__bar-label t-n1">
                             {% if row.roaster_image.value != blank %}
                               {% assign roaster_alt = row.roaster_name.value | default: fallback_alt %}
                               {{
@@ -146,7 +166,7 @@
                                 | image_tag: loading: 'lazy', alt: roaster_alt, class: 'coffee-heist__bar-brand-image'
                               }}
                             {% else %}
-                              <span class="coffee-heist__bar-brand">{{ row.roaster_name.value }}</span>
+                              <span class="coffee-heist__bar-brand t-n1">{{ row.roaster_name.value }}</span>
                             {% endif %}
                             <span class="coffee-heist__bar-product t-n1">{{ row.product_name.value }}</span>
                           </div>
@@ -178,13 +198,13 @@
                           class="coffee-heist__axis"
                           aria-hidden="true"
                         >
-                          {% assign tick_step = 100 | minus: scale_min | times: 1.0 | divided_by: 8 %}
-                          {% for i in (0..8) %}
-                            {% assign step_times_i = tick_step | times: i %}
-                            {% assign tick_value = scale_min | plus: step_times_i %}
-                            <span class="t-n1">{{ tick_value | round }}</span>
-                          {% endfor %}
-                        </div>
+                            {% assign tick_step = scale_max | minus: scale_min | times: 1.0 | divided_by: 8 %}
+                            {% for i in (0..8) %}
+                              {% assign step_times_i = tick_step | times: i %}
+                              {% assign tick_value = scale_min | plus: step_times_i %}
+                              <span class="t-n1">{{ tick_value | round }}</span>
+                            {% endfor %}
+                          </div>
                       </div>
                     </div>
 

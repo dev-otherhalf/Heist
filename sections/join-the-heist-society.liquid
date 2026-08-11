@@ -1,4 +1,5 @@
 {%- render 'vite-tag' with 'sections/styles/join-the-heist-society.scss' -%}
+{%- render 'vite-tag' with 'sections/scripts/join-the-heist-society.js' -%}
 
 {%- liquid
   assign mobile_video = section.settings.video_mobile | default: section.settings.video_desktop
@@ -6,7 +7,6 @@
   assign mobile_image = section.settings.left_image_mobile | default: section.settings.left_image
   assign left_mobile_video = section.settings.left_video_mobile | default: section.settings.left_video_desktop
   assign product_blocks = section.blocks | where: 'type', 'product'
-  assign fallback_cta_link = blank
   assign heading_markup = section.settings.heading | strip
   assign heading_markup = heading_markup | remove: '<p>' | remove: '</p>'
   assign heading_markup = heading_markup | remove: '<h1>' | remove: '</h1>'
@@ -29,13 +29,36 @@
     assign has_left_video = true
   endif
 
-  for block in product_blocks
-    if fallback_cta_link == blank and block.settings.product != blank
-      assign fallback_cta_link = block.settings.product.url
-    endif
-  endfor
+  assign kit_line_items = ''
+  assign cart_products = section.settings.cart_products
 
-  assign cta_link = section.settings.button_link | default: fallback_cta_link
+  if cart_products != blank and cart_products.size > 0
+    for list_product in cart_products
+      assign line_variant_id = list_product.selected_or_first_available_variant.id | default: list_product.first_available_variant.id
+      if line_variant_id != blank
+        assign kit_line_items = kit_line_items | append: '{"id":' | append: line_variant_id | append: ',"quantity":1},'
+      endif
+    endfor
+  else
+    for block in product_blocks
+      assign product = block.settings.product
+      assign line_variant_id = block.settings.variant_id | strip
+      assign line_variant_id_check = line_variant_id | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+      if line_variant_id == blank or line_variant_id_check != blank
+        assign line_variant_id = product.selected_or_first_available_variant.id | default: product.first_available_variant.id
+      endif
+
+      if line_variant_id != blank
+        assign kit_line_items = kit_line_items | append: '{"id":' | append: line_variant_id | append: ',"quantity":1},'
+      endif
+    endfor
+  endif
+
+  assign kit_line_items = kit_line_items | strip_newlines
+  if kit_line_items != blank
+    assign trim_length = kit_line_items | size | minus: 1
+    assign kit_line_items = kit_line_items | slice: 0, trim_length
+  endif
 -%}
 
 <section
@@ -282,44 +305,54 @@
                 <div class="join-the-heist-society__product" {{- block.shopify_attributes -}}>
                   <div class="join-the-heist-society__product-frame">
                     {%- if item_image != blank -%}
-                        {{-
-                          item_image
-                          | image_url: width: 480
-                          | image_tag:
-                            widths: '160, 240, 320, 480',
-                            sizes: '(min-width: 990px) 7rem, 5rem',
-                            loading: 'lazy',
-                            alt: item_alt,
-                            class: 'join-the-heist-society__product-image'
-                        -}}
+                      {{-
+                        item_image
+                        | image_url: width: 480
+                        | image_tag:
+                          widths: '160, 240, 320, 480',
+                          sizes: '(min-width: 990px) 7rem, 5rem',
+                          loading: 'lazy',
+                          alt: item_alt,
+                          class: 'join-the-heist-society__product-image'
+                      -}}
                     {%- else -%}
                       <div class="join-the-heist-society__product-placeholder" aria-hidden="true"></div>
                     {%- endif -%}
                   </div>
 
                   {%- if item_title != blank -%}
-                        <div class="join-the-heist-society__product-title-link t-n1">
-                          {{- item_title | escape -}}
-                        </div>
+                    <div class="join-the-heist-society__product-title-link t-n1">
+                      {{- item_title | escape -}}
+                    </div>
                   {%- endif -%}
 
-                                    {%- if item_description != blank -%}
-                      
-                        <p class="join-the-heist-society__product-desc t-n3 hide-from-lg">
-                          {{- item_description | escape -}}
-                        </p>
+                  {%- if item_description != blank -%}
+                    <p class="join-the-heist-society__product-desc t-n3 hide-from-lg">
+                      {{- item_description | escape -}}
+                    </p>
                   {%- endif -%}
                 </div>
               {%- endfor -%}
             </div>
           </div>
 
-          {%- if section.settings.button_label != blank and cta_link != blank -%}
-            <a class="join-the-heist-society__button btn btn--dark btn--split btn--block" href="{{- cta_link -}}">
-              <span class="btn__text">{{- section.settings.button_label | escape -}}</span>
-              <span class="btn__lines" aria-hidden="true"></span>
-              <span class="btn__text">{{- section.settings.button_label_two | escape -}}</span>
-            </a>
+          {%- if section.settings.button_label != blank -%}
+            <join-heist-cta>
+              {%- if kit_line_items != blank -%}
+                <script type="application/json" data-join-heist-lines>
+                  [{{- kit_line_items -}}]
+                </script>
+              {%- endif -%}
+              <button
+                type="button"
+                class="join-the-heist-society__button btn btn--dark btn--split btn--block"
+                data-join-heist-button
+              >
+                <span class="btn__text">{{- section.settings.button_label | escape -}}</span>
+                <span class="btn__lines" aria-hidden="true"></span>
+                <span class="btn__text">{{- section.settings.button_label_two | escape -}}</span>
+              </button>
+            </join-heist-cta>
           {%- endif -%}
 
           {%- if section.settings.disclaimer != blank -%}
@@ -351,7 +384,7 @@
     {
       "type": "text",
       "id": "custom_id",
-      "label": "Section ID",
+      "label": "Section ID"
     },
     {
       "type": "header",
@@ -361,7 +394,7 @@
       "type": "textarea",
       "id": "heading",
       "label": "Heading",
-      "default": "Join the \nHeist Society™",
+      "default": "Join the \nHeist Society™"
     },
     {
       "type": "textarea",
@@ -394,17 +427,17 @@
       "label": "Button label",
       "default": "Join"
     },
-        {
+    {
       "type": "text",
       "id": "button_label_two",
       "label": "Button label Two",
       "default": "Now"
     },
     {
-      "type": "url",
-      "id": "button_link",
-      "label": "Button link",
-      "info": "If empty, the first product block link is used"
+      "type": "product_list",
+      "id": "cart_products",
+      "label": "Products added on \"Join Now\"",
+      "info": "One of each product's first available variant is added to cart when the button is clicked. Leave empty to fall back to the product blocks below."
     },
     {
       "type": "textarea",
@@ -524,6 +557,17 @@
       "type": "product",
       "name": "Product",
       "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Variant ID",
+          "info": "Optional. The numeric variant ID to add to cart (find it in the product's variant URL, e.g. ?variant=1234567890). Falls back to the product's first available variant."
+        },
         {
           "type": "text",
           "id": "custom_name",
