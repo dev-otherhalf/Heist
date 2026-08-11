@@ -96,12 +96,16 @@ function registerShowMore(button) {
   button.dataset.fullBriefingReady = "true";
 
   button.addEventListener("click", (event) => {
-    event.preventDefault();
-
     const group = button
       .closest(".full-briefing__content")
       ?.querySelector(".full-briefing__faqs");
-    group?.querySelectorAll("[data-full-briefing-faq-extra]").forEach((faq) => {
+    const extraFaqs =
+      group?.querySelectorAll("[data-full-briefing-faq-extra]") ?? [];
+
+    if (extraFaqs.length === 0) return;
+
+    event.preventDefault();
+    extraFaqs.forEach((faq) => {
       faq.removeAttribute("hidden");
       faq.removeAttribute("data-full-briefing-faq-extra");
     });
