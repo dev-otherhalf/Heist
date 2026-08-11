@@ -243,6 +243,13 @@
         padding-top: var(--space-24);
       }
     }
+
+    &--lightlabs {
+      padding-top: var(--space-24);
+      @include respond-to(lg) {
+        padding-top: 0;
+      }
+    }
   }
 
   // --- Media -----------------------------------------------------------------

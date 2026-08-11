@@ -295,4 +295,11 @@
       transition: none;
     }
   }
+
+  &__lightlabs-widget {
+    padding-top: var(--space-24);
+    @include respond-to(lg) {
+      padding-top: 0;
+    }
+  }
 }
