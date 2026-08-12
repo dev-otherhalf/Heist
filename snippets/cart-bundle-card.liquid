@@ -129,7 +129,7 @@
       <ul class="cart-items__bundle list-unstyled">
         {%- for group_item in cart.items -%}
           {%- if group_item.properties._bundle_group == bundle_group -%}
-            <li>{{ group_item.quantity }} x {{ group_item.product.title }}, {{ group_item.variant.title }}</li>
+            <li class="t-t3">{{ group_item.quantity }} x {{ group_item.product.title }}, {{ group_item.variant.title }}</li>
           {%- endif -%}
         {%- endfor -%}
       </ul>
