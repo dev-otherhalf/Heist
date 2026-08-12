@@ -16,7 +16,6 @@ function loadStandardEvents() {
 
 const CART_CHANGE_URL = () =>
   window.Theme?.routes?.cart_change_url || "/cart/change.js";
-const CART_URL = () => window.Theme?.routes?.cart_url || "/cart";
 
 class CartBundleSellingPlan extends HTMLElement {
   // Bound to the element itself and delegated to whichever child matches,
@@ -37,7 +36,7 @@ class CartBundleSellingPlan extends HTMLElement {
     this.removeEventListener("click", this.#onSubscribeClick);
   }
 
-  /** @returns {Record<string, {key: string, quantity: number, plans: Record<string, number>}>} */
+  /** @returns {Record<string, {line: number, key: string, quantity: number, plans: Record<string, number>}>} */
   get #planMap() {
     const script = this.querySelector("[data-bundle-plan-map]");
     if (!script) return {};
@@ -75,36 +74,19 @@ class CartBundleSellingPlan extends HTMLElement {
   };
 
   /**
-   * Finds a line's current 1-based position by its stable key. Needed
-   * because a prior /cart/change.js call in this same batch can shift every
-   * line after it.
-   * @param {Array<{key: string}>} items - The cart's current `items` array.
-   * @param {string} key
-   * @returns {number | null}
-   */
-  #resolveLine(items, key) {
-    const index = items.findIndex((item) => item.key === key);
-    return index === -1 ? null : index + 1;
-  }
-
-  /**
    * Moves every line in the group onto the plan matching `planName` — an
    * empty string clears every line back to one-time purchase instead (there
    * is no name to match then, so every line in the group is a target). A
-   * line whose product has no allocation under a given name is left as-is
-   * rather than dropped to one-time purchase — the shared dropdown only
-   * lists names every component actually offers, so this should not
-   * normally happen.
+   * non-empty plan must exist on every line in the bundle; otherwise the
+   * update is rejected before any cart request is sent so the bundle cannot
+   * become half subscription and half one-time.
    * @param {string} planName - Lowercased selling-plan name to match, or ''
    *   to clear the whole group to one-time.
    * @param {HTMLSelectElement | HTMLElement} control
    */
   #applyPlanToGroup = async (planName, control) => {
     const planMap = this.#planMap;
-    const targets =
-      planName === ""
-        ? Object.values(planMap)
-        : Object.values(planMap).filter((entry) => entry.plans?.[planName]);
+    const targets = Object.values(planMap);
     if (targets.length === 0) return;
 
     control.setAttribute("disabled", "");
@@ -127,14 +109,33 @@ class CartBundleSellingPlan extends HTMLElement {
     }
 
     try {
-      let cart = await fetch(`${CART_URL()}.js`).then((r) => r.json());
+      if (planName !== "") {
+        const missingPlan = targets.find((entry) => !entry.plans?.[planName]);
+        if (missingPlan) {
+          throw new Error(
+            "This delivery plan is not available for every bundle item",
+          );
+        }
+      }
+
       let lastResponse = null;
 
-      for (const target of targets) {
-        const line = this.#resolveLine(cart.items, target.key);
-        if (!line) continue;
-
+      // Shopify can invalidate line item keys when a selling plan changes.
+      // Use rendered line numbers instead, applied bottom-up so earlier line
+      // positions stay valid throughout the batch.
+      const orderedTargets = [...targets].sort((a, b) => b.line - a.line);
+      for (const [index, target] of orderedTargets.entries()) {
         const sellingPlan = planName === "" ? "" : target.plans[planName];
+        const body = {
+          line: target.line,
+          quantity: target.quantity,
+          selling_plan: sellingPlan,
+        };
+        if (index === orderedTargets.length - 1) {
+          body.sections = this.#sectionIds().join(",");
+          body.sections_url = window.location.pathname;
+        }
+
         const response = await fetch(CART_CHANGE_URL(), {
           method: "POST",
           headers: {
@@ -142,17 +143,10 @@ class CartBundleSellingPlan extends HTMLElement {
             Accept: "application/json",
           },
           credentials: "same-origin",
-          body: JSON.stringify({
-            line,
-            quantity: target.quantity,
-            selling_plan: sellingPlan,
-            sections: this.#sectionIds().join(","),
-            sections_url: window.location.pathname,
-          }),
+          body: JSON.stringify(body),
         });
         lastResponse = await response.json();
         if (lastResponse.errors) throw new Error(lastResponse.errors);
-        cart = lastResponse;
       }
 
       if (!lastResponse) return;

@@ -45,8 +45,15 @@
     endif
   endif
 
+  assign deliveries = 1
+  if current_is_prepaid
+    assign deliveries = 3
+  endif
+  assign per_month_price = item.final_line_price | divided_by: deliveries | money
+
   assign prepaid_option_label = settings.cart_prepaid_option_label | default: current_plan.name
   assign prepaid_badge_label = settings.cart_prepaid_badge_label | default: current_plan.name
+  assign prepaid_badge_label = prepaid_badge_label | replace: '[count]', item.quantity | replace: '[price]', per_month_price
 
   # The plan the "Subscribe & save" button applies: the preferred one by name,
   # else the first non-prepaid plan on the variant.

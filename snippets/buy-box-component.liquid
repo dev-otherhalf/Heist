@@ -3,7 +3,7 @@
 
   @param {product} product - a component product (e.g. Smooth Talker)
   @param {number} index - 0-based position in the stitched list
-  @param {number} default_quantity - qty applied to this tile's first variant
+  @param {number} default_quantity - fallback qty applied to this tile's variants
 
   Per-bag price + badge are seeded server-side from the variant's cheapest
   selling-plan allocation (or one-time price if none) and then kept in sync by
@@ -78,7 +78,9 @@
       <span
         class="buy-box-tile__compare"
         data-tile-compare
-        {% unless seed_compare > seed_price %}hidden{% endunless %}
+        {% unless seed_compare > seed_price %}
+          hidden
+        {% endunless %}
       >
         <s class="t-n1-med">{{ seed_compare | money }}</s>
       </span>
@@ -99,8 +101,15 @@
   <div class="buy-box-tile__steppers">
     {% for variant in product.variants %}
       {% liquid
-        # Every variant defaults to the configured quantity (1 by default).
         assign qty = default_quantity | default: 1
+        if index == 0
+          assign qty = 0
+          if forloop.index == 1
+            assign qty = 2
+          elsif forloop.index == 2
+            assign qty = 1
+          endif
+        endif
         assign label = variant.option1 | default: variant.title
         # Availability is stock-based: Shopify keeps variant.available true when
         # inventory isn't tracked (or "continue selling" is on), so a non-positive
@@ -110,7 +119,12 @@
           assign variant_available = true
         endif
       %}
-      <div class="buy-box-stepper" {% unless variant_available %}data-unavailable="true"{% endunless %}>
+      <div
+        class="buy-box-stepper"
+        {% unless variant_available %}
+          data-unavailable="true"
+        {% endunless %}
+      >
         <span class="buy-box-stepper__label t-n1">{{ label | escape }}</span>
         <div
           class="buy-box-stepper__control"
@@ -123,7 +137,9 @@
             class="buy-box-stepper__btn"
             data-stepper-decrease
             aria-label="Decrease quantity for {{ label | escape }}"
-            {% if qty == 0 or variant_available == false %}disabled{% endif %}
+            {% if qty == 0 or variant_available == false %}
+              disabled
+            {% endif %}
           >
             <span class="svg-wrapper">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -138,7 +154,9 @@
             class="buy-box-stepper__btn"
             data-stepper-increase
             aria-label="Increase quantity for {{ label | escape }}"
-            {% unless variant_available %}disabled{% endunless %}
+            {% unless variant_available %}
+              disabled
+            {% endunless %}
           >
             <span class="svg-wrapper">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">

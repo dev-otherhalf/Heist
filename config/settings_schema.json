@@ -1701,107 +1701,90 @@
         "visible_if": "{{ settings.cart_progress_type == 'shipping' and settings.cart_subscription_free_shipping }}"
       },
       {
-        "type": "header",
-        "content": "Bag tier 1",
-        "info": "Set the quantity to 0 to hide a tier.",
-        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
-      },
-      {
         "type": "number",
         "id": "cart_bag_tier_1_quantity",
-        "label": "Quantity",
+        "label": "Bag tier 1 quantity",
+        "info": "Set the quantity to 0 to hide this tier.",
         "default": 2,
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "text",
         "id": "cart_bag_tier_1_label",
-        "label": "Bag label",
+        "label": "Bag tier 1 label",
         "default": "2 bags",
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "text",
         "id": "cart_bag_tier_1_reward",
-        "label": "Save label",
+        "label": "Bag tier 1 save label",
         "default": "Save 10%",
-        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
-      },
-      {
-        "type": "header",
-        "content": "Bag tier 2",
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "number",
         "id": "cart_bag_tier_2_quantity",
-        "label": "Quantity",
+        "label": "Bag tier 2 quantity",
+        "info": "Set the quantity to 0 to hide this tier.",
         "default": 3,
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "text",
         "id": "cart_bag_tier_2_label",
-        "label": "Bag label",
+        "label": "Bag tier 2 label",
         "default": "3 bags",
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "text",
         "id": "cart_bag_tier_2_reward",
-        "label": "Save label",
+        "label": "Bag tier 2 save label",
         "default": "Save 15%",
-        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
-      },
-      {
-        "type": "header",
-        "content": "Bag tier 3",
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "number",
         "id": "cart_bag_tier_3_quantity",
-        "label": "Quantity",
+        "label": "Bag tier 3 quantity",
+        "info": "Set the quantity to 0 to hide this tier.",
         "default": 5,
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "text",
         "id": "cart_bag_tier_3_label",
-        "label": "Bag label",
+        "label": "Bag tier 3 label",
         "default": "5 bags",
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "text",
         "id": "cart_bag_tier_3_reward",
-        "label": "Save label",
+        "label": "Bag tier 3 save label",
         "default": "Save 20%",
-        "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
-      },
-      {
-        "type": "header",
-        "content": "Bag tier 4",
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "number",
         "id": "cart_bag_tier_4_quantity",
-        "label": "Quantity",
+        "label": "Bag tier 4 quantity",
+        "info": "Set the quantity to 0 to hide this tier.",
         "default": 6,
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "text",
         "id": "cart_bag_tier_4_label",
-        "label": "Bag label",
+        "label": "Bag tier 4 label",
         "default": "6+ bags",
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
       {
         "type": "text",
         "id": "cart_bag_tier_4_reward",
-        "label": "Save label",
+        "label": "Bag tier 4 save label",
         "default": "Save 25%",
         "visible_if": "{{ settings.cart_progress_type == 'bags' }}"
       },
@@ -1939,8 +1922,8 @@
         "type": "text",
         "id": "cart_prepaid_badge_label",
         "label": "Prepaid line — tag",
-        "info": "Shown beside the line's variant. Leave blank to use the plan name.",
-        "default": "Prepaid for 3 months"
+        "info": "Shown beside the line's variant. Use [count] for the bag count and [price] for the per-month price. Leave blank to use the plan name.",
+        "default": "[count] Bags Prepaid for 3 months, [price]/Month"
       },
       {
         "type": "header",

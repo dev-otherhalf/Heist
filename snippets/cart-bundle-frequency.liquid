@@ -95,22 +95,45 @@
     for allocation in group_item.variant.selling_plan_allocations
       assign plan_name_dc = allocation.selling_plan.name | downcase
       unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay'
-        unless target_is_preferred
-          if target_plan_name == ''
-            assign target_plan_name = plan_name_dc
-            assign target_plan_price = allocation.per_delivery_price
-            assign target_variant_price = group_item.variant.price
+        assign plan_is_shared = true
+        for sibling_item in cart.items
+          if sibling_item.properties._bundle_group != bundle_group
+            continue
           endif
-          if preferred_plan_key != blank and plan_name_dc contains preferred_plan_key
-            assign target_plan_name = plan_name_dc
-            assign target_plan_price = allocation.per_delivery_price
-            assign target_variant_price = group_item.variant.price
-            assign target_is_preferred = true
-          endif
-        endunless
+          assign sibling_has_plan = false
+          for sibling_allocation in sibling_item.variant.selling_plan_allocations
+            assign sibling_plan_name_dc = sibling_allocation.selling_plan.name | downcase
+            if sibling_plan_name_dc == plan_name_dc
+              assign sibling_has_plan = true
+            endif
+          endfor
+          unless sibling_has_plan
+            assign plan_is_shared = false
+          endunless
+        endfor
+
+        if plan_is_shared
+          unless target_is_preferred
+            if target_plan_name == ''
+              assign target_plan_name = plan_name_dc
+              assign target_plan_price = allocation.per_delivery_price
+              assign target_variant_price = group_item.variant.price
+            endif
+            if preferred_plan_key != blank and plan_name_dc contains preferred_plan_key
+              assign target_plan_name = plan_name_dc
+              assign target_plan_price = allocation.per_delivery_price
+              assign target_variant_price = group_item.variant.price
+              assign target_is_preferred = true
+            endif
+          endunless
+        endif
       endunless
     endfor
   endfor
+
+  if target_plan_name == ''
+    assign show_control = false
+  endif
 %}
 
 {%- comment -%}
@@ -151,6 +174,7 @@
           {%- assign line_first = false -%}
           {%- assign group_line = group_item.index | plus: 1 -%}
           "{{ group_line }}": {
+            "line": {{ group_line | json }},
             "key": {{ group_item.key | json }},
             "quantity": {{ group_item.quantity | json }},
             "plans": {
@@ -206,8 +230,9 @@
         </option>
 
         {%- comment -%}
-          Dedupe by plan NAME across every component in the group — the JS
-          matches each line's own allocation by this name when applying it.
+          Dedupe by plan NAME across every component in the group, and only
+          show names every component offers. That keeps the shared dropdown
+          from creating a mixed bundle state where only some lines can move.
         {%- endcomment -%}
         {%- for group_item in cart.items -%}
           {%- if group_item.properties._bundle_group != bundle_group -%}
@@ -219,11 +244,35 @@
             {%- assign name_key = '[' | append: plan_name_dc | append: ']' -%}
             {%- unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay' -%}
               {%- unless seen_plan_names contains name_key -%}
-                {%- assign seen_plan_names = seen_plan_names | append: name_key -%}
-                <option
-                  value="{{ plan_name_dc | escape }}"
-                  {% if plan_name_dc == current_plan_name %}selected{% endif %}
-                >{{ plan.name }}</option>
+                {%- liquid
+                  assign plan_is_shared = true
+                  for sibling_item in cart.items
+                    if sibling_item.properties._bundle_group != bundle_group
+                      continue
+                    endif
+                    assign sibling_has_plan = false
+                    for sibling_allocation in sibling_item.variant.selling_plan_allocations
+                      assign sibling_plan_name_dc = sibling_allocation.selling_plan.name | downcase
+                      if sibling_plan_name_dc == plan_name_dc
+                        assign sibling_has_plan = true
+                      endif
+                    endfor
+                    unless sibling_has_plan
+                      assign plan_is_shared = false
+                    endunless
+                  endfor
+                -%}
+                {%- if plan_is_shared -%}
+                  {%- assign seen_plan_names = seen_plan_names | append: name_key -%}
+                  <option
+                    value="{{ plan_name_dc | escape }}"
+                    {% if plan_name_dc == current_plan_name %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ plan.name }}
+                  </option>
+                {%- endif -%}
               {%- endunless -%}
             {%- endunless -%}
           {%- endfor -%}

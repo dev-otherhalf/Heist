@@ -43,6 +43,7 @@
   assign group_compare_price = 0
   assign group_line_numbers = ''
   assign current_plan_name = ''
+  assign bag_count = 0
 
   for group_item in cart.items
     if group_item.properties._bundle_group != bundle_group
@@ -54,6 +55,7 @@
     endif
 
     assign group_final_price = group_final_price | plus: group_item.final_line_price
+    assign bag_count = bag_count | plus: group_item.quantity
     assign group_line_number = group_item.index | plus: 1
     assign group_line_numbers = group_line_numbers | append: group_line_number | append: ','
   endfor
@@ -86,7 +88,10 @@
     assign group_compare_price = group_compare_price | plus: compare_line_price
   endfor
 
+  assign per_month_price = group_final_price | divided_by: deliveries | money
+
   assign prepaid_badge_label = settings.cart_prepaid_badge_label | default: current_plan_name
+  assign prepaid_badge_label = prepaid_badge_label | replace: '[count]', bag_count | replace: '[price]', per_month_price
 
   assign prepaid_option_label = settings.cart_prepaid_option_label | default: current_plan_name
 %}

@@ -242,6 +242,21 @@
       # billed deliveries, not one, or the saving would come out far too small.
       assign gross_price = 0
       for item in cart.items
+        assign item_tags = item.product.tags | join: ',' | downcase
+        assign is_membership_item = false
+        if item_tags contains 'membership' and item.final_line_price == 0
+          assign is_membership_item = true
+        endif
+
+        assign is_free_item = false
+        if is_membership_item == false and item.final_line_price == 0
+          assign is_free_item = true
+        endif
+
+        if is_membership_item or is_free_item
+          continue
+        endif
+
         assign current_plan_name = item.selling_plan_allocation.selling_plan.name | downcase
         assign deliveries = 1
         if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
