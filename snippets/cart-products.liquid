@@ -163,9 +163,21 @@
               assign rows_bought = ''
               assign rows_membership = ''
               assign rows_free = ''
+
+              comment
+                Buy-box add-to-cart tags every line it adds with the same
+                properties._bundle_group value (see buy-box.js #addToCart) so
+                they can be rendered as one grouped card instead of N separate
+                rows. seen_bundle_groups tracks which groups have already
+                printed their card — every line after the first in a group
+                renders a hidden placeholder row instead (see below).
+              endcomment
+              assign seen_bundle_groups = ''
             -%}
             {% for item in cart.items %}
               {%- liquid
+                assign bundle_group = item.properties._bundle_group
+
                 comment
                   Membership and gifted lines are cards, not ordinary rows: the
                   membership is identified by its product tag, the gift by its
@@ -221,6 +233,57 @@
                   assign item_url = bundle_reference.url | append: '?variantId=' | append: item.variant.id
                 endif
               -%}
+
+              {%- comment -%}
+                The bundle card is a drawer affordance, same rule as the
+                membership/gift cards above — its styling (cart-drawer.scss,
+                ".cart-drawer &__items .cart-items__table-row--bundle") only
+                exists for the drawer, so the cart page keeps plain rows for
+                each component line instead of an unstyled card.
+              {%- endcomment -%}
+              {%- if context != 'drawer' -%}
+                {%- assign bundle_group = blank -%}
+              {%- endif -%}
+
+              {%- if bundle_group != blank -%}
+                {%- liquid
+                  assign group_key = '[' | append: bundle_group | append: ']'
+                  assign already_rendered = false
+                  if seen_bundle_groups contains group_key
+                    assign already_rendered = true
+                  endif
+                -%}
+                {%- if already_rendered -%}
+                  {%- comment -%}
+                    Every line after the first in the group is folded into the
+                    card above instead of getting its own visible row — but it
+                    still needs a ref="cartItemRows[]" placeholder, hidden and
+                    empty, so component-cart-items.js's row-array position
+                    (cartItemRows[line - 1]) keeps lining up with real cart
+                    line numbers for every line after this one.
+                  {%- endcomment -%}
+                  {%- capture cart_row -%}
+                    <tr
+                      id="CartItem-{{ item.key }}"
+                      role="row"
+                      class="cart-items__table-row cart-items__table-row--bundle-line"
+                      ref="cartItemRows[]"
+                      data-key="{{ item.key }}"
+                      hidden
+                    ></tr>
+                  {%- endcapture -%}
+                  {%- assign rows_bought = rows_bought | append: cart_row -%}
+                  {%- continue -%}
+                {%- else -%}
+                  {%- assign seen_bundle_groups = seen_bundle_groups | append: group_key -%}
+                  {%- capture cart_row -%}
+                    {%- render 'cart-bundle-card', item: item, bundle_group: bundle_group, context: context -%}
+                  {%- endcapture -%}
+                  {%- assign rows_bought = rows_bought | append: cart_row -%}
+                  {%- continue -%}
+                {%- endif -%}
+              {%- endif -%}
+
               {%- capture cart_row -%}
                 <tr
                   id="CartItem-{{ item.key }}"
@@ -1218,5 +1281,11 @@
       filter: none;
       opacity: 1;
     }
+  }
+
+  .cart-items__table-row--bundle-line {
+    display: none;
+    padding: 0;
+    margin: 0;
   }
 {% endstylesheet %}

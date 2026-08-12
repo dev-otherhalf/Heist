@@ -300,8 +300,10 @@
     padding-top: var(--space-24);
     @include respond-to(lg) {
       padding-top: 0;
-      .ll-container {
-        max-width: 22.125rem;
+      lightlabs-widget .lightlabs.lightlabs-widget {
+        .ll-container {
+          max-width: 22.125rem;
+        }
       }
     }
   }

@@ -185,26 +185,41 @@ export class CartItemsComponent extends createViewEventElement(Component) {
 
   /**
    * Handles the line item removal.
-   * @param {number} line - The line item index.
+   * @param {number | string} line - The line item index, or a comma-separated
+   *   list of line indexes (e.g. "2,3,4") when the trash icon on a buy-box
+   *   bundle card removes every line the bundle added at once.
    */
   onLineItemRemove(line) {
-    this.updateQuantity({
-      line,
-      quantity: 0,
-      action: "clear",
+    const lines =
+      typeof line === "string"
+        ? line
+            .split(",")
+            .map((n) => Number(n.trim()))
+            .filter(Boolean)
+        : [line];
+
+    if (lines.length > 1) {
+      this.#removeLines(lines);
+    } else {
+      this.updateQuantity({
+        line: lines[0],
+        quantity: 0,
+        action: "clear",
+      });
+    }
+
+    const rowsToRemove = lines.flatMap((lineNumber) => {
+      const cartItemRowToRemove = this.refs.cartItemRows[lineNumber - 1];
+      if (!cartItemRowToRemove) return [];
+      return [
+        cartItemRowToRemove,
+        ...this.refs.cartItemRows.filter(
+          (row) => row.dataset.parentKey === cartItemRowToRemove.dataset.key,
+        ),
+      ];
     });
 
-    const cartItemRowToRemove = this.refs.cartItemRows[line - 1];
-
-    if (!cartItemRowToRemove) return;
-
-    const rowsToRemove = [
-      cartItemRowToRemove,
-      // Get all nested lines of the row to remove
-      ...this.refs.cartItemRows.filter(
-        (row) => row.dataset.parentKey === cartItemRowToRemove.dataset.key,
-      ),
-    ];
+    if (rowsToRemove.length === 0) return;
 
     // If the cart item row is the last row, optimistically trigger the cart empty state
     const isEmptyCart = rowsToRemove.length == this.refs.cartItemRows.length;
@@ -232,6 +247,114 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       // Remove the row after the animation ends
       onAnimationEnd(row, remove);
     });
+  }
+
+  /**
+   * Clears several cart lines in a single request — the buy-box bundle card's
+   * trash icon removes every line the bundle added together rather than one
+   * at a time. Mirrors updateQuantity()'s event/morph flow but batches via
+   * `/cart/update.js`, which accepts multiple `{ [line]: quantity }` updates.
+   * @param {number[]} lines - 1-based cart line indexes to clear.
+   */
+  #removeLines(lines) {
+    const cartPerformaceUpdateMarker = cartPerformance.createStartingMarker(
+      "clear-group:user-action",
+    );
+
+    this.#disableCartItems();
+
+    const { cartTotal } = this.refs;
+
+    const cartItemsComponents = document.querySelectorAll(
+      "cart-items-component",
+    );
+    const sectionsToUpdate = new Set([this.sectionId]);
+    cartItemsComponents.forEach((item) => {
+      if (item instanceof HTMLElement && item.dataset.sectionId) {
+        sectionsToUpdate.add(item.dataset.sectionId);
+      }
+    });
+
+    // /cart/update.js's `updates` object only accepts variant IDs or line
+    // item KEYS as keys — plain positional line numbers are silently
+    // misread as variant IDs and match nothing, so the request is a no-op.
+    const lineIds = lines
+      .map((line) => this.refs.cartItemRows[line - 1]?.dataset.key)
+      .filter((key) => typeof key === "string");
+    const updates = Object.fromEntries(lineIds.map((key) => [key, 0]));
+    const body = JSON.stringify({
+      updates,
+      sections: Array.from(sectionsToUpdate).join(","),
+      sections_url: window.location.pathname,
+    });
+
+    cartTotal?.shimmer();
+
+    const deferredUpdatePromise = CartLinesUpdateEvent.createPromise();
+    this.dispatchEvent(
+      new CartLinesUpdateEvent({
+        action: "remove",
+        context: "cart",
+        lines: lineIds.map((id) => ({ id, quantity: 0 })),
+        promise: deferredUpdatePromise.promise,
+      }),
+    );
+
+    fetch(Theme.routes.cart_update_url, fetchConfig("json", { body }))
+      .then((response) => response.text())
+      .then((responseText) => {
+        const parsedResponseText = JSON.parse(responseText);
+
+        resetShimmer(this);
+
+        if (parsedResponseText.errors) {
+          deferredUpdatePromise.reject(new Error(parsedResponseText.errors));
+          this.dispatchEvent(
+            new CartErrorEvent({
+              error: parsedResponseText.errors,
+              code: "INVALID",
+            }),
+          );
+          return;
+        }
+
+        this.#updateQuantitySelectors(parsedResponseText);
+
+        deferredUpdatePromise.resolve({
+          cart: CartLinesUpdateEvent.createCartFromAjaxResponse(
+            parsedResponseText,
+          ),
+          detail: {
+            sections: parsedResponseText.sections,
+            items: parsedResponseText.items,
+            itemCount: parsedResponseText.item_count,
+            source: "cart-items-component",
+            didError: false,
+          },
+        });
+
+        morphSection(
+          this.sectionId,
+          parsedResponseText.sections[this.sectionId],
+          { mode: this.isDrawer ? "hydration" : "full" },
+        );
+
+        this.#updateCartQuantitySelectorButtonStates();
+      })
+      .catch((error) => {
+        console.error(error);
+        deferredUpdatePromise.reject(error);
+        this.dispatchEvent(
+          new CartErrorEvent({
+            error: error?.message || "Failed to update cart",
+            code: "SERVICE_UNAVAILABLE",
+          }),
+        );
+      })
+      .finally(() => {
+        this.#enableCartItems();
+        cartPerformance.measureFromMarker(cartPerformaceUpdateMarker);
+      });
   }
 
   /**

@@ -1,0 +1,178 @@
+{% doc %}
+  Cart Bundle Card
+
+  Renders every cart line the buy box (snippets/buy-box-component.liquid /
+  blocks/subscription.liquid) added together as one grouped card instead of
+  N separate table rows: a single image + title + trash icon, a sub-item list
+  ("1 x Smooth Talker, Decaf"), the combined price with strikethrough compare,
+  a prepaid term note, and — below the card — a single shared "ships every
+  X weeks" frequency control that re-applies the chosen plan to every line in
+  the group at once.
+
+  Lines are tied together by `properties._bundle_group`, a value buy-box.js
+  stamps on every line item in one add-to-cart submit (see
+  src/entrypoints/sections/scripts/buy-box.js #addToCart). `_bundle_title`
+  and `_bundle_image` (also stamped there) are the stitched parent product's
+  own title/image — the grouped lines are its components, not standalone
+  products, so the card reads as one purchase of "The Heist" rather than
+  three unrelated line items.
+
+  @param {object} item - The group's first cart line (used for its key/index
+    only; its own product is not what's shown — see components below).
+  @param {string} bundle_group - The shared properties._bundle_group value.
+  @param {string} [context] - Pass 'drawer' to enable the drawer-only prepaid
+    strikethrough math (mirrors cart-products.liquid's own row rendering).
+
+  @example
+  {% render 'cart-bundle-card', item: item, bundle_group: bundle_group, context: context %}
+{% enddoc %}
+
+{% liquid
+  # Liquid's `where` filter only matches top-level properties, not the nested
+  # `properties._bundle_group` path — so the group is gathered with a plain
+  # loop instead of a filter chain.
+  assign bundle_title = item.product.metafields.custom.cart_product_title.value | default: item.product.title
+  assign cart_product_image = item.product.metafields.custom.cart_product_image.value
+  if cart_product_image != blank
+    assign bundle_image = cart_product_image | image_url: width: 264
+  else
+    assign bundle_image = item.properties._bundle_image
+  endif
+
+  assign group_final_price = 0
+  assign group_compare_price = 0
+  assign group_line_numbers = ''
+  assign current_plan_name = ''
+
+  for group_item in cart.items
+    if group_item.properties._bundle_group != bundle_group
+      continue
+    endif
+
+    if current_plan_name == ''
+      assign current_plan_name = group_item.selling_plan_allocation.selling_plan.name | downcase
+    endif
+
+    assign group_final_price = group_final_price | plus: group_item.final_line_price
+    assign group_line_number = group_item.index | plus: 1
+    assign group_line_numbers = group_line_numbers | append: group_line_number | append: ','
+  endfor
+  assign group_line_numbers = group_line_numbers | remove_last: ','
+
+  # Prepaid billing bills every delivery of the term in one charge — same
+  # "no billing-cycle count in Liquid" limitation cart-products.liquid works
+  # around for a single line, applied across the whole group.
+  assign is_prepaid = false
+  if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
+    assign is_prepaid = true
+  endif
+  assign deliveries = 1
+  if is_prepaid
+    assign deliveries = 3
+  endif
+
+  for group_item in cart.items
+    if group_item.properties._bundle_group != bundle_group
+      continue
+    endif
+    assign regular_price = group_item.variant.compare_at_price | default: 0
+    if group_item.variant.price > regular_price
+      assign regular_price = group_item.variant.price
+    endif
+    assign compare_line_price = regular_price | times: group_item.quantity | times: deliveries
+    if group_item.original_line_price > compare_line_price
+      assign compare_line_price = group_item.original_line_price
+    endif
+    assign group_compare_price = group_compare_price | plus: compare_line_price
+  endfor
+
+  assign prepaid_badge_label = settings.cart_prepaid_badge_label | default: current_plan_name
+%}
+<tr
+  id="CartItem-bundle-{{ bundle_group | slugify }}"
+  role="row"
+  class="cart-items__table-row cart-items__table-row--card cart-items__table-row--bundle"
+  ref="cartItemRows[]"
+  data-key="{{ item.key }}"
+  style="position: relative;"
+>
+  <td
+    class="cart-items__media"
+    role="cell"
+    headers="productImage"
+  >
+    {%- if bundle_image != blank -%}
+      <div class="cart-items__media-container" style="--ratio:1;">
+        <img
+          src="{{ bundle_image }}"
+          alt="{{ bundle_title | escape }}"
+          loading="lazy"
+          width="132"
+          height="132"
+          class="cart-items__media-image border-style"
+        >
+      </div>
+    {%- endif -%}
+  </td>
+  <td
+    class="cart-items__details cart-primary-typography"
+    role="cell"
+    headers="productInformation"
+  >
+    <div class="cart-items__product-info">
+      <div class="cart-items__title-row">
+        <span class="cart-items__title">{{ bundle_title | escape | upcase }}</span>
+      </div>
+
+      <ul class="cart-items__bundle list-unstyled">
+        {%- for group_item in cart.items -%}
+          {%- if group_item.properties._bundle_group == bundle_group -%}
+            <li>{{ group_item.quantity }} x {{ group_item.product.title }}, {{ group_item.variant.title }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </td>
+  <td
+    class="cart-items__error hidden"
+    role="cell"
+    headers="quantity"
+  ></td>
+  <td
+    class="cart-items__price cart-items__bundle-price cart-secondary-typography"
+    role="cell"
+    headers="productTotal"
+  >
+    <button
+      class="button cart-items__remove cart-items__bundle-remove"
+      type="button"
+      aria-label="{{ 'accessibility.remove_item' | t: title: bundle_title | escape }}"
+      on:click="/onLineItemRemove/{{ group_line_numbers }}"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M8.33366 9.16667V14.1667M11.667 9.16667V14.1667M15.0003 5.83333V15.8333C15.0003 16.2754 14.8247 16.6993 14.5122 17.0118C14.1996 17.3244 13.7757 17.5 13.3337 17.5H6.66699C6.22496 17.5 5.80104 17.3244 5.48848 17.0118C5.17592 16.6993 5.00032 16.2754 5.00032 15.8333V5.83333M16.667 5.83333H3.33366M14.3753 5L12.5003 2.5H7.50033L5.62533 5" stroke="#161414" stroke-width="2" stroke-linecap="square"/>
+      </svg>
+      <span class="visually-hidden">{{ 'accessibility.remove' | t }}</span>
+    </button>
+
+    <span class="cart-items__bundle-price-row">
+      <text-component value="{{ group_final_price | money | strip_html }}" class="t-n1">
+        {{ group_final_price | money }}
+      </text-component>
+
+      {%- if context == 'drawer' and group_compare_price > group_final_price -%}
+        <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
+        <s class="cart-items__price-compare compare-at-price t-n1">{{ group_compare_price | money }}</s>
+      {%- endif -%}
+    </span>
+
+    {%- if is_prepaid -%}
+      <p class="cart-items__bundle-badge t-n1">{{ prepaid_badge_label }}</p>
+    {%- endif -%}
+  </td>
+  {%- if settings.cart_line_selling_plan != false -%}
+      <td class="cart-items__selling-plan" role="cell" headers="sellingPlan">
+        {% render 'cart-bundle-frequency', bundle_group: bundle_group, line_numbers: group_line_numbers %}
+      </td>
+  {%- endif -%}
+</tr>

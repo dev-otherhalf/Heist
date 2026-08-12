@@ -822,9 +822,21 @@ class BuyBox extends HTMLElement {
 
     this.#setBusy(true);
 
+    const bundleGroup =
+      lines.length > 1
+        ? `${this.dataset.productId || "bundle"}-${Date.now()}`
+        : null;
+
     const items = lines.map((line) => {
       const item = { id: Number(line.variantId), quantity: line.qty };
       if (line.sellingPlan) item.selling_plan = Number(line.sellingPlan);
+      if (bundleGroup) {
+        item.properties = {
+          _bundle_group: bundleGroup,
+          _bundle_title: this.dataset.productTitle || "",
+          _bundle_image: this.dataset.productImage || "",
+        };
+      }
       return item;
     });
 

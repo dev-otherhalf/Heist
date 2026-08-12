@@ -1,0 +1,126 @@
+{% doc %}
+  Cart Bundle Frequency
+
+  The single "Ships every X weeks" dropdown shown under a buy-box bundle card
+  (see cart-bundle-card.liquid). One dropdown controls every line in the
+  group: each component product has its OWN selling-plan id for what is
+  conceptually the same frequency, so options are deduped by plan NAME (same
+  approach as snippets/buy-box-variation-3.liquid on the product page) and
+  the JS resolves each line's own plan id by matching that name.
+
+  Prepaid plans are excluded from the switcher — same rule as
+  cart-line-selling-plan.liquid, upgrading to a prepaid term happens on the
+  product page, not in the cart.
+
+  @param {string} bundle_group - The shared properties._bundle_group value
+    that ties this group's cart lines together.
+  @param {string} line_numbers - Comma-separated 1-based cart line indexes
+    for the group, in cart order.
+{% enddoc %}
+
+{% liquid
+  # option name (downcased) => JSON-ish map built manually below, since each
+  # component's variant carries its own plan id for that name.
+  assign seen_plan_names = ''
+  assign current_plan_name = ''
+  assign has_options = false
+
+  for group_item in cart.items
+    if group_item.properties._bundle_group != bundle_group
+      continue
+    endif
+    if current_plan_name == ''
+      assign current_plan_name = group_item.selling_plan_allocation.selling_plan.name | downcase
+    endif
+    for allocation in group_item.variant.selling_plan_allocations
+      assign plan_name_dc = allocation.selling_plan.name | downcase
+      unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay'
+        assign has_options = true
+      endunless
+    endfor
+  endfor
+%}
+
+{%- if has_options -%}
+  {%- assign select_id = 'cart-bundle-plan-' | append: line_numbers | remove: ',' -%}
+
+  <cart-bundle-selling-plan
+    class="cart-line-plan cart-bundle-plan"
+    data-lines="{{ line_numbers }}"
+  >
+    {%- comment -%}
+      Each line's own plan id per frequency name — Liquid resolves this once
+      here since every component product has its own id for what's shown as
+      one shared option. The JS looks up [line][chosenName] to know what to
+      send /cart/change.js for that specific line.
+    {%- endcomment -%}
+    <script type="application/json" data-bundle-plan-map>
+      {
+        {%- assign line_first = true -%}
+        {%- for group_item in cart.items -%}
+          {%- if group_item.properties._bundle_group != bundle_group -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- unless line_first -%},{%- endunless -%}
+          {%- assign line_first = false -%}
+          {%- assign group_line = group_item.index | plus: 1 -%}
+          "{{ group_line }}": {
+            "key": {{ group_item.key | json }},
+            "quantity": {{ group_item.quantity | json }},
+            "plans": {
+              {%- assign line_seen_names = '' -%}
+              {%- for allocation in group_item.variant.selling_plan_allocations -%}
+                {%- assign plan_name_dc = allocation.selling_plan.name | downcase -%}
+                {%- assign name_key = '[' | append: plan_name_dc | append: ']' -%}
+                {%- unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay' or line_seen_names contains name_key -%}
+                  {%- unless line_seen_names == '' -%},{%- endunless -%}
+                  {%- assign line_seen_names = line_seen_names | append: name_key -%}
+                  {{ plan_name_dc | json }}: {{ allocation.selling_plan.id | json }}
+                {%- endunless -%}
+              {%- endfor -%}
+            }
+          }
+        {%- endfor -%}
+      }
+    </script>
+    <label class="visually-hidden" for="{{ select_id }}">
+      {{ 'Delivery frequency' }}
+    </label>
+
+    <select
+      id="{{ select_id }}"
+      class="cart-line-plan__select cart-bundle-plan__select t-n1"
+      data-selected="{{ current_plan_name }}"
+    >
+      {%- comment -%}
+        Dedupe by plan NAME across every component in the group — the JS
+        matches each line's own allocation by this name when applying it.
+      {%- endcomment -%}
+      {%- for group_item in cart.items -%}
+        {%- if group_item.properties._bundle_group != bundle_group -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- for allocation in group_item.variant.selling_plan_allocations -%}
+          {%- assign plan = allocation.selling_plan -%}
+          {%- assign plan_name_dc = plan.name | downcase -%}
+          {%- assign name_key = '[' | append: plan_name_dc | append: ']' -%}
+          {%- unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay' -%}
+            {%- unless seen_plan_names contains name_key -%}
+              {%- assign seen_plan_names = seen_plan_names | append: name_key -%}
+              <option
+                value="{{ plan_name_dc | escape }}"
+                {% if plan_name_dc == current_plan_name %}selected{% endif %}
+              >{{ plan.name }}</option>
+            {%- endunless -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </select>
+
+    <span class="cart-line-plan__chevron svg-wrapper" aria-hidden="true">
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    </span>
+  </cart-bundle-selling-plan>
+
+  {% render 'vite-tag' with 'sections/scripts/cart-bundle-selling-plan.js' %}
+{%- endif -%}
