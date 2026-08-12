@@ -1918,6 +1918,17 @@
         "visible_if": "{{ settings.cart_line_selling_plan }}"
       },
       {
+        "type": "range",
+        "id": "cart_bundle_min_subscription_bags",
+        "label": "Bundle — minimum bags to offer Subscribe & Save",
+        "info": "The bundle's \"Subscribe & save\" button in the cart only shows once the bundle's combined bag quantity reaches this many. Below it, the bundle stays one-time purchase only.",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 3,
+        "visible_if": "{{ settings.cart_line_selling_plan }}"
+      },
+      {
         "type": "text",
         "id": "cart_prepaid_option_label",
         "label": "Prepaid line — dropdown label",

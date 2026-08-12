@@ -13,6 +13,12 @@
   Everything else (plan group names, frequency labels, perks, copy) is a
   block setting edited in the customizer.
 
+  Default bag quantities are positional, not per-product: every tile starts
+  at `default_bag_quantity` except the last `default_zero_bags_trailing`
+  tiles (counting from the end of the metafield's product order), which
+  start at 0. E.g. with the default qty at 1 and trailing-zero count at 1,
+  a 3-tile lineup defaults to 1 / 1 / 0.
+
   layout_variation switches between three layouts, all sharing the same tiles,
   pricing engine, and data island:
     - variation_1: Subscribe & Save (with nested Heist upgrade) vs One-time,
@@ -85,11 +91,17 @@
         {{ block.settings.bags_label | default: 'Select your bags: take more, save more.' }}
       </p>
       <div class="buy-box__tiles" ref="tiles">
+       {% assign tile_default_quantity = 1 %}
         {% for component in components %}
+          {% if forloop.index == 1 %}
+            {% assign tile_default_quantity = 1 %}
+          {% else %}
+            {% assign tile_default_quantity = 0 %}
+          {% endif %}
           {% render 'buy-box-component',
             product: component,
             index: forloop.index0,
-            default_quantity: block.settings.default_bag_quantity
+            default_quantity: tile_default_quantity
           %}
         {% endfor %}
       </div>
@@ -231,10 +243,21 @@
       "type": "range",
       "id": "default_bag_quantity",
       "label": "Default quantity per bag",
+      "info": "Applied to every tile except the last N set below.",
       "min": 0,
       "max": 5,
       "step": 1,
       "default": 1
+    },
+    {
+      "type": "range",
+      "id": "default_zero_bags_trailing",
+      "label": "Tiles defaulted to 0 bags (from the end)",
+      "info": "The last N tiles (in the order set by the \"Buy Box — Stitched Products\" metafield) start at 0 bags instead of the default above — e.g. 1 zeroes out only the last tile.",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0
     },
     {
       "type": "range",

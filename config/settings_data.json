@@ -73,6 +73,7 @@
     "show_add_discount_code": false,
     "show_installments": false,
     "empty_cart_button_link": "/products/coffee-without-a-curfew",
+    "cart_progress_type": "none",
     "cart_empty_image": "shopify://shop_images/image_2.png",
     "cart_upgrade_media_1_type": "video",
     "cart_upgrade_video_1": "shopify://files/videos/hs-slow-trimmed.mp4",

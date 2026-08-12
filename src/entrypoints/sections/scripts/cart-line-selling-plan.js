@@ -41,24 +41,22 @@ const CART_CHANGE_URL = () =>
   window.Theme?.routes?.cart_change_url || "/cart/change.js";
 
 class CartLineSellingPlan extends HTMLElement {
+  // Bound to the element itself and delegated to whichever child matches,
+  // rather than bound directly to the select/button found at connect time.
+  // A plan change morphs this element's *content* (select <-> button) in
+  // place without ever disconnecting/reconnecting it — Idiomorph reuses the
+  // same <cart-line-selling-plan> node — so a listener attached to the old
+  // child would silently stop firing once that child is replaced. Delegating
+  // to the element, which persists across the morph, keeps working no matter
+  // which control is currently inside it.
   connectedCallback() {
-    this.#select?.addEventListener("change", this.#onChange);
-    this.#cta?.addEventListener("click", this.#onSubscribeClick);
+    this.addEventListener("change", this.#onChange);
+    this.addEventListener("click", this.#onSubscribeClick);
   }
 
   disconnectedCallback() {
-    this.#select?.removeEventListener("change", this.#onChange);
-    this.#cta?.removeEventListener("click", this.#onSubscribeClick);
-  }
-
-  /** @returns {HTMLSelectElement | null} */
-  get #select() {
-    return this.querySelector("select");
-  }
-
-  /** The "Subscribe & save" button rendered while the line is a one-time purchase. */
-  get #cta() {
-    return this.querySelector("[data-selling-plan]");
+    this.removeEventListener("change", this.#onChange);
+    this.removeEventListener("click", this.#onSubscribeClick);
   }
 
   /** Every mounted cart section needs the fresh HTML to morph into. */
@@ -69,13 +67,20 @@ class CartLineSellingPlan extends HTMLElement {
     ).filter(Boolean);
   }
 
-  #onChange = () => {
-    const select = this.#select;
-    if (select) this.#applyPlan(select.value, select);
+  /** @param {Event} event */
+  #onChange = (event) => {
+    const select = event.target;
+    if (select instanceof HTMLSelectElement) {
+      this.#applyPlan(select.value, select);
+    }
   };
 
-  #onSubscribeClick = () => {
-    const cta = this.#cta;
+  /** @param {MouseEvent} event */
+  #onSubscribeClick = (event) => {
+    const cta =
+      event.target instanceof Element
+        ? event.target.closest("[data-selling-plan]")
+        : null;
     const sellingPlan = cta?.dataset.sellingPlan;
     if (cta && sellingPlan) this.#applyPlan(sellingPlan, cta);
   };

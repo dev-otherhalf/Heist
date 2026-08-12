@@ -9,8 +9,12 @@
   below):
 
   - Group is one-time (no line holds a plan) → a single "Subscribe & save X%"
-    button. Clicking it applies the preferred plan (by name, same
-    `cart_subscribe_target_plan` setting) to every line in the group.
+    button, but only once the group's combined bag quantity reaches
+    `cart_bundle_min_subscription_bags` (default 3) — below that, nothing
+    renders at all, same as the PDP buy box only offering a subscription
+    once enough bags are selected. Clicking the button applies the
+    preferred plan (by name, same `cart_subscribe_target_plan` setting) to
+    every line in the group.
   - Group is subscribed to a non-prepaid plan → a dropdown of "One time
     purchase" plus every non-prepaid plan any component offers. One dropdown
     controls every line in the group: each component product has its OWN
@@ -41,6 +45,7 @@
   assign current_plan_name = ''
   assign has_options = false
   assign group_is_one_time = true
+  assign group_quantity = 0
 
   for group_item in cart.items
     if group_item.properties._bundle_group != bundle_group
@@ -52,6 +57,7 @@
     if group_item.selling_plan_allocation != null
       assign group_is_one_time = false
     endif
+    assign group_quantity = group_quantity | plus: group_item.quantity
     for allocation in group_item.variant.selling_plan_allocations
       assign plan_name_dc = allocation.selling_plan.name | downcase
       unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay'
@@ -59,6 +65,17 @@
       endunless
     endfor
   endfor
+
+  # The "Subscribe & save" CTA only offers upgrading once the bundle has
+  # enough bags — same minimum-bags gate the PDP buy box applies before a
+  # subscription tier becomes selectable at all (block.settings.min_subscription_bags).
+  # Doesn't apply to an already-subscribed group: this only gates the offer
+  # to upgrade, not an existing subscription's ability to change frequency.
+  assign min_subscription_bags = settings.cart_bundle_min_subscription_bags | default: 3
+  assign show_control = has_options
+  if group_is_one_time and group_quantity < min_subscription_bags
+    assign show_control = false
+  endif
 
   # The plan the "Subscribe & save" CTA applies: the preferred one by name
   # (same setting the single-line CTA uses), else the first non-prepaid plan
@@ -102,8 +119,15 @@
   the "Prepaid for 3 months" badge in the price column, since a prepaid
   group has no switcher for this full-width row to hold. Reaching this point
   means the group is non-prepaid, so only the CTA/dropdown states remain.
+
+  A one-time group additionally has to meet the minimum-bags gate before the
+  CTA is offered at all — below it, nothing renders here, same as the PDP
+  buy box only offering a subscription tier once enough bags are selected.
+  A group already subscribed skips this gate entirely: it only controls
+  whether the offer to UPGRADE appears, not whether an existing
+  subscription can still change frequency.
 {%- endcomment -%}
-{%- if has_options -%}
+{%- if show_control -%}
   {%- assign select_id = 'cart-bundle-plan-' | append: line_numbers | remove: ',' -%}
 
   <cart-bundle-selling-plan

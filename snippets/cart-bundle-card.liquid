@@ -91,7 +91,7 @@
   assign prepaid_option_label = settings.cart_prepaid_option_label | default: current_plan_name
 %}
 <tr
-  id="CartItem-bundle-{{ bundle_group | slugify }}"
+  id="CartItem-bundle-{{ bundle_group }}"
   role="row"
   class="cart-items__table-row cart-items__table-row--card cart-items__table-row--bundle"
   ref="cartItemRows[]"
@@ -100,7 +100,7 @@
 >
   <td
     class="cart-items__media"
-    role="cell"
+    role="cell"   
     headers="productImage"
   >
     {%- if bundle_image != blank -%}

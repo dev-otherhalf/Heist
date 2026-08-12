@@ -19,24 +19,22 @@ const CART_CHANGE_URL = () =>
 const CART_URL = () => window.Theme?.routes?.cart_url || "/cart";
 
 class CartBundleSellingPlan extends HTMLElement {
+  // Bound to the element itself and delegated to whichever child matches,
+  // rather than bound directly to the select/button found at connect time.
+  // A plan change morphs this element's *content* (select <-> button) in
+  // place without ever disconnecting/reconnecting it — Idiomorph reuses the
+  // same <cart-bundle-selling-plan> node — so a listener attached to the old
+  // child would silently stop firing once that child is replaced. Delegating
+  // to the element, which persists across the morph, keeps working no matter
+  // which control is currently inside it.
   connectedCallback() {
-    this.#select?.addEventListener("change", this.#onChange);
-    this.#cta?.addEventListener("click", this.#onSubscribeClick);
+    this.addEventListener("change", this.#onChange);
+    this.addEventListener("click", this.#onSubscribeClick);
   }
 
   disconnectedCallback() {
-    this.#select?.removeEventListener("change", this.#onChange);
-    this.#cta?.removeEventListener("click", this.#onSubscribeClick);
-  }
-
-  /** @returns {HTMLSelectElement | null} */
-  get #select() {
-    return this.querySelector("select");
-  }
-
-  /** The "Subscribe & save" button rendered while the whole group is one-time. */
-  get #cta() {
-    return this.querySelector("[data-bundle-selling-plan]");
+    this.removeEventListener("change", this.#onChange);
+    this.removeEventListener("click", this.#onSubscribeClick);
   }
 
   /** @returns {Record<string, {key: string, quantity: number, plans: Record<string, number>}>} */
@@ -58,13 +56,20 @@ class CartBundleSellingPlan extends HTMLElement {
     ).filter(Boolean);
   }
 
-  #onChange = () => {
-    const select = this.#select;
-    if (select) this.#applyPlanToGroup(select.value, select);
+  /** @param {Event} event */
+  #onChange = (event) => {
+    const select = event.target;
+    if (select instanceof HTMLSelectElement) {
+      this.#applyPlanToGroup(select.value, select);
+    }
   };
 
-  #onSubscribeClick = () => {
-    const cta = this.#cta;
+  /** @param {MouseEvent} event */
+  #onSubscribeClick = (event) => {
+    const cta =
+      event.target instanceof Element
+        ? event.target.closest("[data-bundle-selling-plan]")
+        : null;
     const planName = cta?.dataset.bundleSellingPlan;
     if (cta && planName) this.#applyPlanToGroup(planName, cta);
   };
