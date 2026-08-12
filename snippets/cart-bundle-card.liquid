@@ -87,6 +87,8 @@
   endfor
 
   assign prepaid_badge_label = settings.cart_prepaid_badge_label | default: current_plan_name
+
+  assign prepaid_option_label = settings.cart_prepaid_option_label | default: current_plan_name
 %}
 <tr
   id="CartItem-bundle-{{ bundle_group | slugify }}"
@@ -168,9 +170,12 @@
 
     {%- if is_prepaid -%}
       <p class="cart-items__bundle-badge t-n1">{{ prepaid_badge_label }}</p>
+      {%- if settings.cart_line_selling_plan != false -%}
+        <p class="cart-items__bundle-ships t-n1">{{ prepaid_option_label }}</p>
+      {%- endif -%}
     {%- endif -%}
   </td>
-  {%- if settings.cart_line_selling_plan != false -%}
+  {%- if settings.cart_line_selling_plan != false and is_prepaid == false -%}
       <td class="cart-items__selling-plan" role="cell" headers="sellingPlan">
         {% render 'cart-bundle-frequency', bundle_group: bundle_group, line_numbers: group_line_numbers %}
       </td>

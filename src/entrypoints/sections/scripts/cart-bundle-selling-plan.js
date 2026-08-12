@@ -21,15 +21,22 @@ const CART_URL = () => window.Theme?.routes?.cart_url || "/cart";
 class CartBundleSellingPlan extends HTMLElement {
   connectedCallback() {
     this.#select?.addEventListener("change", this.#onChange);
+    this.#cta?.addEventListener("click", this.#onSubscribeClick);
   }
 
   disconnectedCallback() {
     this.#select?.removeEventListener("change", this.#onChange);
+    this.#cta?.removeEventListener("click", this.#onSubscribeClick);
   }
 
   /** @returns {HTMLSelectElement | null} */
   get #select() {
     return this.querySelector("select");
+  }
+
+  /** The "Subscribe & save" button rendered while the whole group is one-time. */
+  get #cta() {
+    return this.querySelector("[data-bundle-selling-plan]");
   }
 
   /** @returns {Record<string, {key: string, quantity: number, plans: Record<string, number>}>} */
@@ -56,6 +63,12 @@ class CartBundleSellingPlan extends HTMLElement {
     if (select) this.#applyPlanToGroup(select.value, select);
   };
 
+  #onSubscribeClick = () => {
+    const cta = this.#cta;
+    const planName = cta?.dataset.bundleSellingPlan;
+    if (cta && planName) this.#applyPlanToGroup(planName, cta);
+  };
+
   /**
    * Finds a line's current 1-based position by its stable key. Needed
    * because a prior /cart/change.js call in this same batch can shift every
@@ -70,18 +83,23 @@ class CartBundleSellingPlan extends HTMLElement {
   }
 
   /**
-   * Moves every line in the group onto the plan matching `planName`. A line
-   * whose product has no allocation under that name is left as-is rather
-   * than dropped to one-time purchase — the shared dropdown only lists names
-   * every component actually offers, so this should not normally happen.
-   * @param {string} planName - Lowercased selling-plan name to match.
-   * @param {HTMLSelectElement} control
+   * Moves every line in the group onto the plan matching `planName` — an
+   * empty string clears every line back to one-time purchase instead (there
+   * is no name to match then, so every line in the group is a target). A
+   * line whose product has no allocation under a given name is left as-is
+   * rather than dropped to one-time purchase — the shared dropdown only
+   * lists names every component actually offers, so this should not
+   * normally happen.
+   * @param {string} planName - Lowercased selling-plan name to match, or ''
+   *   to clear the whole group to one-time.
+   * @param {HTMLSelectElement | HTMLElement} control
    */
   #applyPlanToGroup = async (planName, control) => {
     const planMap = this.#planMap;
-    const targets = Object.values(planMap).filter(
-      (entry) => entry.plans?.[planName],
-    );
+    const targets =
+      planName === ""
+        ? Object.values(planMap)
+        : Object.values(planMap).filter((entry) => entry.plans?.[planName]);
     if (targets.length === 0) return;
 
     control.setAttribute("disabled", "");
@@ -111,7 +129,7 @@ class CartBundleSellingPlan extends HTMLElement {
         const line = this.#resolveLine(cart.items, target.key);
         if (!line) continue;
 
-        const sellingPlan = target.plans[planName];
+        const sellingPlan = planName === "" ? "" : target.plans[planName];
         const response = await fetch(CART_CHANGE_URL(), {
           method: "POST",
           headers: {
@@ -147,7 +165,9 @@ class CartBundleSellingPlan extends HTMLElement {
     } catch (error) {
       console.error("[cart-bundle-plan] failed to change plan:", error);
       deferred?.reject(error);
-      control.value = control.dataset.selected ?? "";
+      if (control instanceof HTMLSelectElement) {
+        control.value = control.dataset.selected ?? "";
+      }
 
       if (CartErrorEvent) {
         this.dispatchEvent(

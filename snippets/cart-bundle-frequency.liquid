@@ -1,16 +1,32 @@
 {% doc %}
   Cart Bundle Frequency
 
-  The single "Ships every X weeks" dropdown shown under a buy-box bundle card
-  (see cart-bundle-card.liquid). One dropdown controls every line in the
-  group: each component product has its OWN selling-plan id for what is
-  conceptually the same frequency, so options are deduped by plan NAME (same
-  approach as snippets/buy-box-variation-3.liquid on the product page) and
-  the JS resolves each line's own plan id by matching that name.
+  The control shown under a buy-box bundle card (see cart-bundle-card.liquid)
+  for switching the whole group's delivery plan at once. Two states,
+  mirroring cart-line-selling-plan.liquid but applied to every line in the
+  group instead of just one — cart-bundle-card.liquid never calls this
+  snippet at all for a third, prepaid state, rendering that one itself (see
+  below):
 
-  Prepaid plans are excluded from the switcher — same rule as
-  cart-line-selling-plan.liquid, upgrading to a prepaid term happens on the
-  product page, not in the cart.
+  - Group is one-time (no line holds a plan) → a single "Subscribe & save X%"
+    button. Clicking it applies the preferred plan (by name, same
+    `cart_subscribe_target_plan` setting) to every line in the group.
+  - Group is subscribed to a non-prepaid plan → a dropdown of "One time
+    purchase" plus every non-prepaid plan any component offers. One dropdown
+    controls every line in the group: each component product has its OWN
+    selling-plan id for what is conceptually the same frequency, so options
+    are deduped by plan NAME (same approach as
+    snippets/buy-box-variation-3.liquid on the product page) and the JS
+    resolves each line's own plan id by matching that name. Choosing "One
+    time purchase" clears every line in the group back to one-time.
+
+  A prepaid group gets neither: upgrading to a prepaid term only happens on
+  the product page, so there's nothing here for a switcher to offer.
+  cart-bundle-card.liquid renders the `cart_prepaid_option_label` setting
+  ("Ships every 4 weeks") as static text of its own, stacked under the
+  "Prepaid for 3 months" badge in the price column — a prepaid group has no
+  control to put in this snippet's usual full-width row, so that row is
+  skipped for it entirely.
 
   @param {string} bundle_group - The shared properties._bundle_group value
     that ties this group's cart lines together.
@@ -24,6 +40,7 @@
   assign seen_plan_names = ''
   assign current_plan_name = ''
   assign has_options = false
+  assign group_is_one_time = true
 
   for group_item in cart.items
     if group_item.properties._bundle_group != bundle_group
@@ -32,6 +49,9 @@
     if current_plan_name == ''
       assign current_plan_name = group_item.selling_plan_allocation.selling_plan.name | downcase
     endif
+    if group_item.selling_plan_allocation != null
+      assign group_is_one_time = false
+    endif
     for allocation in group_item.variant.selling_plan_allocations
       assign plan_name_dc = allocation.selling_plan.name | downcase
       unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay'
@@ -39,8 +59,50 @@
       endunless
     endfor
   endfor
+
+  # The plan the "Subscribe & save" CTA applies: the preferred one by name
+  # (same setting the single-line CTA uses), else the first non-prepaid plan
+  # any component in the group offers. Mirrors cart-line-selling-plan.liquid's
+  # own target-plan resolution, but by plan NAME since each component has its
+  # own id for it — the JS resolves each line's id from the plan map below.
+  assign preferred_plan_key = settings.cart_subscribe_target_plan | downcase | strip
+  assign target_plan_name = ''
+  assign target_plan_price = 0
+  assign target_variant_price = 0
+  assign target_is_preferred = false
+
+  for group_item in cart.items
+    if group_item.properties._bundle_group != bundle_group
+      continue
+    endif
+    for allocation in group_item.variant.selling_plan_allocations
+      assign plan_name_dc = allocation.selling_plan.name | downcase
+      unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay'
+        unless target_is_preferred
+          if target_plan_name == ''
+            assign target_plan_name = plan_name_dc
+            assign target_plan_price = allocation.per_delivery_price
+            assign target_variant_price = group_item.variant.price
+          endif
+          if preferred_plan_key != blank and plan_name_dc contains preferred_plan_key
+            assign target_plan_name = plan_name_dc
+            assign target_plan_price = allocation.per_delivery_price
+            assign target_variant_price = group_item.variant.price
+            assign target_is_preferred = true
+          endif
+        endunless
+      endunless
+    endfor
+  endfor
 %}
 
+{%- comment -%}
+  cart-bundle-card.liquid never calls this snippet at all for a prepaid
+  group — the "ships every" cadence is rendered there instead, stacked under
+  the "Prepaid for 3 months" badge in the price column, since a prepaid
+  group has no switcher for this full-width row to hold. Reaching this point
+  means the group is non-prepaid, so only the CTA/dropdown states remain.
+{%- endcomment -%}
 {%- if has_options -%}
   {%- assign select_id = 'cart-bundle-plan-' | append: line_numbers | remove: ',' -%}
 
@@ -83,43 +145,71 @@
         {%- endfor -%}
       }
     </script>
-    <label class="visually-hidden" for="{{ select_id }}">
-      {{ 'Delivery frequency' }}
-    </label>
 
-    <select
-      id="{{ select_id }}"
-      class="cart-line-plan__select cart-bundle-plan__select t-n1"
-      data-selected="{{ current_plan_name }}"
-    >
-      {%- comment -%}
-        Dedupe by plan NAME across every component in the group — the JS
-        matches each line's own allocation by this name when applying it.
-      {%- endcomment -%}
-      {%- for group_item in cart.items -%}
-        {%- if group_item.properties._bundle_group != bundle_group -%}
-          {%- continue -%}
-        {%- endif -%}
-        {%- for allocation in group_item.variant.selling_plan_allocations -%}
-          {%- assign plan = allocation.selling_plan -%}
-          {%- assign plan_name_dc = plan.name | downcase -%}
-          {%- assign name_key = '[' | append: plan_name_dc | append: ']' -%}
-          {%- unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay' -%}
-            {%- unless seen_plan_names contains name_key -%}
-              {%- assign seen_plan_names = seen_plan_names | append: name_key -%}
-              <option
-                value="{{ plan_name_dc | escape }}"
-                {% if plan_name_dc == current_plan_name %}selected{% endif %}
-              >{{ plan.name }}</option>
+    {%- if group_is_one_time -%}
+      {%- liquid
+        assign discount_label = ''
+        if target_variant_price > 0 and target_plan_price > 0 and target_plan_price < target_variant_price
+          assign discount_label = target_variant_price | minus: target_plan_price | times: 100.0 | divided_by: target_variant_price | round | append: '%'
+        endif
+        assign cta_label = settings.cart_subscribe_cta_label | default: 'Subscribe & save [discount]'
+        assign cta_label = cta_label | replace: '[discount]', discount_label | strip
+      -%}
+      <button
+        type="button"
+        class="cart-line-plan__cta cart-bundle-plan__cta t-n1-med"
+        data-bundle-selling-plan="{{ target_plan_name | escape }}"
+      >
+        {{- cta_label -}}
+      </button>
+    {%- else -%}
+      <label class="visually-hidden" for="{{ select_id }}">
+        {{ 'Delivery frequency' }}
+      </label>
+
+      <select
+        id="{{ select_id }}"
+        class="cart-line-plan__select cart-bundle-plan__select t-n1"
+        data-selected="{{ current_plan_name }}"
+      >
+        {%- comment -%}
+          Only reached for a non-prepaid subscribed group (prepaid takes the
+          static-text branch above), so "One time purchase" always makes
+          sense here — choosing it clears every line in the group.
+        {%- endcomment -%}
+        <option value="">
+          {{- settings.cart_one_time_label | default: 'One time purchase' -}}
+        </option>
+
+        {%- comment -%}
+          Dedupe by plan NAME across every component in the group — the JS
+          matches each line's own allocation by this name when applying it.
+        {%- endcomment -%}
+        {%- for group_item in cart.items -%}
+          {%- if group_item.properties._bundle_group != bundle_group -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- for allocation in group_item.variant.selling_plan_allocations -%}
+            {%- assign plan = allocation.selling_plan -%}
+            {%- assign plan_name_dc = plan.name | downcase -%}
+            {%- assign name_key = '[' | append: plan_name_dc | append: ']' -%}
+            {%- unless plan_name_dc contains 'prepaid' or plan_name_dc contains 'prepay' -%}
+              {%- unless seen_plan_names contains name_key -%}
+                {%- assign seen_plan_names = seen_plan_names | append: name_key -%}
+                <option
+                  value="{{ plan_name_dc | escape }}"
+                  {% if plan_name_dc == current_plan_name %}selected{% endif %}
+                >{{ plan.name }}</option>
+              {%- endunless -%}
             {%- endunless -%}
-          {%- endunless -%}
+          {%- endfor -%}
         {%- endfor -%}
-      {%- endfor -%}
-    </select>
+      </select>
 
-    <span class="cart-line-plan__chevron svg-wrapper" aria-hidden="true">
-      {{- 'icon-caret.svg' | inline_asset_content -}}
-    </span>
+      <span class="cart-line-plan__chevron svg-wrapper" aria-hidden="true">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    {%- endif -%}
   </cart-bundle-selling-plan>
 
   {% render 'vite-tag' with 'sections/scripts/cart-bundle-selling-plan.js' %}

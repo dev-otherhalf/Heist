@@ -1,28 +1,25 @@
 {% doc %}
   Cart Line Selling Plan
 
-  Renders the delivery-plan control for a single cart line. Two states:
+  Renders the delivery-plan control for a single cart line. Three states:
 
   - One-time line → a "Subscribe & save 15%" button. Clicking it applies the
     plan named by `cart_subscribe_target_plan`, and the line re-renders as the
     dropdown below. The saving is calculated from that plan's allocation price.
-  - Subscription line → a dropdown of "One time purchase" plus every non-prepaid
-    plan available to the variant.
+  - Subscription line (non-prepaid) → a dropdown of "One time purchase" plus
+    every non-prepaid plan available to the variant.
+  - Prepaid line (Heist Society) → no dropdown at all. A prepaid plan is named
+    for how it bills ("3 months prepaid"), not how it ships, and upgrading to
+    one only happens on the product page — so once a line is prepaid there is
+    nothing in the cart for a switcher to offer. The `cart_prepaid_option_label`
+    setting ("Ships every 4 weeks") is shown as static text instead, and the
+    billing term moves to a tag next to the variant.
 
-  Prepaid plans (Heist Society) are never offered as a new choice here — upgrading
-  to those happens on the product page.
-
-  A line that is *already* prepaid keeps its plan selected, but a prepaid plan is
-  named for how it bills ("3 months prepaid"), not how it ships. Shopify exposes
-  no delivery interval to Liquid, so the dropdown shows the `cart_prepaid_option_label`
-  setting ("Ships every 4 weeks") and the billing term moves to a tag next to the
-  variant. Any sibling plan whose name duplicates that label is dropped from the
-  list, since it would render as a second, identical-looking option.
-
-  When the switcher can't be offered — disabled in theme settings, or the line's
-  only plans are prepaid — the line's current plan is shown as static text
-  instead, so a subscription line never renders without its frequency. Renders
-  nothing at all for a one-time line with no plans to switch to.
+  When the switcher can't be offered for a non-prepaid reason — disabled in
+  theme settings, or the line's only plans are prepaid ones it isn't on — the
+  line's current plan is shown as static text instead, so a subscription line
+  never renders without its frequency. Renders nothing at all for a one-time
+  line with no plans to switch to.
 
   @param {object} item - The cart line item.
   @param {number} line - The 1-based line index of the item in the cart.
@@ -50,7 +47,6 @@
 
   assign prepaid_option_label = settings.cart_prepaid_option_label | default: current_plan.name
   assign prepaid_badge_label = settings.cart_prepaid_badge_label | default: current_plan.name
-  assign prepaid_option_key = prepaid_option_label | downcase | strip
 
   # The plan the "Subscribe & save" button applies: the preferred one by name,
   # else the first non-prepaid plan on the variant.
@@ -84,7 +80,7 @@
     <p class="cart-line-plan__badge t-n1">{{ prepaid_badge_label }}</p>
   {%- endif -%}
 
-{%- elsif settings.cart_line_selling_plan == false or has_options == false -%}
+{%- elsif current_is_prepaid or settings.cart_line_selling_plan == false or has_options == false -%}
   {%- if current_plan != blank -%}
     <p class="cart-line-plan__static t-n1">
       {%- if current_is_prepaid -%}
@@ -142,6 +138,11 @@
       class="cart-line-plan__select t-n1"
       data-selected="{{ selected_id }}"
     >
+      {%- comment -%}
+        Only reached for a non-prepaid subscription line (prepaid lines take
+        the static-text branch above), so every plan here is a real,
+        non-prepaid choice — no relabeling or duplicate-skipping needed.
+      {%- endcomment -%}
       {%- unless item.product.requires_selling_plan -%}
         <option value="">
           {{- settings.cart_one_time_label | default: 'One time purchase' -}}
@@ -149,7 +150,7 @@
       {%- endunless -%}
 
       {%- for allocation in allocations -%}
-        {% liquid
+        {%- liquid
           assign plan = allocation.selling_plan
           assign plan_name = plan.name | downcase
 
@@ -157,40 +158,17 @@
           if plan_name contains 'prepaid' or plan_name contains 'prepay'
             assign is_prepaid = true
           endif
-
-          assign is_selected = false
-          if plan.id == current_plan.id
-            assign is_selected = true
-          endif
-
-          # The selected prepaid plan is relabelled to its shipping cadence, so a
-          # sibling plan carrying that same name would look like a duplicate.
-          assign is_duplicate = false
-          if current_is_prepaid and is_prepaid == false
-            assign trimmed_plan_name = plan_name | strip
-            if trimmed_plan_name == prepaid_option_key
-              assign is_duplicate = true
-            endif
-          endif
-        %}
-        {%- if is_duplicate -%}
-          {%- continue -%}
-        {%- endif -%}
-
-        {%- if is_prepaid == false or is_selected -%}
+        -%}
+        {%- unless is_prepaid -%}
           <option
             value="{{ plan.id }}"
-            {% if is_selected %}
+            {% if plan.id == current_plan.id %}
               selected
             {% endif %}
           >
-            {%- if is_selected and current_is_prepaid -%}
-              {{ prepaid_option_label }}
-            {%- else -%}
-              {{ plan.name }}
-            {%- endif -%}
+            {{- plan.name -}}
           </option>
-        {%- endif -%}
+        {%- endunless -%}
       {%- endfor -%}
     </select>
 
