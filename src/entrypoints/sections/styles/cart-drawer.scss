@@ -129,6 +129,15 @@ $plan-control-height: 2.375rem;
     }
   }
 
+  theme-drawer[data-cart-upgrading] &__inner {
+    cursor: progress;
+  }
+
+  theme-drawer[data-cart-upgrading] &__content,
+  theme-drawer[data-cart-upgrading] &__summary {
+    pointer-events: none;
+  }
+
   &__scrollbar {
     position: absolute;
     inset-block: 0;
