@@ -52,6 +52,7 @@
   assign per_month_price = item.final_line_price | divided_by: deliveries | money
 
   assign prepaid_option_label = settings.cart_prepaid_option_label | default: current_plan.name
+  assign prepaid_option_label = prepaid_option_label | replace: '[count]', item.quantity
   assign prepaid_badge_label = settings.cart_prepaid_badge_label | default: current_plan.name
   assign prepaid_badge_label = prepaid_badge_label | replace: '[count]', item.quantity | replace: '[price]', per_month_price
 

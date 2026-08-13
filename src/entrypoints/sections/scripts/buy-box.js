@@ -822,21 +822,19 @@ class BuyBox extends HTMLElement {
 
     this.#setBusy(true);
 
-    const bundleGroup =
-      lines.length > 1
-        ? `${this.dataset.productId || "bundle"}-${Date.now()}`
-        : null;
+    // Every add from the buy box represents this stitched product — tag it
+    // as a bundle even when only one component/tile is selected, so the
+    // cart drawer always renders it as a bundle card, never a bare line.
+    const bundleGroup = `${this.dataset.productId || "bundle"}-${Date.now()}`;
 
     const items = lines.map((line) => {
       const item = { id: Number(line.variantId), quantity: line.qty };
       if (line.sellingPlan) item.selling_plan = Number(line.sellingPlan);
-      if (bundleGroup) {
-        item.properties = {
-          _bundle_group: bundleGroup,
-          _bundle_title: this.dataset.productTitle || "",
-          _bundle_image: this.dataset.productImage || "",
-        };
-      }
+      item.properties = {
+        _bundle_group: bundleGroup,
+        _bundle_title: this.dataset.productTitle || "",
+        _bundle_image: this.dataset.productImage || "",
+      };
       return item;
     });
 

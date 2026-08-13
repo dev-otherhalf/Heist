@@ -43,8 +43,11 @@
           echo ','
         endif
         assign eligible_count = eligible_count | plus: 1
+        assign line_number = item.index | plus: 1
         echo '{"key":'
         echo item.key | json
+        echo ',"line":'
+        echo line_number
         echo ',"quantity":'
         echo item.quantity
         echo ',"sellingPlan":'

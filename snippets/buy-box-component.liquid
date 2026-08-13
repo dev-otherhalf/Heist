@@ -111,9 +111,6 @@
           endif
         endif
         assign label = variant.option1 | default: variant.title
-        # Availability is stock-based: Shopify keeps variant.available true when
-        # inventory isn't tracked (or "continue selling" is on), so a non-positive
-        # inventory_quantity also counts as sold out and locks the stepper.
         assign variant_available = false
         if product.available and variant.available and variant.inventory_quantity > 0
           assign variant_available = true

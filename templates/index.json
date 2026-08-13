@@ -329,7 +329,7 @@
         "kit_value": "(Value $70)",
         "button_label": "Join",
         "button_label_two": "Now",
-        "cart_products": ["smuggle-bear-welcome-kit"],
+        "cart_products": "coffee-without-a-curfew",
         "disclaimer": "",
         "left_media_type": "video",
         "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
@@ -346,6 +346,7 @@
     },
     "press_section_WRAXwL": {
       "type": "press-section",
+      "disabled": true,
       "name": "Press section",
       "settings": {
         "press_selection": "homepage",

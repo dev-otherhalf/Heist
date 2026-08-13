@@ -29,32 +29,36 @@
     assign has_left_video = true
   endif
 
-  assign kit_line_items = ''
-  assign cart_products = section.settings.cart_products
+  assign cart_product = section.settings.cart_products
+  assign bundle_group = 'join-heist-' | append: section.id
+  assign bundle_title = heading_text | default: fallback_alt | replace: '"', '\"' | strip_newlines
+-%}
 
-  if cart_products != blank and cart_products.size > 0
-    for list_product in cart_products
-      assign line_variant_id = list_product.selected_or_first_available_variant.id | default: list_product.first_available_variant.id
-      if line_variant_id != blank
-        assign kit_line_items = kit_line_items | append: '{"id":' | append: line_variant_id | append: ',"quantity":1},'
-      endif
-    endfor
-  else
-    for block in product_blocks
-      assign product = block.settings.product
-      assign line_variant_id = block.settings.variant_id | strip
-      assign line_variant_id_check = line_variant_id | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
-      if line_variant_id == blank or line_variant_id_check != blank
-        assign line_variant_id = product.selected_or_first_available_variant.id | default: product.first_available_variant.id
-      endif
+{%- capture kit_line_items -%}
+  {%- if cart_product != blank -%}
+    {%- assign line_variant = cart_product.selected_or_first_available_variant | default: cart_product.first_available_variant -%}
+    {%- render 'join-heist-line', variant: line_variant, product: cart_product, bundle_group: bundle_group, bundle_title: bundle_title -%}
+  {%- else -%}
+    {%- for block in product_blocks -%}
+      {%- liquid
+        assign product = block.settings.product
+        assign line_variant_id = block.settings.variant_id | strip
+        assign line_variant_id_check = line_variant_id | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+        assign line_variant = null
 
-      if line_variant_id != blank
-        assign kit_line_items = kit_line_items | append: '{"id":' | append: line_variant_id | append: ',"quantity":1},'
-      endif
-    endfor
-  endif
+        if line_variant_id == blank or line_variant_id_check != blank
+          assign line_variant = product.selected_or_first_available_variant | default: product.first_available_variant
+        else
+          assign line_variant = product.variants | where: 'id', line_variant_id | first
+        endif
+      -%}
+      {%- render 'join-heist-line', variant: line_variant, variant_id: line_variant_id, product: product, bundle_group: bundle_group, bundle_title: bundle_title -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
 
-  assign kit_line_items = kit_line_items | strip_newlines
+{%- liquid
+  assign kit_line_items = kit_line_items | strip_newlines | strip
   if kit_line_items != blank
     assign trim_length = kit_line_items | size | minus: 1
     assign kit_line_items = kit_line_items | slice: 0, trim_length
@@ -434,10 +438,9 @@
       "default": "Now"
     },
     {
-      "type": "product_list",
+      "type": "product",
       "id": "cart_products",
-      "label": "Products added on \"Join Now\"",
-      "info": "One of each product's first available variant is added to cart when the button is clicked. Leave empty to fall back to the product blocks below."
+      "label": "Product added on \"Join Now\"",
     },
     {
       "type": "textarea",

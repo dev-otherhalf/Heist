@@ -152,6 +152,12 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     );
   }
 
+  #getRowByLine(line) {
+    return this.refs.cartItemRows.find(
+      (row) => Number(row.dataset.line) === line,
+    );
+  }
+
   /**
    * Handles QuantitySelectorUpdateEvent change event.
    * @param {QuantitySelectorUpdateEvent} event - The event.
@@ -173,7 +179,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       quantity,
       action: "change",
     });
-    const lineItemRow = this.refs.cartItemRows[line - 1];
+    const lineItemRow = this.#getRowByLine(line);
 
     if (!lineItemRow) return;
 
@@ -209,7 +215,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     }
 
     const rowsToRemove = lines.flatMap((lineNumber) => {
-      const cartItemRowToRemove = this.refs.cartItemRows[lineNumber - 1];
+      const cartItemRowToRemove = this.#getRowByLine(lineNumber);
       if (!cartItemRowToRemove) return [];
       return [
         cartItemRowToRemove,
@@ -279,7 +285,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     // item KEYS as keys — plain positional line numbers are silently
     // misread as variant IDs and match nothing, so the request is a no-op.
     const lineIds = lines
-      .map((line) => this.refs.cartItemRows[line - 1]?.dataset.key)
+      .map((line) => this.#getRowByLine(line)?.dataset.key)
       .filter((key) => typeof key === "string");
     const updates = Object.fromEntries(lineIds.map((key) => [key, 0]));
     const body = JSON.stringify({
@@ -394,7 +400,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     cartTotal?.shimmer();
 
     const deferredUpdatePromise = CartLinesUpdateEvent.createPromise();
-    const lineId = this.refs.cartItemRows[line - 1]?.dataset.key ?? "";
+    const lineId = this.#getRowByLine(line)?.dataset.key ?? "";
     this.dispatchEvent(
       new CartLinesUpdateEvent({
         action:

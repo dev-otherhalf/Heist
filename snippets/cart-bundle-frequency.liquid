@@ -221,15 +221,6 @@
         data-selected="{{ current_plan_name }}"
       >
         {%- comment -%}
-          Only reached for a non-prepaid subscribed group (prepaid takes the
-          static-text branch above), so "One time purchase" always makes
-          sense here — choosing it clears every line in the group.
-        {%- endcomment -%}
-        <option value="">
-          {{- settings.cart_one_time_label | default: 'One time purchase' -}}
-        </option>
-
-        {%- comment -%}
           Dedupe by plan NAME across every component in the group, and only
           show names every component offers. That keeps the shared dropdown
           from creating a mixed bundle state where only some lines can move.

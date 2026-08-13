@@ -269,6 +269,7 @@
                       class="cart-items__table-row cart-items__table-row--bundle-line"
                       ref="cartItemRows[]"
                       data-key="{{ item.key }}"
+                      data-line="{{ line_number }}"
                       hidden
                     ></tr>
                   {%- endcapture -%}
@@ -292,6 +293,7 @@
                   ref="cartItemRows[]"
                   data-parent-key="{{ item.parent_relationship.parent.key }}"
                   data-key="{{ item.key }}"
+                  data-line="{{ line_number }}"
                 >
                   <td
                     class="cart-items__media"

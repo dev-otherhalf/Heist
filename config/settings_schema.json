@@ -1915,8 +1915,8 @@
         "type": "text",
         "id": "cart_prepaid_option_label",
         "label": "Prepaid line — dropdown label",
-        "info": "A prepaid plan is named for how it bills (\"3 months prepaid\"), not how it ships. This is shown in the dropdown instead. Leave blank to use the plan name.",
-        "default": "Ships every 4 weeks"
+        "info": "A prepaid plan is named for how it bills (\"3 months prepaid\"), not how it ships. This is shown in the dropdown instead. Use [count] for the bag count. Leave blank to use the plan name.",
+        "default": "[count] Bags every 30 days"
       },
       {
         "type": "text",

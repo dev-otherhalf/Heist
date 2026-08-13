@@ -94,6 +94,7 @@
   assign prepaid_badge_label = prepaid_badge_label | replace: '[count]', bag_count | replace: '[price]', per_month_price
 
   assign prepaid_option_label = settings.cart_prepaid_option_label | default: current_plan_name
+  assign prepaid_option_label = prepaid_option_label | replace: '[count]', bag_count
 %}
 <tr
   id="CartItem-bundle-{{ bundle_group }}"
@@ -101,6 +102,7 @@
   class="cart-items__table-row cart-items__table-row--card cart-items__table-row--bundle"
   ref="cartItemRows[]"
   data-key="{{ item.key }}"
+  data-line="{{ item.index | plus: 1 }}"
   style="position: relative;"
 >
   <td
@@ -174,10 +176,10 @@
     </span>
 
     {%- if is_prepaid -%}
-      <p class="cart-items__bundle-badge t-n1">{{ prepaid_badge_label }}</p>
       {%- if settings.cart_line_selling_plan != false -%}
         <p class="cart-items__bundle-ships t-n1">{{ prepaid_option_label }}</p>
       {%- endif -%}
+      <p class="cart-items__bundle-badge t-n1">{{ prepaid_badge_label }}</p>
     {%- endif -%}
   </td>
   {%- if settings.cart_line_selling_plan != false and is_prepaid == false -%}
