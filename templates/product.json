@@ -89,9 +89,8 @@
                 "layout_variation": "variation_1",
                 "one_time_enabled": true,
                 "default_tier": "standard",
-                "bags_label": "Select your bags: take more, save more.",
+                "bags_label": "Select your bag quantity:",
                 "default_bag_quantity": 1,
-                "default_zero_bags_trailing": 0,
                 "min_subscription_bags": 3,
                 "heist_title": "Heist Society™ Subscription",
                 "heist_subtitle": "3 month commitment, prepaid. Then ships every 4 weeks.",
@@ -108,7 +107,7 @@
                 "kit_image_3": "shopify://shop_images/MemberCard.jpg",
                 "kit_caption_3": "member card",
                 "standard_title": "Subscribe & Save",
-                "subscribe_bar_label": "Subscribe & Save up to 25%",
+                "subscribe_bar_label": "Subscribe & Save up to 33% (3 Bag Min)",
                 "standard_subtitle": "Ships every 4 weeks · Pause, skip, or cancel anytime · Free shipping",
                 "standard_badge": "",
                 "standard_perk_list": "Free shipping on every order.\nPause, skip or cancel anytime.",
@@ -147,7 +146,7 @@
               "type": "product-videos",
               "name": "Product Videos",
               "settings": {
-                "heading": "Hear from members of the Heist Society™",
+                "heading": "Hear What people are saying about HEIST",
                 "padding-block-start": 30,
                 "padding-block-end": 0,
                 "padding-block-start-mobile": 15,
@@ -217,7 +216,7 @@
           "settings": {
             "product": "",
             "variant_id": "",
-            "custom_name": "Tin + Scoop",
+            "custom_name": "Coffee Storage Tin & Scoop",
             "custom_description": "(value $20)",
             "custom_image": "shopify://shop_images/tin_scoop.jpg"
           }
@@ -227,7 +226,7 @@
           "settings": {
             "product": "",
             "variant_id": "",
-            "custom_name": "smuggle bear",
+            "custom_name": "Smuggle Bear -with stash pouch",
             "custom_description": "(value $50)",
             "custom_image": "shopify://shop_images/SmuggleBear.jpg"
           }
@@ -237,7 +236,7 @@
           "settings": {
             "product": "",
             "variant_id": "",
-            "custom_name": "member card",
+            "custom_name": "Members Matchbook Series",
             "custom_description": "(founder signed)",
             "custom_image": "shopify://shop_images/MemberCard.jpg"
           }
@@ -247,15 +246,15 @@
       "name": "Join the Heist Society",
       "settings": {
         "custom_id": "",
-        "heading": "Join the Heist Society™",
-        "subheading": "3 months prepaid today, then monthly. Pause or cancel anytime after.",
-        "features": "Lowest price. Locked forever.\nFree shipping forever, no thresholds.\nLimited-edition Smuggle Bear every 6 months.\nSmuggle Bear welcome kit (value $70).",
+        "heading": "Join Heist Society™",
+        "subheading": "Limited spots available.  \n3 months prepaid today to unlock a remaining seat.",
+        "features": "Members Only Lowest Pricing.\nFree shipping forever.\nCollectable Matchbook each month\nSmuggle Bear welcome kit (value $70).\nPause or cancel anytime after prepaid period",
         "kit_heading": "Smuggle Bear Welcome Kit",
         "kit_value": "(Value $70)",
         "button_label": "Join",
         "button_label_two": "Now",
-        "cart_products": "coffee-without-a-curfew",
-        "disclaimer": "30-day escape plan. <br>Love it or your money back.",
+        "cart_products": ["smuggle-bear-welcome-kit"],
+        "disclaimer": "Heist Society isn't for everyone.  Only the daring.",
         "left_media_type": "video",
         "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
         "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
@@ -275,7 +274,7 @@
       "settings": {
         "background_image_desktop": "shopify://shop_images/full-briefing-bg.jpg",
         "background_image_mobile": "shopify://shop_images/full-briefing-bg-mobile.jpg",
-        "heading": "Word On The Street",
+        "heading": "The Receipts Don't Lie",
         "barcode_image": "shopify://shop_images/Frame_1.svg",
         "review_barcode_image": "shopify://shop_images/Frame_1.png",
         "review_barcode_image_mobile": "shopify://shop_images/Frame_1_1.png",
