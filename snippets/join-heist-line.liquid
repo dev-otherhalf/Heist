@@ -17,10 +17,10 @@
   @param {string} bundle_title - shared _bundle_title property value
 
   When `product` HAS stitched add-ons (buy_box_stitched_products metafield),
-  every stitched variant is auto-upgraded onto its own first "prepaid" selling
-  plan (matched by name, same hint buy-box.js uses) and tagged into one bundle
-  group so the cart drawer renders the whole click as a single bundle card (see
-  cart-bundle-card.liquid).
+  every variant on every stitched product is auto-upgraded onto its own first
+  "prepaid" selling plan (matched by name, same hint buy-box.js uses) and
+  tagged into one bundle group so the cart drawer renders the whole click as a
+  single bundle card (see cart-bundle-card.liquid).
 
   When `product` has NO stitched add-ons, the kit variant goes in as a plain
   line — no selling_plan, no bundle properties — same as adding that product
@@ -41,23 +41,25 @@
   endif
 
   for stitched_product in stitched_products
-    assign stitched_variant = stitched_product.selected_or_first_available_variant | default: stitched_product.first_available_variant
-    if stitched_variant == blank
-      continue
-    endif
-
-    assign stitched_plan_id = ''
-    for alloc in stitched_variant.selling_plan_allocations
-      if alloc.selling_plan.name contains 'prepaid' or alloc.selling_plan.name contains 'Prepaid'
-        assign stitched_plan_id = alloc.selling_plan.id
-        break
+    for stitched_variant in stitched_product.variants
+      if stitched_variant == blank
+        continue
       endif
-    endfor
 
-    echo '{"id":' | append: stitched_variant.id | append: ',"quantity":1'
-    if stitched_plan_id != blank
-      echo ',"selling_plan":' | append: stitched_plan_id
-    endif
-    echo ',"properties":{"_bundle_group":"' | append: bundle_group | append: '","_bundle_title":"' | append: bundle_title | append: '"}},'
+      assign stitched_plan_id = ''
+      for alloc in stitched_variant.selling_plan_allocations
+        assign plan_name = alloc.selling_plan.name | downcase
+        if plan_name contains 'prepaid' or plan_name contains 'prepay'
+          assign stitched_plan_id = alloc.selling_plan.id
+          break
+        endif
+      endfor
+
+      echo '{"id":' | append: stitched_variant.id | append: ',"quantity":1'
+      if stitched_plan_id != blank
+        echo ',"selling_plan":' | append: stitched_plan_id
+      endif
+      echo ',"properties":{"_bundle_group":"' | append: bundle_group | append: '","_bundle_title":"' | append: bundle_title | append: '"}},'
+    endfor
   endfor
 -%}
