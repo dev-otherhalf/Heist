@@ -653,7 +653,6 @@ $plan-control-height: 2.375rem;
         }
 
         .cart-items__bundle-ships {
-          max-width: 6.3125rem;
           text-align: left;
           @include respond-down(md) {
             max-width: 100%;
@@ -661,7 +660,6 @@ $plan-control-height: 2.375rem;
         }
 
         .cart-items__bundle-badge {
-          max-width: 6.3125rem;
           text-align: left;
           @include respond-down(md) {
             max-width: 100%;

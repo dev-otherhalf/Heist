@@ -537,11 +537,25 @@
                         controls at all — removing the membership takes it with it.
                       {%- endcomment -%}
                       {%- if is_membership_item -%}
+                        {%- liquid
+                          assign membership_remove_lines = item.index | plus: 1
+                          for gift_item in cart.items
+                            assign gift_tags = gift_item.product.tags | join: ',' | downcase
+                            assign gift_is_membership = false
+                            if gift_tags contains 'membership' and gift_item.final_line_price == 0
+                              assign gift_is_membership = true
+                            endif
+                            if gift_is_membership == false and gift_item.final_line_price == 0
+                              assign gift_line_number = gift_item.index | plus: 1
+                              assign membership_remove_lines = membership_remove_lines | append: ',' | append: gift_line_number
+                            endif
+                          endfor
+                        -%}
                         <button
                           class="button cart-items__remove cart-items__membership-remove"
                           type="button"
                           aria-label="{{ 'accessibility.remove_item' | t: title: item.title | escape }}"
-                          on:click="/onLineItemRemove/{{ item.index | plus: 1 }}"
+                          on:click="/onLineItemRemove/{{ membership_remove_lines }}"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M8.33366 9.16667V14.1667M11.667 9.16667V14.1667M15.0003 5.83333V15.8333C15.0003 16.2754 14.8247 16.6993 14.5122 17.0118C14.1996 17.3244 13.7757 17.5 13.3337 17.5H6.66699C6.22496 17.5 5.80104 17.3244 5.48848 17.0118C5.17592 16.6993 5.00032 16.2754 5.00032 15.8333V5.83333M16.667 5.83333H3.33366M14.3753 5L12.5003 2.5H7.50033L5.62533 5" stroke="#161414" stroke-width="2" stroke-linecap="square"/>

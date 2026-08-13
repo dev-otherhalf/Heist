@@ -3,8 +3,11 @@
 
 {%- liquid
   assign mobile_video = section.settings.video_mobile | default: section.settings.video_desktop
-  assign left_media_type = section.settings.left_media_type
+  assign left_media_type_desktop = section.settings.left_media_type_desktop | default: section.settings.left_media_type | default: 'image'
+  assign left_media_type_mobile = section.settings.left_media_type_mobile | default: section.settings.left_media_type | default: 'image'
   assign mobile_image = section.settings.left_image_mobile | default: section.settings.left_image
+  assign left_desktop_image = section.settings.left_image
+  assign left_desktop_video = section.settings.left_video_desktop
   assign left_mobile_video = section.settings.left_video_mobile | default: section.settings.left_video_desktop
   assign product_blocks = section.blocks | where: 'type', 'product'
   assign heading_markup = section.settings.heading | strip
@@ -19,14 +22,30 @@
   assign heading_markup = heading_markup | newline_to_br
   assign fallback_alt = 'Drink Heist'
   assign section_heading_alt = heading_text | default: fallback_alt | escape
-  assign has_left_video = false
+  assign has_left_desktop_image = false
+  assign has_left_desktop_video = false
+  assign has_left_mobile_image = false
+  assign has_left_mobile_video = false
 
-  if left_media_type == 'video' and section.settings.left_video_desktop != blank
-    assign has_left_video = true
+  if left_media_type_desktop == 'image' and left_desktop_image != blank
+    assign has_left_desktop_image = true
   endif
 
-  if left_media_type == 'video' and left_mobile_video != blank
-    assign has_left_video = true
+  if left_media_type_desktop == 'video' and left_desktop_video != blank
+    assign has_left_desktop_video = true
+  endif
+
+  if left_media_type_mobile == 'image' and mobile_image != blank
+    assign has_left_mobile_image = true
+  endif
+
+  if left_media_type_mobile == 'video' and left_mobile_video != blank
+    assign has_left_mobile_video = true
+  endif
+
+  assign has_left_aside_media = false
+  if has_left_desktop_image or has_left_desktop_video
+    assign has_left_aside_media = true
   endif
 
   assign cart_product = section.settings.cart_products
@@ -83,76 +102,40 @@
 >
   <div class="page-width">
     <div class="join-the-heist-society__layout">
-      <div class="join-the-heist-society__media{% if has_left_video %} join-the-heist-society__media--aside-video{% endif %}">
-        {%- if has_left_video -%}
-          {%- if section.settings.left_video_desktop != blank -%}
-            <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--desktop">
-              {{-
-                section.settings.left_video_desktop
-                | video_tag:
-                  image_size: '1600x',
-                  autoplay: false,
-                  preload: 'none',
-                  loop: true,
-                  muted: true,
-                  controls: false,
-                  playsinline: true,
-                  class: 'join-the-heist-society__media-video js-autoplay-video'
-              -}}
-            </div>
-          {%- endif -%}
-
-          {%- if left_mobile_video != blank -%}
-            <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--mobile">
-              {{-
-                left_mobile_video
-                | video_tag:
-                  image_size: '960x',
-                  autoplay: false,
-                  preload: 'none',
-                  loop: true,
-                  muted: true,
-                  controls: false,
-                  playsinline: true,
-                  class: 'join-the-heist-society__media-video js-autoplay-video'
-              -}}
-            </div>
-          {%- endif -%}
-        {%- elsif section.settings.left_image != blank or mobile_image != blank -%}
-          <picture>
-            {%- if mobile_image != blank -%}
-              <source
-                media="(max-width: 989px)"
-                srcset="{{- mobile_image | image_url: width: 1200 -}}"
-              >
-            {%- endif -%}
-            {%- if section.settings.left_image != blank -%}
-              {{-
-                section.settings.left_image
-                | image_url: width: 1600
-                | image_tag:
-                  widths: '640, 960, 1280, 1600',
-                  sizes: '(min-width: 990px) 32rem, 100vw',
-                  loading: 'lazy',
-                  alt: section_heading_alt,
-                  class: 'join-the-heist-society__media-image'
-              -}}
-            {%- else -%}
-              {{-
-                mobile_image
-                | image_url: width: 1200
-                | image_tag:
-                  widths: '480, 720, 960, 1200',
-                  sizes: '100vw',
-                  loading: 'lazy',
-                  alt: section_heading_alt,
-                  class: 'join-the-heist-society__media-image'
-              -}}
-            {%- endif -%}
-          </picture>
-        {%- else -%}
-          <div class="join-the-heist-society__media-placeholder" aria-hidden="true"></div>
+      <div class="join-the-heist-society__media join-the-heist-society__media--aside{% unless has_left_aside_media %} join-the-heist-society__media--empty{% endunless %}">
+        {%- if has_left_desktop_image -%}
+          <div class="join-the-heist-society__media-item join-the-heist-society__media-item--desktop">
+            {{-
+              left_desktop_image
+              | image_url: width: 1600
+              | image_tag:
+                widths: '640, 960, 1280, 1600',
+                sizes: '(min-width: 990px) 32rem, 100vw',
+                loading: 'lazy',
+                alt: section_heading_alt,
+                class: 'join-the-heist-society__media-image'
+            -}}
+          </div>
+        {%- elsif has_left_desktop_video -%}
+          <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--desktop">
+            {{-
+              left_desktop_video
+              | video_tag:
+                image_size: '1600x',
+                autoplay: false,
+                preload: 'none',
+                loop: true,
+                muted: true,
+                controls: false,
+                playsinline: true,
+                class: 'join-the-heist-society__media-video js-autoplay-video'
+            -}}
+          </div>
         {%- endif -%}
+
+        {%- unless has_left_aside_media -%}
+          <div class="join-the-heist-society__media-placeholder" aria-hidden="true"></div>
+        {%- endunless -%}
       </div>
 
       <div class="join-the-heist-society__panel">
@@ -201,39 +184,39 @@
             </h2>
           {%- endif -%}
 
-          {%- if has_left_video -%}
+          {%- if has_left_mobile_image -%}
+            <div class="join-the-heist-society__media join-the-heist-society__media--inline-image">
+              <div class="join-the-heist-society__media-item join-the-heist-society__media-item--mobile">
+                {{-
+                  mobile_image
+                  | image_url: width: 1200
+                  | image_tag:
+                    widths: '480, 720, 960, 1200',
+                    sizes: '100vw',
+                    loading: 'lazy',
+                    alt: section_heading_alt,
+                    class: 'join-the-heist-society__media-image'
+                -}}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if has_left_mobile_video -%}
             <div class="join-the-heist-society__media join-the-heist-society__media--inline-video">
-              {%- if left_mobile_video != blank -%}
-                <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--mobile">
-                  {{-
-                    left_mobile_video
-                    | video_tag:
-                      image_size: '960x',
-                      autoplay: false,
-                      preload: 'none',
-                      loop: true,
-                      muted: true,
-                      controls: false,
-                      playsinline: true,
-                      class: 'join-the-heist-society__media-video js-autoplay-video'
-                  -}}
-                </div>
-              {%- elsif section.settings.left_video_desktop != blank -%}
-                <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--mobile">
-                  {{-
-                    section.settings.left_video_desktop
-                    | video_tag:
-                      image_size: '960x',
-                      autoplay: false,
-                      preload: 'none',
-                      loop: true,
-                      muted: true,
-                      controls: false,
-                      playsinline: true,
-                      class: 'join-the-heist-society__media-video js-autoplay-video'
-                  -}}
-                </div>
-              {%- endif -%}
+              <div class="join-the-heist-society__media-video-item join-the-heist-society__media-video-item--mobile">
+                {{-
+                  left_mobile_video
+                  | video_tag:
+                    image_size: '960x',
+                    autoplay: false,
+                    preload: 'none',
+                    loop: true,
+                    muted: true,
+                    controls: false,
+                    playsinline: true,
+                    class: 'join-the-heist-society__media-video js-autoplay-video'
+                -}}
+              </div>
             </div>
           {%- endif -%}
 
@@ -454,8 +437,24 @@
     },
     {
       "type": "select",
-      "id": "left_media_type",
-      "label": "Left media type",
+      "id": "left_media_type_desktop",
+      "label": "Desktop media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "select",
+      "id": "left_media_type_mobile",
+      "label": "Mobile media type",
       "options": [
         {
           "value": "image",
@@ -472,25 +471,25 @@
       "type": "image_picker",
       "id": "left_image",
       "label": "Image (desktop)",
-      "visible_if": "{{ section.settings.left_media_type == 'image' }}"
+      "visible_if": "{{ section.settings.left_media_type_desktop == 'image' }}"
     },
     {
       "type": "image_picker",
       "id": "left_image_mobile",
       "label": "Image (mobile)",
-      "visible_if": "{{ section.settings.left_media_type == 'image' }}"
+      "visible_if": "{{ section.settings.left_media_type_mobile == 'image' }}"
     },
     {
       "type": "video",
       "id": "left_video_desktop",
       "label": "Video (desktop)",
-      "visible_if": "{{ section.settings.left_media_type == 'video' }}"
+      "visible_if": "{{ section.settings.left_media_type_desktop == 'video' }}"
     },
     {
       "type": "video",
       "id": "left_video_mobile",
       "label": "Video (mobile)",
-      "visible_if": "{{ section.settings.left_media_type == 'video' }}"
+      "visible_if": "{{ section.settings.left_media_type_mobile == 'video' }}"
     },
     {
       "type": "header",

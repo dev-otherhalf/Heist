@@ -1,25 +1,26 @@
 {% comment %}
-  Renders one Shopify /cart/add.js line-item JSON object (trailing comma
-  included) for the "Join the Heist Society" button, plus the same for any
-  stitched add-on product hanging off `product`'s buy_box_stitched_products
-  metafield. Shared by the cart_products path and the product-block fallback
-  in sections/join-the-heist-society.liquid so both stay in lock-step.
+  Renders Shopify /cart/add.js line-item JSON objects (trailing comma included)
+  for the "Join the Heist Society" button. If `product` has
+  buy_box_stitched_products, only those bundled metafield products are added;
+  the selected parent product is used as the bundle source, not as a cart line.
+  If no stitched products exist, the resolved variant is added as a normal
+  fallback line.
 
-  @param {variant} variant - resolved line variant (kit product's variant)
+  @param {variant} variant - resolved fallback line variant
   @param {number} variant_id - raw numeric variant id, used only when `variant`
     couldn't be resolved (e.g. a merchant-typed variant ID that doesn't match
     any variant on `product`, matching the old literal-ID behavior) — no
     selling-plan lookup is possible for this fallback, so the line goes in
     one-time.
-  @param {product} product - the kit product, read for stitched add-ons
+  @param {product} product - read for stitched add-ons
   @param {string} bundle_group - shared _bundle_group property value
   @param {string} bundle_title - shared _bundle_title property value
 
   When `product` HAS stitched add-ons (buy_box_stitched_products metafield),
-  the kit variant and every stitched variant are auto-upgraded onto their own
-  first "prepaid" selling plan (matched by name, same hint buy-box.js uses)
-  and tagged into one bundle group so the cart drawer renders the whole
-  click as a single bundle card (see cart-bundle-card.liquid).
+  every stitched variant is auto-upgraded onto its own first "prepaid" selling
+  plan (matched by name, same hint buy-box.js uses) and tagged into one bundle
+  group so the cart drawer renders the whole click as a single bundle card (see
+  cart-bundle-card.liquid).
 
   When `product` has NO stitched add-ons, the kit variant goes in as a plain
   line — no selling_plan, no bundle properties — same as adding that product
@@ -33,25 +34,9 @@
     assign has_stitched = true
   endif
 
-  if variant != blank
-    if has_stitched
-      assign plan_id = ''
-      for alloc in variant.selling_plan_allocations
-        if alloc.selling_plan.name contains 'prepaid' or alloc.selling_plan.name contains 'Prepaid'
-          assign plan_id = alloc.selling_plan.id
-          break
-        endif
-      endfor
-
-      echo '{"id":' | append: variant.id | append: ',"quantity":1'
-      if plan_id != blank
-        echo ',"selling_plan":' | append: plan_id
-      endif
-      echo ',"properties":{"_bundle_group":"' | append: bundle_group | append: '","_bundle_title":"' | append: bundle_title | append: '"}},'
-    else
-      echo '{"id":' | append: variant.id | append: ',"quantity":1},'
-    endif
-  elsif variant_id != blank
+  if variant != blank and has_stitched == false
+    echo '{"id":' | append: variant.id | append: ',"quantity":1},'
+  elsif variant_id != blank and has_stitched == false
     echo '{"id":' | append: variant_id | append: ',"quantity":1},'
   endif
 

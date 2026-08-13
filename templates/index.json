@@ -69,16 +69,16 @@
             "image": "shopify://shop_images/Isolation_Mode.svg"
           }
         },
-        "product_card_qY87VK": {
-          "type": "product_card",
-          "settings": {
-            "product": "smooth-talker"
-          }
-        },
         "product_card_aazcXY": {
           "type": "product_card",
           "settings": {
             "product": "blueprint"
+          }
+        },
+        "product_card_qY87VK": {
+          "type": "product_card",
+          "settings": {
+            "product": "smooth-talker"
           }
         }
       },
@@ -87,8 +87,8 @@
         "badge_8rTPCM",
         "badge_gN94Bx",
         "badge_JHg9W6",
-        "product_card_qY87VK",
-        "product_card_aazcXY"
+        "product_card_aazcXY",
+        "product_card_qY87VK"
       ],
       "name": "Product variant showcase",
       "settings": {
@@ -294,7 +294,7 @@
             "variant_id": "",
             "custom_name": "Tin + Scoop",
             "custom_description": "(value $20)",
-            "custom_image": "shopify://shop_images/tin_scoop.jpg"
+            "custom_image": "shopify://shop_images/Frame_10000067767.jpg"
           }
         },
         "product_zWXPXB": {
@@ -304,7 +304,7 @@
             "variant_id": "",
             "custom_name": "smuggle bear",
             "custom_description": "(value $50)",
-            "custom_image": "shopify://shop_images/SmuggleBear.jpg"
+            "custom_image": "shopify://shop_images/Frame_1000006776_862ebf60-a1e2-4bd3-9c56-a66dcc3dec5f.jpg"
           }
         },
         "product_43rK8n": {
@@ -314,7 +314,7 @@
             "variant_id": "",
             "custom_name": "Collectible Matchbooks",
             "custom_description": "(founder signed)",
-            "custom_image": "shopify://shop_images/MemberCard.jpg"
+            "custom_image": "shopify://shop_images/Frame_1000006777_1f0e72e3-014e-42d8-b1e5-301cbcaec2ae.jpg"
           }
         }
       },
@@ -331,12 +331,13 @@
         "button_label_two": "Now",
         "cart_products": "coffee-without-a-curfew",
         "disclaimer": "",
-        "left_media_type": "video",
-        "left_video_desktop": "shopify://files/videos/Screen Recording 2026-07-06 at 4.33.02 PM (1).mp4",
+        "left_media_type_desktop": "video",
+        "left_media_type_mobile": "image",
+        "left_image": "shopify://shop_images/JOIN-M.jpg",
+        "left_image_mobile": "shopify://shop_images/JOIN-M.jpg",
+        "left_video_desktop": "shopify://files/videos/JOIN-D.mp4",
         "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
-        "video_desktop": "shopify://files/videos/Screen Recording 2026-07-04 at 1.48.04 PM.mp4",
-        "video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 10.42.14 AM (1).mp4",
-        "background_color": "#e8e0d2",
+        "background_color": "#E1DBCD",
         "panel_color": "#f4ede1",
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0,
@@ -367,37 +368,43 @@
         "card_djFWVE": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_23.jpg"
+            "image": "shopify://shop_images/Marque_1_e316bc57-6c8f-42ed-9dd8-74f5771bd394.jpg"
           }
         },
         "card_KCP9iM": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_63.jpg"
+            "image": "shopify://shop_images/Marquee_2.jpg"
           }
         },
         "card_3WrCPH": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_64.jpg"
+            "video": "shopify://files/videos/Marque 3_502d8ad6-8280-4870-aa06-7948fe13e835.mp4"
           }
         },
         "card_Lafamf": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_65.jpg"
+            "image": "shopify://shop_images/Marquee_4.jpg"
           }
         },
         "card_wLgjXe": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_23.jpg"
+            "video": "shopify://files/videos/Marque 5.mp4"
           }
         },
         "card_3pHGym": {
           "type": "card",
           "settings": {
-            "video": "shopify://files/videos/interioryesplz_1769153020_3816254488500013143_5401634217.mp4"
+            "image": "shopify://shop_images/Marquee_6.jpg"
+          }
+        },
+        "card_LwwAed": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Marquee_7.jpg"
           }
         }
       },
@@ -407,7 +414,8 @@
         "card_3WrCPH",
         "card_Lafamf",
         "card_wLgjXe",
-        "card_3pHGym"
+        "card_3pHGym",
+        "card_LwwAed"
       ],
       "name": "Gallery showcase",
       "settings": {

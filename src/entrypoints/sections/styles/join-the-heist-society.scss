@@ -31,19 +31,48 @@
     position: relative;
   }
 
-  &__media--aside-video {
+  &__media--aside {
     @include respond-down(lg) {
       display: none;
     }
   }
 
+  &__media--inline-image,
   &__media--inline-video {
+    border-right: 0;
     display: block;
     margin-top: 0.5rem;
     min-height: 14rem;
 
     @include respond-to(lg) {
       display: none;
+    }
+  }
+
+  &__media--inline-image {
+    min-height: 24rem;
+  }
+
+  &__media-item {
+    display: none;
+    height: 100%;
+    inset: 0;
+    position: absolute;
+    width: 100%;
+
+    &--mobile {
+      display: block;
+      min-height: 20.1875rem;
+      border: var(--border-width-md) solid var(--ink);
+      @include respond-to(lg) {
+        display: none;
+      }
+    }
+
+    &--desktop {
+      @include respond-to(lg) {
+        display: block;
+      }
     }
   }
 
