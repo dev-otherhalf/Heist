@@ -33,9 +33,33 @@ $breakpoints: (
   }
 }
 
+@mixin respond-up($name, $offset: 0) {
+  @if $offset == 0 {
+    @media (min-width: breakpoint($name)) {
+      @content;
+    }
+  } @else {
+    @media (min-width: calc(#{breakpoint($name)} + #{$offset})) {
+      @content;
+    }
+  }
+}
+
 @mixin respond-down($name) {
   @media (max-width: breakpoint-max($name)) {
     @content;
+  }
+}
+
+@mixin respond-down-to($name, $offset: 0) {
+  @if $offset == 0 {
+    @media (max-width: breakpoint($name)) {
+      @content;
+    }
+  } @else {
+    @media (max-width: calc(#{breakpoint($name)} + #{$offset})) {
+      @content;
+    }
   }
 }
 
