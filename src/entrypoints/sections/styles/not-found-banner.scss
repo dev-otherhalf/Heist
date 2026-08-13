@@ -1,0 +1,122 @@
+@use "/src/styles/settings/tokens" as *;
+@use "/src/styles/settings/breakpoints" as *;
+
+.not-found-banner {
+  align-items: center;
+  color: var(--cream);
+  display: flex;
+  justify-content: center;
+  min-height: auto;
+  overflow: clip;
+  position: relative;
+  text-align: center;
+  max-height: 50rem;
+  @include respond-to(lg) {
+    min-height: 100svh;
+    max-height: 100svh;
+  }
+
+  &__background {
+    inset: 0;
+    position: absolute;
+    z-index: 0;
+    picture {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  &__background-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-16);
+    padding: var(--space-64) var(--space-24) var(--space-128);
+    position: relative;
+    z-index: 2;
+
+    @include respond-to(lg) {
+      gap: var(--space-20);
+      padding: var(--space-96) var(--space-24) var(--space-150);
+    }
+  }
+
+  &__eyebrow {
+    color: var(--cream);
+    font-family: var(--font-ui);
+  }
+
+  &__heading {
+    color: var(--cream);
+    max-width: 30rem;
+    @include respond-down(lg) {
+      font-size: var(--fs-h5);
+    }
+  }
+
+  &__description {
+    color: var(--cream);
+    max-width: 26rem;
+    opacity: 0.85;
+  }
+
+  &__button {
+    margin-top: var(--space-8);
+    gap: var(--space-2);
+    max-width: 20rem;
+    width: 100%;
+    &:hover {
+      gap: var(--space-2);
+    }
+
+    @include respond-to(lg) {
+      @media (hover: hover) {
+        &:hover {
+          gap: var(--space-8);
+        }
+      }
+    }
+  }
+
+  &__cup {
+    bottom: 0;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, 0);
+    z-index: 1;
+  }
+
+  &__cup-media--desktop {
+    display: none;
+  }
+
+  &__cup-media--mobile {
+    display: block;
+  }
+
+  @media screen and (min-width: 750px) {
+    &__cup-media--desktop {
+      display: block;
+      width: 68.875rem;
+    }
+
+    &__cup-media--mobile {
+      display: none;
+    }
+  }
+
+  &__cup-image {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+}
