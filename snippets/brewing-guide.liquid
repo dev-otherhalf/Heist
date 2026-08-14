@@ -133,6 +133,12 @@ assign fallback_alt = 'Drink Heist'
             <div class="brewing-guide__recipe-wrapper">
               <h3 class="brewing-guide__recipe-title t-h6">{{ recipe.title.value }}</h3>
               <dl class="brewing-guide__recipe-meta t-n1">
+                {% if recipe.coffee_water_by_weight.value != blank %}
+                  <div>
+                    <dt>Coffee:</dt>
+                    <dd>Water By Weight {{ recipe.coffee_water_by_weight.value }}</dd>
+                  </div>
+                {% endif %}
                 {% if recipe.best_made_with.value != blank %}
                   <div>
                     <dt>Best made with:</dt>
