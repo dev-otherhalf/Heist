@@ -319,7 +319,7 @@
   }
 
   &__process-heading {
-    margin-bottom: var(--space-62);
+    margin-bottom: var(--space-27);
     text-align: center;
 
     @include respond-down(lg) {
@@ -327,6 +327,23 @@
       line-height: var(--lh-h6);
       letter-spacing: var(--ls-h6);
       margin-bottom: var(--space-32);
+    }
+  }
+
+  &__process-feature-image {
+    display: block;
+    margin-bottom: var(--space-27);
+    overflow: hidden;
+    width: 100%;
+
+    @include respond-down(lg) {
+      margin-bottom: var(--space-32);
+    }
+
+    img {
+      display: block;
+      height: auto;
+      width: 100%;
     }
   }
 
@@ -405,7 +422,7 @@
   }
 
   &__process-footnote {
-    margin: var(--space-65) auto 0;
+    margin: 0 auto;
     max-width: 72rem;
     text-align: center;
 
@@ -417,7 +434,7 @@
       font-size: var(--fs-t2);
       line-height: var(--lh-t2);
       letter-spacing: var(--ls-t2);
-      margin-top: var(--space-42);
+      margin-top: 0;
       max-width: 19rem;
     }
   }

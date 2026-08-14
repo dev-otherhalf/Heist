@@ -169,13 +169,13 @@ $coffee-heist-score-reserve: var(--space-50);
   &__tab {
     appearance: none;
     cursor: pointer;
-    padding: 0 var(--space-15);
+    padding: 0 var(--space-10);
     background: var(--cream);
     color: var(--ink);
     border: var(--bw-2) solid var(--ink);
     border-radius: 0;
     min-width: var(--space-128);
-    max-width: var(--space-128);
+    max-width: var(--space-150);
     min-height: var(--space-48);
     display: flex;
     align-items: center;
