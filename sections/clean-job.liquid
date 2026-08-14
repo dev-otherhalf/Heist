@@ -35,7 +35,7 @@
   }
 {%- endstyle -%}
 
-<section class="clean-job" data-clean-job>
+<section id="clean-job" class="clean-job" data-clean-job>
   {%- if background_image != blank or background_image_mobile != blank -%}
     <picture class="clean-job__background" aria-hidden="true">
       {%- if background_image_mobile != blank -%}
@@ -195,7 +195,7 @@
           {%- endif -%}
         </div>
       </div>
-
+      <div class="clean-job__features_bg">
       {%- if section.blocks.size > 0 -%}
         <ul class="clean-job__features">
           {%- for block in section.blocks -%}
@@ -207,6 +207,8 @@
           {%- endfor -%}
         </ul>
       {%- endif -%}
+      <lightlabs-widget company-id="1080" product-id="7295"></lightlabs-widget>
+      </div>  
     </div>
   </div>
 </section>

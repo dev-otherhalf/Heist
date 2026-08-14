@@ -165,7 +165,7 @@
       }
 
       &--mobile {
-        height: 90%;
+        height: 78%;
       }
     }
   }
@@ -259,10 +259,12 @@
   }
 
   // --- Features --------------------------------------------------------------
+  &__features_bg {
+    grid-area: features;
+  }
   &__features {
     gap: 0;
-    grid-area: features;
-    margin: var(--space-45) 0 0 -0.1875rem;
+    margin: var(--space-45) 0 var(--space-24) -0.1875rem;
     padding: 0;
     list-style: none;
     display: flex;
@@ -272,7 +274,7 @@
       gap: var(--space-15) var(--space-21);
       grid-template-columns: 1fr 1fr;
       display: grid;
-      margin: var(--space-3) 0 0 0px;
+      margin: var(--space-3) 0 var(--space-24) 0px;
       padding-right: var(--space-12);
     }
   }
