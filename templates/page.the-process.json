@@ -46,7 +46,10 @@
           "blocks": {}
         }
       },
-      "block_order": ["heading", "page-content"],
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
       "disabled": true,
       "settings": {
         "content_direction": "column",
@@ -348,7 +351,7 @@
       "settings": {
         "heading": "For those who are serious about coffee.",
         "cta_label": "Follow @DrinkHeist",
-        "cta_link": "/",
+        "cta_link": "https://www.instagram.com/drinkheist/",
         "marquee_speed": 40,
         "padding_top_mobile": 64,
         "padding_bottom_mobile": 64,
