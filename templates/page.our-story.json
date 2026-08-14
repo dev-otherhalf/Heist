@@ -343,7 +343,7 @@
         "date": "Friday, June 5, 2026",
         "date_mobile": "Friday 06/26",
         "cta_label": "Pull the heist",
-        "cta_link": "#",
+        "cta_link": "shopify://products/coffee-without-a-curfew",
         "background_color": "#e4ddcf",
         "text_color": "#161414",
         "background_image_desktop": "shopify://shop_images/Desktop.jpg",

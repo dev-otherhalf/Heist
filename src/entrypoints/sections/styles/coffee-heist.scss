@@ -337,6 +337,7 @@ $coffee-heist-score-reserve: var(--space-50);
   }
 
   &__bar-score {
+    opacity: 0;
     position: absolute;
     top: 50%;
     transform: translate(var(--space-8), -50%);
