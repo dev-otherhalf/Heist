@@ -148,6 +148,9 @@ $coffee-heist-score-reserve: var(--space-50);
     opacity: 1;
     @include respond-down(md) {
       max-width: 21rem;
+      br {
+        display: none;
+      }
     }
   }
 

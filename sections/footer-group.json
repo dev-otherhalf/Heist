@@ -106,7 +106,7 @@
         "strip_text_color": "#ddd6c7",
         "copyright_text": "<p>Copyright © MCMLMMXXVI by Heist Coffee Co.</p>",
         "policy_menu": "policy-menu",
-        "site_credit": "<p>Site by <a href=\"#\" title=\"#\">otherhalf.</a></p>"
+        "site_credit": "<p>Site by <a href=\"https://otherhalf.studio/\" target=\"_blank\" title=\"https://otherhalf.studio/\">otherhalf.</a></p>"
       }
     }
   },
