@@ -274,8 +274,8 @@
       "type": "okendo-reviews",
       "name": "Okendo Reviews",
       "settings": {
-        "background_image_desktop": "shopify://shop_images/full-briefing-bg.jpg",
-        "background_image_mobile": "shopify://shop_images/full-briefing-bg-mobile.jpg",
+        "background_image_desktop": "shopify://shop_images/Rectangle_12_d5998a7f-6247-4894-ad33-7e035aee77f7.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_144433642_1d70cacd-939c-42cb-95b3-95c7b278949c.jpg",
         "heading": "The Receipts Don't Lie",
         "barcode_image": "shopify://shop_images/Frame_1.svg",
         "review_barcode_image": "shopify://shop_images/Frame_1.png",
@@ -292,9 +292,9 @@
       "settings": {
         "custom_id": "",
         "background_color": "",
-        "tabs_selection": "",
+        "tabs_selection": "the-worlds-biggest-coffee-heist-pdp",
         "receipts_selection": "",
-        "breiwng_guide_selection": "",
+        "breiwng_guide_selection": "brewing-guide",
         "desktop_top_padding": 120,
         "desktop_bottom_padding": 120,
         "mobile_top_padding": 64,
