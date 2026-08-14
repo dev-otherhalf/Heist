@@ -77,6 +77,32 @@ export class MediaGallery extends Component {
     this.slideshow?.select(event.detail.index, undefined, { animate: false });
   };
 
+  toggleSound(event) {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest("[data-sound-toggle]");
+    if (!(button instanceof HTMLButtonElement) || !this.contains(button))
+      return;
+
+    const deferredMedia = button
+      .closest(".product-media")
+      ?.querySelector("deferred-media");
+    if (!deferredMedia) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    let video = deferredMedia.querySelector("video");
+    if (!video) {
+      deferredMedia.loadContent?.(false);
+      video = deferredMedia.querySelector("video");
+    }
+    if (!video) return;
+
+    video.muted = !video.muted;
+    this.#updateSoundToggle(button, video.muted);
+    if (video.paused) video.play().catch(() => {});
+  }
+
   /**
    * Zooms the media gallery.
    *
@@ -188,6 +214,9 @@ export class MediaGallery extends Component {
 
     const productMedia = container.querySelector(".product-media");
     if (!productMedia) return;
+    const soundToggle = productMedia
+      .querySelector(":scope > [data-sound-toggle]")
+      ?.cloneNode(true);
 
     const ratio = item.width && item.height ? item.width / item.height : 1;
     container.style.setProperty("--media-preview-ratio", String(ratio));
@@ -199,11 +228,19 @@ export class MediaGallery extends Component {
       if (item.poster) {
         children.push(this.#createGalleryImage(item, index, true));
       }
-      children.push(this.#createDeferredVideo(item));
+      const deferredVideo = this.#createDeferredVideo(item);
+      children.push(deferredVideo);
+      if (soundToggle instanceof HTMLButtonElement) {
+        soundToggle.removeAttribute("hidden");
+        this.#updateSoundToggle(soundToggle, true);
+        children.push(soundToggle);
+      }
+      productMedia.classList.add("product-media--has-sound-toggle");
       productMedia.replaceChildren(...children);
       return;
     }
 
+    productMedia.classList.remove("product-media--has-sound-toggle");
     productMedia.replaceChildren(this.#createGalleryImage(item, index));
   }
 
@@ -243,7 +280,9 @@ export class MediaGallery extends Component {
 
     const video = document.createElement("video");
     video.autoplay = true;
+    video.defaultMuted = true;
     video.muted = true;
+    video.setAttribute("muted", "");
     video.playsInline = true;
     video.preload = "metadata";
     if (item.poster) video.poster = item.poster;
@@ -258,6 +297,17 @@ export class MediaGallery extends Component {
     template.content.appendChild(video);
     deferredMedia.append(button, template);
     return deferredMedia;
+  }
+
+  #updateSoundToggle(button, muted) {
+    button.setAttribute("aria-pressed", String(!muted));
+    button.setAttribute("aria-label", muted ? "Unmute video" : "Mute video");
+    button
+      .querySelector("[data-sound-icon-muted]")
+      ?.toggleAttribute("hidden", !muted);
+    button
+      .querySelector("[data-sound-icon-unmuted]")
+      ?.toggleAttribute("hidden", muted);
   }
 
   #replaceGalleryControls(gallery, media) {

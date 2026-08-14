@@ -25,7 +25,7 @@
 %}
 
 <div
-  class="product-media"
+  class="product-media{% if media.media_type == 'video' and preview_image_only != true %} product-media--has-sound-toggle{% endif %}"
   style="--ratio: {{ media.aspect_ratio }}"
   data-media-id="{{ media.id }}"
 >
@@ -134,6 +134,30 @@
         -%}
     {% endcase %}
   {% endunless %}
+
+  <button
+    type="button"
+    class="viewport-video__sound-toggle"
+    data-sound-toggle
+    on:click="media-gallery/toggleSound"
+    aria-pressed="false"
+    aria-label="Unmute video"
+    {% unless media.media_type == 'video' and preview_image_only != true %}
+      hidden
+    {% endunless %}
+  >
+    {%- comment -%}
+      The icon snippets are named for the state they toggle to, not what they
+      draw: icon-sound-unmuted draws a struck speaker (shown while muted),
+      icon-sound-muted draws a speaker with waves (shown while playing).
+    {%- endcomment -%}
+    <span class="viewport-video__sound-icon" data-sound-icon-muted>
+      {%- render 'icon-sound-unmuted' -%}
+    </span>
+    <span class="viewport-video__sound-icon" data-sound-icon-unmuted hidden>
+      {%- render 'icon-sound-muted' -%}
+    </span>
+  </button>
 </div>
 
 {% stylesheet %}
