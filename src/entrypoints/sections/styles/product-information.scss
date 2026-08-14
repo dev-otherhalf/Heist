@@ -126,6 +126,9 @@ body.product {
                 content: "";
               }
             }
+            &__thumbnail-badge {
+              display: none;
+            }
           }
           .product-media {
             position: relative;
@@ -144,6 +147,9 @@ body.product {
               left: 0;
               width: 100%;
               height: 100%;
+              object-fit: cover;
+            }
+            video {
               object-fit: cover;
             }
           }
