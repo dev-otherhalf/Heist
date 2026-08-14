@@ -136,6 +136,57 @@
                     "available": {{ v.available }},
                     "price": {{ v.price }},
                     "compareAtPrice": {{ v.compare_at_price | default: 0 }},
+                    "galleryMedia": [
+                      {%- liquid
+                        assign variant_gallery_media = v.metafields.custom.buy_box_gallery_media.value
+                        if variant_gallery_media == blank
+                          assign variant_gallery_media = v.metafields.custom.buy_box_gallery_images.value
+                        endif
+                      -%}
+                      {%- for gallery_media in variant_gallery_media -%}
+                        {%- if gallery_media.media_type == 'video' -%}
+                          {
+                            "type": "video",
+                            "alt": {{ gallery_media.alt | default: component.title | json }},
+                            "poster": {% if gallery_media.preview_image != blank %}{{ gallery_media.preview_image | image_url: width: 1500 | json }}{% else %}null{% endif %},
+                            "width": {{ gallery_media.preview_image.width | default: 1920 }},
+                            "height": {{ gallery_media.preview_image.height | default: 1080 }},
+                            "sources": [
+                              {%- for source in gallery_media.sources -%}
+                                {
+                                  "url": {{ source.url | json }},
+                                  "mimeType": {{ source.mime_type | json }}
+                                }{%- unless forloop.last -%},{%- endunless -%}
+                              {%- endfor -%}
+                            ]
+                          }
+                        {%- else -%}
+                          {%- liquid
+                            assign gallery_image_480 = gallery_media | image_url: width: 480
+                            assign gallery_image_750 = gallery_media | image_url: width: 750
+                            assign gallery_image_1100 = gallery_media | image_url: width: 1100
+                            assign gallery_image_1500 = gallery_media | image_url: width: 1500
+                            assign gallery_image_2000 = gallery_media | image_url: width: 2000
+                            capture gallery_image_srcset
+                              echo gallery_image_480 | append: ' 480w, '
+                              echo gallery_image_750 | append: ' 750w, '
+                              echo gallery_image_1100 | append: ' 1100w, '
+                              echo gallery_image_1500 | append: ' 1500w, '
+                              echo gallery_image_2000 | append: ' 2000w'
+                            endcapture
+                          -%}
+                          {
+                            "type": "image",
+                            "src": {{ gallery_image_2000 | json }},
+                            "srcset": {{ gallery_image_srcset | strip | json }},
+                            "alt": {{ gallery_media.alt | default: component.title | json }},
+                            "width": {{ gallery_media.width | default: 2000 }},
+                            "height": {{ gallery_media.height | default: 2000 }}
+                          }
+                        {%- endif -%}
+                        {%- unless forloop.last -%},{%- endunless -%}
+                      {%- endfor -%}
+                    ],
                     "sellingPlanAllocations": [
                       {%- for a in v.selling_plan_allocations -%}
                         {

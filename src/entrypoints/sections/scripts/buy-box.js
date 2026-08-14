@@ -61,6 +61,7 @@ class BuyBox extends HTMLElement {
   // unless the shopper explicitly picks a tier in the meantime (see
   // #bindEvents). Null when no auto-fallback is currently in effect.
   #tierBeforeMinimum = null;
+  #galleryVariantOrder = [];
 
   connectedCallback() {
     const dataEl = this.querySelector("[data-buy-box-data]");
@@ -283,10 +284,58 @@ class BuyBox extends HTMLElement {
   // --------------------------------------------------------------- mutation
 
   #changeQty(variantId, delta) {
-    this.#setQty(
-      variantId,
+    const nextQuantity = Math.max(
+      0,
       (this.state.quantities.get(variantId) || 0) + delta,
     );
+    this.#setQty(variantId, nextQuantity);
+
+    if (nextQuantity > 0) {
+      if (this.#showVariantGallery(variantId)) {
+        this.#galleryVariantOrder = this.#galleryVariantOrder.filter(
+          (id) => id !== variantId,
+        );
+        this.#galleryVariantOrder.push(variantId);
+      }
+      return;
+    }
+
+    this.#galleryVariantOrder = this.#galleryVariantOrder.filter(
+      (id) => id !== variantId,
+    );
+    this.#showRemainingVariantGallery(variantId);
+  }
+
+  #showVariantGallery(variantId) {
+    const variant = this.#variant(variantId);
+    const media = variant?.galleryMedia || variant?.galleryImages || [];
+    if (media.length === 0) return false;
+
+    const section = this.closest(".shopify-section");
+    const gallery = section?.querySelector("media-gallery");
+    gallery?.showBundleMedia?.(media);
+    return !!gallery?.showBundleMedia;
+  }
+
+  #showRemainingVariantGallery(removedVariantId) {
+    const candidates = [
+      ...[...this.#galleryVariantOrder].reverse(),
+      ...this.state.quantities.keys(),
+    ];
+
+    for (const variantId of new Set(candidates)) {
+      if (
+        variantId !== removedVariantId &&
+        (this.state.quantities.get(variantId) || 0) > 0 &&
+        this.#showVariantGallery(variantId)
+      ) {
+        return;
+      }
+    }
+
+    const gallery =
+      this.closest(".shopify-section")?.querySelector("media-gallery");
+    gallery?.restoreOriginalMedia?.();
   }
 
   /** Set a variant's quantity (state + stepper DOM). */
