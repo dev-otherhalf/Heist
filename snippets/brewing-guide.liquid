@@ -135,8 +135,8 @@ assign fallback_alt = 'Drink Heist'
               <dl class="brewing-guide__recipe-meta t-n1">
                 {% if recipe.coffee_water_by_weight.value != blank %}
                   <div>
-                    <dt>Coffee:</dt>
-                    <dd>Water By Weight {{ recipe.coffee_water_by_weight.value }}</dd>
+                    <dt>Coffee: Water Ratio</dt>
+                    <dd>{{ recipe.coffee_water_by_weight.value }}</dd>
                   </div>
                 {% endif %}
                 {% if recipe.best_made_with.value != blank %}

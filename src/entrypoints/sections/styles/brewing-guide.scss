@@ -358,6 +358,7 @@ body:has(.brewing-guide__modal.is-open) {
     display: grid;
     gap: var(--space-17);
     padding-block: var(--space-27) 0;
+    font-size: 0.775rem;
 
     @include respond-down(md) {
       padding-block: var(--space-21) 0;
@@ -369,7 +370,7 @@ body:has(.brewing-guide__modal.is-open) {
     }
 
     dt {
-      min-width: 8rem;
+      min-width: 10rem;
     }
 
     dd {
