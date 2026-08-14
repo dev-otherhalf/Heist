@@ -675,7 +675,56 @@ body:has(.heist-mobile-menu[open]) {
       line-height: var(--lh-n2-med);
       display: none;
     }
+    &__progress {
+      margin-top: var(--space-3);
+    }
 
+    &__range {
+      --heist-fm-progress: 90%;
+
+      position: relative;
+      width: 100%;
+      height: var(--space-12);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+
+      &:focus-visible {
+        outline: var(--bw-2) solid currentColor;
+        outline-offset: var(--space-4);
+      }
+    }
+
+    &__range-track {
+      position: relative;
+      width: 100%;
+      height: var(--space-4);
+      display: block;
+      background: var(--ink);
+    }
+
+    &__range-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--heist-fm-progress);
+      display: block;
+      background: var(--heist-accent);
+    }
+
+    &__range-thumb {
+      position: absolute;
+      top: 50%;
+      left: var(--heist-fm-progress);
+      width: var(--space-12);
+      height: var(--space-12);
+      display: block;
+      background: var(--heist-accent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
     &__controls {
       margin-top: var(--space-16);
       margin-bottom: var(--space-8);

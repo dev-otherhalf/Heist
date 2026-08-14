@@ -79,7 +79,7 @@
       ],
       "name": "t:names.footer",
       "settings": {
-        "background_color": "#FF4014",
+        "background_color": "#ff4014",
         "information_color": "#161414",
         "desktop_top_padding": 96,
         "desktop_bottom_padding": 55,
@@ -104,7 +104,8 @@
         "strip_bg_color": "#161414",
         "strip_text_color": "#ddd6c7",
         "copyright_text": "<p>Copyright © MCMLMMXXVI by Heist Coffee Co.</p>",
-        "policy_menu": "policy-menu"
+        "policy_menu": "policy-menu",
+        "site_credit": "<p>Site by <a href=\"#\" title=\"#\">otherhalf.</a></p>"
       }
     }
   },

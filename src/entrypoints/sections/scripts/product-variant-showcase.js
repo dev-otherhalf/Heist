@@ -182,30 +182,23 @@ class ProductVariantShowcase {
       const activeButton = toggle.querySelector(
         "[data-variant-trigger].is-active",
       );
-      const deselectedButton = [
-        ...toggle.querySelectorAll("[data-variant-trigger]"),
-      ].find((button) => button !== activeButton);
+      indicator?.classList.toggle("hidden", !activeButton);
 
-      indicator?.classList.toggle("hidden", !deselectedButton);
-
-      if (!indicator || !deselectedButton) return;
+      if (!indicator || !activeButton) return;
 
       toggle.querySelectorAll("[data-variant-trigger]").forEach((button) => {
-        button.classList.toggle("is-indicated", button === deselectedButton);
+        button.classList.toggle("is-indicated", button === activeButton);
       });
 
       const toggleStyles = window.getComputedStyle(toggle);
       const paddingInlineStart = Number.parseFloat(
         toggleStyles.paddingInlineStart || toggleStyles.paddingLeft || "0",
       );
-      const offset = Math.max(
-        0,
-        deselectedButton.offsetLeft - paddingInlineStart,
-      );
+      const offset = Math.max(0, activeButton.offsetLeft - paddingInlineStart);
 
       toggle.style.setProperty(
         "--toggle-indicator-width",
-        `${deselectedButton.offsetWidth}px`,
+        `${activeButton.offsetWidth}px`,
       );
       toggle.style.setProperty("--toggle-indicator-offset", `${offset}px`);
 
