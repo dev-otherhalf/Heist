@@ -65,7 +65,8 @@
 {% elsif path == "/src/entrypoints/sections/scripts/product-variant-showcase.js" or path == "sections/scripts/product-variant-showcase.js" %}
   <script src="{{ 'vite-product-variant-showcase-78j8Z_8_.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
 {% elsif path == "/src/entrypoints/sections/scripts/product-videos.js" or path == "sections/scripts/product-videos.js" %}
-  <script src="{{ 'vite-product-videos-tUfXi0MN.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <script src="{{ 'vite-product-videos-BqOO_4Za.js' | asset_url | split: '?' | first }}" type="module" crossorigin="anonymous"></script>
+  <link rel="modulepreload" href="{{ 'vite-page-scroll-lock-BHWLpGjD.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
   <link rel="modulepreload" href="{{ 'vite-swiper-CCmqQlFu.js' | asset_url | split: '?' | first }}" crossorigin="anonymous">
   {{ 'vite-product-videos-Bdbi0viN.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
 {% elsif path == "/src/entrypoints/sections/scripts/quality-showcase.js" or path == "sections/scripts/quality-showcase.js" %}
@@ -127,7 +128,7 @@
 {% elsif path == "/src/entrypoints/sections/styles/product-variant-showcase.scss" or path == "sections/styles/product-variant-showcase.scss" %}
   {{ 'vite-product-variant-showcase-BjUDiJ0E.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
 {% elsif path == "/src/entrypoints/sections/styles/product-videos.scss" or path == "sections/styles/product-videos.scss" %}
-  {{ 'vite-product-videos-D-myTZtj.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
+  {{ 'vite-product-videos-CV-OEvjm.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
 {% elsif path == "/src/entrypoints/sections/styles/quality-showcase.scss" or path == "sections/styles/quality-showcase.scss" %}
   {{ 'vite-quality-showcase-DC9kjkrj.css' | asset_url | split: '?' | first | stylesheet_tag: preload: preload_stylesheet }}
 {% elsif path == "/src/entrypoints/sections/styles/viewport-video.scss" or path == "sections/styles/viewport-video.scss" %}

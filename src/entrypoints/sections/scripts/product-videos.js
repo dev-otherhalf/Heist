@@ -1,5 +1,9 @@
 import Swiper from "swiper";
 import "swiper/css";
+import {
+  lockPageScroll,
+  unlockPageScroll,
+} from "../../../scripts/page-scroll-lock";
 
 function initProductVideos(root) {
   if (!root || root.dataset.productVideosSwiperReady === "true") return;
@@ -31,9 +35,80 @@ function initProductVideos(root) {
       },
     },
   });
+
+  const dialog = root.querySelector("[data-product-video-lightbox]");
+  const lightboxVideo = dialog?.querySelector(
+    "[data-product-video-lightbox-media]",
+  );
+  if (!dialog || !lightboxVideo) return;
+
+  const controller = new AbortController();
+  const { signal } = controller;
+  root.productVideosAbortController = controller;
+
+  const clearLightbox = () => {
+    lightboxVideo.pause();
+    lightboxVideo.removeAttribute("poster");
+    lightboxVideo.replaceChildren();
+    lightboxVideo.load();
+    unlockPageScroll();
+  };
+
+  const closeLightbox = () => {
+    if (dialog.open) dialog.close();
+  };
+
+  root.querySelectorAll("[data-product-video-open]").forEach((button) => {
+    button.addEventListener(
+      "click",
+      () => {
+        const preview = button.querySelector("video");
+        if (!preview) return;
+
+        preview.pause();
+        lightboxVideo.replaceChildren(
+          ...[...preview.querySelectorAll("source")].map((source) =>
+            source.cloneNode(true),
+          ),
+        );
+        if (preview.poster) lightboxVideo.poster = preview.poster;
+        lightboxVideo.currentTime = 0;
+        lightboxVideo.defaultMuted = false;
+        lightboxVideo.muted = false;
+        lightboxVideo.volume = 1;
+        lightboxVideo.load();
+
+        dialog.showModal();
+        lockPageScroll();
+        lightboxVideo.play().catch(() => {});
+      },
+      { signal },
+    );
+  });
+
+  dialog
+    .querySelector("[data-product-video-close]")
+    ?.addEventListener("click", closeLightbox, { signal });
+  dialog.addEventListener(
+    "click",
+    (event) => {
+      if (event.target === dialog) closeLightbox();
+    },
+    { signal },
+  );
+  dialog.addEventListener("close", clearLightbox, { signal });
 }
 
 function destroyProductVideos(root) {
+  root.productVideosAbortController?.abort();
+  delete root.productVideosAbortController;
+  const dialog = root.querySelector("[data-product-video-lightbox]");
+  const lightboxVideo = dialog?.querySelector(
+    "[data-product-video-lightbox-media]",
+  );
+  lightboxVideo?.pause();
+  if (dialog?.open) dialog.close();
+  unlockPageScroll();
   root.productVideosSwiperInstance?.destroy(true, true);
   delete root.productVideosSwiperInstance;
   root.dataset.productVideosSwiperReady = "false";

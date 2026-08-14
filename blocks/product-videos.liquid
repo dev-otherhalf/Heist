@@ -44,7 +44,14 @@
             {%- continue -%}
           {%- endif -%}
           <div class="product-videos__slide swiper-slide">
-            <div class="product-videos__card">
+            <button
+              type="button"
+              class="product-videos__card"
+              data-product-video-open
+              aria-label="Open video {{ forloop.index }}"
+              aria-haspopup="dialog"
+              aria-controls="ProductVideosLightbox-{{ block.id }}"
+            >
               <video
                 class="product-videos__media js-autoplay-video"
                 preload="none"
@@ -59,11 +66,33 @@
                   <source src="{{ source.url }}" type="{{ source.mime_type }}">
                 {% endfor %}
               </video>
-            </div>
+              <span class="product-videos__play-icon" aria-hidden="true">
+                {{- 'icon-play.svg' | inline_asset_content -}}
+              </span>
+            </button>
           </div>
         {% endfor %}
       </div>
     </div>
+
+    <dialog
+      id="ProductVideosLightbox-{{ block.id }}"
+      class="product-videos__lightbox"
+      data-product-video-lightbox
+      aria-label="Product video"
+    >
+      <div class="product-videos__lightbox-inner">
+        <button
+          type="button"
+          class="product-videos__lightbox-close"
+          data-product-video-close
+          aria-label="{{ 'actions.close' | t | default: 'Close' }}"
+        >
+          {{- 'icon-close.svg' | inline_asset_content -}}
+        </button>
+        <video class="product-videos__lightbox-media" data-product-video-lightbox-media controls playsinline></video>
+      </div>
+    </dialog>
   </div>
 {% endif %}
 

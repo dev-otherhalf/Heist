@@ -32,11 +32,17 @@
   }
 
   &__card {
+    appearance: none;
+    background: none;
+    cursor: pointer;
+    display: block;
+    font: inherit;
     height: 100%;
     overflow: hidden;
     position: relative;
-    padding-bottom: 149.87%;
+    padding: 0 0 149.87%;
     border: var(--bw-2) solid var(--ink);
+    width: 100%;
   }
 
   &__media {
@@ -45,5 +51,94 @@
     inset: 0;
     object-fit: cover;
     position: absolute;
+  }
+
+  &__play-icon {
+    align-items: center;
+    background: var(--bone);
+    border: var(--bw-2) solid var(--ink);
+    border-radius: 50%;
+    display: flex;
+    height: 3rem;
+    inset: 50% auto auto 50%;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    transition: opacity var(--dur) var(--ease);
+    width: 3rem;
+
+    svg {
+      height: 1.25rem;
+      width: 1.25rem;
+    }
+  }
+
+  &__card:is(:hover, :focus-visible) &__play-icon {
+    opacity: 1;
+  }
+
+  &__lightbox {
+    background: transparent;
+    border: 0;
+    inset: 0;
+    margin: auto;
+    max-height: 94dvh;
+    max-width: 94vw;
+    overflow: visible;
+    padding: 0;
+
+    &::backdrop {
+      background: rgb(22 20 20 / 0.72);
+    }
+  }
+
+  &__lightbox-inner {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    max-height: 94dvh;
+    max-width: 94vw;
+    position: relative;
+  }
+
+  &__lightbox-media {
+    background: var(--ink);
+    display: block;
+    height: min(88dvh, 56rem);
+    max-width: min(88vw, 56rem);
+    object-fit: contain;
+    width: auto;
+
+    @include respond-down(md) {
+      height: auto;
+      max-height: 82dvh;
+      max-width: calc(100vw - 2rem);
+      width: calc(100vw - 2rem);
+    }
+  }
+
+  &__lightbox-close {
+    align-items: center;
+    appearance: none;
+    background: var(--bone);
+    border: var(--bw-2) solid var(--ink);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    height: 2.75rem;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: var(--space-12);
+    top: var(--space-12);
+    width: 2.75rem;
+    z-index: 1;
+
+    svg {
+      height: 1rem;
+      width: 1rem;
+    }
   }
 }

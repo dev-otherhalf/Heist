@@ -118,7 +118,7 @@
                 "subscribe_cta_label": "Start the heist",
                 "cta_heist_label": "Join the Heist Society™",
                 "cta_one_time_label": "Buy now",
-                "guarantee_text": "30-day satisfaction guarantee • Refill ships in 30 days",
+                "guarantee_text": "30-day satisfaction guarantee • Recurring Orders ship every 30 days",
                 "guarantee_tooltip": "By default you will receive a refill every 30 days of your selected quantity. Skip, pause, or cancel anytime.\n\nBy subscribing and/or joining Heist Society, you get discounted pricing and benefits and gifts available only to your chosen subscription level.",
                 "enable_sticky_bar": true,
                 "sticky_label": "Order Summary:",
