@@ -485,20 +485,35 @@ body:has(.brewing-guide__modal.is-open) {
   &__banner {
     position: relative;
     display: flex;
-    align-items: flex-end;
-    min-height: 12.5rem;
-    padding: var(--space-30) var(--space-70) var(--space-30) var(--space-72);
-    color: var(--cream);
+    align-items: center;
+    padding: var(--space-20) var(--space-20) var(--space-20) var(--space-20);
+    gap: var(--space-48);
+    color: var(--ink);
     overflow: clip;
     justify-content: end;
     border: var(--bw-2) solid var(--ink);
 
     @include respond-down(md) {
-      margin-inline: calc(var(--space-19) * -1);
-      padding: var(--space-24) var(--space-18) var(--space-32) var(--space-22);
+      padding: var(--space-20) var(--space-15) var(--space-20) var(--space-20);
+      gap: var(--space-17);
     }
   }
-
+  &__banner-img {
+    position: relative;
+    border: var(--bw-2) solid var(--ink);
+    overflow: hidden;
+    flex: 0 0 calc(var(--space-150) + var(--space-10));
+    @include respond-down(md) {
+      flex: 0 0 var(--space-128);
+    }
+    &:before {
+      margin: 0;
+      padding: 0 0 100%;
+      display: block;
+      width: 100%;
+      content: "";
+    }
+  }
   &__banner-image {
     position: absolute;
     inset: 0;
@@ -519,10 +534,7 @@ body:has(.brewing-guide__modal.is-open) {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-8);
-
-    @include respond-down(md) {
-      max-width: 149px;
-    }
+    flex: 1;
   }
 
   @include respond-down(md) {
@@ -532,16 +544,6 @@ body:has(.brewing-guide__modal.is-open) {
 
     &__banner-image--mobile {
       display: block;
-    }
-  }
-
-  &__banner-title,
-  &__banner-subtext {
-    @include respond-to(md) {
-      background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
-      background-clip: text;
-      color: transparent;
-      background-size: contain;
     }
   }
 
@@ -569,10 +571,8 @@ body:has(.brewing-guide__modal.is-open) {
     padding-block: inherit;
     padding-inline: 0.969rem;
     text-wrap-mode: nowrap;
-    @include respond-to(md) {
-      background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/bg.jpg?v=1782904191");
-      background-size: contain;
-    }
+    width: 100%;
+    max-width: calc(var(--space-150) + var(--space-90));
     @include respond-down(md) {
       width: 100%;
       padding-inline: var(--space-11);

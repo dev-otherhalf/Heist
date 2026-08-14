@@ -1039,7 +1039,7 @@
     justify-content: center;
     @include respond-down(md) {
       min-height: var(--space-32);
-      padding: 0 var(--space-16) var(--space-6);
+      padding: var(--space-4) var(--space-5) var(--space-6);
     }
   }
 

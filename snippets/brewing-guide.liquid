@@ -197,6 +197,7 @@ assign fallback_alt = 'Drink Heist'
             {% assign banner_desktop_image = recipe.banner_image.value | default: recipe.mobile_banner_image.value %}
             {% assign banner_mobile_image = recipe.mobile_banner_image.value | default: banner_desktop_image %}
             {% assign banner_alt = recipe.banner_title.value | default: fallback_alt %}
+            <div class="brewing-guide__banner-img">
             {% if banner_desktop_image != blank %}
             {{
               banner_desktop_image
@@ -217,6 +218,7 @@ assign fallback_alt = 'Drink Heist'
                 alt: banner_alt
             }}
             {% endif %}
+            </div>
             <div class="brewing-guide__banner-copy">
               {% if recipe.banner_title.value != blank %}
               <span class="brewing-guide__banner-title t-s2">{{ recipe.banner_title.value }}</span>
@@ -225,7 +227,7 @@ assign fallback_alt = 'Drink Heist'
               <span class="brewing-guide__banner-subtext t-t2">{{ recipe.banner_subtext.value }}</span>
               {% endif %}
               {% if recipe.cta_link.value != blank %}
-              <a href="{{ recipe.cta_link.value }}" class="brewing-guide__banner-cta btn btn--cream">
+              <a href="{{ recipe.cta_link.value }}" class="brewing-guide__banner-cta btn">
                 {{ recipe.cta_label.value | default: 'Shop now' }}
               </a>
               {% endif %}

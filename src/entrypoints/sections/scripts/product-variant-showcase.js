@@ -90,6 +90,22 @@ class ProductVariantShowcase {
     const ctas = card.querySelectorAll("[data-variant-cta]");
     const prices = card.querySelectorAll("[data-variant-price]");
 
+    this.updateCardColor(
+      card,
+      "--card-desktop-text-color",
+      button.dataset.cardDesktopTextColor,
+    );
+    this.updateCardColor(
+      card,
+      "--card-mobile-text-color",
+      button.dataset.cardMobileTextColor,
+    );
+    this.updateCardColor(
+      card,
+      "--card-hover-text-color",
+      button.dataset.cardHoverTextColor,
+    );
+
     if (title) {
       title.textContent = button.dataset.variantTitleValue || "";
     }
@@ -132,6 +148,14 @@ class ProductVariantShowcase {
     prices.forEach((price) => {
       price.textContent = button.dataset.variantPriceValue || "";
     });
+  }
+
+  updateCardColor(card, property, value) {
+    if (value) {
+      card.style.setProperty(property, value);
+    } else {
+      card.style.removeProperty(property);
+    }
   }
 
   updateOptionalHtml(element, value) {

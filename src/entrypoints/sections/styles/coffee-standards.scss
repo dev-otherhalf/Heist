@@ -291,7 +291,9 @@
 
   &__video {
     z-index: 0;
-
+    &--mobile {
+      height: 94%;
+    }
     &--tablet,
     &--mobile {
       display: none;

@@ -287,6 +287,9 @@ $coffee-heist-score-reserve: var(--space-50);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    @include respond-down(md) {
+      white-space: wrap;
+    }
   }
 
   &__bar-brand-image {

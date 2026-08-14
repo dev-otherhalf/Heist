@@ -100,6 +100,9 @@
             assign active_detail_description_source = blank
             assign active_detail_image = blank
             assign active_detail_video = blank
+            assign active_card_desktop_text_color = blank
+            assign active_card_mobile_text_color = blank
+            assign active_card_hover_text_color = blank
 
             if product != blank and metafield_namespace != blank and metafield_key != blank
               assign selected_variant = product.selected_or_first_available_variant
@@ -127,6 +130,9 @@
                     assign active_detail_image = comparison_item.mobile_image.value | default: comparison_item.mobile_image | default: comparison_item.desktop_image.value | default: comparison_item.desktop_image | default: variant.featured_image | default: product.featured_image
                     assign active_detail_video = comparison_item.video.value | default: comparison_item.video
                     assign active_detail_description_source = comparison_item.description
+                    assign active_card_desktop_text_color = comparison_item.card_desktop_text_color.value | default: comparison_item.card_desktop_text_color
+                    assign active_card_mobile_text_color = comparison_item.card_mobile_text_color.value | default: comparison_item.card_mobile_text_color
+                    assign active_card_hover_text_color = comparison_item.card_hover_text_color.value | default: comparison_item.card_hover_text_color
                   endif
                 endif
               endfor
@@ -137,6 +143,11 @@
           <article
             class="product-variant-showcase__product"
             data-product-card
+            style="
+              {% if active_card_desktop_text_color != blank %}--card-desktop-text-color: {{ active_card_desktop_text_color }};{% endif %}
+              {% if active_card_mobile_text_color != blank %}--card-mobile-text-color: {{ active_card_mobile_text_color }};{% endif %}
+              {% if active_card_hover_text_color != blank %}--card-hover-text-color: {{ active_card_hover_text_color }};{% endif %}
+            "
             {% if active_variant_id != blank %}
               data-active-variant-id="{{ active_variant_id }}"
             {% endif %}
@@ -232,6 +243,9 @@
                           assign button_mobile_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_desktop_image
                           assign button_detail_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_item.image.value | default: button_item.image | default: variant_button.featured_image | default: product.featured_image
                           assign button_url = button_item.cta_link.value | default: button_item.cta_link
+                          assign button_card_desktop_text_color = button_item.card_desktop_text_color.value | default: button_item.card_desktop_text_color
+                          assign button_card_mobile_text_color = button_item.card_mobile_text_color.value | default: button_item.card_mobile_text_color
+                          assign button_card_hover_text_color = button_item.card_hover_text_color.value | default: button_item.card_hover_text_color
 
                           capture button_price
                             render 'format-price', price: variant_button.price
@@ -258,6 +272,9 @@
                           data-variant-price-value="{{ button_price | strip | escape }}"
                           data-variant-description-html="{{ button_description | strip | escape }}"
                           data-variant-detail-media-html="{{ button_detail_media | strip | escape }}"
+                          data-card-desktop-text-color="{{ button_card_desktop_text_color | escape }}"
+                          data-card-mobile-text-color="{{ button_card_mobile_text_color | escape }}"
+                          data-card-hover-text-color="{{ button_card_hover_text_color | escape }}"
                         >
                           {{ variant_button.title | escape }}
                         </button>
@@ -365,6 +382,9 @@
                           assign button_detail_image = button_item.mobile_image.value | default: button_item.mobile_image | default: button_item.image.value | default: button_item.image | default: variant_button.featured_image | default: product.featured_image
                           assign button_url = button_item.cta_link.value | default: button_item.cta_link
                           assign button_detail_video = button_item.video.value | default: button_item.video
+                          assign button_card_desktop_text_color = button_item.card_desktop_text_color.value | default: button_item.card_desktop_text_color
+                          assign button_card_mobile_text_color = button_item.card_mobile_text_color.value | default: button_item.card_mobile_text_color
+                          assign button_card_hover_text_color = button_item.card_hover_text_color.value | default: button_item.card_hover_text_color
 
                           capture button_price
                             render 'format-price', price: variant_button.price
@@ -390,6 +410,9 @@
                           data-variant-price-value="{{ button_price | strip | escape }}"
                           data-variant-description-html="{{ button_description | strip | escape }}"
                           data-variant-detail-media-html="{{ button_detail_media | strip | escape }}"
+                          data-card-desktop-text-color="{{ button_card_desktop_text_color | escape }}"
+                          data-card-mobile-text-color="{{ button_card_mobile_text_color | escape }}"
+                          data-card-hover-text-color="{{ button_card_hover_text_color | escape }}"
                         >
                           {{ variant_button.title | escape }}
                         </button>

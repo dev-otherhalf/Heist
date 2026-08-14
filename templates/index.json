@@ -94,7 +94,7 @@
       "settings": {
         "heading": "World-Class Decaf Coffee",
         "padding_top_mobile": 66,
-        "padding_bottom_mobile": 66,
+        "padding_bottom_mobile": 28,
         "padding_top_desktop": 90,
         "padding_bottom_desktop": 97
       }
@@ -166,7 +166,7 @@
         "video_url_mobile": "",
         "annotation_value": "24724 1832 248",
         "background_color": "",
-        "padding_top_mobile": 0,
+        "padding_top_mobile": 38,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 105
@@ -337,7 +337,7 @@
         "left_image_mobile": "shopify://shop_images/JOIN-M.jpg",
         "left_video_desktop": "shopify://files/videos/JOIN-D.mp4",
         "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
-        "background_color": "#E1DBCD",
+        "background_color": "#e1dbcd",
         "panel_color": "#f4ede1",
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0,

@@ -3,9 +3,16 @@ class QualityShowcase {
     this.section = section;
     this.annotation = section.querySelector("[data-rolling-annotation]");
     this.digits = Array.from(section.querySelectorAll("[data-digit]"));
+    this.mobileMediaQuery = window.matchMedia("(max-width: 989px)");
+    this.resizeFrame = null;
+    this.handleResize = () => this.schedulePointHeightSync();
   }
 
   init() {
+    this.syncPointHeights();
+    window.addEventListener("resize", this.handleResize);
+    document.fonts?.ready.then(() => this.schedulePointHeightSync());
+
     if (!this.annotation) return;
 
     this.prepareDigits();
@@ -19,6 +26,58 @@ class QualityShowcase {
 
   destroy() {
     this.observer?.disconnect();
+    window.removeEventListener("resize", this.handleResize);
+
+    if (this.resizeFrame) cancelAnimationFrame(this.resizeFrame);
+
+    this.getPoints().forEach((point) => {
+      point.style.minHeight = "";
+    });
+  }
+
+  getPoints() {
+    return Array.from(
+      this.section.querySelectorAll(
+        ".quality-showcase__column > .quality-showcase__point",
+      ),
+    );
+  }
+
+  schedulePointHeightSync() {
+    if (this.resizeFrame) cancelAnimationFrame(this.resizeFrame);
+
+    this.resizeFrame = requestAnimationFrame(() => {
+      this.resizeFrame = null;
+      this.syncPointHeights();
+    });
+  }
+
+  syncPointHeights() {
+    const columns = Array.from(
+      this.section.querySelectorAll(".quality-showcase__column"),
+    ).map((column) =>
+      Array.from(column.querySelectorAll(":scope > .quality-showcase__point")),
+    );
+    const points = columns.flat();
+
+    points.forEach((point) => {
+      point.style.minHeight = "";
+    });
+
+    if (!this.mobileMediaQuery.matches || columns.length < 2) return;
+
+    const rowCount = Math.max(...columns.map((column) => column.length));
+
+    for (let index = 0; index < rowCount; index += 1) {
+      const rowPoints = columns.map((column) => column[index]).filter(Boolean);
+      const rowHeight = Math.max(
+        ...rowPoints.map((point) => point.getBoundingClientRect().height),
+      );
+
+      rowPoints.forEach((point) => {
+        point.style.minHeight = `${rowHeight}px`;
+      });
+    }
   }
 
   handleIntersect(entries) {
