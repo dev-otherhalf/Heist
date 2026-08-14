@@ -247,10 +247,9 @@
     },
     "viewport_video_FRgn9M": {
       "type": "viewport-video",
-      "disabled": true,
       "name": "Viewport video",
       "settings": {
-        "video_desktop": "shopify://files/videos/ezgif-32b066c49c70d90e.mp4",
+        "video_desktop": "shopify://files/videos/Rosted in small batches.mp4",
         "padding_top_mobile": 64,
         "padding_bottom_mobile": 64,
         "padding_top_desktop": 41,
@@ -294,7 +293,7 @@
             "variant_id": "",
             "custom_name": "Tin + Scoop",
             "custom_description": "(value $20)",
-            "custom_image": "shopify://shop_images/Frame_10000067767.jpg"
+            "custom_image": "shopify://shop_images/JOIN_1.jpg"
           }
         },
         "product_zWXPXB": {
@@ -304,7 +303,7 @@
             "variant_id": "",
             "custom_name": "smuggle bear",
             "custom_description": "(value $50)",
-            "custom_image": "shopify://shop_images/Frame_1000006776_862ebf60-a1e2-4bd3-9c56-a66dcc3dec5f.jpg"
+            "custom_image": "shopify://shop_images/JOIN_2.jpg"
           }
         },
         "product_43rK8n": {
@@ -314,7 +313,7 @@
             "variant_id": "",
             "custom_name": "Collectible Matchbooks",
             "custom_description": "(founder signed)",
-            "custom_image": "shopify://shop_images/Frame_1000006777_1f0e72e3-014e-42d8-b1e5-301cbcaec2ae.jpg"
+            "custom_image": "shopify://shop_images/JOIN_3.jpg"
           }
         }
       },

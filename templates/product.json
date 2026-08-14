@@ -91,6 +91,7 @@
                 "default_tier": "standard",
                 "bags_label": "Select your bag quantity:",
                 "default_bag_quantity": 1,
+                "default_zero_bags_trailing": 0,
                 "min_subscription_bags": 3,
                 "heist_title": "Heist Society™ Subscription",
                 "heist_subtitle": "3 month commitment, prepaid. Then ships every 4 weeks.",
@@ -218,7 +219,7 @@
             "variant_id": "",
             "custom_name": "Tin + Scoop",
             "custom_description": "(value $20)",
-            "custom_image": "shopify://shop_images/Frame_10000067767.jpg"
+            "custom_image": "shopify://shop_images/JOIN_1.jpg"
           }
         },
         "product_zWXPXB": {
@@ -228,7 +229,7 @@
             "variant_id": "",
             "custom_name": "smuggle bear",
             "custom_description": "(value $50)",
-            "custom_image": "shopify://shop_images/Frame_1000006776_862ebf60-a1e2-4bd3-9c56-a66dcc3dec5f.jpg"
+            "custom_image": "shopify://shop_images/JOIN_2.jpg"
           }
         },
         "product_43rK8n": {
@@ -238,7 +239,7 @@
             "variant_id": "",
             "custom_name": "Collectible Matchbooks",
             "custom_description": "(founder signed)",
-            "custom_image": "shopify://shop_images/Frame_1000006777_1f0e72e3-014e-42d8-b1e5-301cbcaec2ae.jpg"
+            "custom_image": "shopify://shop_images/JOIN_3.jpg"
           }
         }
       },
@@ -261,7 +262,7 @@
         "left_image_mobile": "shopify://shop_images/JOIN-M.jpg",
         "left_video_desktop": "shopify://files/videos/JOIN-D.mp4",
         "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59 PM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
-        "background_color": "#E1DBCD",
+        "background_color": "#e1dbcd",
         "panel_color": "#f4ede1",
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0,

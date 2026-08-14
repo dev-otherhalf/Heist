@@ -409,7 +409,7 @@ body:has(.footer__audio) main {
           overflow: hidden;
           background-color: var(--audio-text-color);
           border: calc(var(--space-4) * 0.5) solid var(--audio-text-color);
-
+          border-radius: 50%;
           @include respond-down(md) {
             margin-inline: auto;
           }
