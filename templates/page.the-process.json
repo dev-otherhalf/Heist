@@ -140,28 +140,28 @@
           "type": "media",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/Rectangle_17_0a6f860c-fa0c-474e-932c-fb55420bf1f3.jpg"
+            "image": "shopify://shop_images/Lightlabs_1-D.jpg"
           }
         },
         "media_i6x4i9": {
           "type": "media",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/Rectangle_18.jpg"
+            "image": "shopify://shop_images/Lightlabs_2-D.jpg"
           }
         },
         "media_4WrpJM": {
           "type": "media",
           "settings": {
             "media_type": "video",
-            "video": "shopify://files/videos/Explore Fresh minimalist bedroom decor for your next Pinterest save designed for people who want results that look intentional - Pin-346988346312202474.mp4"
+            "video": "shopify://files/videos/Lightlabs 3-D.mp4"
           }
         },
         "media_NqyKHf": {
           "type": "media",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/Rectangle_21_0b9e67d6-ae51-41d4-a271-b6596a9422da.jpg"
+            "image": "shopify://shop_images/Lightlabs_4-D.jpg"
           }
         }
       },
@@ -178,7 +178,7 @@
         "body": "<p>Mycotoxins. Mold. Heavy metals. If a lot doesn't pass, it doesn't ship.</p>",
         "button_label": "View Lightlabs report",
         "button_link": "/",
-        "background_image": "shopify://shop_images/Rectangle_144433687_ab7187c1-83f0-43a2-80a8-14f89e4ae09d.jpg",
+        "background_image": "shopify://shop_images/intro.jpg",
         "background_image_mobile": "shopify://shop_images/Rectangle_13_ba4d70b6-7f39-429c-819a-f06d09a59f4c.jpg",
         "padding_top_mobile": 63,
         "padding_bottom_mobile": 64,

@@ -691,7 +691,7 @@ class BuyBox extends HTMLElement {
     const savingEl = this.sticky.querySelector("[data-sticky-saving]");
     if (savingEl) {
       if (saving > 0) {
-        const label = this.sticky.dataset.savingLabel || "Your saving";
+        const label = this.sticky.dataset.savingLabel || "Your savings";
         savingEl.textContent = `${label} ${this.formatMoney(saving)}`;
         savingEl.hidden = false;
       } else {

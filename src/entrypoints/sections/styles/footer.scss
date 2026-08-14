@@ -22,6 +22,7 @@ body:has(.footer__audio) main {
       position: absolute;
       background: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Rectangle_12_1.jpg?v=1783599050")
         no-repeat;
+      display: none;
       width: 100%;
       height: 100%;
       top: 0;
@@ -412,6 +413,7 @@ body:has(.footer__audio) main {
           border-radius: 50%;
           @include respond-down(md) {
             margin-inline: auto;
+            border-radius: 0px;
           }
 
           @include respond-to(md) {

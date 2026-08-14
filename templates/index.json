@@ -13,8 +13,8 @@
       "type": "heist-scroll-capture",
       "name": "Heist scroll capture",
       "settings": {
-        "desktop_background": "shopify://shop_images/Homepage.jpg",
-        "mobile_background": "shopify://shop_images/Homepage_-_Section_1.jpg",
+        "desktop_background": "shopify://shop_images/Homepage_BG-D.jpg",
+        "mobile_background": "shopify://shop_images/homepage1-M.jpg",
         "glass_image": "shopify://shop_images/New.png",
         "mobile_glass_image": "shopify://shop_images/New.png",
         "glass_alt": "A glass of Heist coffee",
@@ -35,7 +35,7 @@
         "button_label": "Drink HEIST",
         "button_link": "",
         "note": "<p>30-day escape plan</p><p>Love it or your money back</p>",
-        "mobile_story_background": "shopify://shop_images/Homepage_-_Section_2.jpg",
+        "mobile_story_background": "shopify://shop_images/homepage2-M.jpg",
         "copyright_text": "",
         "legal_logo": "shopify://shop_images/badge-heistglobal.svg",
         "mobile_legal_logo": "shopify://shop_images/badge-heistglobal.svg",
@@ -69,16 +69,16 @@
             "image": "shopify://shop_images/Isolation_Mode.svg"
           }
         },
-        "product_card_aazcXY": {
-          "type": "product_card",
-          "settings": {
-            "product": "blueprint"
-          }
-        },
         "product_card_qY87VK": {
           "type": "product_card",
           "settings": {
             "product": "smooth-talker"
+          }
+        },
+        "product_card_aazcXY": {
+          "type": "product_card",
+          "settings": {
+            "product": "blueprint"
           }
         }
       },
@@ -87,8 +87,8 @@
         "badge_8rTPCM",
         "badge_gN94Bx",
         "badge_JHg9W6",
-        "product_card_aazcXY",
-        "product_card_qY87VK"
+        "product_card_qY87VK",
+        "product_card_aazcXY"
       ],
       "name": "Product variant showcase",
       "settings": {

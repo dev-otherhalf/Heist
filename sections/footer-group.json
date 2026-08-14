@@ -41,6 +41,7 @@
             "audio_poster_image": "shopify://shop_images/Rectangle_144433706.jpg",
             "audio_title": "HEIST.MUSIC",
             "audio_detail_text": "<p>Ready to steal the night again? Cue Heist music.</p>",
+            "audio_cover_link": "",
             "apple_music_link": "/",
             "spotify_music_link": "/"
           }
@@ -51,6 +52,7 @@
             "audio_poster_image": "shopify://shop_images/DECAF.jpg",
             "audio_title": "HEIST.MUSIC",
             "audio_detail_text": "<p>Cue Heist music. 2</p>",
+            "audio_cover_link": "",
             "apple_music_link": "/",
             "spotify_music_link": "/"
           }
@@ -61,6 +63,7 @@
             "audio_poster_image": "shopify://shop_images/Rectangle_144433639.jpg",
             "audio_title": "HEIST.MUSIC",
             "audio_detail_text": "<p>Cue Heist music. 3</p>",
+            "audio_cover_link": "",
             "apple_music_link": "/",
             "spotify_music_link": "/"
           }
@@ -76,7 +79,7 @@
       ],
       "name": "t:names.footer",
       "settings": {
-        "background_color": "#ff3b27",
+        "background_color": "#FF4014",
         "information_color": "#161414",
         "desktop_top_padding": 96,
         "desktop_bottom_padding": 55,
@@ -96,7 +99,6 @@
         "barcode_image_mobile": "shopify://shop_images/Frame_67_mobile.svg",
         "audio_bg_color": "#ddd6c7",
         "audio_text_color": "#161414",
-        "teddy_icon_image": "shopify://shop_images/058eb4fb2657c034a1d51530efb36eb562d7a8cb.png",
         "radio_station_id": "a30031",
         "radio_stream_url": "https://streaming.live365.com",
         "strip_bg_color": "#161414",
