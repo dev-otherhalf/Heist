@@ -15,6 +15,7 @@
   # off the section and inserts the barcode into each card.
   assign review_barcode = section.settings.review_barcode_image
   assign review_barcode_mobile = section.settings.review_barcode_image_mobile
+  assign custom_section_id = section.settings.section_id | strip | handleize
 -%}
 
 {%- render 'vite-tag', entry: 'sections/styles/okendo-reviews.scss' -%}
@@ -22,7 +23,7 @@
 
 <section
   class="okendo-reviews-section"
-  id="shopify-section-{{- section.id -}}"
+  id="{% if custom_section_id != blank %}{{ custom_section_id }}{% else %}shopify-section-{{ section.id }}{% endif %}"
   data-okendo-reviews
   {%- if review_barcode != blank %}
     data-review-barcode="{{ review_barcode | image_url: width: 720 }}"
@@ -150,6 +151,12 @@
 {
   "name": "Okendo Reviews",
   "settings": [
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "Optional ID for anchor links, for example: customer-reviews."
+    },
     {
       "type": "header",
       "content": "Background images"

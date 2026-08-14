@@ -247,7 +247,7 @@
       "name": "Join the Heist Society",
       "settings": {
         "custom_id": "homepage-join-the-heist",
-        "heading": "Join the \nHeist Society™",
+        "heading": "Join \nHeist Society™",
         "subheading": "3 months prepaid today, then monthly. Pause or cancel anytime after.",
         "features": "Lowest price.\nFree shipping forever\nExclusive- Smuggle Bear with secret stash compartment\nExclusive- Collectible Matchbook each month\nExclusive- Coffee Storage Tin & Scoop\nAccess to Member Forum & Special Drops",
         "kit_heading": "Smuggle Bear Welcome Kit",
@@ -274,6 +274,7 @@
       "type": "okendo-reviews",
       "name": "Okendo Reviews",
       "settings": {
+        "section_id": "reviews",
         "background_image_desktop": "shopify://shop_images/Rectangle_12_d5998a7f-6247-4894-ad33-7e035aee77f7.jpg",
         "background_image_mobile": "shopify://shop_images/Rectangle_144433642_1d70cacd-939c-42cb-95b3-95c7b278949c.jpg",
         "heading": "The Receipts Don't Lie",

@@ -19,7 +19,7 @@
           "name": "Mobile social media link",
           "settings": {
             "image": "shopify://shop_images/Group_17_2a4f83ec-f640-4396-9cdf-de63f8252dfb.svg",
-            "link": "#"
+            "link": "https://www.instagram.com/drinkheist/"
           },
           "blocks": {}
         },
@@ -28,13 +28,14 @@
           "name": "Mobile social media link",
           "settings": {
             "image": "shopify://shop_images/Group_18_ff566b65-e588-49af-81f4-e564eba20c33.svg",
-            "link": "#"
+            "link": "https://www.tiktok.com/@drinkheist"
           },
           "blocks": {}
         },
         "heist_mobile_social_link_XaJc39": {
           "type": "_heist-mobile-social-link",
           "name": "Mobile social media link",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Group_19_8ed29732-a512-4f68-b899-b947cb5386a3.svg",
             "link": "#"

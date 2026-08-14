@@ -18,18 +18,19 @@
           "type": "social-link",
           "settings": {
             "social_icon": "shopify://shop_images/48px-social-instagram.svg",
-            "social_link": "/"
+            "social_link": "https://www.instagram.com/drinkheist/"
           }
         },
         "social_link_gKVPYc": {
           "type": "social-link",
           "settings": {
             "social_icon": "shopify://shop_images/48px-social-tiktok.svg",
-            "social_link": "/"
+            "social_link": "https://www.tiktok.com/@drinkheist"
           }
         },
         "social_link_EyLDnP": {
           "type": "social-link",
+          "disabled": true,
           "settings": {
             "social_icon": "shopify://shop_images/24px-youtube.svg",
             "social_link": "/"

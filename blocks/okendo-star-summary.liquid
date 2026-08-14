@@ -12,12 +12,21 @@
   endif
 %}
 
+{% capture star_summary %}
+  {% render 'okendo-star-summary', product: product %}
+{% endcapture %}
+{% assign star_summary = star_summary | strip %}
+
 <div
   class="okendo-star-summary-block align-{{ block.settings.alignment }}"
   style="--star-summary-color: var(--ink);"
   {{ block.shopify_attributes }}
 >
-  {% render 'okendo-star-summary', product: product %}
+  {% if star_summary != blank %}
+    <a class="okendo-star-summary-block__link" href="#reviews">
+      {{ star_summary }}
+    </a>
+  {% endif %}
 </div>
 
 {% stylesheet %}
@@ -31,6 +40,12 @@
 
   .okendo-star-summary-block.align-right {
     justify-content: flex-end;
+  }
+
+  .okendo-star-summary-block__link {
+    color: inherit;
+    display: inline-flex;
+    text-decoration: none;
   }
 {% endstylesheet %}
 
