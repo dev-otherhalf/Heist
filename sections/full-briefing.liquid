@@ -8,7 +8,7 @@
   assign faqs = briefing.faqs.value | default: briefing.faqs
   assign gallery = briefing.gallery_images.value | default: briefing.gallery_images
   assign button_label = briefing.button_label.value | default: briefing.button_label
-  assign button_link = briefing.button_link.value | default: briefing.button_link
+  assign hide_button_label = briefing.hide_button_label.value | default: briefing.hide_button_label | default: 'Hide All FAQ'
   assign heading_alt = heading | strip_html | strip | escape
 -%}
 
@@ -88,7 +88,11 @@
               assign faq_has_more = true
             endif
           -%}
-          <div class="full-briefing__faqs" data-full-briefing-faqs>
+          <div
+            class="full-briefing__faqs"
+            id="full-briefing-faqs-{{ section.id }}"
+            data-full-briefing-faqs
+          >
             {%- for faq in faqs -%}
               {%- liquid
                 assign question = faq.question.value | default: faq.question
@@ -182,15 +186,32 @@
             {% endfor %}
           {% endcapture %}
 
-          <a
+          {% assign hide_words = hide_button_label | split: ' ' %}
+          {% assign hide_total = hide_words.size %}
+          {% assign hide_half = hide_total | plus: 1 | divided_by: 2 %}
+
+          {% capture hide_first_half %}
+            {% for word in hide_words limit: hide_half %}
+              {{ word }}{% unless forloop.last %} {% endunless %}
+            {% endfor %}
+          {% endcapture %}
+
+          {% capture hide_second_half %}
+            {% for word in hide_words offset: hide_half %}
+              {{ word }}{% unless forloop.last %} {% endunless %}
+            {% endfor %}
+          {% endcapture %}
+
+          <button
             class="btn btn--dark btn--block btn--split full-briefing__cta"
-            {% if button_link != blank %}
-              href="{{ button_link }}"
-            {% else %}
-              role="link" aria-disabled="true"
-            {% endif %}
+            type="button"
             {% if faq_has_more %}
               data-full-briefing-faqs-more
+              data-expanded-text="{{ hide_button_label | strip | escape }}"
+              data-expanded-first-text="{{ hide_first_half | strip | escape }}"
+              data-expanded-second-text="{{ hide_second_half | strip | escape }}"
+              aria-controls="full-briefing-faqs-{{ section.id }}"
+              aria-expanded="false"
             {% endif %}
           >
             <span class="btn__text">{{ first_half | strip | escape }}</span>
@@ -198,7 +219,7 @@
               <span class="btn__lines" aria-hidden="true"></span>
               <span class="btn__text">{{ second_half | strip | escape }}</span>
             {% endif %}
-          </a>
+          </button>
         {%- endif -%}
       </div>
     </div>

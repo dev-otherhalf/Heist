@@ -94,21 +94,50 @@ function registerFaqs(group) {
 function registerShowMore(button) {
   if (button.dataset.fullBriefingReady === "true") return;
   button.dataset.fullBriefingReady = "true";
+  const textParts = [...button.querySelectorAll(".btn__text")];
+  const collapsedText = textParts.map((part) => part.textContent);
 
   button.addEventListener("click", (event) => {
+    event.preventDefault();
+
     const group = button
       .closest(".full-briefing__content")
       ?.querySelector(".full-briefing__faqs");
-    const extraFaqs =
-      group?.querySelectorAll("[data-full-briefing-faq-extra]") ?? [];
+    const extraFaqs = [
+      ...(group?.querySelectorAll("[data-full-briefing-faq-extra]") ?? []),
+    ];
 
     if (extraFaqs.length === 0) return;
 
-    event.preventDefault();
+    const willExpand = button.getAttribute("aria-expanded") !== "true";
+
     extraFaqs.forEach((faq) => {
-      faq.removeAttribute("hidden");
-      faq.removeAttribute("data-full-briefing-faq-extra");
+      if (willExpand) {
+        faq.removeAttribute("hidden");
+        return;
+      }
+
+      running.get(faq)?.cancel();
+      faq.classList.remove("is-open");
+      faq.open = false;
+      faq.setAttribute("hidden", "");
     });
+
+    button.setAttribute("aria-expanded", String(willExpand));
+    button.classList.toggle("is-expanded", willExpand);
+
+    if (willExpand) {
+      if (textParts.length > 1) {
+        textParts[0].textContent = button.dataset.expandedFirstText || "";
+        textParts[1].textContent = button.dataset.expandedSecondText || "";
+      } else if (textParts[0]) {
+        textParts[0].textContent = button.dataset.expandedText || "";
+      }
+    } else {
+      textParts.forEach((part, index) => {
+        part.textContent = collapsedText[index] ?? "";
+      });
+    }
   });
 }
 

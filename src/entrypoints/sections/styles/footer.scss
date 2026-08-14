@@ -763,26 +763,31 @@ body:has(.footer__audio) main {
     }
 
     &-credit {
-      color: var(--strip-text-color);
-      text-transform: uppercase;
+      body .footer__policy-menu & {
+        color: var(--strip-text-color);
+        text-transform: uppercase;
 
-      p {
-        margin: 0;
-      }
+        p {
+          margin: 0;
+          color: var(--strip-text-color);
+        }
 
-      a {
-        color: inherit;
-        position: relative;
-        text-decoration: none;
-
-        &::before {
-          background-color: var(--strip-text-color);
-          bottom: calc(var(--space-4) * -0.5);
-          content: "";
-          height: calc(var(--space-4) * 0.1);
-          left: 0;
-          position: absolute;
-          width: 100%;
+        a {
+          color: var(--strip-text-color);
+          position: relative;
+          text-decoration: none;
+          &:hover {
+            color: var(--strip-text-color);
+          }
+          &::before {
+            background-color: var(--strip-text-color);
+            bottom: calc(var(--space-4) * -0.5);
+            content: "";
+            height: calc(var(--space-4) * 0.1);
+            left: 0;
+            position: absolute;
+            width: 100%;
+          }
         }
       }
     }

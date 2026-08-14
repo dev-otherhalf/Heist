@@ -63,6 +63,11 @@ class BuyBox extends HTMLElement {
   #tierBeforeMinimum = null;
   #galleryVariantOrder = [];
 
+  disconnectedCallback() {
+    this.stickyTriggerObserver?.disconnect();
+    this.stickyFooterObserver?.disconnect();
+  }
+
   connectedCallback() {
     const dataEl = this.querySelector("[data-buy-box-data]");
     if (!dataEl) return; // empty metafield / editor placeholder
@@ -704,21 +709,44 @@ class BuyBox extends HTMLElement {
   #setupStickyBar() {
     this.sticky = this.querySelector("[data-buy-box-sticky]");
     if (!this.sticky || !("IntersectionObserver" in window)) return;
+    this.stickyTriggerPassed = false;
+    this.stickyFooterVisible = false;
+
+    const updateStickyVisibility = () => {
+      this.sticky.dataset.stuck = String(
+        this.stickyTriggerPassed && !this.stickyFooterVisible,
+      );
+    };
+
     const target =
       this.querySelector("[data-buy-box-plans]") ||
       this.querySelector("[data-sub-box]") ||
       this;
-    const io = new IntersectionObserver(
+    this.stickyTriggerObserver = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
         if (!entry) return;
-        const stuck =
+        this.stickyTriggerPassed =
           !entry.isIntersecting && entry.boundingClientRect.bottom <= 0;
-        this.sticky.dataset.stuck = String(stuck);
+        updateStickyVisibility();
       },
       { threshold: 0 },
     );
-    io.observe(target);
+    this.stickyTriggerObserver.observe(target);
+
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+
+    this.stickyFooterObserver = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        this.stickyFooterVisible = entry.isIntersecting;
+        updateStickyVisibility();
+      },
+      { threshold: 0 },
+    );
+    this.stickyFooterObserver.observe(footer);
   }
 
   /** Variation 1: three-state layout with a dynamic summary + dual CTA. */
