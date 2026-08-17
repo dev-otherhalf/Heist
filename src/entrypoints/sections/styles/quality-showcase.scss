@@ -309,4 +309,23 @@
       }
     }
   }
+
+  @include respond-to(lg) {
+    &__column--right {
+      position: relative;
+
+      .quality-showcase__lightlabs-widget {
+        position: absolute;
+        inset-block-start: 100%;
+        inset-inline: 0;
+        margin-block-start: var(--space-24);
+      }
+    }
+  }
+
+  @include respond-to(xxl) {
+    &__point-text br {
+      display: none;
+    }
+  }
 }

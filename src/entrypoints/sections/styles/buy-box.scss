@@ -1632,6 +1632,216 @@
   }
 }
 
+.buy-box__tiles.buy-box__tiles--single {
+  grid-template-columns: 1fr;
+}
+
+@include respond-to(md) {
+  .buy-box__tiles--single {
+    .buy-box-tile {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-rows: auto auto;
+      align-items: center;
+      column-gap: var(--space-24);
+      row-gap: 0;
+      padding: var(--space-16) var(--space-20);
+    }
+
+    .buy-box-tile__image {
+      grid-column: 1;
+      grid-row: 1 / -1;
+      margin-bottom: 0;
+      align-self: center;
+    }
+
+    .buy-box-tile__head {
+      grid-column: 2;
+      grid-row: 1;
+      align-items: flex-start;
+      text-align: left;
+      margin-bottom: 0;
+    }
+
+    .buy-box-tile__notes {
+      grid-column: 2;
+      grid-row: 2;
+      align-items: flex-start;
+      text-align: left;
+      padding: var(--space-8) 0 0;
+    }
+
+    .buy-box-tile__steppers {
+      grid-column: 3;
+      grid-row: 1 / -1;
+      width: auto;
+      padding-top: 0;
+      padding-right: 0;
+      justify-content: center;
+    }
+
+    .buy-box-tile__rule {
+      display: none;
+    }
+  }
+}
+
+.buy-box__bags .buy-box__section-label.t-n1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+  padding: var(--space-2) var(--space-16);
+  margin: 0 0 var(--space-16);
+  background: var(--ink);
+  color: var(--cream);
+  border: var(--bw-2) solid var(--ink);
+  text-align: center;
+}
+
+.buy-box__bags-badge {
+  font-weight: var(--fw-semibold);
+  height: 1.5rem;
+  min-height: var(--space-26);
+  min-width: var(--space-74);
+  padding: var(--space-6);
+}
+
+@include respond-down(md) {
+  .buy-box__bags .buy-box__section-label.t-n1 {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    gap: var(--space-8);
+    padding: var(--space-2) var(--space-8);
+    font-size: clamp(0.5rem, 2.6vw, 0.875rem);
+  }
+
+  .buy-box__bags-badge {
+    min-width: 0;
+    padding: var(--space-3) var(--space-6);
+    font-size: clamp(0.45rem, 2.3vw, 0.75rem);
+  }
+}
+
+.buy-box-sub .buy-box-v1row__pricing .buy-box-tier__badge {
+  margin-left: 0;
+}
+
+.buy-box-sub .buy-box-v1row__pricing .buy-box-tier__save {
+  margin-left: auto;
+}
+
+.buy-box__tiles .buy-box-tile__badge.t-n2-med {
+  display: none;
+}
+
+.buy-box-upgrade {
+  .buy-box-v1row {
+    grid-template-columns: 1.5rem auto 1fr;
+    align-items: center;
+  }
+
+  .buy-box-upgrade__badge {
+    position: static;
+    justify-self: start;
+    align-self: center;
+    border-top: var(--bw-2) solid var(--ink);
+    border-right: var(--bw-2) solid var(--ink);
+    font-weight: var(--fw-semibold);
+    height: 1.5rem;
+    min-height: var(--space-26);
+    min-width: var(--space-74);
+    padding: var(--space-6);
+  }
+
+  .buy-box-upgrade__badge::before {
+    content: "Get\00a0 ";
+  }
+
+  &[data-selected="true"] {
+    .buy-box-upgrade__badge {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .buy-box-upgrade__badge::before {
+      content: none;
+    }
+
+    .buy-box-upgrade__badge::after {
+      content: "\00a0 unlocked";
+    }
+  }
+}
+
+@include respond-down(md) {
+  .buy-box-upgrade {
+    .buy-box-v1row {
+      grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+      column-gap: var(--space-10);
+      row-gap: 0;
+      align-items: center;
+    }
+
+    .buy-box-upgrade__badge {
+      grid-column: 3;
+      justify-self: end;
+    }
+  }
+
+  .buy-box-sub .buy-box-upgrade .buy-box-v1row .buy-box-tier__title {
+    max-width: none;
+  }
+
+  .buy-box__tiles .buy-box-tile__steppers > .buy-box-stepper:only-child {
+    grid-column: auto;
+  }
+}
+
+.buy-box-sub__bar.t-n1-med {
+  font-weight: var(--fw-medium);
+}
+
+.buy-box-sub.buy-box-sub--onetime {
+  .buy-box-v1row {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+
+  .buy-box-v1row:has(.buy-box-tier__toggle[data-checked="false"]) {
+    padding-bottom: var(--space-8);
+  }
+
+  .buy-box-v1row__label {
+    color: color-mix(in srgb, var(--ink) 75%, transparent);
+  }
+
+  .buy-box-tier__toggle {
+    border-color: color-mix(in srgb, var(--neutral-800) 75%, transparent);
+  }
+
+  .buy-box-tier__toggle[data-checked="true"]::after {
+    background: color-mix(in srgb, var(--neutral-800) 75%, transparent);
+  }
+}
+
+.buy-box__tiles:not(.buy-box__tiles--single) .buy-box-tile {
+  padding-bottom: var(--space-10);
+}
+
+.buy-box .buy-box__bags {
+  margin-bottom: var(--space-10);
+}
+
+.buy-box-sub .buy-box-upgrade {
+  background: var(--cream);
+}
+
+.buy-box-sub .buy-box-upgrade[data-selected="true"] {
+  background: color-mix(in srgb, var(--cream) 88%, var(--ink) 12%);
+}
+
 // --- Sticky "Finalize your order" bar ---------------------------------------
 .buy-box-sticky {
   position: fixed;

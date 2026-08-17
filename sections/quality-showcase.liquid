@@ -20,6 +20,17 @@
   if showcase_video_mobile != blank or showcase_video_url_mobile != blank
     assign has_mobile_video = true
   endif
+
+  assign visible_point_count = 0
+  for block in feature_blocks
+    if block.settings.text != blank
+      assign visible_point_count = visible_point_count | plus: 1
+    endif
+  endfor
+  assign column_size = visible_point_count | plus: 1 | divided_by: 2 | floor
+  if column_size < 1
+    assign column_size = 1
+  endif
 -%}
 
 <section
@@ -178,13 +189,23 @@
 
     <div class="quality-showcase__content">
       <div class="quality-showcase__column quality-showcase__column--left">
-        {% for block in feature_blocks %}
-          {% if block.settings.position == 'left' and block.settings.text != blank %}
-            <div class="quality-showcase__point" {{ block.shopify_attributes }}>
-              <p class="quality-showcase__point-text t-t2">{{ block.settings.text | newline_to_br }}</p>
-            </div>
-          {% endif %}
-        {% endfor %}
+        {%- assign point_counter = 0 -%}
+        {%- for block in feature_blocks -%}
+          {%- if block.settings.position == 'left' and block.settings.text != blank -%}
+            {%- if point_counter < column_size -%}
+              {% render 'quality-showcase-point', block: block %}
+            {%- endif -%}
+            {%- assign point_counter = point_counter | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- for block in feature_blocks -%}
+          {%- if block.settings.position != 'left' and block.settings.text != blank -%}
+            {%- if point_counter < column_size -%}
+              {% render 'quality-showcase-point', block: block %}
+            {%- endif -%}
+            {%- assign point_counter = point_counter | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
       </div>
 
       <div class="quality-showcase__media">
@@ -215,13 +236,23 @@
       </div>
 
       <div class="quality-showcase__column quality-showcase__column--right">
-        {% for block in feature_blocks %}
-          {% if block.settings.position == 'right' and block.settings.text != blank %}
-            <div class="quality-showcase__point" {{ block.shopify_attributes }}>
-              <p class="quality-showcase__point-text t-t2">{{ block.settings.text | newline_to_br }}</p>
-            </div>
-          {% endif %}
-        {% endfor %}
+        {%- assign point_counter = 0 -%}
+        {%- for block in feature_blocks -%}
+          {%- if block.settings.position == 'left' and block.settings.text != blank -%}
+            {%- if point_counter >= column_size -%}
+              {% render 'quality-showcase-point', block: block %}
+            {%- endif -%}
+            {%- assign point_counter = point_counter | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- for block in feature_blocks -%}
+          {%- if block.settings.position != 'left' and block.settings.text != blank -%}
+            {%- if point_counter >= column_size -%}
+              {% render 'quality-showcase-point', block: block %}
+            {%- endif -%}
+            {%- assign point_counter = point_counter | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
         <div class="hide-below-lg quality-showcase__lightlabs-widget">
           <lightlabs-widget company-id="1080" product-id="7295"></lightlabs-widget>
         </div>
@@ -232,7 +263,6 @@
     </div>
   </div>
 </section>
-
 {% schema %}
 {
   "name": "Quality showcase",

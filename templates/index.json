@@ -113,7 +113,7 @@
           "type": "feature_point",
           "settings": {
             "position": "left",
-            "text": "Water Extracts the Caffeine"
+            "text": "Water Extracts  the Caffeine"
           }
         },
         "feature_point_3FXELi": {
@@ -127,14 +127,14 @@
           "type": "feature_point",
           "settings": {
             "position": "right",
-            "text": "Whole Beans to Preserve Flavor"
+            "text": "Whole Beans to  Preserve Flavor"
           }
         },
         "feature_point_Tjpnb6": {
           "type": "feature_point",
           "settings": {
-            "position": "right",
-            "text": "Served by Michelin Star Chefs"
+            "position": "left",
+            "text": "Highest Decaf  Cupping Score"
           }
         },
         "feature_point_VECntd": {
@@ -247,6 +247,7 @@
     },
     "viewport_video_FRgn9M": {
       "type": "viewport-video",
+      "disabled": true,
       "name": "Viewport video",
       "settings": {
         "video_desktop": "shopify://files/videos/Rosted in small batches.mp4",
@@ -312,7 +313,7 @@
             "product": "",
             "variant_id": "",
             "custom_name": "Collectible Matchbooks",
-            "custom_description": "(founder signed)",
+            "custom_description": "",
             "custom_image": "shopify://shop_images/Matchbook_tile_4x_of_the_open_version_1.jpg"
           }
         }
@@ -323,7 +324,7 @@
         "custom_id": "homepage-join-the-heist",
         "heading": "Join \nHeist Society™",
         "subheading": "3 months prepaid today, then monthly. Pause or cancel anytime after.",
-        "features": "Lowest price.\nFree shipping forever\nExclusive- Smuggle Bear with secret stash compartment\nExclusive- Collectible Matchbook each month\nExclusive- Coffee Storage Tin & Scoop\nAccess to Member Forum & Special Drops",
+        "features": "Lowest price\nFree shipping forever\nSmuggle Bear with secret stash compartment\nCollectible Matchbook each month\nCoffee Storage Tin & Scoop",
         "kit_heading": "Smuggle Bear Welcome Kit",
         "kit_value": "(Value $70)",
         "button_label": "Join",
@@ -418,7 +419,7 @@
       ],
       "name": "Gallery showcase",
       "settings": {
-        "heading": "For those who are serious about coffee.",
+        "heading": "For those who are <br> serious about coffee.",
         "cta_label": "Follow @DrinkHeist",
         "cta_link": "https://www.instagram.com/drinkheist/",
         "marquee_speed": 40,

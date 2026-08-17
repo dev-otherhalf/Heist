@@ -1937,6 +1937,21 @@
         "default": true
       },
       {
+        "type": "product_list",
+        "id": "cart_upgrade_products",
+        "label": "Qualifying products",
+        "info": "Only these products count toward the minimum and get upgraded. Leave empty to allow any product with a prepaid plan.",
+        "limit": 20
+      },
+      {
+        "type": "number",
+        "id": "cart_upgrade_min_quantity",
+        "label": "Minimum bags",
+        "info": "Total quantity across qualifying products before the banner appears. Set 0 to always show it.",
+        "default": 3,
+        "visible_if": "{{ settings.cart_upgrade_enabled }}"
+      },
+      {
         "type": "text",
         "id": "cart_upgrade_badge",
         "label": "Corner badge",

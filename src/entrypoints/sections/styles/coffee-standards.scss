@@ -486,6 +486,19 @@
     object-fit: contain;
     width: auto;
   }
+
+  @include respond-to(lg) {
+    &__column--right {
+      position: relative;
+
+      .coffee-standards__feature--lightlabs {
+        position: absolute;
+        inset-block-start: 100%;
+        inset-inline: 0;
+        margin-block-start: var(--space-24);
+      }
+    }
+  }
 }
 
 @keyframes coffee-standards-scroll {

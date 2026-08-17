@@ -104,7 +104,20 @@
         assign qty = default_quantity | default: 1
         if index == 0
           assign qty = 0
-          if forloop.index == 1
+          comment
+            The 2 + 1 split below seeds the lead tile to 3 bags, which is where the
+            subscription tiers unlock (min_subscription_bags). It assumes the lead
+            product has two variants, which is true of the shop container.
+
+            On the single-coffee pages the lead tile can be a one-variant product
+            (Blueprint), and that same split would seed only 2, opening the page
+            below the gate with the subscribe tiers locked. Seed all 3 on one
+            variant so the intent carries over. Does not affect the container,
+            whose lead tile is Smooth Talker.
+          endcomment
+          if product.variants.size == 1
+            assign qty = 3
+          elsif forloop.index == 1
             assign qty = 2
           elsif forloop.index == 2
             assign qty = 1

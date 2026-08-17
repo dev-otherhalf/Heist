@@ -1,0 +1,326 @@
+{%- render 'vite-tag', entry: 'sections/styles/page-faq.scss' -%}
+{%- render 'vite-tag', entry: 'sections/scripts/page-faq.js' -%}
+{% comment %}
+  FAQ page section.
+
+  Collapse is native <details>/<summary> (no JS needed), and the section styles
+  live in src/entrypoints/sections/styles/page-faq.scss using the theme's global
+  tokens (--ink, --cream, --bone, --red, --font-display, --font-body, --font-mono,
+  --space-*).
+
+  Blocks:
+    category - starts a new titled group, with an optional closing statement
+    question - a collapsible question/answer row inside the current group
+
+  Emits FAQPage JSON-LD built from the question blocks so the schema cannot drift
+  from the visible copy.
+{% endcomment %}
+<section
+  id="{{ section.id }}"
+  class="shopify-section section page-width-content page-faq"
+  style="
+    --faq-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --faq-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --faq-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --faq-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    {% if section.settings.background_image_desktop != blank %}--faq-bg-desktop: url({{ section.settings.background_image_desktop | image_url: width: 2400 }});{% endif %}
+    {% if section.settings.background_image_mobile != blank %}--faq-bg-mobile: url({{ section.settings.background_image_mobile | image_url: width: 1200 }});{% endif %}
+    --faq-anchor-offset: {% if section.settings.sticky_nav %}var(--space-72){% else %}var(--space-24){% endif %};
+  "
+>
+  <div class="section-content-wrapper">
+    <div class="faq-inner">
+      <header class="faq-header">
+        {% if section.settings.eyebrow != blank %}
+          <p class="faq-eyebrow t-n1">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+
+        <h1 class="faq-title">{{ section.settings.title }}</h1>
+
+        {% if section.settings.intro != blank %}
+          <div class="faq-intro">{{ section.settings.intro }}</div>
+        {% endif %}
+
+        <div class="faq-divider" aria-hidden="true"></div>
+      </header>
+
+      {%- comment -%} Jump nav, built from the category blocks {%- endcomment -%}
+      {% if section.settings.show_nav %}
+        {%- assign category_count = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'category' -%}
+            {%- assign category_count = category_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {% if category_count > 1 %}
+          <nav
+            class="faq-nav{% if section.settings.sticky_nav %} faq-nav--sticky{% endif %}"
+            aria-label="{{ section.settings.nav_label | escape }}"
+          >
+            <ul class="faq-nav__list">
+              {% for block in section.blocks %}
+                {% if block.type == 'category' %}
+                  {%- assign cat_anchor = block.settings.anchor | default: block.settings.title | handleize -%}
+                  <li>
+                    <a class="faq-nav__link t-n1" href="#{{ cat_anchor }}">
+                      {{- block.settings.title -}}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </nav>
+        {% endif %}
+      {% endif %}
+
+      {%- comment -%}
+        Questions belong to the category block that precedes them. Rather than opening a
+        wrapper in one loop iteration and closing it in another (which produces HTML that
+        cannot be statically verified, and risks unbalanced markup swallowing the footer),
+        we walk the categories and re-scan the block list for each one's questions. Block
+        counts are small, so the nested loop is free.
+      {%- endcomment -%}
+      <div class="faq-groups">
+        {%- comment -%} Any questions placed before the first category heading {%- endcomment -%}
+        {%- assign orphan_count = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'category' -%}
+            {%- break -%}
+          {%- endif -%}
+          {%- if block.type == 'question' -%}
+            {%- assign orphan_count = orphan_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {% if orphan_count > 0 %}
+          <section class="faq-group">
+            <div class="faq-list">
+              {% for block in section.blocks %}
+                {% if block.type == 'category' %}
+                  {% break %}
+                {% endif %}
+                {% if block.type == 'question' %}
+                  {% render 'faq-item', block: block %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+
+        {%- assign category_index = 0 -%}
+        {% for category_block in section.blocks %}
+          {% if category_block.type == 'category' %}
+            {%- assign category_index = category_index | plus: 1 -%}
+            {%- assign cat_anchor = category_block.settings.anchor | default: category_block.settings.title | handleize -%}
+
+            <section class="faq-group" id="{{ cat_anchor }}" {{ category_block.shopify_attributes }}>
+              <div class="faq-group__head">
+                <h2 class="faq-group__title">{{ category_block.settings.title }}</h2>
+                {% if category_block.settings.description != blank %}
+                  <p class="faq-group__description">{{ category_block.settings.description }}</p>
+                {% endif %}
+              </div>
+
+              <div class="faq-list">
+                {%- assign seen_categories = 0 -%}
+                {% for block in section.blocks %}
+                  {% if block.type == 'category' %}
+                    {%- assign seen_categories = seen_categories | plus: 1 -%}
+                  {% elsif block.type == 'question' and seen_categories == category_index %}
+                    {% render 'faq-item', block: block %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+              {%- comment -%}
+                Optional statement closing the section. Deliberately outside the accordion:
+                the strongest brand lines should not require a click to be read.
+              {%- endcomment -%}
+              {% if category_block.settings.quote != blank %}
+                <blockquote class="faq-quote">{{ category_block.settings.quote }}</blockquote>
+              {% endif %}
+            </section>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if section.settings.footer_heading != blank or section.settings.footer_text != blank %}
+        <aside class="faq-footer">
+          {% if section.settings.footer_heading != blank %}
+            <h2 class="faq-footer__heading">{{ section.settings.footer_heading }}</h2>
+          {% endif %}
+          {% if section.settings.footer_text != blank %}
+            <div class="faq-footer__text">{{ section.settings.footer_text }}</div>
+          {% endif %}
+          {% if section.settings.footer_button_label != blank %}
+            <a
+              class="faq-footer__button t-btn"
+              href="{{ section.settings.footer_button_link | default: '#' }}"
+            >
+              {{ section.settings.footer_button_label }}
+            </a>
+          {% endif %}
+        </aside>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if section.settings.enable_schema %}
+    {%- assign has_questions = false -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'question' and block.settings.answer != blank -%}
+        {%- assign has_questions = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {% if has_questions %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {%- assign first = true -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'question' and block.settings.answer != blank -%}
+                {%- unless first -%},{%- endunless -%}
+                {%- comment -%}
+                  Pad block-level tags before stripping, otherwise adjacent paragraphs are
+                  concatenated without a space in the schema payload.
+                {%- endcomment -%}
+                {%- assign answer_text = block.settings.answer
+                  | replace: '</p>', ' '
+                  | replace: '<br>', ' '
+                  | replace: '<br />', ' '
+                  | replace: '</li>', ' '
+                  | strip_html
+                  | strip_newlines
+                  | replace: '  ', ' '
+                  | strip
+                -%}
+                {
+                  "@type": "Question",
+                  "name": {{ block.settings.question | strip_html | strip_newlines | strip | json }},
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": {{ answer_text | json }}
+                  }
+                }
+                {%- assign first = false -%}
+              {%- endif -%}
+            {%- endfor -%}
+          ]
+        }
+      </script>
+    {% endif %}
+  {% endif %}
+
+  {% schema %}
+  {
+    "name": "FAQ Page",
+    "tag": "section",
+    "settings": [
+      { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Ask away" },
+      { "type": "text", "id": "title", "label": "Page title", "default": "The Interrogation" },
+      {
+        "type": "richtext",
+        "id": "intro",
+        "label": "Intro",
+        "default": "<p>Everything people ask us about decaf, our coffee, and how this works.</p>"
+      },
+      { "type": "header", "content": "Jump navigation" },
+      {
+        "type": "checkbox",
+        "id": "show_nav",
+        "label": "Show category jump links",
+        "default": true,
+        "info": "Only appears when there are two or more categories."
+      },
+      {
+        "type": "checkbox",
+        "id": "sticky_nav",
+        "label": "Make jump links sticky",
+        "default": false,
+        "info": "Off by default. The site header does not stick, and the header's sticky CTA bar slides in over the top of the page on scroll, so a sticky nav can end up hidden behind it."
+      },
+      {
+        "type": "text",
+        "id": "nav_label",
+        "label": "Navigation accessible label",
+        "default": "FAQ categories"
+      },
+      { "type": "header", "content": "Background" },
+      {
+        "type": "image_picker",
+        "id": "background_image_desktop",
+        "label": "Background image (desktop)",
+        "info": "Optional. Defaults to the site's paper texture, tiled to match the header and product pages."
+      },
+      { "type": "image_picker", "id": "background_image_mobile", "label": "Background image (mobile)" },
+      { "type": "header", "content": "Closing block" },
+      { "type": "text", "id": "footer_heading", "label": "Heading", "default": "Didn't crack it?" },
+      {
+        "type": "richtext",
+        "id": "footer_text",
+        "label": "Text",
+        "default": "<p>Ask us. We answer our own email.</p>"
+      },
+      { "type": "text", "id": "footer_button_label", "label": "Button label", "default": "Ask us anything" },
+      { "type": "url", "id": "footer_button_link", "label": "Button link" },
+      { "type": "header", "content": "SEO" },
+      {
+        "type": "checkbox",
+        "id": "enable_schema",
+        "label": "Output FAQPage structured data",
+        "default": true,
+        "info": "Helps Google and AI answer engines quote these answers. Turn off only if another app already outputs FAQ schema on this page."
+      },
+      { "type": "header", "content": "Mobile padding" },
+      { "type": "number", "id": "padding_top_mobile", "label": "Top", "default": 38 },
+      { "type": "number", "id": "padding_bottom_mobile", "label": "Bottom", "default": 48 },
+      { "type": "header", "content": "Desktop padding" },
+      { "type": "number", "id": "padding_top_desktop", "label": "Top", "default": 57 },
+      { "type": "number", "id": "padding_bottom_desktop", "label": "Bottom", "default": 96 }
+    ],
+    "blocks": [
+      {
+        "type": "category",
+        "name": "Category heading",
+        "settings": [
+          { "type": "text", "id": "title", "label": "Category title", "default": "Category" },
+          { "type": "text", "id": "description", "label": "Small label above questions" },
+          {
+            "type": "text",
+            "id": "anchor",
+            "label": "Anchor ID",
+            "info": "Optional. Used for the jump link and deep links. Defaults to a handle made from the title."
+          },
+          {
+            "type": "text",
+            "id": "quote",
+            "label": "Closing statement",
+            "info": "Optional. Shown after this section's questions, outside the accordion, so the line does not need a click to be read."
+          }
+        ]
+      },
+      {
+        "type": "question",
+        "name": "Question",
+        "settings": [
+          { "type": "text", "id": "question", "label": "Question", "default": "Ask a question" },
+          { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Answer the question here.</p>" },
+          {
+            "type": "text",
+            "id": "anchor",
+            "label": "Anchor ID",
+            "info": "Optional. Lets you deep link to this answer, e.g. /pages/faq#how-much-caffeine. Defaults to a handle made from the question."
+          },
+          { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": false }
+        ]
+      }
+    ],
+    "presets": [{ "name": "FAQ Page", "category": "Pages" }]
+  }
+  {% endschema %}
+</section>

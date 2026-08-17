@@ -52,6 +52,16 @@
     {% render 'vite-tag' with 'sections/scripts/cart-line-selling-plan.js' %}
   {% endif %}
 
+  {% comment %}
+    Same reason once more, and this one was live: cart-bundle-selling-plan.js was only
+    rendered from inside cart-bundle-frequency.liquid, so it shipped with the bundle
+    markup. A cart with no bundle lines never loaded it, and adding a bundle brings the
+    markup in through a morph, where the script tag does not execute. The result was a
+    "Subscribe & save" button on an un-upgraded element that did nothing until a reload.
+    Loading it here means it is present before any bundle can appear.
+  {% endcomment %}
+  {% render 'vite-tag' with 'sections/scripts/cart-bundle-selling-plan.js' %}
+
   {% capture empty_cart_drawer_content %}
     {% render 'cart-drawer-empty' %}
   {% endcapture %}

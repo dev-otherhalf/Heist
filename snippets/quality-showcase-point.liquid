@@ -1,0 +1,58 @@
+{% doc %}
+  Quality Showcase Point
+
+  Renders one feature point of the Quality showcase section. Text with no
+  authored line break is split across two balanced lines, so every point is the
+  same height and the two columns line up. A break typed into the setting is
+  used as-is.
+
+  @param {object} block - The `feature_point` block.
+
+  @example
+  {% render 'quality-showcase-point', block: block %}
+{% enddoc %}
+
+{%- liquid
+  assign label = block.settings.text | strip
+  assign label_html = label | newline_to_br
+
+  if label_html == label
+    assign words = label | split: ' '
+    assign midpoint = label.size | divided_by: 2
+    assign first_line = ''
+    assign second_line = ''
+    assign run = 0
+
+    for word in words
+      if run < midpoint and forloop.last == false
+        if first_line == blank
+          assign first_line = word
+        else
+          assign first_line = first_line | append: ' ' | append: word
+        endif
+        assign run = run | plus: word.size | plus: 1
+      else
+        if second_line == blank
+          assign second_line = word
+        else
+          assign second_line = second_line | append: ' ' | append: word
+        endif
+      endif
+    endfor
+
+    comment
+      The space before the <br> matters. Below 90rem the stylesheet sets this <br> to
+      display:none so the point wraps naturally to the column width, and with no
+      whitespace in the markup the two halves fused into "World'sCoffee" and
+      "Extractsthe" on every screen narrower than 1440px. The space survives when the
+      break is hidden, and collapses harmlessly at the end of the line when it is not.
+    endcomment
+    if first_line != blank and second_line != blank
+      assign label_html = first_line | append: ' <br>' | append: second_line
+    endif
+  endif
+-%}
+
+<div class="quality-showcase__point" {{ block.shopify_attributes }}>
+  <p class="quality-showcase__point-text t-t2">{{ label_html }}</p>
+</div>

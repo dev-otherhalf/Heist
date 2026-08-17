@@ -165,7 +165,12 @@
   <div class="clean-job__inner">
     <div class="clean-job__grid">
       {%- if heading != blank -%}
-        <h2 class="clean-job__heading t-h4">{{ heading }}</h2>
+        {%- comment -%}
+          h1, not h2: this section only appears on The Process, where it is the page's
+          lead heading and the page had no h1 at all. The t-h4 class is unchanged, so
+          it looks identical.
+        {%- endcomment -%}
+        <h1 class="clean-job__heading t-h4">{{ heading }}</h1>
       {%- endif -%}
 
       <div class="clean-job__media">

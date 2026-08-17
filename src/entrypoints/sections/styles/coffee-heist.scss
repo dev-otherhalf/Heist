@@ -864,3 +864,18 @@ $coffee-heist-score-reserve: var(--space-50);
     display: block;
   }
 }
+
+@include respond-down(md) {
+  .coffee-heist {
+    .coffee-heist__bar-track {
+      margin-inline-end: 0;
+    }
+
+    &__chart > .coffee-heist__bar-row:nth-child(4),
+    &__chart > .coffee-heist__bar-row:nth-child(6),
+    &__chart > .coffee-heist__bar-row:nth-child(7),
+    &__chart > .coffee-heist__bar-row:nth-child(8) {
+      display: none;
+    }
+  }
+}

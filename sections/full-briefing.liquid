@@ -202,24 +202,47 @@
             {% endfor %}
           {% endcapture %}
 
-          <button
-            class="btn btn--dark btn--block btn--split full-briefing__cta"
-            type="button"
-            {% if faq_has_more %}
-              data-full-briefing-faqs-more
-              data-expanded-text="{{ hide_button_label | strip | escape }}"
-              data-expanded-first-text="{{ hide_first_half | strip | escape }}"
-              data-expanded-second-text="{{ hide_second_half | strip | escape }}"
-              aria-controls="full-briefing-faqs-{{ section.id }}"
-              aria-expanded="false"
-            {% endif %}
-          >
-            <span class="btn__text">{{ first_half | strip | escape }}</span>
-            {% if second_half != blank %}
-              <span class="btn__lines" aria-hidden="true"></span>
-              <span class="btn__text">{{ second_half | strip | escape }}</span>
-            {% endif %}
-          </button>
+          {%- comment -%}
+            Two behaviours from one control.
+
+            With a link set, this is an anchor to the full FAQ page and the inline
+            expand is dropped: the destination answers every question, so revealing a
+            few more here first is a worse version of the same trip.
+
+            With the link left blank it falls back to the original toggle, so any other
+            page using this section keeps the expand-in-place behaviour it had.
+          {%- endcomment -%}
+          {%- if section.settings.faq_link != blank -%}
+            <a
+              class="btn btn--dark btn--block btn--split full-briefing__cta"
+              href="{{ section.settings.faq_link }}"
+            >
+              <span class="btn__text">{{ first_half | strip | escape }}</span>
+              {% if second_half != blank %}
+                <span class="btn__lines" aria-hidden="true"></span>
+                <span class="btn__text">{{ second_half | strip | escape }}</span>
+              {% endif %}
+            </a>
+          {%- else -%}
+            <button
+              class="btn btn--dark btn--block btn--split full-briefing__cta"
+              type="button"
+              {% if faq_has_more %}
+                data-full-briefing-faqs-more
+                data-expanded-text="{{ hide_button_label | strip | escape }}"
+                data-expanded-first-text="{{ hide_first_half | strip | escape }}"
+                data-expanded-second-text="{{ hide_second_half | strip | escape }}"
+                aria-controls="full-briefing-faqs-{{ section.id }}"
+                aria-expanded="false"
+              {% endif %}
+            >
+              <span class="btn__text">{{ first_half | strip | escape }}</span>
+              {% if second_half != blank %}
+                <span class="btn__lines" aria-hidden="true"></span>
+                <span class="btn__text">{{ second_half | strip | escape }}</span>
+              {% endif %}
+            </button>
+          {%- endif -%}
         {%- endif -%}
       </div>
     </div>
@@ -242,6 +265,12 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "url",
+      "id": "faq_link",
+      "label": "\"View all\" destination",
+      "info": "Set this and the button links out instead of expanding the FAQs in place. Leave blank to keep the expand behaviour."
+    },
     {
       "type": "metaobject",
       "id": "briefing",

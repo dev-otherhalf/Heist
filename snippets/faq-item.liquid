@@ -1,0 +1,33 @@
+{%- doc -%}
+  A single collapsible FAQ row.
+
+  Uses a native <details>/<summary> pair so it works with no JavaScript, is keyboard
+  operable, and is announced correctly by screen readers. Styles live in
+  sections/page-faq.liquid.
+
+  @param {object} block - A `question` block from the page-faq section
+
+  @example
+  {% render 'faq-item', block: block %}
+{%- enddoc -%}
+
+{%- liquid
+  assign q_anchor = block.settings.anchor | default: block.settings.question | handleize
+-%}
+
+<details
+  class="faq-item"
+  id="{{ q_anchor }}"
+  {% if block.settings.open_by_default %}
+    open
+  {% endif %}
+  {{ block.shopify_attributes }}
+>
+  <summary class="faq-item__summary">
+    <span class="faq-item__question">{{ block.settings.question }}</span>
+    <span class="faq-item__icon" aria-hidden="true"></span>
+  </summary>
+  <div class="faq-item__answer">
+    {{ block.settings.answer }}
+  </div>
+</details>

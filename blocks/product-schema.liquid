@@ -1,0 +1,77 @@
+{%- comment -%}
+  Product structured data for pages whose section does not emit its own.
+
+  `product-information-shop` deliberately omits Shopify's {{ product | structured_data }}
+  because on the shop container Okendo already emits a Product node with the same
+  @id (/products/<handle>#product); two nodes sharing an @id get merged by Google
+  into a duplicate "brand" field, which invalidates the rich result.
+
+  The child coffee pages reuse that same section but need a valid node of their own,
+  because Okendo types multi-variant products as ProductGroup while emitting a single
+  `offers` and no `hasVariant`, which is invalid. So this block is added to the child
+  template only, and never to the container.
+
+  The @id is deliberately different from Okendo's so the two nodes stay separate
+  instead of merging. Rating is read from Okendo's own metafields so they can never
+  disagree with the review widget on the page.
+{%- endcomment -%}
+
+{%- liquid
+  assign p = closest.product
+
+  comment
+    Rating comes from the standard reviews.* metafields, not okendo.summaryData.
+    That one is stored as json_string, which Liquid cannot parse, so reading
+    .reviewCount off it silently yields nothing. Okendo writes both.
+  endcomment
+  assign rating_val = p.metafields.reviews.rating.value.rating
+  assign rating_cnt = p.metafields.reviews.rating_count.value
+  assign has_rating = false
+  if rating_val != blank and rating_cnt > 0
+    assign has_rating = true
+  endif
+-%}
+
+{%- if p != blank -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "@id": {{ p.url | prepend: request.origin | append: '#child-product' | json }},
+      "name": {{ p.title | json }},
+      "url": {{ p.url | prepend: request.origin | json }},
+      {% if p.featured_image %}"image": {{ p.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
+      {% if p.description != blank %}"description": {{ p.description | strip_html | strip_newlines | truncate: 300 | json }},{% endif %}
+      "brand": { "@type": "Brand", "name": {{ shop.name | json }} },
+      "sku": {{ p.selected_or_first_available_variant.sku | default: p.id | json }},
+      {%- if has_rating -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ rating_val | json }},
+        "ratingCount": {{ rating_cnt | json }}
+      },
+      {%- endif -%}
+      {%- comment -%}
+        A single Offer at the retail price rather than an AggregateOffer. The range
+        would run to the 5lb wholesale variants (89.00 / 114.40), and surfacing those
+        in a consumer search result is misleading.
+      {%- endcomment -%}
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": {{ p.price_min | money_without_currency | strip | replace: ',', '' | json }},
+        "availability": {% if p.available %}"https://schema.org/InStock"{% else %}"https://schema.org/OutOfStock"{% endif %},
+        "url": {{ p.url | prepend: request.origin | json }},
+        "seller": { "@type": "Organization", "name": {{ shop.name | json }} }
+      }
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product schema",
+  "tag": null,
+  "settings": []
+}
+{% endschema %}

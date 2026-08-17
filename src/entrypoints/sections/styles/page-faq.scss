@@ -1,0 +1,533 @@
+.page-faq {
+  /* The `.page-width-content` class sizes this section's grid column from
+     --normal-content-width (42rem). Widen it to match the Privacy Policy page and
+     recompute --page-width, or the inner column overflows its grid track. */
+  --page-content-width: 55rem;
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+
+  --faq-rule: color-mix(in srgb, var(--ink) 16%, transparent);
+  --faq-rule-strong: color-mix(in srgb, var(--ink) 28%, transparent);
+  --faq-body: color-mix(in srgb, var(--ink) 88%, transparent);
+
+  /* Defaults to the same paper texture the Privacy Policy page uses so the page
+     matches the rest of the site with no setup. Override with the image pickers. */
+  --faq-bg-desktop-default: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793");
+  --faq-bg-mobile-default: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Mobile.jpg?v=1785306792");
+
+  background-color: var(--bone, #eeeade);
+  background-image: var(--faq-bg-desktop, var(--faq-bg-desktop-default));
+  /* Tile at natural size, exactly as body.product and .heist-header do. `cover`
+     scales the 1440x2083 grain up on a long page and reads visibly softer than
+     the header directly above it. */
+  background-repeat: repeat;
+  background-position: top center;
+  padding-top: var(--faq-padding-top-desktop, var(--space-57));
+  padding-bottom: var(--faq-padding-bottom-desktop, var(--space-80));
+  color: var(--ink);
+}
+
+.page-faq .faq-inner {
+  max-width: 55rem;
+  margin: 0 auto;
+  /* Allow the plus/minus icon to sit flush without clipping focus rings */
+  width: 100%;
+}
+
+/* ---------- Header ---------- */
+
+.page-faq .faq-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-8);
+}
+
+.page-faq .faq-eyebrow {
+  color: var(--red, #ff3b27);
+  margin: 0;
+}
+
+.page-faq .faq-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  line-height: var(--lh-h4);
+  letter-spacing: var(--ls-h4);
+  font-weight: var(--fw-regular);
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.page-faq .faq-intro {
+  font-family: var(--font-body);
+  font-size: var(--space-18);
+  line-height: 1.4;
+  color: var(--faq-body);
+  max-width: 36rem;
+  margin-top: var(--space-6);
+  text-wrap: balance;
+}
+
+.page-faq .faq-intro p {
+  margin: 0;
+}
+
+.page-faq .faq-divider {
+  width: 100%;
+  height: var(--space-2);
+  background: currentcolor;
+  margin-top: var(--space-34);
+}
+
+/* ---------- Jump nav ---------- */
+
+/* Static by default. This theme's header does not stick, and `heist-sticky-cta`
+   (z-index 45) slides in on scroll, so a sticky nav here would either float below a
+   gap or get covered by the CTA. Opt in with the "Make jump links sticky" setting. */
+.page-faq .faq-nav {
+  margin-top: var(--space-20);
+  margin-bottom: var(--space-16);
+  border-bottom: var(--bw-1, 1px) solid var(--faq-rule);
+}
+
+.page-faq .faq-nav--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  /* Frosted rather than solid, so the paper texture reads through instead of the
+     bar looking like a mismatched panel sitting on top of it. */
+  background-color: color-mix(in srgb, var(--bone, #eeeade) 70%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  .page-faq .faq-nav--sticky {
+    background-color: var(--bone, #eeeade);
+  }
+}
+
+.page-faq .faq-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4) var(--space-20);
+  list-style: none;
+  margin: 0;
+  padding: var(--space-12) 0;
+}
+
+.page-faq .faq-nav__link {
+  display: inline-block;
+  color: var(--ink);
+  text-decoration: none;
+  padding: var(--space-4) 0;
+  border-bottom: var(--bw-2, 2px) solid transparent;
+  transition:
+    color var(--dur, 0.18s) var(--ease),
+    border-color var(--dur, 0.18s) var(--ease);
+}
+
+.page-faq .faq-nav__link:hover,
+.page-faq .faq-nav__link:focus-visible {
+  color: var(--red, #ff3b27);
+  border-bottom-color: var(--red, #ff3b27);
+}
+
+/* ---------- Groups ---------- */
+
+.page-faq .faq-groups {
+  margin-top: var(--space-40);
+}
+
+.page-faq .faq-group {
+  /* Breathing room when jumping to an anchor. Larger when the nav is sticky. */
+  scroll-margin-top: var(--faq-anchor-offset, var(--space-24));
+}
+
+.page-faq .faq-group + .faq-group {
+  margin-top: var(--space-72);
+}
+
+.page-faq .faq-group__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-bottom: var(--space-16);
+}
+
+.page-faq .faq-group__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h7);
+  line-height: var(--lh-h7);
+  letter-spacing: var(--ls-h7);
+  font-weight: var(--fw-regular);
+  color: var(--ink);
+  margin: 0;
+}
+
+.page-faq .faq-group__description {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n2);
+  line-height: var(--lh-n2);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
+  margin: 0;
+}
+
+/* ---------- Question rows ---------- */
+
+.page-faq .faq-list {
+  border-top: var(--bw-1, 1px) solid var(--faq-rule-strong);
+}
+
+.page-faq .faq-item {
+  border-bottom: var(--bw-1, 1px) solid var(--faq-rule);
+  scroll-margin-top: var(--faq-anchor-offset, var(--space-24));
+}
+
+.page-faq .faq-item__summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-16);
+  /* Comfortable tap target on mobile */
+  min-height: var(--minimum-touch-target, 44px);
+  padding: var(--space-20) 0;
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--dur, 0.18s) var(--ease);
+}
+
+/* Remove the native disclosure triangle */
+.page-faq .faq-item__summary::-webkit-details-marker {
+  display: none;
+}
+
+.page-faq .faq-item__summary::marker {
+  content: "";
+}
+
+.page-faq .faq-item__summary:hover {
+  color: var(--red, #ff3b27);
+}
+
+.page-faq .faq-item__summary:focus-visible {
+  outline: var(--bw-2, 2px) solid var(--red, #ff3b27);
+  outline-offset: var(--focus-offset, 2px);
+}
+
+.page-faq .faq-item__question {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.1rem + 1vw, var(--fs-t1));
+  line-height: 1.16;
+  letter-spacing: var(--ls-t1);
+  font-weight: var(--fw-regular);
+  text-wrap: pretty;
+}
+
+/* CSS-only plus that becomes a minus when open */
+.page-faq .faq-item__icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--space-18);
+  height: var(--space-18);
+  /* Optically align the icon with the first line of the question */
+  margin-top: var(--space-4);
+}
+
+.page-faq .faq-item__icon::before,
+.page-faq .faq-item__icon::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: var(--bw-2, 2px);
+  background: currentcolor;
+  translate: 0 -50%;
+  transition:
+    rotate var(--dur, 0.18s) var(--ease),
+    opacity var(--dur, 0.18s) var(--ease);
+}
+
+.page-faq .faq-item__icon::after {
+  rotate: 90deg;
+}
+
+.page-faq .faq-item[open] .faq-item__icon::after {
+  rotate: 0deg;
+  opacity: 0;
+}
+
+.page-faq .faq-item[open] .faq-item__summary {
+  color: var(--ink);
+  padding-bottom: var(--space-8);
+}
+
+.page-faq .faq-item__answer {
+  font-family: var(--font-body);
+  font-size: var(--space-17);
+  line-height: 1.6;
+  color: var(--faq-body);
+  padding-bottom: var(--space-24);
+  max-width: 44rem;
+}
+
+.page-faq .faq-item__answer > :first-child {
+  margin-top: 0;
+}
+
+.page-faq .faq-item__answer > :last-child {
+  margin-bottom: 0;
+}
+
+.page-faq .faq-item__answer p {
+  margin: 0 0 var(--space-14) 0;
+}
+
+.page-faq .faq-item__answer a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: var(--space-1);
+  text-underline-offset: var(--space-3);
+}
+
+.page-faq .faq-item__answer a:hover,
+.page-faq .faq-item__answer a:focus-visible {
+  color: var(--red, #ff3b27);
+}
+
+.page-faq .faq-item__answer ul,
+.page-faq .faq-item__answer ol {
+  margin: 0 0 var(--space-14) 0;
+  padding-inline-start: var(--space-20);
+}
+
+.page-faq .faq-item__answer li {
+  margin-bottom: var(--space-6);
+}
+
+/* Smooth open/close where supported. Matches the approach the theme's own
+   accordion-custom component uses. Falls back to an instant toggle elsewhere. */
+@supports selector(details::details-content) {
+  .page-faq .faq-item {
+    interpolate-size: allow-keywords;
+  }
+
+  .page-faq .faq-item::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    opacity: 0;
+    transition:
+      content-visibility var(--dur, 0.18s) allow-discrete,
+      opacity var(--dur, 0.18s) var(--ease),
+      block-size var(--dur, 0.18s) var(--ease);
+  }
+
+  .page-faq .faq-item[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
+/* ---------- Section pull quote ---------- */
+
+.page-faq .faq-quote {
+  margin: var(--space-40) 0 0 0;
+  padding: var(--space-32) 0 0 0;
+  border-top: var(--bw-2, 2px) solid var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-h7);
+  line-height: var(--lh-h7);
+  letter-spacing: var(--ls-h7);
+  font-weight: var(--fw-regular);
+  color: var(--ink);
+  /* Full-width rule so it lines up with the section rules above it */
+  text-wrap: balance;
+}
+
+/* ---------- Footer CTA ---------- */
+
+.page-faq .faq-footer {
+  margin-top: var(--space-72);
+  padding-top: var(--space-32);
+  border-top: var(--bw-2, 2px) solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-12);
+}
+
+.page-faq .faq-footer__heading {
+  font-family: var(--font-display);
+  font-size: var(--fs-h7);
+  line-height: var(--lh-h7);
+  letter-spacing: var(--ls-h7);
+  font-weight: var(--fw-regular);
+  margin: 0;
+}
+
+.page-faq .faq-footer__text {
+  font-family: var(--font-body);
+  font-size: var(--space-17);
+  line-height: 1.6;
+  color: var(--faq-body);
+  max-width: 34rem;
+}
+
+.page-faq .faq-footer__text p {
+  margin: 0;
+}
+
+.page-faq .faq-footer__text a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: var(--space-1);
+  text-underline-offset: var(--space-3);
+}
+
+.page-faq .faq-footer__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h, 3rem);
+  margin-top: var(--space-8);
+  padding: 0 var(--space-28);
+  background: var(--button-dark-bg, var(--ink));
+  color: var(--button-dark-fg, var(--cream));
+  border: var(--bw-2, 2px) solid var(--ink);
+  border-radius: var(--r-pill, 0.25rem);
+  text-decoration: none;
+  transition:
+    background-color var(--dur, 0.18s) var(--ease),
+    color var(--dur, 0.18s) var(--ease);
+}
+
+.page-faq .faq-footer__button:hover,
+.page-faq .faq-footer__button:focus-visible {
+  background: var(--red, #ff3b27);
+  color: var(--ink);
+}
+
+/* ---------- Mobile ---------- */
+
+@media screen and (max-width: 749px) {
+  .page-faq {
+    background-image: var(--faq-bg-mobile, var(--faq-bg-mobile-default));
+    padding-top: var(--faq-padding-top-mobile, var(--space-38));
+    padding-bottom: var(--faq-padding-bottom-mobile, var(--space-24));
+  }
+
+  .page-faq .faq-inner {
+    padding: 0 var(--space-4);
+  }
+
+  .page-faq .faq-title {
+    font-size: var(--fs-h6);
+    line-height: var(--lh-h6);
+    letter-spacing: var(--ls-h6);
+  }
+
+  .page-faq .faq-intro {
+    font-size: var(--space-16);
+  }
+
+  .page-faq .faq-divider {
+    opacity: 0.5;
+    margin-top: var(--space-26);
+  }
+
+  /* Horizontal scrolling pill nav rather than a tall wrapped block */
+  .page-faq .faq-nav {
+    margin-top: var(--space-16);
+    margin-inline: calc(var(--space-4) * -1);
+  }
+
+  .page-faq .faq-nav__list {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: var(--space-18);
+    padding: var(--space-10) var(--space-16);
+    scroll-snap-type: x proximity;
+    /* Fade the right edge so it reads as scrollable rather than clipped */
+    mask-image: linear-gradient(
+      to right,
+      #000 0,
+      #000 calc(100% - var(--space-32)),
+      transparent 100%
+    );
+  }
+
+  .page-faq .faq-nav__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .page-faq .faq-nav__link {
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  .page-faq .faq-groups {
+    margin-top: var(--space-28);
+  }
+
+  .page-faq .faq-group + .faq-group {
+    margin-top: var(--space-48);
+  }
+
+  .page-faq .faq-group__title {
+    font-size: var(--space-28);
+    line-height: 1.2;
+    letter-spacing: -0.035rem;
+  }
+
+  .page-faq .faq-item__summary {
+    gap: var(--space-12);
+    padding: var(--space-16) 0;
+  }
+
+  .page-faq .faq-item__question {
+    font-size: var(--space-19);
+    line-height: 1.2;
+  }
+
+  .page-faq .faq-item__icon {
+    width: var(--space-16);
+    height: var(--space-16);
+    margin-top: var(--space-2);
+  }
+
+  .page-faq .faq-item__answer {
+    font-size: var(--space-16);
+    padding-bottom: var(--space-20);
+  }
+
+  .page-faq .faq-quote {
+    margin-top: var(--space-28);
+    padding-top: var(--space-20);
+    font-size: var(--space-26);
+    line-height: 1.2;
+    letter-spacing: -0.03rem;
+  }
+
+  .page-faq .faq-footer {
+    margin-top: var(--space-48);
+    padding-top: var(--space-24);
+  }
+
+  .page-faq .faq-footer__button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-faq .faq-item__icon::before,
+  .page-faq .faq-item__icon::after,
+  .page-faq .faq-item::details-content {
+    transition: none;
+  }
+}

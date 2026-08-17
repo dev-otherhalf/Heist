@@ -1,0 +1,390 @@
+/* ---------- Page background ----------
+   The theme paints its paper texture per surface (body.product, .heist-header) and
+   never on page templates, so every /pages/ route lands on the white palette colour.
+   This paints them the same way body.product is painted. It applies to all page
+   templates, not just ones using this section, so a page keeps the site background
+   even before it is switched to the Content Page template. */
+body.page {
+  background-color: var(--bone, #eeeade);
+  background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793");
+  background-repeat: repeat;
+  background-position: top center;
+}
+
+/* The theme paints a white section background from the colour palette on top of it */
+body.page .content-for-layout,
+body.page .section-background {
+  background-color: transparent;
+}
+
+@media screen and (max-width: 749px) {
+  body.page {
+    background-image: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Mobile.jpg?v=1785306792");
+  }
+}
+
+.content-page {
+  /* .page-width-content sizes this section's grid column from --normal-content-width
+     (42rem). Widen it to the same measure the privacy policy and FAQ pages use, and
+     recompute --page-width, or the inner column overflows its grid track. */
+  --page-content-width: 55rem;
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+
+  --pc-rule: color-mix(in srgb, var(--ink) 16%, transparent);
+  --pc-body: color-mix(in srgb, var(--ink) 88%, transparent);
+
+  /* The site's paper texture. Tiled at natural size, exactly as body.product and
+     .heist-header do it, so the grain matches rather than being scaled. */
+  --pc-bg-desktop-default: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Desktop.jpg?v=1785306793");
+  --pc-bg-mobile-default: url("https://cdn.shopify.com/s/files/1/0942/3490/2850/files/Mobile.jpg?v=1785306792");
+
+  background-color: var(--bone, #eeeade);
+  background-image: var(--pc-bg-desktop, var(--pc-bg-desktop-default));
+  background-repeat: repeat;
+  background-position: top center;
+
+  padding-top: var(--pc-padding-top-desktop, var(--space-57));
+  padding-bottom: var(--pc-padding-bottom-desktop, var(--space-80));
+  color: var(--ink);
+}
+
+.content-page .content-page__inner {
+  max-width: 55rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ---------- Header ---------- */
+
+.content-page .content-page__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-8);
+}
+
+.content-page .content-page__header--left {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.content-page .content-page__eyebrow {
+  color: var(--red, #ff3b27);
+  margin: 0;
+}
+
+.content-page .content-page__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  line-height: var(--lh-h4);
+  letter-spacing: var(--ls-h4);
+  font-weight: var(--fw-regular);
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.content-page .content-page__meta {
+  margin: 0;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
+}
+
+.content-page .content-page__intro {
+  font-family: var(--font-body);
+  font-size: var(--space-18);
+  line-height: 1.4;
+  color: var(--pc-body);
+  max-width: 36rem;
+  margin-top: var(--space-6);
+  text-wrap: balance;
+}
+
+.content-page .content-page__intro p {
+  margin: 0;
+}
+
+.content-page .content-page__divider {
+  width: 100%;
+  height: var(--space-2);
+  background: currentcolor;
+  margin-top: var(--space-34);
+}
+
+/* ---------- Body copy ---------- */
+
+.content-page .content-page__body {
+  margin-top: var(--space-40);
+  font-family: var(--font-body);
+  font-size: var(--space-17);
+  line-height: 1.6;
+  color: var(--pc-body);
+}
+
+.content-page .content-page__body > :first-child {
+  margin-top: 0;
+}
+
+.content-page .content-page__body > :last-child {
+  margin-bottom: 0;
+}
+
+.content-page .content-page__body p {
+  margin: 0 0 var(--space-20) 0;
+  max-width: 44rem;
+}
+
+.content-page .content-page__body h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h7);
+  line-height: var(--lh-h7);
+  letter-spacing: var(--ls-h7);
+  font-weight: var(--fw-regular);
+  color: var(--ink);
+  margin: var(--space-48) 0 var(--space-12) 0;
+  text-wrap: pretty;
+}
+
+.content-page .content-page__body h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-t1);
+  line-height: var(--lh-t1);
+  letter-spacing: var(--ls-t1);
+  font-weight: var(--fw-regular);
+  color: var(--ink);
+  margin: var(--space-32) 0 var(--space-10) 0;
+}
+
+.content-page .content-page__body h4,
+.content-page .content-page__body h5,
+.content-page .content-page__body h6 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n1);
+  line-height: var(--lh-n1);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: var(--space-28) 0 var(--space-8) 0;
+}
+
+.content-page .content-page__body a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: var(--space-1);
+  text-underline-offset: var(--space-3);
+}
+
+.content-page .content-page__body a:hover,
+.content-page .content-page__body a:focus-visible {
+  color: var(--red, #ff3b27);
+}
+
+.content-page .content-page__body ul,
+.content-page .content-page__body ol {
+  margin: 0 0 var(--space-20) 0;
+  padding-inline-start: var(--space-20);
+  max-width: 44rem;
+}
+
+.content-page .content-page__body li {
+  margin-bottom: var(--space-8);
+}
+
+.content-page .content-page__body strong {
+  font-weight: var(--fw-semibold);
+  color: var(--ink);
+}
+
+.content-page .content-page__body blockquote {
+  font-family: var(--font-display);
+  font-size: var(--fs-h7);
+  line-height: var(--lh-h7);
+  letter-spacing: var(--ls-h7);
+  font-weight: var(--fw-regular);
+  color: var(--ink);
+  margin: var(--space-40) 0;
+  padding-top: var(--space-32);
+  border-top: var(--bw-2, 2px) solid var(--ink);
+  text-wrap: balance;
+}
+
+.content-page .content-page__body hr {
+  border: 0;
+  border-top: var(--bw-1, 1px) solid var(--pc-rule);
+  margin: var(--space-40) 0;
+}
+
+.content-page .content-page__body img,
+.content-page .content-page__body video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--space-32) 0;
+}
+
+/* Tables can be wider than the measure, so let them scroll rather than push the page */
+.content-page .content-page__body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 var(--space-24) 0;
+  font-size: var(--space-16);
+}
+
+.content-page .content-page__body th,
+.content-page .content-page__body td {
+  text-align: start;
+  padding: var(--space-10) var(--space-12);
+  border-bottom: var(--bw-1, 1px) solid var(--pc-rule);
+}
+
+.content-page .content-page__body th {
+  font-family: var(--font-mono);
+  font-size: var(--fs-n2);
+  text-transform: uppercase;
+  font-weight: var(--fw-semibold);
+  color: var(--ink);
+}
+
+/* If pasted content uses native disclosures, give them the FAQ treatment */
+.content-page .content-page__body details {
+  border-bottom: var(--bw-1, 1px) solid var(--pc-rule);
+}
+
+.content-page .content-page__body details summary {
+  cursor: pointer;
+  list-style: none;
+  padding: var(--space-16) 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-t2);
+  line-height: 1.2;
+  color: var(--ink);
+  min-height: var(--minimum-touch-target, 44px);
+}
+
+.content-page .content-page__body details summary::-webkit-details-marker {
+  display: none;
+}
+
+.content-page .content-page__body details summary::marker {
+  content: "";
+}
+
+/* ---------- Closing block ---------- */
+
+.content-page .content-page__footer {
+  margin-top: var(--space-72);
+  padding-top: var(--space-32);
+  border-top: var(--bw-2, 2px) solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-12);
+}
+
+.content-page .content-page__footer-heading {
+  font-family: var(--font-display);
+  font-size: var(--fs-h7);
+  line-height: var(--lh-h7);
+  letter-spacing: var(--ls-h7);
+  font-weight: var(--fw-regular);
+  margin: 0;
+}
+
+.content-page .content-page__footer-text {
+  font-family: var(--font-body);
+  font-size: var(--space-17);
+  line-height: 1.6;
+  color: var(--pc-body);
+  max-width: 34rem;
+}
+
+.content-page .content-page__footer-text p {
+  margin: 0;
+}
+
+.content-page .content-page__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h, 3rem);
+  margin-top: var(--space-8);
+  padding: 0 var(--space-28);
+  background: var(--button-dark-bg, var(--ink));
+  color: var(--button-dark-fg, var(--cream));
+  border: var(--bw-2, 2px) solid var(--ink);
+  border-radius: var(--r-pill, 0.25rem);
+  text-decoration: none;
+  transition:
+    background-color var(--dur, 0.18s) var(--ease),
+    color var(--dur, 0.18s) var(--ease);
+}
+
+.content-page .content-page__button:hover,
+.content-page .content-page__button:focus-visible {
+  background: var(--red, #ff3b27);
+  color: var(--ink);
+}
+
+/* ---------- Mobile ---------- */
+
+@media screen and (max-width: 749px) {
+  .content-page {
+    background-image: var(--pc-bg-mobile, var(--pc-bg-mobile-default));
+    padding-top: var(--pc-padding-top-mobile, var(--space-38));
+    padding-bottom: var(--pc-padding-bottom-mobile, var(--space-24));
+  }
+
+  .content-page .content-page__inner {
+    padding: 0 var(--space-4);
+  }
+
+  .content-page .content-page__title {
+    font-size: var(--fs-h6);
+    line-height: var(--lh-h6);
+    letter-spacing: var(--ls-h6);
+  }
+
+  .content-page .content-page__intro {
+    font-size: var(--space-16);
+  }
+
+  .content-page .content-page__divider {
+    opacity: 0.5;
+    margin-top: var(--space-26);
+  }
+
+  .content-page .content-page__body {
+    margin-top: var(--space-28);
+    font-size: var(--space-16);
+  }
+
+  .content-page .content-page__body h2 {
+    font-size: var(--space-28);
+    line-height: 1.2;
+    letter-spacing: -0.035rem;
+    margin-top: var(--space-36);
+  }
+
+  .content-page .content-page__body h3 {
+    font-size: var(--space-22);
+    line-height: 1.2;
+  }
+
+  .content-page .content-page__body blockquote {
+    font-size: var(--space-26);
+    line-height: 1.2;
+    margin: var(--space-28) 0;
+    padding-top: var(--space-20);
+  }
+
+  .content-page .content-page__footer {
+    margin-top: var(--space-48);
+    padding-top: var(--space-24);
+  }
+
+  .content-page .content-page__button {
+    width: 100%;
+  }
+}

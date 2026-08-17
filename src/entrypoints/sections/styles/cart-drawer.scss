@@ -726,6 +726,54 @@ $plan-control-height: 2.375rem;
   }
 }
 
+.cart-drawer__items
+  .cart-items__table-row--card.cart-items__table-row--membership
+  .cart-items__card-description {
+  max-width: 19rem;
+}
+
+.cart-items__card-description > * + * {
+  margin-block-start: var(--margin-2xs);
+}
+
+.cart-items__card-description ul,
+.cart-items__card-description ol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: 0;
+  text-wrap: pretty;
+}
+
+.cart-items__card-description li {
+  display: flex;
+  align-items: start;
+  gap: var(--space-8);
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.cart-items__card-description ul li::before {
+  content: "";
+  flex-shrink: 0;
+  width: var(--space-16);
+  height: var(--space-16);
+  margin-block-start: var(--space-1);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23161414'/%3E%3Cpath d='M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM7 11.4L3.6 8L5 6.6L7 8.6L11 4.6L12.4 6L7 11.4Z' fill='%23FF3B27'/%3E%3C/svg%3E");
+}
+
+.cart-items__card-description ol {
+  counter-reset: cart-card-step;
+}
+
+.cart-items__card-description ol li::before {
+  counter-increment: cart-card-step;
+  content: counter(cart-card-step) ".";
+  flex-shrink: 0;
+}
+
 .cart-progress {
   $self: &;
 

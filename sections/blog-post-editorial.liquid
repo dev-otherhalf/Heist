@@ -1,0 +1,195 @@
+{%- render 'vite-tag', entry: 'sections/styles/blog-post-editorial.scss' -%}
+{% comment %}
+  No Curfews article page.
+
+  Replaces the default block-built article layout for three reasons found on the live
+  posts:
+
+  1. The featured-image block renders a blank 1:1 placeholder square on every post,
+     because the posts have no featured image set. This section renders no featured
+     image at all.
+  2. Every post carries its own <h1> inside the body copy, so the template's <h1> made
+     two identical H1s per page. This section keeps one canonical <h1> from
+     article.title and drops the duplicate out of the body.
+  3. The posts publish with no product CTA. The closing block here applies one to every
+     post at once, editable in the theme editor.
+
+  Styling is dense editorial: mono for all furniture (masthead, meta, subheads,
+  captions), the display serif for the headline and pull quotes, and the body face at a
+  long-read measure. Carries the site's paper texture rather than the flat white palette
+  background.
+{% endcomment %}
+
+{%- liquid
+  assign body_html = article.content
+  assign issue_label = ''
+
+  comment
+    Posts follow a fixed shape: an issue/tagline paragraph, then an <h1> repeating the
+    title, then the article. Lift the issue number out for the masthead and start the
+    body after that first heading. Guarded so a post not following the pattern renders
+    whole.
+  endcomment
+  if section.settings.strip_leading_title and article.content contains '</h1>'
+    assign parts = article.content | split: '</h1>'
+    assign lead = parts | first
+    assign remainder = parts | slice: 1, 100
+    assign rebuilt = remainder | join: '</h1>'
+
+    if rebuilt != blank
+      assign body_html = rebuilt
+    endif
+
+    if lead contains '<strong>'
+      assign issue_label = lead | split: '<strong>' | last | split: '</strong>' | first | strip_html | strip
+    endif
+  endif
+
+  assign word_count = article.content | strip_html | split: ' ' | size
+  assign read_minutes = word_count | divided_by: 200
+  if read_minutes < 1
+    assign read_minutes = 1
+  endif
+-%}
+
+<section
+  id="{{ section.id }}"
+  class="shopify-section section page-width-content np{% if section.settings.hide_images %} np--no-images{% endif %}"
+  style="
+    --np-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --np-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --np-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --np-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+>
+  <div class="section-content-wrapper">
+    <article class="np__inner">
+      <header class="np__head">
+        {% if section.settings.masthead != blank %}
+          <p class="np__masthead">
+            <span class="np__masthead-name">{{ section.settings.masthead }}</span>
+            {% if section.settings.masthead_tagline != blank %}
+              <span class="np__masthead-tagline">{{ section.settings.masthead_tagline }}</span>
+            {% endif %}
+          </p>
+        {% endif %}
+
+        <h1 class="np__title">{{ article.title }}</h1>
+
+        <div class="np__meta">
+          {% if issue_label != blank %}
+            <span class="np__meta-item np__meta-item--issue">{{ issue_label }}</span>
+          {% endif %}
+          {% if section.settings.show_date %}
+            <span class="np__meta-item">
+              {{- article.published_at | date: format: 'date' -}}
+            </span>
+          {% endif %}
+          {% if section.settings.show_reading_time %}
+            <span class="np__meta-item">{{ read_minutes }} min read</span>
+          {% endif %}
+          {% if section.settings.show_author and article.author != blank %}
+            <span class="np__meta-item">{{ article.author }}</span>
+          {% endif %}
+        </div>
+      </header>
+
+      <div class="np__body rte">
+        <rte-formatter>
+          {{ body_html }}
+        </rte-formatter>
+      </div>
+
+      {% if section.settings.show_tags and article.tags.size > 0 %}
+        <div class="np__tags">
+          <span class="np__tags-label">Filed under</span>
+          {% for tag in article.tags %}
+            <a class="np__tag" href="{{ blog.url }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.cta_heading != blank or section.settings.cta_text != blank %}
+        <aside class="np__cta">
+          {% if section.settings.cta_eyebrow != blank %}
+            <p class="np__cta-eyebrow">{{ section.settings.cta_eyebrow }}</p>
+          {% endif %}
+          {% if section.settings.cta_heading != blank %}
+            <h2 class="np__cta-heading">{{ section.settings.cta_heading }}</h2>
+          {% endif %}
+          {% if section.settings.cta_text != blank %}
+            <div class="np__cta-text">{{ section.settings.cta_text }}</div>
+          {% endif %}
+          {% if section.settings.cta_button_label != blank %}
+            <a class="np__cta-button t-btn" href="{{ section.settings.cta_button_link | default: '/collections/all' }}">
+              {{ section.settings.cta_button_label }}
+            </a>
+          {% endif %}
+        </aside>
+      {% endif %}
+
+      <nav class="np__back">
+        <a class="np__back-link" href="{{ blog.url }}">
+          {{ section.settings.back_label | default: 'All dispatches' }}
+        </a>
+      </nav>
+    </article>
+  </div>
+
+  {% schema %}
+  {
+    "name": "Blog post (editorial)",
+    "tag": "section",
+    "settings": [
+      { "type": "header", "content": "Masthead" },
+      { "type": "text", "id": "masthead", "label": "Publication name", "default": "No Curfews" },
+      {
+        "type": "text",
+        "id": "masthead_tagline",
+        "label": "Tagline",
+        "default": "Dispatches from the second half of the day"
+      },
+      { "type": "header", "content": "Byline" },
+      { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
+      { "type": "checkbox", "id": "show_reading_time", "label": "Show reading time", "default": true },
+      { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
+      { "type": "checkbox", "id": "show_tags", "label": "Show tags at the end", "default": true },
+      { "type": "header", "content": "Body" },
+      {
+        "type": "checkbox",
+        "id": "strip_leading_title",
+        "label": "Remove the duplicate headline from the body",
+        "default": true,
+        "info": "Posts repeat their title as an <h1> inside the body, which puts two identical H1s on the page. This keeps one and lifts the issue number into the byline. Turn off if a post renders oddly."
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_images",
+        "label": "Hide images in body copy",
+        "default": true,
+        "info": "The posts have no real imagery, so any image container renders empty."
+      },
+      { "type": "header", "content": "Closing call to action" },
+      { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Coffee without a curfew" },
+      { "type": "text", "id": "cta_heading", "label": "Heading", "default": "Decaf worth drinking after dinner." },
+      {
+        "type": "richtext",
+        "id": "cta_text",
+        "label": "Text",
+        "default": "<p>Specialty lots, water processed, roasted to order. Built for the second half of your day.</p>"
+      },
+      { "type": "text", "id": "cta_button_label", "label": "Button label", "default": "Shop the coffee" },
+      { "type": "url", "id": "cta_button_link", "label": "Button link" },
+      { "type": "header", "content": "Back link" },
+      { "type": "text", "id": "back_label", "label": "Label", "default": "All dispatches" },
+      { "type": "header", "content": "Mobile padding" },
+      { "type": "number", "id": "padding_top_mobile", "label": "Top", "default": 32 },
+      { "type": "number", "id": "padding_bottom_mobile", "label": "Bottom", "default": 40 },
+      { "type": "header", "content": "Desktop padding" },
+      { "type": "number", "id": "padding_top_desktop", "label": "Top", "default": 57 },
+      { "type": "number", "id": "padding_bottom_desktop", "label": "Bottom", "default": 80 }
+    ],
+    "presets": [{ "name": "Blog post (editorial)", "category": "Blog" }]
+  }
+  {% endschema %}
+</section>

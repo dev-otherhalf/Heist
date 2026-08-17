@@ -1,0 +1,355 @@
+{%- render 'vite-tag', entry: 'sections/styles/page-wholesale.scss' -%}
+{%- render 'vite-tag', entry: 'sections/scripts/page-wholesale.js' -%}
+{% comment %}
+  Wholesale interest page section
+
+  Built to the same pattern as sections/page-faq.liquid and uses the theme's global
+  design tokens (--ink, --cream, --bone, --red, --font-display, --font-body,
+  --font-mono, --space-*). Section styles live in
+  src/entrypoints/sections/styles/page-wholesale.scss.
+
+  The form is Shopify's native {% raw %}{% form 'contact' %}{% endraw %}. Submissions land in the
+  store's notification email. See README for why this is not an Okendo form and
+  what to change if that decision reverses.
+
+  Blocks:
+    gap      - one argument in the "why carry it" row
+    benefit  - one item in the "what you get" row
+    term     - one row in the program terms table
+    step     - one step in the "what happens next" row
+{% endcomment %}
+
+{%- assign form_id = 'wholesale-' | append: section.id -%}
+
+<section
+  id="{{ section.id }}"
+  class="shopify-section section page-width-content page-wholesale"
+  style="
+    --wh-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --wh-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --wh-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --wh-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+>
+  <div class="section-content-wrapper">
+    <div class="wh-inner">
+
+      {%- comment -%} ---------- Hero: lead with the argument, not the form ---------- {%- endcomment -%}
+      <header class="wh-header">
+        {% if section.settings.eyebrow != blank %}
+          <p class="wh-eyebrow t-n1">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+
+        <h1 class="wh-title">{{ section.settings.title }}</h1>
+
+        {% if section.settings.intro != blank %}
+          <div class="wh-intro">{{ section.settings.intro }}</div>
+        {% endif %}
+
+        
+
+        <div class="wh-divider" aria-hidden="true"></div>
+      </header>
+
+      {%- comment -%} ---------- The gap: why this slot is worth taking ---------- {%- endcomment -%}
+      {%- assign gap_blocks = section.blocks | where: 'type', 'gap' -%}
+      {% if gap_blocks.size > 0 %}
+        <div class="wh-block">
+          {% if section.settings.gap_heading != blank %}
+            <h2 class="wh-h2">{{ section.settings.gap_heading }}</h2>
+          {% endif %}
+          {% if section.settings.gap_sub != blank %}
+            <div class="wh-sub">{{ section.settings.gap_sub }}</div>
+          {% endif %}
+
+          <ul class="wh-grid wh-grid--3" role="list">
+            {% for block in gap_blocks %}
+              <li class="wh-card" {{ block.shopify_attributes }}>
+                {% if block.settings.stat != blank %}
+                  <p class="wh-card__stat">{{ block.settings.stat }}</p>
+                {% endif %}
+                <h3 class="wh-card__title">{{ block.settings.title }}</h3>
+                {% if block.settings.body != blank %}
+                  <div class="wh-card__body">{{ block.settings.body }}</div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {%- comment -%} ---------- What a partner actually gets ---------- {%- endcomment -%}
+      {%- assign benefit_blocks = section.blocks | where: 'type', 'benefit' -%}
+      {% if benefit_blocks.size > 0 %}
+        <div class="wh-block">
+          {% if section.settings.benefits_heading != blank %}
+            <h2 class="wh-h2">{{ section.settings.benefits_heading }}</h2>
+          {% endif %}
+
+          <ul class="wh-grid wh-grid--2" role="list">
+            {% for block in benefit_blocks %}
+              <li class="wh-benefit" {{ block.shopify_attributes }}>
+                <h3 class="wh-benefit__title">{{ block.settings.title }}</h3>
+                {% if block.settings.body != blank %}
+                  <div class="wh-benefit__body">{{ block.settings.body }}</div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {%- comment -%} ---------- Terms, before the form. Retailers qualify themselves. ---------- {%- endcomment -%}
+      {%- assign term_blocks = section.blocks | where: 'type', 'term' -%}
+      {% if term_blocks.size > 0 %}
+        <div class="wh-block">
+          {% if section.settings.terms_heading != blank %}
+            <h2 class="wh-h2">{{ section.settings.terms_heading }}</h2>
+          {% endif %}
+          {% if section.settings.terms_sub != blank %}
+            <div class="wh-sub">{{ section.settings.terms_sub }}</div>
+          {% endif %}
+
+          <dl class="wh-terms">
+            {% for block in term_blocks %}
+              <div class="wh-terms__row" {{ block.shopify_attributes }}>
+                <dt class="wh-terms__label t-n1">{{ block.settings.label }}</dt>
+                <dd class="wh-terms__value">{{ block.settings.value }}</dd>
+              </div>
+            {% endfor %}
+          </dl>
+        </div>
+      {% endif %}
+
+      {%- comment -%} ---------- The application ---------- {%- endcomment -%}
+      <div class="wh-block wh-block--form" id="{{ form_id }}">
+        {% if section.settings.form_heading != blank %}
+          <h2 class="wh-h2">{{ section.settings.form_heading }}</h2>
+        {% endif %}
+        {% if section.settings.form_sub != blank %}
+          <div class="wh-sub">{{ section.settings.form_sub }}</div>
+        {% endif %}
+
+        {% form 'contact', id: form_id, class: 'wh-form' %}
+          {% if form.posted_successfully? %}
+            <div class="wh-alert wh-alert--ok" role="status" tabindex="-1">
+              <p class="wh-alert__title">{{ section.settings.success_heading }}</p>
+              <div class="wh-alert__body">{{ section.settings.success_body }}</div>
+            </div>
+          {% else %}
+            {% if form.errors %}
+              <div class="wh-alert wh-alert--err" role="alert" tabindex="-1">
+                <p class="wh-alert__title">We could not send that.</p>
+                <ul class="wh-alert__list">
+                  {% for field in form.errors %}
+                    <li>
+                      {% if field == 'form' %}
+                        {{ form.errors.messages[field] }}
+                      {% else %}
+                        {{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+
+            <input type="hidden" name="contact[Enquiry type]" value="Wholesale application">
+            <input type="hidden" name="contact[Source page]" value="{{ canonical_url }}">
+            <input type="hidden" name="contact[Referrer]" id="wh-ref-{{ section.id }}" value="">
+            <input type="hidden" name="contact[Campaign]" id="wh-utm-{{ section.id }}" value="">
+
+            <fieldset class="wh-fieldset">
+              <legend class="wh-legend t-n1">Your business</legend>
+
+              <div class="wh-field">
+                <label class="wh-label" for="wh-business-{{ section.id }}">Business name <span class="wh-req" aria-hidden="true">*</span></label>
+                <input class="wh-input" id="wh-business-{{ section.id }}" type="text" name="contact[Business name]" required autocomplete="organization">
+              </div>
+
+              <div class="wh-field">
+                <label class="wh-label" for="wh-type-{{ section.id }}">What kind of retailer are you? <span class="wh-req" aria-hidden="true">*</span></label>
+                <select class="wh-input wh-select" id="wh-type-{{ section.id }}" name="contact[Retailer type]" required>
+                  <option value="" disabled selected>Select one</option>
+                  <option value="Gift Shop">Gift Shop</option>
+                  <option value="Grocery">Grocery</option>
+                  <option value="Restaurant">Restaurant</option>
+                  <option value="Cafe">Cafe</option>
+                  <option value="Online Retailer">Online Retailer</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="wh-field">
+                <label class="wh-label" for="wh-locations-{{ section.id }}">Number of locations</label>
+                <input class="wh-input" id="wh-locations-{{ section.id }}" type="number" min="1" step="1" inputmode="numeric" name="contact[Number of locations]">
+              </div>
+
+              <div class="wh-field wh-field--wide">
+                <label class="wh-label" for="wh-address-{{ section.id }}">Physical address</label>
+                <input class="wh-input" id="wh-address-{{ section.id }}" type="text" name="contact[Physical address]" autocomplete="street-address" placeholder="Street, city, state, ZIP">
+              </div>
+
+              <div class="wh-field wh-field--wide">
+                <label class="wh-label" for="wh-web-{{ section.id }}">Website or social</label>
+                <input class="wh-input" id="wh-web-{{ section.id }}" type="text" name="contact[Website or social]" placeholder="heist.co or @heist">
+              </div>
+            </fieldset>
+
+            <fieldset class="wh-fieldset">
+              <legend class="wh-legend t-n1">You</legend>
+
+              <div class="wh-field">
+                <label class="wh-label" for="wh-name-{{ section.id }}">Contact name <span class="wh-req" aria-hidden="true">*</span></label>
+                <input class="wh-input" id="wh-name-{{ section.id }}" type="text" name="contact[Name]" required autocomplete="name">
+              </div>
+
+              <div class="wh-field">
+                <label class="wh-label" for="wh-email-{{ section.id }}">Email <span class="wh-req" aria-hidden="true">*</span></label>
+                <input class="wh-input" id="wh-email-{{ section.id }}" type="email" name="contact[email]" required autocomplete="email" spellcheck="false">
+              </div>
+
+              <div class="wh-field">
+                <label class="wh-label" for="wh-phone-{{ section.id }}">Phone</label>
+                <input class="wh-input" id="wh-phone-{{ section.id }}" type="tel" name="contact[Phone]" autocomplete="tel">
+              </div>
+
+            </fieldset>
+
+            <fieldset class="wh-fieldset">
+              <legend class="wh-legend t-n1">The program</legend>
+
+              <div class="wh-field">
+                <label class="wh-label" for="wh-volume-{{ section.id }}">Estimated monthly volume</label>
+                <select class="wh-input wh-select" id="wh-volume-{{ section.id }}" name="contact[Estimated monthly volume]">
+                  <option value="" disabled selected>Select one</option>
+                  <option value="Under 20 lb">Under 20 lb</option>
+                  <option value="20 to 50 lb">20 to 50 lb</option>
+                  <option value="50 to 100 lb">50 to 100 lb</option>
+                  <option value="100 to 250 lb">100 to 250 lb</option>
+                  <option value="250 lb or more">250 lb or more</option>
+                  <option value="Not sure yet">Not sure yet</option>
+                </select>
+              </div>
+
+              <div class="wh-field wh-field--wide">
+                <label class="wh-label" for="wh-current-{{ section.id }}">What is your current coffee program?</label>
+                <textarea class="wh-input wh-textarea" id="wh-current-{{ section.id }}" name="contact[Current coffee program]" rows="4" placeholder="Who you pour now, whether you carry a decaf, and how it moves."></textarea>
+                <p class="wh-help">Be honest about the decaf. It is the part we can actually help with.</p>
+              </div>
+            </fieldset>
+
+            <div class="wh-submit">
+              <button class="wh-button t-btn" type="submit">{{ section.settings.submit_label }}</button>
+              {% if section.settings.form_footnote != blank %}
+                <p class="wh-help wh-help--submit">{{ section.settings.form_footnote }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endform %}
+      </div>
+
+      {%- comment -%} ---------- What happens next ---------- {%- endcomment -%}
+      {%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
+      {% if step_blocks.size > 0 %}
+        <div class="wh-block">
+          {% if section.settings.steps_heading != blank %}
+            <h2 class="wh-h2">{{ section.settings.steps_heading }}</h2>
+          {% endif %}
+
+          <ol class="wh-steps" role="list">
+            {% for block in step_blocks %}
+              <li class="wh-step" {{ block.shopify_attributes }}>
+                <span class="wh-step__num t-n1" aria-hidden="true">{{ forloop.index }}</span>
+                <div class="wh-step__content">
+                  <h3 class="wh-step__title">{{ block.settings.title }}</h3>
+                  {% if block.settings.body != blank %}
+                    <div class="wh-step__body">{{ block.settings.body }}</div>
+                  {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ol>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Wholesale page",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Wholesale" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Get in on the Heist" },
+    { "type": "richtext", "id": "intro", "label": "Intro" },
+
+    { "type": "header", "content": "The gap" },
+    { "type": "text", "id": "gap_heading", "label": "Heading", "default": "The slot nobody is fighting you for" },
+    { "type": "richtext", "id": "gap_sub", "label": "Subhead" },
+
+    { "type": "header", "content": "What you get" },
+    { "type": "text", "id": "benefits_heading", "label": "Heading", "default": "What partners get" },
+
+    { "type": "header", "content": "Program terms" },
+    { "type": "text", "id": "terms_heading", "label": "Heading", "default": "The terms, up front" },
+    { "type": "richtext", "id": "terms_sub", "label": "Subhead" },
+
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "form_heading", "label": "Heading", "default": "Apply to carry Heist" },
+    { "type": "richtext", "id": "form_sub", "label": "Subhead" },
+    { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send application" },
+    { "type": "text", "id": "form_footnote", "label": "Footnote under submit", "default": "We read every one of these. A real person replies." },
+    { "type": "text", "id": "success_heading", "label": "Success heading", "default": "Got it." },
+    { "type": "richtext", "id": "success_body", "label": "Success message" },
+
+    { "type": "header", "content": "What happens next" },
+    { "type": "text", "id": "steps_heading", "label": "Heading", "default": "What happens next" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top_mobile", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Padding top (mobile)", "default": 38 },
+    { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Padding bottom (mobile)", "default": 48 },
+    { "type": "range", "id": "padding_top_desktop", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Padding top (desktop)", "default": 57 },
+    { "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Padding bottom (desktop)", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "gap",
+      "name": "Gap argument",
+      "settings": [
+        { "type": "text", "id": "stat", "label": "Stat or short number" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "richtext", "id": "body", "label": "Body" }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Partner benefit",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "richtext", "id": "body", "label": "Body" }
+      ]
+    },
+    {
+      "type": "term",
+      "name": "Program term",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "text", "id": "value", "label": "Value" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Next step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "richtext", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Wholesale page" }]
+}
+{% endschema %}

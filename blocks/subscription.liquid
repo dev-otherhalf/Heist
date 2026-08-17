@@ -49,6 +49,23 @@
   if variation == 'variation_2'
     assign default_tier = 'standard'
   endif
+
+  # The minimum is satisfied inside this buy box alone.
+  #
+  # Bags already sitting in the cart deliberately do NOT count toward it. Each coffee
+  # page sells its own line, and a subscription is assembled in one box rather than
+  # stitched together out of one bag here and two bags there. The shop container is the
+  # one place a plan can legitimately span both coffees, because there both coffees are
+  # tiles in the same box.
+  assign min_bags = block.settings.min_subscription_bags | default: 3
+
+  # One stitched component means a single tile, which the two-up grid renders as a
+  # half-width column with a dead gutter beside it. The modifier switches it to a
+  # horizontal card on desktop. See the stylesheet at the bottom of this file.
+  assign tiles_class = 'buy-box__tiles'
+  if components.size == 1
+    assign tiles_class = 'buy-box__tiles buy-box__tiles--single'
+  endif
 %}
 
 {% render 'vite-tag' with 'sections/styles/buy-box.scss' %}
@@ -66,7 +83,9 @@
   data-standard-hint="week"
   data-prepaid-divisor="{{ block.settings.heist_prepaid_divisor | default: 3 }}"
   data-one-time-enabled="{{ block.settings.one_time_enabled }}"
-  data-min-subscription-bags="{{ block.settings.min_subscription_bags | default: 3 }}"
+  data-min-subscription-bags="{{ min_bags }}"
+  data-bar-unlocked="{{ block.settings.subscribe_bar_label | escape }}"
+  data-bar-locked="{{ block.settings.subscribe_bar_label_locked | escape }}"
   data-default-tier="{{ default_tier }}"
   data-cta-standard="{{ block.settings.subscribe_cta_label | default: 'Start the heist' | escape }}"
   data-cta-heist="{{ block.settings.cta_heist_label | default: 'Join the Heist Society™' | escape }}"
@@ -87,10 +106,31 @@
   {% else %}
     {%- comment -%} ---------- Component product tiles ---------- {%- endcomment -%}
     <div class="buy-box__bags">
+      {%- comment -%}
+        The label only earns its place when there is a choice to make. With a single
+        tile (the individual coffee pages) the stepper is self-evident, so the heading
+        and its 27px bottom margin just push the plan selector down the page.
+
+        Conditional rather than a blank setting: the `default` filter fires on an empty
+        string, so clearing the field in the customizer brings back the fallback copy.
+      {%- endcomment -%}
+      {%- comment -%}
+        The bar renders on every product page now, including the single-coffee ones.
+        It was suppressed there while it was only a redundant "select your bags" heading,
+        but it now carries the unlock threshold and the discount badge, which is exactly
+        as relevant on Blueprint as it is on the shop container.
+      {%- endcomment -%}
       <p class="buy-box__section-label t-n1">
-        {{ block.settings.bags_label | default: 'Select your bags: take more, save more.' }}
+          <span>{{ block.settings.bags_label | default: 'Select your bags: take more, save more.' }}</span>
+          {%- comment -%}
+            One discount badge for the whole group, sitting with the label, instead of a
+            badge stuck in the corner of every tile saying the same number twice. Filled
+            by the mirror script after the tiles, because buy-box.js only writes badges
+            it finds inside a tile.
+          {%- endcomment -%}
+        <span class="buy-box-tier__badge buy-box__bags-badge t-n2-med" data-bags-badge hidden></span>
       </p>
-      <div class="buy-box__tiles" ref="tiles">
+      <div class="{{ tiles_class }}" ref="tiles">
        {% assign tile_default_quantity = 1 %}
         {% for component in components %}
           {% if forloop.index == 1 %}
@@ -105,6 +145,7 @@
           %}
         {% endfor %}
       </div>
+
     </div>
 
     {%- comment -%} ---------- Plan selector (per layout variation) ---------- {%- endcomment -%}
@@ -241,6 +282,7 @@
     {% if block.settings.enable_sticky_bar %}
       {% render 'buy-box-sticky', block: block, components: components, variation: variation %}
     {% endif %}
+
   {% endif %}
 </buy-box>
 
@@ -434,6 +476,14 @@
     },
     {
       "type": "text",
+      "id": "subscribe_bar_label_locked",
+      "label": "Box bar label, below the minimum (V1)",
+      "info": "Use {count} for the number of bags still needed.",
+      "default": "Add {count} more to unlock savings",
+      "visible_if": "{{ block.settings.layout_variation == 'variation_1' }}"
+    },
+    {
+      "type": "text",
       "id": "standard_subtitle",
       "label": "Summary subtitle when 4-week selected (V1)",
       "default": "Ships every 4 weeks · Pause, skip, or cancel anytime · Free shipping",
@@ -511,6 +561,13 @@
       "id": "guarantee_text",
       "label": "Guarantee line",
       "default": "30-day satisfaction guarantee • Refill ships in 30 days"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_text_one_time",
+      "label": "Guarantee line, one-time tier",
+      "info": "Shown instead of the guarantee line on One time purchase. Leave blank to reuse it.",
+      "default": "Love it or your money back, 30 days."
     },
     {
       "type": "textarea",

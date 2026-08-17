@@ -14,8 +14,9 @@
   Renders nothing when the mode is `none`, when the cart is empty, or when the
   chosen mode has no data to draw (no threshold / no tiers).
 
-  Membership and gifted (free) lines don't count toward either mode: their
-  quantity and price are excluded from the totals the bar tracks.
+  Membership and gifted lines don't count toward either mode (see
+  `cart-line-card-type`): their quantity and price are excluded from the totals
+  the bar tracks.
 {% enddoc %}
 
 {% liquid
@@ -29,21 +30,15 @@
       assign has_subscription = true
     endif
 
-    assign item_tags = item.product.tags | join: ',' | downcase
-    assign is_membership_item = false
-    if item_tags contains 'membership'
-      assign is_membership_item = true
-    endif
+    capture item_card_type
+      render 'cart-line-card-type', item: item
+    endcapture
+    assign item_card_type = item_card_type | strip
 
-    assign is_free_item = false
-    if is_membership_item == false and item.final_line_price == 0
-      assign is_free_item = true
-    endif
-
-    unless is_membership_item or is_free_item
+    if item_card_type == blank
       assign progress_item_count = progress_item_count | plus: item.quantity
       assign progress_total_price = progress_total_price | plus: item.final_line_price
-    endunless
+    endif
   endfor
 %}
 

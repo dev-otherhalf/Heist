@@ -1,0 +1,190 @@
+{%- render 'vite-tag', entry: 'sections/styles/page-content.scss' -%}
+{% comment %}
+  Generic content page section.
+
+  Renders the page body written in Shopify admin (Content > Pages) on the site's paper
+  texture instead of the flat white palette background, and styles the resulting HTML
+  with the brand's type scale. Use it for any prose page: About, Process, policies,
+  shipping info, and so on.
+
+  Why this exists: the theme applies the paper texture ad hoc per surface (body.product,
+  .heist-header, the privacy policy section) rather than globally on body. A page built
+  on the default `page` template therefore renders on the palette background, which is
+  white. This section restores continuity.
+
+  Pairs with sections/page-faq.liquid, which uses the same header treatment, the same
+  55rem measure, and the same tokens, so content pages read as a family.
+{% endcomment %}
+
+{%- liquid
+  assign body_html = section.settings.body
+  if body_html == blank
+    assign body_html = page.content
+  endif
+
+  comment
+    Pages often repeat their own title as the first heading of the body copy, which puts
+    the title on screen twice. Drop that leading heading when it is the very first thing
+    in the content. Guarded so nothing is lost if the shape is unexpected.
+  endcomment
+  if section.settings.strip_leading_heading and body_html != blank
+    assign trimmed = body_html | strip
+    assign opener = trimmed | slice: 0, 3 | downcase
+
+    if opener == '<h1'
+      assign parts = trimmed | split: '</h1>'
+      assign rebuilt = parts | slice: 1, 100 | join: '</h1>'
+    elsif opener == '<h2'
+      assign parts = trimmed | split: '</h2>'
+      assign rebuilt = parts | slice: 1, 100 | join: '</h2>'
+    else
+      assign rebuilt = ''
+    endif
+
+    if rebuilt != blank
+      assign body_html = rebuilt
+    endif
+  endif
+-%}
+
+
+
+<section
+  id="{{ section.id }}"
+  class="shopify-section section page-width-content content-page"
+  style="
+    --pc-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --pc-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --pc-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --pc-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    {% if section.settings.background_image_desktop != blank %}--pc-bg-desktop: url({{ section.settings.background_image_desktop | image_url: width: 2400 }});{% endif %}
+    {% if section.settings.background_image_mobile != blank %}--pc-bg-mobile: url({{ section.settings.background_image_mobile | image_url: width: 1200 }});{% endif %}
+  "
+>
+  <div class="section-content-wrapper">
+    <div class="content-page__inner">
+      {% if section.settings.show_header %}
+        <header class="content-page__header{% if section.settings.align_header == 'left' %} content-page__header--left{% endif %}">
+          {% if section.settings.eyebrow != blank %}
+            <p class="content-page__eyebrow t-n1">{{ section.settings.eyebrow }}</p>
+          {% endif %}
+
+          {%- assign page_title = section.settings.title | default: page.title -%}
+          {% if page_title != blank %}
+            <h1 class="content-page__title">{{ page_title }}</h1>
+          {% endif %}
+
+          {% if section.settings.meta != blank %}
+            <p class="content-page__meta t-n1">{{ section.settings.meta }}</p>
+          {% endif %}
+
+          {% if section.settings.intro != blank %}
+            <div class="content-page__intro">{{ section.settings.intro }}</div>
+          {% endif %}
+
+          <div class="content-page__divider" aria-hidden="true"></div>
+        </header>
+      {% endif %}
+
+      {%- comment -%}
+        Body copy. Uses the page's own content by default so it can be edited in Shopify
+        admin without touching the theme. The richtext field is a fallback for when this
+        section is used somewhere without a page context.
+      {%- endcomment -%}
+      <div class="content-page__body rte">
+        {{ body_html }}
+      </div>
+
+      {% if section.settings.footer_heading != blank or section.settings.footer_text != blank %}
+        <aside class="content-page__footer">
+          {% if section.settings.footer_heading != blank %}
+            <h2 class="content-page__footer-heading">{{ section.settings.footer_heading }}</h2>
+          {% endif %}
+          {% if section.settings.footer_text != blank %}
+            <div class="content-page__footer-text">{{ section.settings.footer_text }}</div>
+          {% endif %}
+          {% if section.settings.footer_button_label != blank %}
+            <a
+              class="content-page__button t-btn"
+              href="{{ section.settings.footer_button_link | default: '#' }}"
+            >
+              {{ section.settings.footer_button_label }}
+            </a>
+          {% endif %}
+        </aside>
+      {% endif %}
+    </div>
+  </div>
+
+  {% schema %}
+  {
+    "name": "Content Page",
+    "tag": "section",
+    "settings": [
+      { "type": "header", "content": "Header" },
+      { "type": "checkbox", "id": "show_header", "label": "Show page header", "default": true },
+      { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "info": "Leave empty to use the page's own title."
+      },
+      {
+        "type": "text",
+        "id": "meta",
+        "label": "Small line under the title",
+        "info": "For example: LAST UPDATED AUGUST 2026"
+      },
+      { "type": "richtext", "id": "intro", "label": "Intro" },
+      {
+        "type": "select",
+        "id": "align_header",
+        "label": "Header alignment",
+        "options": [
+          { "value": "center", "label": "Centered" },
+          { "value": "left", "label": "Left" }
+        ],
+        "default": "center"
+      },
+      { "type": "header", "content": "Body" },
+      {
+        "type": "richtext",
+        "id": "body",
+        "label": "Body override",
+        "info": "Leave empty to use the page content written in Content > Pages. Only fill this in if you want the copy stored in the theme instead."
+      },
+      {
+        "type": "checkbox",
+        "id": "strip_leading_heading",
+        "label": "Remove a duplicate heading from the top of the body",
+        "default": true,
+        "info": "Many pages repeat their title as the first heading of the body copy, which shows it twice. This drops that first heading only."
+      },
+      { "type": "header", "content": "Background" },
+      {
+        "type": "image_picker",
+        "id": "background_image_desktop",
+        "label": "Background image (desktop)",
+        "info": "Optional. Defaults to the site's paper texture, tiled to match the header and product pages."
+      },
+      { "type": "image_picker", "id": "background_image_mobile", "label": "Background image (mobile)" },
+      { "type": "header", "content": "Closing block" },
+      { "type": "text", "id": "footer_heading", "label": "Heading" },
+      { "type": "richtext", "id": "footer_text", "label": "Text" },
+      { "type": "text", "id": "footer_button_label", "label": "Button label" },
+      { "type": "url", "id": "footer_button_link", "label": "Button link" },
+      { "type": "header", "content": "Mobile padding" },
+      { "type": "number", "id": "padding_top_mobile", "label": "Top", "default": 38 },
+      { "type": "number", "id": "padding_bottom_mobile", "label": "Bottom", "default": 48 },
+      { "type": "header", "content": "Desktop padding" },
+      { "type": "number", "id": "padding_top_desktop", "label": "Top", "default": 57 },
+      { "type": "number", "id": "padding_bottom_desktop", "label": "Bottom", "default": 96 }
+    ],
+    "presets": [{ "name": "Content Page", "category": "Pages" }]
+  }
+  {% endschema %}
+</section>
+
+
+

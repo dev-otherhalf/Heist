@@ -12,15 +12,31 @@
 {% liquid
   assign s = block.settings
   assign detail = detail | default: ''
+
+  # The shared line ends "skip or cancel anytime", which is meaningless on a single
+  # purchase: there is nothing to skip and nothing to cancel. The one-time tier gets its
+  # own line, falling back to the shared one if the setting is emptied.
+  assign line = s.guarantee_text
+  if detail == 'onetime' and s.guarantee_text_one_time != blank
+    assign line = s.guarantee_text_one_time
+  endif
 %}
 
-{% if s.guarantee_text != blank or s.guarantee_tooltip != blank %}
+{% if line != blank or s.guarantee_tooltip != blank %}
   <div
     class="buy-box__guarantee t-n1"
     {% if detail == 'sub' %}data-sub-detail{% elsif detail == 'onetime' %}data-onetime-detail hidden{% endif %}
   >
-    <span class="buy-box__guarantee-text">{{ s.guarantee_text }}
-    {% render 'buy-box-tooltip', content: s.guarantee_tooltip, label: s.guarantee_text %}
+    <span class="buy-box__guarantee-text">{{ line }}
+    {%- comment -%}
+      No tooltip on the one-time line. Its content explains refill cadence, skipping,
+      pausing and the subscription/Heist Society benefits, none of which apply to a
+      single purchase, so on that box the info button opened an answer to a question
+      the shopper had not asked.
+    {%- endcomment -%}
+    {% unless detail == 'onetime' %}
+      {% render 'buy-box-tooltip', content: s.guarantee_tooltip, label: line %}
+    {% endunless %}
     </span>
   </div>
 {% endif %}

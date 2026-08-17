@@ -3,24 +3,44 @@
 
   Offers to move every eligible cart line onto its prepaid plan in one click.
 
-  A line is eligible when its variant has a prepaid selling plan available and the
-  line is not already on one — i.e. one-time lines and standard subscription lines.
-  Each variant carries its own prepaid plan id (the component products are separate
-  products), so the ids are collected per line into a data island rather than being
-  assumed to be shared.
+  A line is eligible when its product is one of the qualifying products, its
+  variant has a prepaid selling plan available, and the line is not already on
+  one — i.e. one-time lines and standard subscription lines. Each variant carries
+  its own prepaid plan id (the component products are separate products), so the
+  ids are collected per line into a data island rather than being assumed to be
+  shared.
 
-  Renders nothing when the banner is disabled, when the cart is empty, or when no
-  line is eligible — which is also how it disappears after the upgrade lands: the
-  re-rendered cart has no eligible lines left.
+  The banner also waits until the qualifying lines add up to the minimum bag
+  count, so it only offers the upgrade once the order is big enough to be worth
+  upgrading.
+
+  Renders nothing when the banner is disabled, when the cart is empty, when no
+  line is eligible, or when the minimum isn't met — which is also how it
+  disappears after the upgrade lands: the re-rendered cart has no eligible lines
+  left.
 
   All copy and imagery comes from Theme settings → Cart → "Cart drawer — upgrade banner".
 {% enddoc %}
 
 {% liquid
+  assign minimum_quantity = settings.cart_upgrade_min_quantity | default: 3
+
+  assign qualifying_ids = ''
+  for qualifying_product in settings.cart_upgrade_products
+    assign qualifying_ids = qualifying_ids | append: '[' | append: qualifying_product.id | append: ']'
+  endfor
+
   assign eligible_count = 0
+  assign eligible_quantity = 0
 
   capture eligible_lines_json
     for item in cart.items
+      assign product_key = '[' | append: item.product.id | append: ']'
+      assign is_qualifying_product = false
+      if qualifying_ids == blank or qualifying_ids contains product_key
+        assign is_qualifying_product = true
+      endif
+
       assign current_plan_name = item.selling_plan_allocation.selling_plan.name | downcase
       assign is_prepaid_line = false
       if current_plan_name contains 'prepaid' or current_plan_name contains 'prepay'
@@ -28,7 +48,7 @@
       endif
 
       assign prepaid_plan_id = ''
-      unless is_prepaid_line
+      if is_qualifying_product and is_prepaid_line == false
         for allocation in item.variant.selling_plan_allocations
           assign plan_name = allocation.selling_plan.name | downcase
           if plan_name contains 'prepaid' or plan_name contains 'prepay'
@@ -36,13 +56,14 @@
             break
           endif
         endfor
-      endunless
+      endif
 
       if prepaid_plan_id != blank
         if eligible_count > 0
           echo ','
         endif
         assign eligible_count = eligible_count | plus: 1
+        assign eligible_quantity = eligible_quantity | plus: item.quantity
         echo '{"key":'
         echo item.key | json
         echo ',"variantId":'
@@ -65,7 +86,7 @@
   until one was removed or switched to one-time), and morph-inserted scripts
   never execute.
 {%- endcomment -%}
-{%- if settings.cart_upgrade_enabled and eligible_count > 0 -%}
+{%- if settings.cart_upgrade_enabled and eligible_count > 0 and eligible_quantity >= minimum_quantity -%}
   {%- assign perks = settings.cart_upgrade_perks | strip | newline_to_br | split: '<br />' -%}
 
   <cart-upgrade-banner class="cart-upgrade">

@@ -176,23 +176,21 @@
             -%}
             {% for item in cart.items %}
               {%- liquid
+                capture item_card_type
+                  render 'cart-line-card-type', item: item
+                endcapture
+                assign item_card_type = item_card_type | strip
+
                 assign bundle_group = item.properties._bundle_group
 
-                comment
-                  Membership and gifted lines are cards, not ordinary rows: the
-                  membership is identified by its product tag, the gift by its
-                  zero line price. Both drop the quantity stepper and the
-                  right-hand line price.
-                endcomment
-                assign item_tags = item.product.tags | join: ',' | downcase
-                assign is_membership_item = false 
-                if item_tags contains 'membership' and item.final_line_price == 0
+                assign is_membership_item = false
+                if item_card_type == 'membership'
                   assign is_membership_item = true
                 endif
 
                 assign is_free_item = false
-                if is_membership_item == false and item.final_line_price == 0
-                  assign is_free_item = true    
+                if item_card_type == 'gift'
+                  assign is_free_item = true
                 endif
 
                 assign is_card_item = false
@@ -374,14 +372,24 @@
                         %}
                       </div>
 
-                      {%- if is_free_item -%}
-                        <p class="cart-items__free-flag t-n1">
-                          {%- if free_value > 0 -%}
-                            FREE (VALUE {{ free_value | money_without_trailing_zeros }})
-                          {%- else -%}
-                            FREE
-                          {%- endif -%}
-                        </p>
+                      {%- if is_card_item -%}
+                        {%- liquid
+                          capture free_flag
+                            echo item.product.metafields.custom.cart_card_flag.value
+                          endcapture
+                          assign free_flag = free_flag | strip
+
+                          if free_flag == blank and is_free_item
+                            if free_value > 0
+                              assign free_flag = free_value | money_without_trailing_zeros | prepend: 'FREE (VALUE ' | append: ')'
+                            else
+                              assign free_flag = 'FREE'
+                            endif
+                          endif
+                        -%}
+                        {%- if free_flag != blank -%}
+                          <p class="cart-items__free-flag t-n1">{{ free_flag }}</p>
+                        {%- endif -%}
                       {%- endif -%}
 
                       {%- assign product_subtitle = item.product.metafields.custom.product_subtitle.value
@@ -389,21 +397,19 @@
                       -%}
 
                       {%- if is_card_item -%}
-                        {%- comment -%}
-                          The card copy is the terms of the offer, not a tagline, so
-                          it falls back to the standing membership/gift wording when
-                          the product has no subtitle authored.
-                        {%- endcomment -%}
-                        {%- capture card_description -%}
-                          {%- if product_subtitle != blank -%}
-                            {{ product_subtitle }}
-                          {%- elsif is_membership_item -%}
-                            3 months prepaid today, then monthly. <br>Cancel anytime after.
-                          {%- else -%}
-                            Gifts include: Coffee Storage Tin, Scoop, Smuggle Bear (with secret stash pouch), Monthly Collectible matchbooks, and Free Shipping.
-                          {%- endif -%}
-                        {%- endcapture -%}
-                        <p class="cart-items__card-description t-t4">{{ card_description | strip }}</p>
+                        {%- liquid
+                          capture card_description
+                            render 'cart-line-card-description', product: item.product
+                          endcapture
+                          assign card_description = card_description | strip
+
+                          if card_description == blank
+                            assign card_description = product_subtitle
+                          endif
+                        -%}
+                        {%- if card_description != blank -%}
+                          <div class="cart-items__card-description t-t4">{{ card_description }}</div>
+                        {%- endif -%}
                       {%- elsif product_subtitle != blank -%}
                         <p class="cart-items__subtitle t-t3">{{ product_subtitle }}</p>
                       {%- endif -%}
@@ -414,7 +420,7 @@
                         </p>
                       {% endif %}
 
-                      {%- if item.item_components.size != 0 -%}
+                      {%- if item.item_components.size != 0 and is_card_item == false -%}
                         <ul class="cart-items__bundle list-unstyled">
                           {%- for component in item.item_components -%}
                             <li>
@@ -540,12 +546,12 @@
                         {%- liquid
                           assign membership_remove_lines = item.index | plus: 1
                           for gift_item in cart.items
-                            assign gift_tags = gift_item.product.tags | join: ',' | downcase
-                            assign gift_is_membership = false
-                            if gift_tags contains 'membership' and gift_item.final_line_price == 0
-                              assign gift_is_membership = true
-                            endif
-                            if gift_is_membership == false and gift_item.final_line_price == 0
+                            capture gift_card_type
+                              render 'cart-line-card-type', item: gift_item
+                            endcapture
+                            assign gift_card_type = gift_card_type | strip
+
+                            if gift_card_type == 'gift'
                               assign gift_line_number = gift_item.index | plus: 1
                               assign membership_remove_lines = membership_remove_lines | append: ',' | append: gift_line_number
                             endif
@@ -1304,4 +1310,5 @@
     padding: 0;
     margin: 0;
   }
+
 {% endstylesheet %}

@@ -1,0 +1,425 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+/*
+ * ------------------------------------------------------------
+ * Individual coffee template (Smooth Talker, Blueprint).
+ *
+ * This is a FULL CLONE of templates/product.shop.json, not a hand-copied
+ * subset. It was hand-copied once and immediately drifted, because the
+ * container had been edited in the theme editor after the local export was
+ * taken. Regenerate it from the live shop template rather than editing the
+ * copy, or the two will separate again.
+ *
+ * What scopes the buy box to a single SKU is not this file. It is the
+ * product's own custom.buy_box_stitched_products metafield: the container
+ * lists both coffees, each child lists only itself, so the same block
+ * renders one tile instead of two.
+ *
+ * The only intentional difference from the container is the `product-schema`
+ * block below. The container omits Product JSON-LD because Okendo already
+ * emits a valid node there; on the children Okendo's node is malformed
+ * (ProductGroup with no hasVariant), so we emit our own.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-information-shop",
+      "blocks": {
+        "media-gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
+          "settings": {
+            "media_presentation": "carousel",
+            "media_columns": "two",
+            "image_gap": 4,
+            "large_first_image": false,
+            "icons_style": "none",
+            "slideshow_controls_style": "thumbnails",
+            "slideshow_mobile_controls_style": "dots",
+            "thumbnail_position": "bottom",
+            "thumbnail_width": 72,
+            "thumbnail_radius": 0,
+            "aspect_ratio": "adapt",
+            "constrain_to_viewport": false,
+            "media_fit": "cover",
+            "media_radius": 0,
+            "extend_media": false,
+            "zoom": true,
+            "video_loop": false,
+            "hide_variants": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "product-details": {
+          "type": "_product-details",
+          "static": true,
+          "settings": {
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "details_position": "flex-start",
+            "gap": 0,
+            "sticky_details_desktop": true,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "okendo_star_summary_6rYrxx": {
+              "type": "okendo-star-summary",
+              "name": "Review stars (Okendo)",
+              "settings": {
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "product_info_details_nFiQpA": {
+              "type": "product-info-details",
+              "name": "Product info details",
+              "settings": {},
+              "blocks": {}
+            },
+            "subscription_bPmTtM": {
+              "type": "subscription",
+              "name": "Subscription",
+              "settings": {
+                "layout_variation": "variation_1",
+                "one_time_enabled": true,
+                "default_tier": "standard",
+                "bags_label": "Build your month: 3 bags = 30 days",
+                "default_bag_quantity": 1,
+                "default_zero_bags_trailing": 0,
+                "min_subscription_bags": 3,
+                "heist_title": "Heist Society\u2122 Subscription",
+                "heist_subtitle": "3 month commitment, prepaid. Then ships every 4 weeks.",
+                "heist_upgrade_title": "Upgrade & Join Heist Society\u2122",
+                "heist_summary_subtitle": "3 months prepaid, recurring. Cancel anytime after prepaid period ends.",
+                "heist_badge": "",
+                "heist_prepaid_divisor": 3,
+                "perk_list": "Lowest price. \nFree shipping.\nSmuggle Bear with Secret Stash Pouch\nCoffee Storage Tin + Scoop (Month 2)\nCollectible Matchbook (every 30 days)",
+                "kit_label": "Gifts Arrive Monthly",
+                "kit_image_1": "shopify://shop_images/JOIN_1.jpg",
+                "kit_caption_1": "tin + scoop",
+                "kit_image_2": "shopify://shop_images/JOIN_2.jpg",
+                "kit_caption_2": "smuggle bear",
+                "kit_image_3": "shopify://shop_images/Matchbook_tile_4x_of_the_open_version_1.jpg",
+                "kit_caption_3": "Collectible Matchbooks",
+                "standard_title": "Subscribe & Save",
+                "subscribe_bar_label": "Unlocked: Monthly Savings",
+                "standard_subtitle": "Free Shipping. Every 30 days. Cancel Anytime.",
+                "standard_badge": "",
+                "standard_perk_list": "3 bags is about a month for one. 6 for two.\nFree shipping on every order.\nPause, skip or cancel anytime.",
+                "default_frequency_label": "2 weeks",
+                "one_time_title": "Just this once",
+                "cta_label": "Add to cart",
+                "subscribe_cta_label": "Buy Now",
+                "cta_heist_label": "Join Now",
+                "cta_one_time_label": "Buy Now",
+                "guarantee_text": "Love it or your money back, 30 days. Skip or cancel anytime.",
+                "guarantee_tooltip": "By default you will receive a refill every 30 days of your selected quantity. Skip, pause, or cancel anytime.\n\nBy subscribing and/or joining Heist Society, you get discounted pricing and benefits and gifts available only to your chosen subscription level.",
+                "enable_sticky_bar": true,
+                "sticky_label": "Order Summary:",
+                "sticky_cta_label": "Review order",
+                "sticky_saving_label": "Your savings",
+                "popup_title": "Want to Upgrade to the Heist Society\u2122 and Save 33%?",
+                "popup_subtitle": "3 months prepaid today, then monthly. Cancel anytime after.",
+                "popup_tooltip": "By default you will receive a refill every 30 days of your selected quantity. Skip, pause, or cancel anytime.\n\nBy subscribing and/or joining Heist Society, you get discounted pricing and benefits and gifts available only to your chosen subscription level.",
+                "popup_cta_label": "Join the Heist Society\u2122",
+                "popup_footer": "30-day escape plan \u2022 Love it or your money back",
+                "subscribe_bar_label_locked": "Add {count} more to unlock savings",
+                "guarantee_text_one_time": "Love it or your money back, 30 days."
+              },
+              "blocks": {}
+            },
+            "product_faqs_mQWJKi": {
+              "type": "product-faqs",
+              "name": "Product FAQs",
+              "settings": {
+                "heading": "",
+                "open_first": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "product_videos_UQHjp8": {
+              "type": "product-videos",
+              "name": "Product Videos",
+              "settings": {
+                "heading": "Hear What people are saying about HEIST",
+                "padding-block-start": 30,
+                "padding-block-end": 0,
+                "padding-block-start-mobile": 15,
+                "padding-block-end-mobile": 32
+              },
+              "blocks": {}
+            },
+            "product_schema_child": {
+              "type": "product-schema",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "okendo_star_summary_6rYrxx",
+            "product_info_details_nFiQpA",
+            "subscription_bPmTtM",
+            "product_faqs_mQWJKi",
+            "product_videos_UQHjp8",
+            "product_schema_child"
+          ]
+        }
+      },
+      "settings": {
+        "content_width": "content-full-width",
+        "desktop_media_position": "left",
+        "equal_columns": false,
+        "limit_details_width": false,
+        "gap": 48,
+        "background_color": "rgba(0,0,0,0)",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "coffee_standards_b4EGbK": {
+      "type": "coffee-standards",
+      "name": "Coffee standards",
+      "settings": {
+        "content_selection": "great-coffee-shouldnt-come-with-consequences-heist-is-water-processed-which-means-no-chemicals-and-no-shortcuts-nothing-stripped-but-the-caffeine",
+        "badge_marquee_speed": 25,
+        "show_press_row": false,
+        "enable_press_marquee_desktop": false,
+        "press_marquee_speed": 25,
+        "background_color": "",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 120,
+        "padding_bottom_desktop": 88
+      }
+    },
+    "coffee_perks_MBCN8J": {
+      "type": "coffee-perks",
+      "name": "Coffee perks",
+      "settings": {
+        "views": [
+          "the-perks-of-coffee-without-a-curfew",
+          "when-people-drink-heist"
+        ],
+        "background_image_mobile": "shopify://shop_images/full-briefing-bg-mobile.jpg",
+        "background_image_desktop": "shopify://shop_images/Rectangle_12_6d7c3e1a-be24-4377-ac89-faf380f0390c.jpg",
+        "card_background_color": "#eeeade",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 120,
+        "padding_bottom_desktop": 120
+      }
+    },
+    "join_the_heist_society_UgNmV4": {
+      "type": "join-the-heist-society",
+      "blocks": {
+        "product_bjHE3X": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "variant_id": "",
+            "custom_name": "Tin + Scoop",
+            "custom_description": "(value $20)",
+            "custom_image": "shopify://shop_images/JOIN_1.jpg"
+          }
+        },
+        "product_zWXPXB": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "variant_id": "",
+            "custom_name": "smuggle bear",
+            "custom_description": "(value $50)",
+            "custom_image": "shopify://shop_images/JOIN_2.jpg"
+          }
+        },
+        "product_43rK8n": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "variant_id": "",
+            "custom_name": "Collectible Matchbooks",
+            "custom_description": "(founder signed)",
+            "custom_image": "shopify://shop_images/Matchbook_tile_4x_of_the_open_version_1.jpg"
+          }
+        }
+      },
+      "block_order": ["product_bjHE3X", "product_zWXPXB", "product_43rK8n"],
+      "name": "Join the Heist Society",
+      "settings": {
+        "custom_id": "homepage-join-the-heist",
+        "heading": "Join \nHeist Society\u2122",
+        "subheading": "3 months prepaid today, then monthly. Pause or cancel anytime after.",
+        "features": "Lowest price\nFree shipping\nSmuggle Bear with secret stash compartment\nCollectible Matchbook every 30 days\nCoffee Storage Tin & Scoop",
+        "kit_heading": "Smuggle Bear Welcome Kit",
+        "kit_value": "(Value $70)",
+        "button_label": "Join",
+        "button_label_two": "Now",
+        "cart_products": "coffee-without-a-curfew",
+        "disclaimer": "",
+        "left_media_type_desktop": "video",
+        "left_media_type_mobile": "image",
+        "left_image": "shopify://shop_images/JOIN-M.jpg",
+        "left_image_mobile": "shopify://shop_images/JOIN-M.jpg",
+        "left_video_desktop": "shopify://files/videos/JOIN-D.mp4",
+        "left_video_mobile": "shopify://files/videos/Screen Recording 2026-07-06 at 4.37.59\u202fPM_b9a264e4-0ba9-435a-b9b9-42cd636e1ad1.mov",
+        "background_color": "#e1dbcd",
+        "panel_color": "#f4ede1",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0
+      }
+    },
+    "okendo_reviews_yqzgF8": {
+      "type": "okendo-reviews",
+      "name": "Okendo Reviews",
+      "settings": {
+        "section_id": "reviews",
+        "background_image_desktop": "shopify://shop_images/Rectangle_12_d5998a7f-6247-4894-ad33-7e035aee77f7.jpg",
+        "background_image_mobile": "shopify://shop_images/Rectangle_144433642_1d70cacd-939c-42cb-95b3-95c7b278949c.jpg",
+        "heading": "The Receipts Don't Lie",
+        "barcode_image": "shopify://shop_images/Frame_1.svg",
+        "review_barcode_image": "shopify://shop_images/Frame_1.png",
+        "review_barcode_image_mobile": "shopify://shop_images/Frame_1_1.png",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 121,
+        "padding_bottom_desktop": 120
+      }
+    },
+    "coffee_heist_f6Ntka": {
+      "type": "coffee-heist",
+      "name": "Coffee Heist Comparison",
+      "settings": {
+        "custom_id": "",
+        "background_color": "",
+        "tabs_selection": "the-worlds-biggest-coffee-heist-pdp",
+        "receipts_selection": "",
+        "breiwng_guide_selection": "brewing-guide",
+        "desktop_top_padding": 120,
+        "desktop_bottom_padding": 120,
+        "mobile_top_padding": 64,
+        "mobile_bottom_padding": 64
+      }
+    },
+    "full_briefing_nz7HDP": {
+      "type": "full-briefing",
+      "name": "Full briefing",
+      "settings": {
+        "briefing": "the-full-briefing",
+        "background_image_desktop": "shopify://shop_images/full-briefing-bg.jpg",
+        "background_image_mobile": "shopify://shop_images/full-briefing-bg-mobile.jpg",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "faq_link": "/pages/faq"
+      }
+    },
+    "gallery_showcase_p3M8Eq": {
+      "type": "gallery-showcase",
+      "blocks": {
+        "card_djFWVE": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Marque_1_e316bc57-6c8f-42ed-9dd8-74f5771bd394.jpg"
+          }
+        },
+        "card_KCP9iM": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Marquee_2.jpg"
+          }
+        },
+        "card_3WrCPH": {
+          "type": "card",
+          "settings": {
+            "video": "shopify://files/videos/Marque 3_502d8ad6-8280-4870-aa06-7948fe13e835.mp4"
+          }
+        },
+        "card_Lafamf": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Marquee_4.jpg"
+          }
+        },
+        "card_wLgjXe": {
+          "type": "card",
+          "settings": {
+            "video": "shopify://files/videos/Marque 5.mp4"
+          }
+        },
+        "card_3pHGym": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Marquee_6.jpg"
+          }
+        },
+        "card_LwwAed": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Marquee_7.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "card_djFWVE",
+        "card_KCP9iM",
+        "card_3WrCPH",
+        "card_Lafamf",
+        "card_wLgjXe",
+        "card_3pHGym",
+        "card_LwwAed"
+      ],
+      "name": "Gallery showcase",
+      "settings": {
+        "heading": "For those who are serious about coffee.",
+        "cta_label": "Follow @DrinkHeist",
+        "cta_link": "https://www.instagram.com/drinkheist/",
+        "marquee_speed": 40,
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 104,
+        "padding_bottom_desktop": 96
+      }
+    }
+  },
+  "order": [
+    "main",
+    "coffee_standards_b4EGbK",
+    "coffee_perks_MBCN8J",
+    "join_the_heist_society_UgNmV4",
+    "okendo_reviews_yqzgF8",
+    "coffee_heist_f6Ntka",
+    "full_briefing_nz7HDP",
+    "gallery_showcase_p3M8Eq"
+  ]
+}

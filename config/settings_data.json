@@ -77,6 +77,11 @@
     "cart_progress_type": "none",
     "cart_empty_image": "shopify://shop_images/image_2.png",
     "cart_prepaid_badge_label": "3 Months Prepaid",
+    "cart_upgrade_products": [
+      "smooth-talker",
+      "blueprint",
+      "coffee-without-a-curfew"
+    ],
     "cart_upgrade_badge": "Save 33%",
     "cart_upgrade_title": "Join Heist Society™",
     "cart_upgrade_perks": "Lowest Price. 33% off Retail.\nFree Shipping.\nLimited Edition Smuggle Bear (with secret stash pouch)\nCoffee Storage Tin + Scoop\nUnique Collectible Matchbook every 30 days",
@@ -139,6 +144,11 @@
       },
       "855628211100114053": {
         "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "10864971697205422121": {
+        "type": "shopify://apps/gorgias-live-chat-helpdesk/blocks/gorgias/a66db725-7b96-4e3f-916e-6c8e6f87aaaa",
         "disabled": false,
         "settings": {}
       }

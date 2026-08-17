@@ -1,0 +1,24 @@
+{% doc %}
+  Cart Line Card Type
+
+  Echoes how a cart line should be treated, read from the line product's
+  `custom.cart_card_type` metafield: `membership`, `gift`, or empty for an
+  ordinary purchased line.
+
+  @param {object} item - The cart line item.
+
+  @example
+  {% capture item_card_type %}{% render 'cart-line-card-type', item: item %}{% endcapture %}
+  {% assign item_card_type = item_card_type | strip %}
+{% enddoc %}
+
+{%- liquid
+  assign card_type = item.product.metafields.custom.cart_card_type.value | default: item.product.metafields.custom.cart_card_type | downcase | strip
+
+  case card_type
+    when 'membership'
+      echo 'membership'
+    when 'gift'
+      echo 'gift'
+  endcase
+-%}

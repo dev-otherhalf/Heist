@@ -27,7 +27,13 @@
 <div class="buy-box-plans buy-box-plans--v1" data-buy-box-plans>
   {%- comment -%} ---------- Subscription box ---------- {%- endcomment -%}
   <div class="buy-box-sub" data-sub-box>
-    <p class="buy-box-sub__bar t-n1-med">{{ s.subscribe_bar_label | default: 'Subscribe & Save up to 25%' }}</p>
+    {%- comment -%}
+      Rendered with the unlocked label; the script in the Subscription block swaps it for
+      the "add N more" version whenever the box is below the minimum. Server-rendering
+      the unlocked copy keeps the bar from flashing the wrong state before JS runs, since
+      the box seeds itself at the minimum.
+    {%- endcomment -%}
+    <p class="buy-box-sub__bar t-n1-med" data-sub-bar>{{ s.subscribe_bar_label | default: 'Subscribe & Save up to 25%' }}</p>
 
     {%- comment -%} Summary row — reflects the active sub plan (standard or heist) {%- endcomment -%}
     <button type="button" class="buy-box-v1row buy-box-v1row--summary" data-select-tier="standard" data-v1-summary>
@@ -48,10 +54,22 @@
 
     {%- comment -%} Nested Heist upgrade (hidden when one-time selected) {%- endcomment -%}
     <div class="buy-box-upgrade" data-sub-detail data-upgrade-card>
-      <span class="buy-box-tier__badge buy-box-upgrade__badge t-n2-med" data-upgrade-badge hidden></span>
+      {%- comment -%}
+        The badge sits inside the row, immediately after the title, rather than pinned
+        to the card's top-right corner. buy-box.js finds it with a component-wide
+        querySelector on [data-upgrade-badge], so moving it in the DOM is safe; the
+        script neither knows nor cares where it lives.
+
+        Its text is still written by the script, which emits "<n>% off" whenever the
+        "Heist discount badge" setting is left blank, so the percentage tracks the
+        selling plan automatically. The "Get " prefix and " unlocked" suffix are added
+        in CSS off the card's data-selected state, so the wording can change with
+        selection without taking the number away from the script.
+      {%- endcomment -%}
       <button type="button" class="buy-box-v1row" data-select-tier="heist">
         <span class="buy-box-tier__toggle" data-v1-toggle="heist" aria-hidden="true"></span>
-        <span class="buy-box-tier__title t-t2">{{ s.heist_upgrade_title | default: 'Upgrade & Join the Heist Society™' }}</span>
+        <span class="buy-box-tier__title t-t2">{{ s.heist_upgrade_title | default: 'Upgrade & Join Heist Society™' }}</span>
+        <span class="buy-box-tier__badge buy-box-upgrade__badge t-n2-med" data-upgrade-badge hidden></span>
       </button>
       <div class="buy-box-upgrade__body">
         <p class="buy-box-tier__subtitle t-t4">{{ s.popup_subtitle | default: '3 months prepaid today, then monthly. Cancel anytime after.' }}</p>

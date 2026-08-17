@@ -1,0 +1,51 @@
+.heist-sub-min {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+  padding: var(--space-12) var(--space-14);
+  margin-bottom: var(--space-12);
+  background: var(--ink);
+  color: var(--cream);
+  border: var(--bw-2) solid var(--ink);
+}
+
+.heist-sub-min[hidden] {
+  display: none;
+}
+
+.heist-sub-min__text {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.heist-sub-min__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.heist-sub-min__btn {
+  padding: var(--space-6) var(--space-14);
+  font: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: var(--red);
+  color: var(--ink);
+  border: var(--bw-2) solid var(--ink);
+}
+
+.heist-sub-min__btn--ghost {
+  background: transparent;
+  color: var(--cream);
+  border-color: var(--cream);
+}
+
+.cart__checkout-button.heist-sub-min-blocked {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.heist-sub-min-blocked-wallets {
+  opacity: 0.45;
+  pointer-events: none;
+}

@@ -630,6 +630,8 @@ class BuyBox extends HTMLElement {
       }
     });
 
+    this.#renderBagsBadge();
+    this.#renderSubscriptionBar();
     this.#renderSticky();
 
     if (this.variation === "variation_1") {
@@ -674,6 +676,38 @@ class BuyBox extends HTMLElement {
       }
     }
     this.#setDisabled(!hasBags || this.blockedByMinimum);
+  }
+
+  #renderBagsBadge() {
+    const badge = this.querySelector("[data-bags-badge]");
+    if (!badge) return;
+
+    let best = 0;
+    this.querySelectorAll("[data-tile-badge]").forEach((tileBadge) => {
+      const pct = parseInt(tileBadge.textContent, 10);
+      if (!Number.isNaN(pct) && pct > best) best = pct;
+    });
+
+    if (best > 0) {
+      badge.textContent = `Saves ${best}%`;
+      badge.hidden = false;
+    }
+  }
+
+  #renderSubscriptionBar() {
+    const bar = this.querySelector("[data-sub-bar]");
+    if (!bar) return;
+
+    const bags = this.#bagCount();
+    const min = this.minSubscriptionBags || 0;
+    const unlocked = this.dataset.barUnlocked || "";
+    const locked = this.dataset.barLocked || "";
+
+    if (min > 0 && bags < min && locked) {
+      bar.textContent = locked.replace("{count}", String(min - bags));
+    } else if (unlocked) {
+      bar.textContent = unlocked;
+    }
   }
 
   #setDisabled(disabled) {

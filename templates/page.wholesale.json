@@ -1,0 +1,38 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-wholesale",
+      "settings": {
+        "eyebrow": "Wholesale",
+        "title": "Get in on the Heist",
+        "intro": "<p>We are accepting a very limited number of retail and/or restaurant and cafe partners at this time. Apply for a current open spot, or to be added to the waitlist as further spots come up.</p>",
+        "gap_heading": "",
+        "gap_sub": "",
+        "benefits_heading": "",
+        "terms_heading": "",
+        "terms_sub": "",
+        "form_heading": "Apply",
+        "form_sub": "<p>Two minutes. Tell us what you sell and who buys it.</p>",
+        "submit_label": "Send application",
+        "form_footnote": "A real person reads every one of these and replies.",
+        "success_heading": "Got it.",
+        "success_body": "<p>We will come back to you soon and let you know status of your application.</p>",
+        "steps_heading": "",
+        "padding_top_mobile": 38,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 57,
+        "padding_bottom_desktop": 96
+      }
+    }
+  },
+  "order": ["main"]
+}

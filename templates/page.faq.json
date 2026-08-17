@@ -1,0 +1,397 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+/*
+ * ------------------------------------------------------------
+ * FAQ page - The Interrogation
+ *
+ * Renders sections/page-faq.liquid. Editable in the Shopify
+ * theme editor (Customize).
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-faq",
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "title": "About Heist",
+            "description": "Why we exist",
+            "anchor": "about-heist",
+            "quote": "We're not anti-caffeine. We're anti-curfew."
+          }
+        },
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "Why the name Heist?",
+            "answer": "<p>A heist is only perfect when nobody notices anything is gone. We take the caffeine out and leave everything else: the body, the oils, the sweetness, the ritual. If you drink a cup and never think about what's missing, we did the job.</p>",
+            "anchor": "why-the-name-heist",
+            "open_by_default": true
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "Why is Heist decaf?",
+            "answer": "<p>Because decaf has been treated as a consolation prize for fifty years, and the coffee reflects it. Roasters have historically sent their leftover, lower grade beans to be decaffeinated, roasted them without care, and let them sit.</p><p>We built a company that does the opposite. We buy specialty lots for decaf on purpose, and we benchmark against the best coffee in the world, not the best decaf.</p>",
+            "anchor": "why-is-heist-decaf",
+            "open_by_default": false
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "Is Heist only for people who can't have caffeine?",
+            "answer": "<p>No. Most of our customers have caffeine regularly and just choose not to after a certain hour. They decided their sleep was worth more than the fifth cup. Decaf isn't a restriction here. It's a decision.</p>",
+            "anchor": "is-heist-only-for-people-who-cant-have-caffeine",
+            "open_by_default": false
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "Are you anti-caffeine?",
+            "answer": "<p>No. We're just pro coffee. Caffeine is one of the most studied compounds on the planet and it holds up well. It sharpens focus, and we're not going to pretend otherwise. Have it at 8am. Enjoy it. There is a certain amount, and a certain time of day, when it starts working against you rather than for you. And we don't want to be forced to stop a good thing.</p><p>We're not a wellness brand either. We're a coffee company. Though if wellness means having more of the thing you love without it costing you the sleep that actually drives longevity, fine. We're just not selling you a supplement, a protocol, or a lifestyle.</p><p>What gets lost in the argument is that caffeine was never the part of coffee doing the long-term work. The compounds most of that research points to are chlorogenic acids and polyphenols, and water processing leaves them very much intact. When researchers have looked at decaf drinkers on their own, they've found the same associations with lower all-cause mortality, type 2 diabetes, and liver disease. You're giving up the caffeine, not the coffee.</p><p>So no. We're not running a campaign against caffeine. We're running one against the cutoff.</p>",
+            "anchor": "are-you-anti-caffeine",
+            "open_by_default": false
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "I can drink coffee late and sleep fine.",
+            "answer": "<p>Maybe you can. Metabolism varies a lot. But maybe less than you realize. Caffeine doesn't remove sleep pressure, it blocks you from feeling it, which is why the most cited study on this found healthy sleepers lost over an hour of measured sleep from a 6pm dose and didn't notice. And the quality of your sleep matters enormously for recovery over the long run.</p><p>Either way, tolerance was never our pitch. Ours is that you shouldn't have to drink worse coffee after dinner than you drank at 8am. If caffeine truly doesn't touch you, then you have even less excuse for bad decaf.</p>",
+            "anchor": "i-can-drink-coffee-late-and-sleep-fine",
+            "open_by_default": false
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "title": "Why Decaf?",
+            "description": "The part nobody else will tell you",
+            "anchor": "why-decaf",
+            "quote": "Will it keep you up at night? No. That's the entire point."
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "Doesn't decaf taste bad?",
+            "answer": "<p>Most of it does, and it's not decaf's fault. It's the whole reason we exist: to change that.</p><p>Bad decaf is a sourcing, processing, and roasting problem. It's low grade green coffee, processed with chemicals, over-roasted to hide the defects, and then left to sit. Decaf is a rounding error for most roasters: one SKU, roasted rarely, shipped slowly, sitting in a warehouse for months.</p><p>None of that is inherent to decaf. It's still real coffee. Same species, same farms, same fermentation, same roast. One molecule is removed. Decaffeination takes out caffeine, which is a bitter compound, and leaves the sugars, acids, and oils that make coffee taste like coffee.</p><p>So we buy specialty lots on purpose, roast to order, and ship within days. Every bag carries its roast date. Spend a couple of years solving those problems specifically, and you get a cup that tastes like the finest coffees available.</p>",
+            "anchor": "doesnt-decaf-taste-bad",
+            "open_by_default": true
+          }
+        },
+        "question_7": {
+          "type": "question",
+          "settings": {
+            "question": "How much caffeine is actually in it?",
+            "answer": "<p>Decaf is not zero. The federal standard requires at least 97% removal. Our water process typically hits 99.9%, and we show the real test results on our site. A cup of our decaf lands in roughly the same territory as a bar of dark chocolate. We drink it before bed regularly and sleep fantastically.</p>",
+            "anchor": "how-much-caffeine",
+            "open_by_default": false
+          }
+        },
+        "question_8": {
+          "type": "question",
+          "settings": {
+            "question": "How do you decaffeinate your coffee? Do you use chemicals?",
+            "answer": "<p>Nothing touches our coffee but water. No solvents touch the bean. The simple explanation: the green coffee is soaked in water, the caffeine is pulled out through a carbon filter, and the flavor compounds are returned to the bean. It's slower and it costs more than the solvent methods. It's also the only way we'd do it.</p>",
+            "anchor": "how-do-you-decaffeinate",
+            "open_by_default": false
+          }
+        },
+        "question_9": {
+          "type": "question",
+          "settings": {
+            "question": "What about the Sugarcane Method (EA)? Isn't it &ldquo;natural&rdquo;?",
+            "answer": "<p>Hot take. Many in coffee call this chemical solvent method natural because the ethyl acetate originates from sugarcane. Sometimes. Sometimes it's synthetic.</p><p>It is technically FDA approved as safe, and we can't give you scientific evidence to discourage you. But we have handled ethyl acetate, and we do wonder whether putting something highly combustible that smells like nail polish remover onto something we consume is truly the best call. There are some wild ethyl acetate explosion videos on the internet.</p><p>In short, we question a few things about this one being natural. And by comparison, we feel really good about our water method not raising any of those questions.</p>",
+            "anchor": "sugarcane-ea-method",
+            "open_by_default": false
+          }
+        },
+        "question_10": {
+          "type": "question",
+          "settings": {
+            "question": "What about methylene chloride? I read decaf might be banned.",
+            "answer": "<p>Two different things got conflated in the news. The EPA banned methylene chloride for consumer and most commercial uses in 2024, but food uses fall under the FDA, and the FDA is still weighing a petition on it. The comment period closed in June 2026 with no decision yet.</p><p>None of this affects us either way, because we've never used a solvent. If you're drinking Heist, the question doesn't apply to you.</p>",
+            "anchor": "methylene-chloride",
+            "open_by_default": false
+          }
+        },
+        "question_11": {
+          "type": "question",
+          "settings": {
+            "question": "Will I get withdrawal headaches switching to decaf?",
+            "answer": "<p>If you drop from four caffeinated cups to zero overnight, probably, for a few days. So don't do that.</p><p>Keep the ritual, change the dose. Swap your afternoon cup first, since that's the one costing you sleep, then work backward. 1/4 Caf is the bridge if going straight to zero feels like too much.</p><p>Or keep your caffeine first thing and let Heist be the second half of your day. You don't have to live with the best part of your day only happening in the morning.</p>",
+            "anchor": "withdrawal-headaches",
+            "open_by_default": false
+          }
+        },
+        "question_12": {
+          "type": "question",
+          "settings": {
+            "question": "If it doesn't do anything, why drink it?",
+            "answer": "<p>You love coffee. Why should you have a limit on something that good? You were in it for the warm cup, the refreshing cold brew, the ten minutes, the taste, the thing you do with your hands while you think. All of that is still here. We just took the curfew off it.</p>",
+            "anchor": "if-it-doesnt-do-anything-why-drink-it",
+            "open_by_default": false
+          }
+        },
+        "question_13": {
+          "type": "question",
+          "settings": {
+            "question": "Is it low acid? I have reflux.",
+            "answer": "<p>Decaffeination reduces the acid effect to levels that would be considered low acid coffee, and caffeine itself is a common trigger for reflux and palpitations, so many people find decaf easier on their stomach. We can't tell you how your body will respond. We can tell you that a lot of people come to us for exactly this reason.</p>",
+            "anchor": "is-it-low-acid",
+            "open_by_default": false
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "title": "Details on Coffees",
+            "description": "Choosing, specs, and context",
+            "anchor": "details-on-coffees"
+          }
+        },
+        "question_14": {
+          "type": "question",
+          "settings": {
+            "question": "Which one should I start with?",
+            "answer": "<p>Smooth Talker is the flagship. Consistent, familiar, chocolatey, available all the time. It's the habit.</p><p>Blueprint is the proof: a rotating seasonal light roast, released in small lots, for people who chase high scoring, fruit forward coffees. It's the occasion.</p><p>If you can't decide, the Discovery 3-Pack has both plus 1/4 Caf, so you find your tier in one order.</p>",
+            "anchor": "which-one-should-i-start-with",
+            "open_by_default": true
+          }
+        },
+        "question_15": {
+          "type": "question",
+          "settings": {
+            "question": "What's 1/4 Caf, and do you make caffeinated coffee?",
+            "answer": "<p>Sort of. Smooth Talker comes in a 1/4 Caf option: 25% caffeinated beans, 75% decaf. Very lightly caffeinated, just enough for that afternoon moment when you'd like a little boost without enough to run into your night.</p><p>Built for the afternoon, and for anyone stepping down from a heavy habit who doesn't want to go to zero on day one.</p>",
+            "anchor": "what-is-quarter-caf",
+            "open_by_default": false
+          }
+        },
+        "question_16": {
+          "type": "question",
+          "settings": {
+            "question": "Where does your coffee come from?",
+            "answer": "<p>We filter through hundreds of samples to source the top 1% of coffee beans globally. We currently have coffees from select growers in Ethiopia and Colombia.</p>",
+            "anchor": "where-does-your-coffee-come-from",
+            "open_by_default": false
+          }
+        },
+        "question_17": {
+          "type": "question",
+          "settings": {
+            "question": "Is it organic?",
+            "answer": "<p>Heist coffee goes well past organic. Our coffees are lab tested, something the vast majority of coffee companies never do, to confirm there's no mold or mycotoxins in the cup and that the caffeine has been adequately removed.</p><p>Organic is a certification most of the smallholder farms growing the best coffees simply don't have the resources or the administrative capacity to file for. It sounds good, but it isn't a reliable universal signal of quality.</p>",
+            "anchor": "is-it-organic",
+            "open_by_default": false
+          }
+        },
+        "question_18": {
+          "type": "question",
+          "settings": {
+            "question": "Do you test for mold and mycotoxins?",
+            "answer": "<p>Yes. Our green coffee is lab tested, and we publish the real reports.</p><p>It matters because moldy coffee is more common than people realize, and it's the kind of thing nobody ever traces back to their cup.</p>",
+            "anchor": "mold-and-mycotoxin-testing",
+            "open_by_default": false
+          }
+        },
+        "question_19": {
+          "type": "question",
+          "settings": {
+            "question": "Can I drink this while pregnant or breastfeeding?",
+            "answer": "<p>ACOG puts the guideline at under 200mg of caffeine a day during pregnancy. A cup of our decaf is a few milligrams at most. That said, we're a coffee company, not your doctor. Ask them, then come back.</p>",
+            "anchor": "pregnant-or-breastfeeding",
+            "open_by_default": false
+          }
+        },
+        "question_20": {
+          "type": "question",
+          "settings": {
+            "question": "Do you have an espresso option?",
+            "answer": "<p>Yes. We designed both Smooth Talker and Blueprint to be great as espresso and as traditional drip.</p>",
+            "anchor": "espresso-option",
+            "open_by_default": false
+          }
+        },
+        "question_21": {
+          "type": "question",
+          "settings": {
+            "question": "How should I store it?",
+            "answer": "<p>Sealed, with the air pressed out of the container, at room temperature or cooler, and away from light. The tin we send Heist Society members is built for exactly this.</p>",
+            "anchor": "how-should-i-store-it",
+            "open_by_default": false
+          }
+        },
+        "question_22": {
+          "type": "question",
+          "disabled": true,
+          "settings": {
+            "anchor": "how-many-cups-per-bag",
+            "question": "How many cups per bag?",
+            "answer": "<p>DRAFT, NEEDS CONFIRMING: A __ oz bag makes roughly __ cups, depending on how strong you brew.</p>",
+            "open_by_default": false
+          }
+        },
+        "category_4": {
+          "type": "category",
+          "settings": {
+            "title": "Shipping & Orders",
+            "description": "Delivery, subscriptions, and the guarantee",
+            "anchor": "shipping-orders",
+            "quote": "Get away clean."
+          }
+        },
+        "question_23": {
+          "type": "question",
+          "settings": {
+            "question": "When do you roast and ship?",
+            "answer": "<p>We roast multiple times a week and typically ship within a few days of the roast date. You'll see the roast date on your bag when it arrives.</p>",
+            "anchor": "when-do-you-roast-and-ship",
+            "open_by_default": true
+          }
+        },
+        "question_24": {
+          "type": "question",
+          "settings": {
+            "question": "What does shipping cost?",
+            "answer": "<p>Free shipping on one-time orders above $75, and on any subscription or Heist Society purchase. Otherwise shipping is $6.95.</p>",
+            "anchor": "shipping-cost",
+            "open_by_default": false
+          }
+        },
+        "question_25": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>At this time we only ship within the US. Join our email list and we'll let you know when we open up international options.</p>",
+            "anchor": "do-you-ship-internationally",
+            "open_by_default": false
+          }
+        },
+        "question_26": {
+          "type": "question",
+          "settings": {
+            "question": "Where's my order?",
+            "answer": "<p>Your confirmation email has the tracking link. You can also check the status of any order from your account.</p>",
+            "anchor": "wheres-my-order",
+            "open_by_default": false
+          }
+        },
+        "question_27": {
+          "type": "question",
+          "settings": {
+            "question": "How does the subscription work?",
+            "answer": "<p>Pick your coffees and subscribe. We start you off on 30 day shipments. Once you're signed up you can change the cadence, skip, pause, swap, or cancel any time from your account. No email required.</p>",
+            "anchor": "how-does-the-subscription-work",
+            "open_by_default": false
+          }
+        },
+        "question_28": {
+          "type": "question",
+          "settings": {
+            "question": "What is Heist Society and how do I get in?",
+            "answer": "<p>Subscribe to three or more bags and three months of shipments. That unlocks free shipping, monthly gifts, member boards, and first access to Vault Series drops.</p>",
+            "anchor": "what-is-heist-society",
+            "open_by_default": false
+          }
+        },
+        "question_29": {
+          "type": "question",
+          "settings": {
+            "question": "What if I don't like it?",
+            "answer": "<p>Tell us and we'll make it right. If it's not your cup, we'll send you a different one. If you're just done, we refund you.</p>",
+            "anchor": "what-if-i-dont-like-it",
+            "open_by_default": false
+          }
+        },
+        "question_30": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer wholesale?",
+            "answer": "<p>We're accepting a limited number of wholesale partners right now. Fill out the wholesale form to apply.</p>",
+            "anchor": "wholesale",
+            "open_by_default": false
+          }
+        },
+        "question_31": {
+          "type": "question",
+          "disabled": true,
+          "settings": {
+            "anchor": "gift-subscriptions",
+            "question": "Do you offer gift subscriptions?",
+            "answer": "<p>DRAFT, NEEDS CONFIRMING: whether gifting is live at launch and how it is fulfilled.</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "category_2",
+        "question_6",
+        "question_7",
+        "question_8",
+        "question_9",
+        "question_10",
+        "question_11",
+        "question_12",
+        "question_13",
+        "category_3",
+        "question_14",
+        "question_15",
+        "question_16",
+        "question_17",
+        "question_18",
+        "question_19",
+        "question_20",
+        "question_21",
+        "question_22",
+        "category_4",
+        "question_23",
+        "question_24",
+        "question_25",
+        "question_26",
+        "question_27",
+        "question_28",
+        "question_29",
+        "question_30",
+        "question_31"
+      ],
+      "settings": {
+        "eyebrow": "Ask away",
+        "title": "The Interrogation",
+        "intro": "<p>Most people have a time of day they've decided they won't drink caffeine after. We call that your coffee curfew. Here's everything else people ask us.</p>",
+        "show_nav": true,
+        "sticky_nav": false,
+        "nav_label": "FAQ categories",
+        "footer_heading": "Didn't crack it?",
+        "footer_text": "<p>Ask us. We answer our own email.</p>",
+        "footer_button_label": "Ask us anything",
+        "footer_button_link": "/pages/contact",
+        "enable_schema": true,
+        "padding_top_mobile": 38,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 57,
+        "padding_bottom_desktop": 96
+      }
+    }
+  },
+  "order": ["main"]
+}

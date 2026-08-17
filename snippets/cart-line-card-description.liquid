@@ -1,0 +1,28 @@
+{% doc %}
+  Cart Line Card Description
+
+  Echoes the card copy for a cart line as HTML, read from the product's
+  `custom.cart_card_description` metafield and falling back to
+  `custom.cart_product_description`. Handles both rich text and plain text.
+
+  @param {object} product - The cart line's product.
+
+  @example
+  {% capture card_description %}
+    {% render 'cart-line-card-description', product: item.product %}
+  {% endcapture %}
+{% enddoc %}
+
+{%- liquid
+  assign card_value = product.metafields.custom.cart_card_description.value
+
+  if card_value == blank
+    assign card_value = product.metafields.custom.cart_product_description.value
+  endif
+-%}
+
+{%- if card_value.children != blank -%}
+  {%- render 'rich-text-to-html', document: card_value -%}
+{%- else -%}
+  {{- card_value -}}
+{%- endif -%}

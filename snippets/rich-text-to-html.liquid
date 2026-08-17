@@ -1,0 +1,67 @@
+{% doc %}
+  Rich Text To HTML
+
+  Walks a rich text metafield document and prints it as HTML. Handles lists,
+  paragraphs, headings, links, bold and italic.
+
+  @param {object} document - A rich text metafield `.value`, the root node.
+
+  @example
+  {% render 'rich-text-to-html', document: product.metafields.custom.notes.value %}
+{% enddoc %}
+
+{%- for node in document.children -%}
+  {%- if node.type == 'list' -%}
+    {%- if node.listType == 'ordered' -%}<ol>{%- else -%}<ul>{%- endif -%}
+      {%- for list_item in node.children -%}
+        <li>
+          {%- for inline in list_item.children -%}
+            {%- if inline.type == 'link' -%}
+              <a href="{{ inline.url }}">
+                {%- for link_text in inline.children -%}
+                  {%- if link_text.bold -%}<strong>{%- endif -%}
+                  {%- if link_text.italic -%}<em>{%- endif -%}
+                  {{- link_text.value -}}
+                  {%- if link_text.italic -%}</em>{%- endif -%}
+                  {%- if link_text.bold -%}</strong>{%- endif -%}
+                {%- endfor -%}
+              </a>
+            {%- else -%}
+              {%- if inline.bold -%}<strong>{%- endif -%}
+              {%- if inline.italic -%}<em>{%- endif -%}
+              {{- inline.value -}}
+              {%- if inline.italic -%}</em>{%- endif -%}
+              {%- if inline.bold -%}</strong>{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </li>
+      {%- endfor -%}
+    {%- if node.listType == 'ordered' -%}</ol>{%- else -%}</ul>{%- endif -%}
+  {%- else -%}
+    <p>
+      {%- for inline in node.children -%}
+        {%- if inline.type == 'link' -%}
+          <a href="{{ inline.url }}">
+            {%- for link_text in inline.children -%}
+              {%- if link_text.bold -%}<strong>{%- endif -%}
+              {%- if link_text.italic -%}<em>{%- endif -%}
+              {{- link_text.value -}}
+              {%- if link_text.italic -%}</em>{%- endif -%}
+              {%- if link_text.bold -%}</strong>{%- endif -%}
+            {%- endfor -%}
+          </a>
+        {%- elsif inline.type == 'heading' -%}
+          {%- for heading_text in inline.children -%}
+            {{- heading_text.value -}}
+          {%- endfor -%}
+        {%- else -%}
+          {%- if inline.bold -%}<strong>{%- endif -%}
+          {%- if inline.italic -%}<em>{%- endif -%}
+          {{- inline.value -}}
+          {%- if inline.italic -%}</em>{%- endif -%}
+          {%- if inline.bold -%}</strong>{%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </p>
+  {%- endif -%}
+{%- endfor -%}

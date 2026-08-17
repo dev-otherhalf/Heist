@@ -1,0 +1,32 @@
+{%- comment -%}
+  Enforces the subscription bag minimum in the cart.
+
+  The 18% subscription discount rides on the selling plan attached to a cart line, and
+  Shopify treats quantity and selling plan as independent. So the minimum enforced by the
+  PDP buy box has no authority once a line exists: reducing a line's quantity, or removing
+  one line of a multi-line subscription, leaves the remaining lines discounted below the
+  minimum. Both routes were reachable from the cart drawer.
+
+  The rule is on the TOTAL across every subscription line, not per line, because
+  2 Smooth Talker + 1 Blueprint is a legitimate three bags spread over two lines.
+
+  When the total is short this shows a notice, blocks checkout, and offers the two ways out:
+  top the subscription back up, or drop to one-time pricing and keep shopping.
+
+  Not a substitute for server-side validation. A crafted cart permalink still reaches
+  Shopify's checkout directly. A cart validation function is the airtight version and is
+  the intended follow-up; this covers every route a real shopper has.
+{%- endcomment -%}
+
+{%- render 'vite-tag', entry: 'sections/styles/heist-subscription-minimum.scss' -%}
+{%- render 'vite-tag', entry: 'sections/scripts/heist-subscription-minimum.js' -%}
+
+<div class="heist-sub-min" data-heist-sub-min data-min-bags="3" hidden>
+  <p class="heist-sub-min__text t-n1" data-sub-min-text></p>
+  <div class="heist-sub-min__actions">
+    <button type="button" class="heist-sub-min__btn" data-sub-min-add></button>
+    <button type="button" class="heist-sub-min__btn heist-sub-min__btn--ghost" data-sub-min-onetime>
+      Switch to one-time
+    </button>
+  </div>
+</div>

@@ -1,0 +1,229 @@
+{%- render 'vite-tag', entry: 'sections/styles/product-lineup.scss' -%}
+{% comment %}
+  Lineup product hero.
+
+  For the individual coffee pages (Smooth Talker, Blueprint) that are not the checkout
+  destination. The stock product hero renders from per-product blocks
+  (product-info-details, subscription, product-faqs, product-videos) that have no data on
+  these products, so it collapses to a title and a star rating beside a full-height image
+  and roughly 900px of empty column.
+
+  This replaces that hero with something that reads deliberately: the coffee, what it is,
+  the facts worth knowing, and one clear route to the page that actually sells it.
+
+  Everything below the hero (coffee standards, perks, Heist Society, reviews, the full
+  briefing, gallery) already renders correctly and is carried over unchanged in
+  templates/product.lineup.json.
+
+  Body copy comes from the product's own description so one template serves every coffee.
+{% endcomment %}
+
+{%- liquid
+  assign p = closest.product | default: product
+  assign body = p.description
+  if body == blank
+    assign body = section.settings.fallback_description
+  endif
+  assign cta_url = section.settings.cta_link | default: '/products/coffee-without-a-curfew'
+-%}
+
+<section
+  id="{{ section.id }}"
+  class="shopify-section section page-width-content product-lineup"
+  style="
+    --pl-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --pl-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --pl-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --pl-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+>
+  <div class="section-content-wrapper">
+    <div class="product-lineup__inner">
+      <div class="product-lineup__media">
+        {% if p.featured_image != blank %}
+          {{
+            p.featured_image
+            | image_url: width: 1400
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              sizes: '(min-width: 750px) 46vw, 100vw',
+              widths: '480, 720, 990, 1400',
+              alt: p.featured_image.alt | default: p.title,
+              class: 'product-lineup__image'
+          }}
+        {% endif %}
+      </div>
+
+      <div class="product-lineup__details">
+        {% if section.settings.eyebrow != blank %}
+          <p class="product-lineup__eyebrow t-n1">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+
+        <h1 class="product-lineup__title">{{ p.title }}</h1>
+
+        {% if section.settings.show_reviews_link %}
+          <a class="product-lineup__reviews" href="#{{ section.settings.reviews_anchor | default: 'reviews' }}">
+            {{ section.settings.reviews_label | default: 'Read the reviews' }}
+          </a>
+        {% endif %}
+
+        {% if body != blank %}
+          <div class="product-lineup__body rte">{{ body }}</div>
+        {% endif %}
+
+        {%- comment -%} Facts, pulled from the product so one template serves every coffee {%- endcomment -%}
+        {% if section.settings.show_facts %}
+          <dl class="product-lineup__facts">
+            {% if p.type != blank %}
+              <div class="product-lineup__fact">
+                <dt>Type</dt>
+                <dd>{{ p.type }}</dd>
+              </div>
+            {% endif %}
+            {% if p.variants.size > 1 %}
+              <div class="product-lineup__fact">
+                <dt>Options</dt>
+                <dd>
+                  {%- for v in p.variants -%}
+                    {{- v.title -}}{%- unless forloop.last %}, {% endunless -%}
+                  {%- endfor -%}
+                </dd>
+              </div>
+            {% endif %}
+            {% if section.settings.show_price and p.price > 0 %}
+              <div class="product-lineup__fact">
+                <dt>From</dt>
+                <dd>{{ p.price | money }}</dd>
+              </div>
+            {% endif %}
+          </dl>
+        {% endif %}
+
+        <div class="product-lineup__cta-wrap">
+          <a class="product-lineup__cta t-btn" href="{{ cta_url }}">
+            {{ section.settings.cta_label | default: 'Shop this coffee' }}
+          </a>
+          {% if section.settings.cta_note != blank %}
+            <p class="product-lineup__cta-note">{{ section.settings.cta_note }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%}
+    Product structured data.
+
+    This template replaces the stock hero, which was what emitted Shopify's
+    {{ product | structured_data }}. Without this the page's only Product node came
+    from Okendo, typed ProductGroup but carrying a single `offers` and no
+    `hasVariant`, which is invalid.
+
+    Okendo's node uses @id "<url>#product", so this one deliberately uses a different
+    @id to avoid the node-merge that produces a duplicate "brand" error. Rating is read
+    from Okendo's own metafield so the two never disagree.
+  {%- endcomment -%}
+  {%- liquid
+    comment
+      Rating comes from the standard reviews.* metafields, not okendo.summaryData.
+      That one is stored as json_string, which Liquid cannot parse, so reading
+      .reviewCount off it silently yields nothing. Okendo writes both.
+    endcomment
+    assign rating_val = p.metafields.reviews.rating.value.rating
+    assign rating_cnt = p.metafields.reviews.rating_count.value
+    assign has_rating = false
+    if rating_val != blank and rating_cnt > 0
+      assign has_rating = true
+    endif
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "@id": {{ p.url | prepend: request.origin | append: '#lineup-product' | json }},
+      "name": {{ p.title | json }},
+      "url": {{ p.url | prepend: request.origin | json }},
+      {% if p.featured_image %}"image": {{ p.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
+      {% if p.description != blank %}"description": {{ p.description | strip_html | strip_newlines | truncate: 300 | json }},{% endif %}
+      "brand": { "@type": "Brand", "name": {{ shop.name | json }} },
+      "sku": {{ p.selected_or_first_available_variant.sku | default: p.id | json }},
+      {%- if has_rating -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ rating_val | json }},
+        "ratingCount": {{ rating_cnt | json }}
+      },
+      {%- endif -%}
+      {%- comment -%}
+        A single Offer at the retail price rather than an AggregateOffer. The range
+        would run to the 5lb wholesale variants (89.00 / 114.40), and surfacing those
+        in a consumer search result is misleading.
+      {%- endcomment -%}
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": {{ p.price_min | money_without_currency | strip | replace: ',', '' | json }},
+        "availability": {% if p.available %}"https://schema.org/InStock"{% else %}"https://schema.org/OutOfStock"{% endif %},
+        "url": {{ p.url | prepend: request.origin | json }},
+        "seller": { "@type": "Organization", "name": {{ shop.name | json }} }
+      }
+    }
+  </script>
+
+  {% schema %}
+  {
+    "name": "Lineup product hero",
+    "tag": "section",
+    "settings": [
+      { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The lineup" },
+      {
+        "type": "richtext",
+        "id": "fallback_description",
+        "label": "Fallback description",
+        "info": "Only used when the product has no description of its own. Write the real copy on the product in Content > Products so each coffee reads differently.",
+        "default": "<p>Specialty decaf, water processed and roasted to order. Built for the second half of the day.</p>"
+      },
+      { "type": "header", "content": "Facts" },
+      { "type": "checkbox", "id": "show_facts", "label": "Show the facts list", "default": true },
+      {
+        "type": "checkbox",
+        "id": "show_price",
+        "label": "Show a 'from' price",
+        "default": false,
+        "info": "Off by default. This page does not sell, so a price here can disagree with the bundles on the shop page."
+      },
+      { "type": "header", "content": "Reviews link" },
+      { "type": "checkbox", "id": "show_reviews_link", "label": "Link to the reviews below", "default": true },
+      { "type": "text", "id": "reviews_label", "label": "Label", "default": "Read the reviews" },
+      {
+        "type": "text",
+        "id": "reviews_anchor",
+        "label": "Anchor id of the reviews section",
+        "default": "reviews"
+      },
+      { "type": "header", "content": "Call to action" },
+      { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop this coffee" },
+      {
+        "type": "url",
+        "id": "cta_link",
+        "label": "Button link",
+        "info": "Defaults to /products/coffee-without-a-curfew, the page that handles checkout."
+      },
+      {
+        "type": "text",
+        "id": "cta_note",
+        "label": "Note under the button",
+        "info": "Optional. Leave empty for no note."
+      },
+      { "type": "header", "content": "Mobile padding" },
+      { "type": "number", "id": "padding_top_mobile", "label": "Top", "default": 24 },
+      { "type": "number", "id": "padding_bottom_mobile", "label": "Bottom", "default": 40 },
+      { "type": "header", "content": "Desktop padding" },
+      { "type": "number", "id": "padding_top_desktop", "label": "Top", "default": 48 },
+      { "type": "number", "id": "padding_bottom_desktop", "label": "Bottom", "default": 64 }
+    ],
+    "presets": [{ "name": "Lineup product hero", "category": "Product" }]
+  }
+  {% endschema %}
+</section>

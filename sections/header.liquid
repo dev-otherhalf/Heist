@@ -39,12 +39,34 @@
 
 {% render 'heist-sticky-cta', section: section %}
 
+{%- comment -%}
+  Organization schema. `sameAs` is what tells search engines that the social profiles
+  belong to this brand, which is what associates them in a knowledge panel. The footer
+  links alone are a weak signal. The profile URLs live in the footer's social-link
+  blocks, which this section cannot read, so they are listed in the setting below.
+{%- endcomment -%}
+{%- liquid
+  assign social_lines = section.settings.social_profiles | newline_to_br | split: '<br />'
+-%}
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": {{ shop.name | json }},
     {% if settings.logo != blank %}"logo": {{ settings.logo | image_url: width: 500 | prepend: 'https:' | json }},{% endif %}
+    {%- assign printed = 0 -%}
+    {%- if section.settings.social_profiles != blank -%}
+      "sameAs": [
+        {%- for line in social_lines -%}
+          {%- assign u = line | strip -%}
+          {%- if u != blank -%}
+            {%- if printed > 0 -%},{%- endif -%}
+            {{ u | json }}
+            {%- assign printed = printed | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ],
+    {%- endif -%}
     "url": {{ request.origin | json }}
   }
 </script>
@@ -67,8 +89,16 @@
     }
   ],
   "settings": [
-    { "type": "header", "content": "Menus" },
-    { "type": "link_list", "id": "desktop_menu", "label": "Desktop menu", "default": "main-menu" },
+    {
+      "type": "header",
+      "content": "Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "desktop_menu",
+      "label": "Desktop menu",
+      "default": "main-menu"
+    },
     {
       "type": "link_list",
       "id": "mobile_menu",
@@ -81,9 +111,16 @@
       "label": "Customer account menu",
       "default": "customer-account-main-menu"
     },
-
-    { "type": "header", "content": "Logo and links" },
-    { "type": "image_picker", "id": "logo", "label": "Header logo", "info": "Falls back to the theme logo." },
+    {
+      "type": "header",
+      "content": "Logo and links"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Header logo",
+      "info": "Falls back to the theme logo."
+    },
     {
       "type": "range",
       "id": "desktop_logo_width",
@@ -104,38 +141,160 @@
       "unit": "px",
       "default": 148
     },
-    { "type": "text", "id": "shop_label", "label": "Home left link label", "default": "SHOP NOW" },
-    { "type": "url", "id": "shop_link", "label": "Home left link" },
-    { "type": "text", "id": "mobile_home_title", "label": "Home mobile center text", "default": "WORLD-CLASS DECAF" },
-
-    { "type": "header", "content": "Header colors" },
-    { "type": "color", "id": "home_text_color", "label": "Home text", "default": "#eeeade" },
-    { "type": "color", "id": "inner_text_color", "label": "Other pages text", "default": "#161414" },
-    { "type": "color", "id": "mobile_background", "label": "Mobile background", "default": "#eeeade" },
-    { "type": "color", "id": "mobile_text_color", "label": "Mobile text", "default": "#161414" },
-    { "type": "color", "id": "drawer_background", "label": "Mobile drawer background", "default": "#eeeade" },
-    { "type": "color", "id": "drawer_text_color", "label": "Mobile drawer text", "default": "#161414" },
-    { "type": "color", "id": "accent_color", "label": "Accent/button color", "default": "#ff3b27" },
-
-    { "type": "header", "content": "Mobile drawer feature" },
-    { "type": "image_picker", "id": "mobile_menu_image", "label": "Feature image" },
-    { "type": "text", "id": "mobile_cta_label", "label": "Feature button", "default": "SHOP THE HEIST" },
-    { "type": "url", "id": "mobile_cta_link", "label": "Feature button link" },
-
-    { "type": "header", "content": "Scroll-down sticky CTA" },
-    { "type": "checkbox", "id": "show_sticky_cta", "label": "Show sticky CTA on scroll down", "default": true },
-    { "type": "text", "id": "sticky_text", "label": "Text", "default": "Coffee Without a Curfew." },
-    { "type": "text", "id": "sticky_button_label", "label": "Button label", "default": "SHOP NOW" },
-    { "type": "url", "id": "sticky_button_link", "label": "Button link" },
-    { "type": "color", "id": "sticky_background", "label": "Background", "default": "#eeeade" },
-    { "type": "color", "id": "sticky_text_color", "label": "Text", "default": "#161414" },
-    { "type": "color", "id": "sticky_button_background", "label": "Button background", "default": "#ff3b27" },
-    { "type": "color", "id": "sticky_button_text", "label": "Button text", "default": "#161414" }
+    {
+      "type": "text",
+      "id": "shop_label",
+      "label": "Home left link label",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "shop_link",
+      "label": "Home left link"
+    },
+    {
+      "type": "text",
+      "id": "mobile_home_title",
+      "label": "Home mobile center text",
+      "default": "WORLD-CLASS DECAF"
+    },
+    {
+      "type": "header",
+      "content": "Header colors"
+    },
+    {
+      "type": "color",
+      "id": "home_text_color",
+      "label": "Home text",
+      "default": "#eeeade"
+    },
+    {
+      "type": "color",
+      "id": "inner_text_color",
+      "label": "Other pages text",
+      "default": "#161414"
+    },
+    {
+      "type": "color",
+      "id": "mobile_background",
+      "label": "Mobile background",
+      "default": "#eeeade"
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_color",
+      "label": "Mobile text",
+      "default": "#161414"
+    },
+    {
+      "type": "color",
+      "id": "drawer_background",
+      "label": "Mobile drawer background",
+      "default": "#eeeade"
+    },
+    {
+      "type": "color",
+      "id": "drawer_text_color",
+      "label": "Mobile drawer text",
+      "default": "#161414"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent/button color",
+      "default": "#ff3b27"
+    },
+    {
+      "type": "header",
+      "content": "Mobile drawer feature"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_menu_image",
+      "label": "Feature image"
+    },
+    {
+      "type": "text",
+      "id": "mobile_cta_label",
+      "label": "Feature button",
+      "default": "SHOP THE HEIST"
+    },
+    {
+      "type": "url",
+      "id": "mobile_cta_link",
+      "label": "Feature button link"
+    },
+    {
+      "type": "header",
+      "content": "Scroll-down sticky CTA"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sticky_cta",
+      "label": "Show sticky CTA on scroll down",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sticky_text",
+      "label": "Text",
+      "default": "Coffee Without a Curfew."
+    },
+    {
+      "type": "text",
+      "id": "sticky_button_label",
+      "label": "Button label",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "sticky_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "sticky_background",
+      "label": "Background",
+      "default": "#eeeade"
+    },
+    {
+      "type": "color",
+      "id": "sticky_text_color",
+      "label": "Text",
+      "default": "#161414"
+    },
+    {
+      "type": "color",
+      "id": "sticky_button_background",
+      "label": "Button background",
+      "default": "#ff3b27"
+    },
+    {
+      "type": "color",
+      "id": "sticky_button_text",
+      "label": "Button text",
+      "default": "#161414"
+    },
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "textarea",
+      "id": "social_profiles",
+      "label": "Social profile URLs",
+      "info": "One per line. Output as Organization sameAs so search engines connect these accounts to the brand. Keep in sync with the footer social links.",
+      "default": "https://www.instagram.com/drinkheist/\nhttps://www.tiktok.com/@drinkheist"
+    }
   ],
   "presets": [
     {
       "name": "Heist header",
-      "blocks": [{ "type": "_heist-announcement" }]
+      "blocks": [
+        {
+          "type": "_heist-announcement"
+        }
+      ]
     }
   ]
 }

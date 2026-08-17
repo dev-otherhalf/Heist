@@ -64,7 +64,7 @@
           "settings": {
             "custom_class": "",
             "kicker": "",
-            "heading": "The World's Biggest Coffee Heist",
+            "heading": "WE FOUND THE ONE THING WRONG WITH COFFEE.",
             "heading_tag": "h1",
             "text_align": "center",
             "text_align_mobile": "inherit",
@@ -82,8 +82,8 @@
           "type": "subheading",
           "settings": {
             "kicker": "",
-            "heading": "<p>In what experts are calling an unprecedented breach of coffee convention, <br/>Heist has successfully stolen the caffeine from world-class beans.</p>",
-            "body": "",
+            "heading": "<p>Coffee had a curfew.  <br/></p><p>We orchestrated the perfect plan to steal it.</p>",
+            "body": "<p>For centuries, one of the world’s great pleasures has come with a catch: caffeine decides when you can enjoy it.  We hated that deal.</p><p>So we built HEIST with a simple mission: start with extraordinary coffee, determine the most effective, ethical, and pure way to steal the caffeine so that we'd never even know it was gone.  Here's how it began...</p>",
             "text_align": "center",
             "padding_top_mobile": 16,
             "padding_bottom_mobile": 32,
@@ -93,6 +93,7 @@
         },
         "media_EnNJNV": {
           "type": "media",
+          "disabled": true,
           "settings": {
             "media_type": "video",
             "image": "shopify://shop_images/Our_Story_1-D.jpg",
@@ -185,7 +186,7 @@
           "settings": {
             "kicker": "",
             "heading": "<p>Jarrett Johnson spent 15 years <br/>perfecting his craft, including a decade <br/>building award-winning Lineage Coffee.</p>",
-            "body": "<p>As a Certified Q Grader and one of the most respected cuppers in the industry, he knows what great coffee is supposed to taste like. They told him what they wanted to do. He didn’t laugh them out of the room.<br/><br/>He’s now Heist’s Director of Coffee. And what he told them about how the industry  handles decaf was the thing they’d been missing.</p>",
+            "body": "<p>As a Certified Q Grader and one of the most respected cuppers in the industry, he knows what great coffee is supposed to taste like. They told him what they wanted to do. He didn’t laugh them out of the room.<br/><br/>He’s now Heist’s Director of Coffee. And leads the sourcing and roasting process that ultimtately is what separates good from great coffee.  </p>",
             "media_position": "left",
             "media_inline": false,
             "media_type": "image",
@@ -226,7 +227,7 @@
           "settings": {
             "kicker": "",
             "heading": "<p>Decaf is 7-12% of coffee sales and roasters<br/> know it. They treat it as an afterthought.</p>",
-            "body": "<p>They pour all the craft into their full-caf side and pick decaf from a small set of pre graded options nobody got excited about. And it gets worse. If you want to decaffeinate a great single-origin lot, the  decaffeinator has minimums. Big ones. Most roasters will never sell that much decaf, so they don’t even try. <br/><br/>So we did the only thing that made sense. We bought a LOT of some of the finest coffee on earth and sent it for decaffeination. The whole  point of Heist was inputs nobody else was willing to commit to.</p>",
+            "body": "<p>They pour all the craft into their full-caf side and pick decaf from a small set of pre graded options nobody got excited about. And it gets worse. If you want to decaffeinate a truly great coffee, the  decaffeinator has massive minimums. Big ones. Most roasters will never sell that much decaf, so they don’t even try. <br/><br/>So we did the only thing that could solve it. We took a gamble to hit those high minumums, before we launched the business, accessing some of the finest coffee on earth.  Coffees that have never been decaffeinated before.   And after 18+ months exploring all the methods of decaffeination and even trying to create our own method with some of the top scientists in the world, we landed on the method we have full confidence in: the water method.</p><p>The whole  point of Heist was delivering the best decaf you can get your hands on.  That took real effort and taking a chance others haven't been willing to take on.  </p>",
             "media_position": "right",
             "media_inline": false,
             "media_type": "image",
@@ -267,8 +268,8 @@
           "type": "media_with_content",
           "settings": {
             "kicker": "",
-            "heading": "<p>Most decaf in America is made with <br/>methylene chloride or ethyl acetate. <br/>solvents. If a bag of decaf has ever <br/>smelled like nail polish, that’s ethyl <br/>acetate residue.</p>",
-            "body": "<p>Both are “below the legal limit” by FDA standards. We think “below  the legal limit” is the bare minimum, not the goal.<br/><br/>Heist is decaffeinated with only water. The caffeine dissolves out while the delicious flavor stays. <br/><br/>Jarrett tests every batch for mold, mycotoxins, and heavy metals. If a lot doesn’t pass, it doesn’t ship. The full. process is on our <a href=\"#\" title=\"#\">Process Page</a>. The receipts are too.</p>",
+            "heading": "<p>Most decaf in America is made with <br/>Methylene Chloride or Ethyl Acetate. <br/>Chemical solvents.</p>",
+            "body": "<p>If a bag of decaf has ever smelled like nail polish remover, that’s ethyl acetate.  And its often referred to as Sugar Cane Process, which is great marketing since its derived from sugar cane. </p><p>Both are below the legal limit by FDA standards. and deemed safe technically.  We think “below  the legal limit” is the bare minimum, not the goal.  We just wonder if we'll still be ok with this in 10 years?<br/><br/>Heist is decaffeinated with only water. The caffeine dissolves out while the delicious flavor stays. <br/><br/>Light Labs tests every batch for mold, mycotoxins, and caffeine content. If a lot doesn’t pass, it doesn’t ship. The full. process is on our <a href=\"#\" title=\"#\">Process Page</a>. The receipts are too.</p>",
             "media_position": "left",
             "media_inline": true,
             "media_type": "image",
@@ -305,7 +306,7 @@
           "settings": {
             "custom_class": "",
             "kicker": "",
-            "heading": "“We stole the caffeine. <br>Not the flavor. Not the joy. <br>That’s the Heist.”",
+            "heading": "“We stole the caffeine. <br>Not the flavor.   <br>That’s the Heist.”",
             "heading_tag": "h2",
             "text_align": "center",
             "text_align_mobile": "inherit",
@@ -470,7 +471,7 @@
       ],
       "name": "Gallery showcase",
       "settings": {
-        "heading": "For those who are serious about coffee.",
+        "heading": "For those serious <br> about coffee.",
         "cta_label": "Follow @DrinkHeist",
         "cta_link": "https://www.instagram.com/drinkheist/",
         "marquee_speed": 40,

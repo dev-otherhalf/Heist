@@ -115,22 +115,43 @@
 
         <div class="coffee-heist__panels">
           {% for tab in tabs_obj.tabs.value %}
-            {%- comment -%} Truncated scale (was 0-100) so bars spread out more instead of clustering near the top. {%- endcomment -%}
-            {% assign scale_min = tab.scale_min.value | default: 70 %}
-
             {%- comment -%}
-              No scale_max set in the metaobject: derive it from the highest
-              score in this tab's chart, rounded up to the next multiple of 10
-              (85 -> 90, 93 -> 100, 47 -> 50) so the axis always clears the tallest bar.
+              The axis is derived from the data, not fixed.
+
+              It used to start at 70 and round the top up to the next multiple of 10, so
+              a set of cupping scores from 78 to 86 was drawn on a 70-90 axis. The six
+              scores that matter sat in a 3-point band across 15% of the width and every
+              bar looked the same length, which is exactly the comparison the chart
+              exists to make.
+
+              Now the scale hugs the data with a small margin on each side, so the real
+              spread uses the full width. The margin matters: without it the lowest bar
+              would land on the axis at zero width and disappear.
+
+              A merchant value in the metaobject still wins, so any tab can override this.
             {%- endcomment -%}
             {% assign highest_score = 0 %}
+            {% assign lowest_score = 0 %}
             {% for row in tab.chart_rows.value %}
               {% if row.score.value > highest_score %}
                 {% assign highest_score = row.score.value %}
               {% endif %}
+              {% if forloop.first or row.score.value < lowest_score %}
+                {% assign lowest_score = row.score.value %}
+              {% endif %}
             {% endfor %}
-            {% assign auto_scale_max = highest_score | divided_by: 10.0 | ceil | times: 10 %}
 
+            {%- comment -%}
+              Snap both ends to a multiple of 5 so the axis can be labelled in round
+              numbers. The labels used to be range/8 and then rounded, which produced
+              70, 72, 74, 77, 79, 81, 84, 86, 88: evenly spaced on screen but representing
+              uneven gaps in value. An 86 bar landed beside a label reading 84, so the
+              chart understated the score it exists to prove.
+            {%- endcomment -%}
+            {% assign auto_scale_min = lowest_score | minus: 2 | at_least: 0 | divided_by: 5.0 | floor | times: 5 %}
+            {% assign auto_scale_max = highest_score | plus: 2 | divided_by: 5.0 | ceil | times: 5 %}
+
+            {% assign scale_min = tab.scale_min.value | default: auto_scale_min %}
             {% assign scale_max = tab.scale_max.value | default: auto_scale_max %}
             {% if scale_max <= scale_min %}
               {% assign scale_max = scale_min | plus: 10 %}
@@ -198,11 +219,20 @@
                           class="coffee-heist__axis"
                           aria-hidden="true"
                         >
-                            {% assign tick_step = scale_max | minus: scale_min | times: 1.0 | divided_by: 8 %}
-                            {% for i in (0..8) %}
-                              {% assign step_times_i = tick_step | times: i %}
-                              {% assign tick_value = scale_min | plus: step_times_i %}
-                              <span class="t-n1">{{ tick_value | round }}</span>
+                            {%- comment -%}
+                              One tick every 5 points, so every label is a round number and
+                              its on-screen position matches its value exactly.
+                            {%- endcomment -%}
+                            {% assign tick_span = 5 %}
+                            {% assign tick_count = scale_max | minus: scale_min | divided_by: tick_span %}
+                            {% if tick_count < 2 %}
+                              {% assign tick_count = 2 %}
+                            {% endif %}
+                            {% for i in (0..tick_count) %}
+                              {% assign tick_value = i | times: tick_span | plus: scale_min %}
+                              {% if tick_value <= scale_max %}
+                                <span class="t-n1">{{ tick_value }}</span>
+                              {% endif %}
                             {% endfor %}
                           </div>
                       </div>
@@ -318,6 +348,18 @@
       <div class="coffee-heist-receipts__carousel swiper" data-receipts-swiper>
         <div class="swiper-wrapper">
           {% for review in receipts_obj.reviews.value %}
+            {%- comment -%}
+              The review card is conditional on there being a quote.
+
+              Every entry used to emit one unconditionally, and the video card was an
+              extra slide on top. That is right for an entry that is a written review
+              with a clip attached, but a video-only entry produced an empty review card
+              sitting next to its video: a name and a rating framing nothing.
+
+              Keying on the quote rather than on Media Type keeps the paired entries
+              working, since those have both and should still render both cards.
+            {%- endcomment -%}
+            {%- if review.quote.value != blank -%}
             <div class="swiper-slide coffee-heist-receipts__card coffee-heist-receipts__card--info">
               <dl class="coffee-heist-receipts__meta t-n1">
                 <div>
@@ -375,6 +417,7 @@
                 </div>
               {% endif %}
             </div>
+            {%- endif -%}
 
             {% if review.media_video.value != blank %}
               {% assign media_video = review.media_video.value %}
@@ -440,7 +483,6 @@
     brewing_obj: brewing_obj
   %}
 </div>
-
 {% schema %}
 {
   "name": "Coffee Heist Comparison",
